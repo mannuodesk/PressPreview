@@ -1,0 +1,109 @@
+﻿/* Tab Style */
+
+.MyTabStyle .ajax__tab_header
+
+        {
+            font-family: "Helvetica Neue" , Arial, Sans-Serif;
+            font-size: 12px;
+            font-weight:bold;
+            display:block;
+            background-color:#ccc;
+             border-bottom-style :solid;
+            border-bottom-color:transparent;
+            border-bottom-width :0;
+             border-top-style :solid;
+            border-top-color:#eee;
+            border-top-width :thin;
+             border-left-style :solid;
+
+            border-left-color:#eee;
+
+            border-left-width :thin ;
+
+             border-right-style :solid;
+
+            border-right-color:#eee;
+
+            border-right-width :thin;
+
+            
+
+            /* background-image: url(../Images/tab_bg.jpg);
+
+         background-repeat :repeat-x;
+
+			 border: solid 1px #FF9933;
+
+			*/
+
+
+
+        }
+
+        .MyTabStyle .ajax__tab_header .ajax__tab_outer
+
+        {
+
+            border-color: #222;
+            color: #222;
+            padding-left: 5px;
+            margin-right: 1px;
+            border-left: thin solid #eee;
+            border-right: thin solid #eee; 
+            
+        }
+
+        .MyTabStyle .ajax__tab_header .ajax__tab_inner
+
+        {
+           color: #666;
+            padding: 3px 10px 2px 0px;
+
+        }
+
+        .MyTabStyle .ajax__tab_hover .ajax__tab_outer
+
+        {
+             background-color:#fff;         
+        }
+
+        .MyTabStyle .ajax__tab_hover .ajax__tab_inner
+
+        {
+            color: #ddd;
+        }
+
+        .MyTabStyle .ajax__tab_active .ajax__tab_outer
+
+        {
+            background-color: #eee;           
+        }
+
+        .MyTabStyle .ajax__tab_active .ajax__tab_inner
+
+        {
+            color: #000;           
+        }
+
+        .MyTabStyle .ajax__tab_body
+
+        {
+            font-family: verdana,tahoma,helvetica;
+            font-size: 10pt;
+            background-color:transparent;
+            border: solid 1px #eee;
+            padding: 20px;
+        }
+
+
+
+/* Tab Style ends here */
+
+.tabHeader {
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    height: 25px;
+    background-color:#eee;
+    color: darkgreen;
+}

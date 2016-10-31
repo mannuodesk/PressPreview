@@ -1,0 +1,1344 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Brand Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+<script type="application/javascript" src="js/custom.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<script>
+   jQuery(document).ready(function(){
+   jQuery("#loaddata").click(function(){ 
+   jQuery.ajax({url:"loadpage/brand1.html",success:function(ajaxresult){
+   jQuery("#ajaxrequest").html(ajaxresult);
+  }});
+ });
+ 
+ jQuery("#loaddatan").click(function(){ 
+   jQuery.ajax({url:"loadpage/brand1.html",success:function(ajaxresult){
+   jQuery("#ajaxrequest").html(ajaxresult);
+  }});
+ });
+});
+</script>
+</head>
+
+<body>
+
+<div class="wrapper">
+<!--Header-->
+    <div class="headerbgm">
+           <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div style="margin-top:15px;">
+              <div class="logob"><a href="home-page.html">Press Preview</a></div>
+              <div class="logos"><a href="home-page.html">Logo Branding</a></div>
+            </div>  
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            
+            
+         <div class="col-md-3">   
+            <ul class="nav navbar-nav" id="firstb">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="images/menumail.png" /></a>
+                <ul class="dropdown-menu"  id="emailblock"><li><a href="compose-page.html">
+                      <div class="mesb">
+                        <div class="mtext3">Your Messages</div> 
+                        <div class="mtext2"> | &nbsp;&nbsp;&nbsp; Compose</div>
+                       </div> 
+                   </a></li>
+                  <li role="separator" class="divider"></li>
+                  
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">2 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">14 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Morbi id justo eu lacus molestie tempor a lacus. Suspendisse non justo ut ante sol...</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">13 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Vestibulum mattis est ligula, eget tempus magna elementum sed.</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">12 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">ed eleifend quam fermentum, interdum orci sed, sagittis arcu. Donec lacinia aug...</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  <li role="separator" class="divider"></li>
+                  
+                  <li><a href="profile-page.html"><div class="mtext1">See All Messages <img src="images/seeall.png" /></div></a></li>
+                  
+                </ul>
+              
+              <li class="dropdown" style="margin-top:-5px;">
+                <a href="#"><img src="images/alram.png" /></a>
+              </li>
+            </ul>
+         </div>   
+            
+            
+            <ul class="nav navbar-nav" id="firstbb">
+              <li><a href="#">Activity</a></li>
+              <li><a href="discover-page.html">Discover</a></li>
+              <li><a href="brand-page.html">Brands</a></li>
+              <li><a href="#">Inbox</a></li>
+              <li><a href="#">Create</a></li>
+            </ul>
+            
+            
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="images/menuright.png" /></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#"><img src="images/profile.png" /><span class="sp"> My Profile</span></a></li>
+                  <li><a href="#"><img src="images/settings.png" /><span class="sp"> Account Settings</span></a></li>
+                  <li><a href="#"><img src="images/help.png" /><span class="sp"> Help</span></a></li>
+                  <li><a href="#"><img src="images/logout.png" /><span class="sp"> Log Out</span></a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+    </div><!--header bg-->
+<!--Headerend-->
+
+<!--Banner-->
+    <div class=""><img class="img-responsive" src="images/brandimage.jpg" alt="brandimage" width="100%"></div>
+<!--bannerend-->
+
+<!--text-->
+<div class="wrapperblock">
+<div class="col-md-12">
+      <div class="starter-template">
+        <h6>BRAND</h6>
+        <h1>The List</h1>
+        <div class="sline"><img src="images/line.png" /></div>
+      </div>
+</div><!--col-md-12-->
+
+
+<div class="col-md-12 col-xs-12" id="letter">
+      <div class="alpha">
+         <ul>
+            <li onclick="letter2()" id="letter2a" class="letteractive" >A</li>
+            <li onclick="letter3()" id="letter3a" >B</li>
+            <li onclick="letter4()" id="letter4a" >C</li>
+            <li onclick="letter5()" id="letter5a" >D</li>
+            <li onclick="letter6()" id="letter6a" >E</li>
+            <li onclick="letter7()" id="letter7a" >F</li>
+            <li onclick="letter8()" id="letter8a" >G</li>
+            <li onclick="letter9()" id="letter9a" >H</li>
+            <li onclick="letter10()" id="letter10a" >I</li>
+            <li onclick="letter11()" id="letter11a" >J</li>
+            <li onclick="letter12()" id="letter12a" >K</li>
+            <li onclick="letter13()" id="letter13a" >L</li>
+            <li onclick="letter14()" id="letter14a" >M</li>
+            <li onclick="letter15()" id="letter15a" >N</li>
+            <li onclick="letter16()" id="letter16a" >O</li>
+            <li onclick="letter17()" id="letter17a" >P</li>
+            <li onclick="letter18()" id="letter18a" >Q</li>
+            <li onclick="letter19()" id="letter19a" >R</li>
+            <li onclick="letter20()" id="letter20a" >S</li>
+            <li onclick="letter21()" id="letter21a" >T</li>
+            <li onclick="letter22()" id="letter22a" >U</li>
+            <li onclick="letter23()" id="letter23a" >V</li>
+            <li onclick="letter24()" id="letter24a" >W</li>
+            <li onclick="letter25()" id="letter25a" >X</li>
+            <li onclick="letter26()" id="letter26a" >Y</li>
+            <li onclick="letter27()" id="letter27a" >Z</li>
+         </ul> 
+        </div> 
+        <div class="starter-template">
+          <div class="sline"><img src="images/line.png" /></div>
+        </div>
+</div><!--col-md-12-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter2">
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Bella Dahl</a></li>
+	              <li><a href="profile-page.html">Forever Unique</a></li>
+	              <li><a href="profile-page.html">Girls on Film</a></li>
+                  <li><a href="profile-page.html">Molly Bracken</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">Grey State</a></li>
+	              <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+	              <li><a href="profile-page.html">Mint.</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+	              <li><a href="profile-page.html">Tolani</a></li>
+	              <li><a href="profile-page.html">WOW Couture</a></li>
+	              <li><a href="profile-page.html">Bulova</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>
+      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter3" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter4" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter5" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter6" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter7" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter8" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter9" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter10" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter11" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Bella Dahl</a></li>
+	              <li><a href="profile-page.html">Forever Unique</a></li>
+	              <li><a href="profile-page.html">Girls on Film</a></li>
+                  <li><a href="profile-page.html">Molly Bracken</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">Grey State</a></li>
+	              <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+	              <li><a href="profile-page.html">Mint.</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+	              <li><a href="profile-page.html">Tolani</a></li>
+	              <li><a href="profile-page.html">WOW Couture</a></li>
+	              <li><a href="profile-page.html">Bulova</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>
+      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter12" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter13" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter14" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>                  
+	              <li><a href="profile-page.html">Blue Life</a></li>                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter15" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter16" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter17" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-18 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter18" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+                  <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter19" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+                  <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter20" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter21" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Bella Dahl</a></li>
+	              <li><a href="profile-page.html">Forever Unique</a></li>
+	              <li><a href="profile-page.html">Girls on Film</a></li>
+                  <li><a href="profile-page.html">Molly Bracken</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">Grey State</a></li>
+	              <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+	              <li><a href="profile-page.html">Mint.</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+	              <li><a href="profile-page.html">Tolani</a></li>
+	              <li><a href="profile-page.html">WOW Couture</a></li>
+	              <li><a href="profile-page.html">Bulova</a></li>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>
+      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter22" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter23" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter24" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>                  
+	              <li><a href="profile-page.html">Blue Life</a></li>                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter25" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter26" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter27" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-18 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+	              <li><a href="profile-page.html">Zero Gravity</a></li>
+                  <li><a href="profile-page.html">Little Mistress</a></li>
+	              <li><a href="profile-page.html">Maison de Papillon</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+<!--brandlist body-->
+ <div class="col-md-12" id="letter28" style="display:none;">
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  <li><a href="profile-page.html">3SIX5</a></li>
+	              <li><a href="profile-page.html">ále by Alessandra</a></li>
+	              <li><a href="profile-page.html">AMI Clubwear</a></li>
+	              <li><a href="profile-page.html">Bariano</a></li>
+	              <li><a href="profile-page.html">Blue Life</a></li>
+                  
+               </ul>
+       </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+                  <li><a href="profile-page.html">Minx NY</a></li>
+	              <li><a href="profile-page.html">Molly Bracken</a></li>
+	              <li><a href="profile-page.html">Shop Priceless</a></li>
+	              <li><a href="profile-page.html">SO SO Happy</a></li>
+                  <li><a href="profile-page.html">TAMAR Collection</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+       <div class="col-md-4 col-sm-6 col-xs-12 brandlist">	
+               <ul>
+	              <li><a href="profile-page.html">Satya Jewelry</a></li>
+               </ul>
+      </div><!--col-md-6-->
+      
+      <div id="ajaxrequest"></div>      
+</div><!--col-md-12-->
+<!--end brand list body-->
+
+
+</div><!--wrapperblock-->
+<!--text-->  
+
+<!--footer-->
+  <div class="footerbg">
+     <div class="row">
+        <div class="col-md-11 col-xs-10">©2015 Press Preview</div>
+        <div class="col-md-pull-1 col-xs-pull-1">
+           <div class="f1"><a id="loaddata"><img src="images/footerarrow.png" /></a></div>
+           <div class="f2"><a id="loaddatan">Expand</a></div>
+        </div>
+      </div>    
+  </div><!--footer-->
+<!--footer-->
+</div>
+<script src="js/bootstrap.js"></script>
+
+
+</body>
+</html>

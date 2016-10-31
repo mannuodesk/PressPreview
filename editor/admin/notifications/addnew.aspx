@@ -1,0 +1,202 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="addnew.aspx.cs" Inherits="admin_home_Default" %>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PP :: Dashboard</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <form id="form1" runat="server" role="form">
+    <div id="wrapper">
+    <!--#INCLUDE FILE="../includes/leftmenu.txt" -->
+
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+         <!--#INCLUDE FILE="../includes/header.txt" -->
+        </div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-8">
+                    <asp:ScriptManager ID="ScriptManager1" runat="server">
+                        </asp:ScriptManager>
+                    <h2>Notifications</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="../home/">Home</a>
+                        </li>
+                        <li><a href="Default.aspx">Notifications</a></li>
+                        <li><a href="#">Add New</a></li>
+                    </ol>
+                </div>
+                <div class="col-lg-4 pull-right">
+                    <h2>
+                     <asp:LinkButton runat="server" ID="btnCancel" class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin:3px;" Text="Cancel <i class='ace-icon fa fa-remove' style='margin-left:5px;'></i>" OnClick="btnCancel_Click"></asp:LinkButton>
+                     <asp:Button runat="server" ID="btnSave" 
+                            class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin:3px;"  
+                            Text="Send" OnClick="btnSave_Click"></asp:Button>
+                    </h2>
+                </div>
+                
+            </div>
+             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+                    <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                        <ProgressTemplate>
+                            <div id="dvLoading">Please wait.....</div>
+                        </ProgressTemplate>
+
+                    </asp:UpdateProgress>
+                     <div class="wrapper wrapper-content animated fadeInRight">
+                 
+                <div class="row">
+                     <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                           <div class="ibox-content">
+                               <div class="row">
+                                   <div class="col-lg-6"><div style="margin:15px;">Fields marked with * are mandatory</div></div>
+                                   <div class="col-lg-6">
+                                      
+                                   </div>
+                               </div>
+                                <div class="row">
+                                    <div id="divAlerts" runat="server" class="alert" Visible="False">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                             <asp:Label runat="server" ID="lblStatus" for="PageMessage"   
+                                 Text="" Visible="True"></asp:Label>
+                </div>
+                                    <div class="col-lg-6">                          
+                                        
+                                        <div class="form-group"><label>Message:</label><span class="text-danger">*</span> <textarea type="text" runat="server" id="txtName"  placeholder="Your message" class="form-control col-lg-12" style="height:200px" required="required" /></div>
+                                       
+                                        <div class="form-group"><label>Please chooase to whome you want to notify</label>
+                                            <asp:DropDownList ID="ddTo" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="ddTo_SelectedIndexChanged" >
+                                                <asp:ListItem Value="0">All</asp:ListItem>
+                                                <asp:ListItem Value="1">Brands</asp:ListItem>
+                                                <asp:ListItem Value="2">Influencers</asp:ListItem>
+                                                <asp:ListItem Value="3">To specific Brand</asp:ListItem>
+                                                <asp:ListItem Value="4">To specific Influencer</asp:ListItem>
+                                            </asp:DropDownList>
+                                            
+                                        </div>
+                                        <div class="fomr-group" >
+                                            <asp:DropDownList ID="ddBrands" runat="server" CssClass="form-control" Visible="False" DataSourceID="sdsBrands" DataTextField="Name" DataValueField="UserID" AppendDataBoundItems="True">
+
+                                                <asp:ListItem Value="0">--- Select Brand ---</asp:ListItem>
+
+                                            </asp:DropDownList>
+                                             <asp:SqlDataSource ID="sdsBrands" runat="server" ConnectionString="<%$ ConnectionStrings:GvConnection %>" ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" SelectCommand="SELECT [Name], [UserID] FROM [Tbl_Brands] ORDER BY [Name]"></asp:SqlDataSource>
+                                        </div>                                                          
+                                           <div class="fomr-group" >
+                                               <asp:DropDownList ID="ddEditors" runat="server" CssClass="form-control" Visible="False" AppendDataBoundItems="True" DataSourceID="sdsEditorsList" DataTextField="Name" DataValueField="UserID">
+
+                                                   <asp:ListItem Value="0">--- Select Editor ---</asp:ListItem>
+
+                                               </asp:DropDownList>
+                                               <asp:SqlDataSource ID="sdsEditorsList" runat="server" 
+                                                   ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                                   ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" SelectCommand="SELECT Tbl_Editors.UserID, [Firstname] + ' ' + [Lastname] as [Name]  FROM [Tbl_Editors] INNER JOIN Tbl_Users 
+ON Tbl_Users.UserID=Tbl_Editors.UserID 
+Where IsApproved IS NOT NULL 
+ ORDER BY [Firstname]"></asp:SqlDataSource>
+                                        </div>         
+                                        </div>                                  
+                                    
+                                  
+                                
+                                </div>
+                                </div>
+
+                            </div>
+                        </div>
+                </div>               
+
+           </div>
+             </ContentTemplate>
+            </asp:UpdatePanel>
+        <div class="footer">
+             <div>
+                <strong>Copyright</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
+            </div>
+        </div>
+        </div>        
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="../js/jquery-2.1.1.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+                 
+    <!-- Flot -->
+    <script src="../js/plugins/flot/jquery.flot.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="../js/plugins/flot/jquery.flot.time.js"></script>
+
+    <!-- Peity -->
+    <script src="../js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="../js/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../js/inspinia.js"></script>
+    <script src="../js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="../js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Jvectormap -->
+    <script src="../js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="../js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+    <!-- EayPIE -->
+    <script src="../js/plugins/easypiechart/jquery.easypiechart.js"></script>
+
+    <!-- Sparkline -->
+    <script src="../js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="../js/demo/sparkline-demo.js"></script>
+
+   <script type="text/javascript">
+    $(document).ready(function () {
+        $("#lbViewAlerts").click(function () {
+            var userId = '<%= Session["UserID"] %>';
+            $.ajax({
+                type: "POST",
+                url: $(location).attr('pathname')+"\\UpdateNotifications",
+                contentType: "application/json; charset=utf-8",
+                data: "{'userID':'" + userId + "'}",
+                dataType: "json",
+                async: true,
+                error: function (jqXhr, textStatus, errorThrown) {
+                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                },
+                success: function (msg) {
+                    //                    if (msg.d == true) {
+
+                    $('#<%=lblTotalNotifications.ClientID%>').hide("slow");;
+                    return false;  
+                }
+            });
+           
+        });
+    });
+    </script>
+    </form>
+</body>
+</html>

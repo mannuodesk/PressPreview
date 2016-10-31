@@ -1,0 +1,123 @@
+﻿using DLS.DatabaseServices;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class admin_home_Default : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!IsPostBack)
+            {
+                if (Common.Getunread_Alerts() > 0)
+                {
+                    lblTotalNotifications.Visible = true;
+                    lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
+                }
+                var alCommonControls = new ArrayList { lblUsername, imgUserphoto };
+                Common.AdminSettings(alCommonControls);
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if(e.CommandName=="2")
+            {
+                int RecordID = Convert.ToInt32(e.CommandArgument);
+                DatabaseManagement db = new DatabaseManagement();
+                String deleteQuery = string.Format("Delete From Tbl_Categories  Where CategoryID={0}", RecordID);
+                db.ExecuteSQL(deleteQuery);
+                string deleteBrand = string.Format("Delete From Tbl_Categories Where ParentID={0}", RecordID);
+                db.ExecuteSQL(deleteBrand);
+                GridView1.DataBind();
+                ErrorMessage.ShowSuccessAlert(lblStatus, "Category Deleted", divAlerts);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if(e.Row.RowType==DataControlRowType.DataRow)
+            {
+                int ParentID = IEUtils.ToInt(((Label)e.Row.FindControl("lblCatID")).Text);
+                SqlDataSource sdsSubCate = (SqlDataSource)e.Row.FindControl("sdsSubCate");
+                GridView grdSubCat = (GridView)e.Row.FindControl("grdSubCat");
+                sdsSubCate.SelectCommand = "SELECT CategoryID,Title From Tbl_Categories  Where ParentID=" + ParentID;
+                grdSubCat.DataSourceID = "";
+                grdSubCat.DataSource = sdsSubCate;
+                grdSubCat.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+    protected void grdSubCat_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "2")
+            {
+                int RecordID = Convert.ToInt32(e.CommandArgument);
+                DatabaseManagement db = new DatabaseManagement();
+                String deleteQuery = string.Format("Delete From Tbl_Categories  Where CategoryID={0}", RecordID);
+                db.ExecuteSQL(deleteQuery);
+                GridView1.DataBind();
+                ErrorMessage.ShowSuccessAlert(lblStatus, "Sub Category Deleted", divAlerts);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    protected void grdNotifications_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var lblDatePosted = (Label)e.Row.FindControl("lblDatePosted");
+                DateTime dbDate = Convert.ToDateTime(lblDatePosted.Text);
+                lblDatePosted.Text = Common.GetRelativeTime(dbDate);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    [WebMethod, ScriptMethod]
+    public static void UpdateNotifications(string userID)
+    {
+        var db = new DatabaseManagement();
+        string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
+                                           1, IEUtils.ToInt(userID));
+        db.ExecuteSQL(insertQuery);
+
+    }
+}

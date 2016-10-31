@@ -1,0 +1,114 @@
+﻿ <ul class="nav navbar-nav" id="firstb">
+              <li class="dropdown">
+                <a href="massenger.aspx" id="lbViewMessageCount" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<i class="fa fa-envelope"></i>  <asp:Label runat="server" ID="lblTotalMessages" Text="" Visible="False" CssClass="label label-warning"></asp:Label>
+				
+				</a>
+				  
+				 <ul class="dropdown-menu" id="emailblock" style="color:#fff;">
+				 <li><a href="massenger.aspx">
+                      <div class="mesb">
+                        <div class="mtext3">Your Messages</div> 
+                        <div class="mtext2"> | &nbsp;&nbsp;&nbsp; Compose</div>
+                       </div> 
+                   </a></li>
+                  <li role="separator" class="divider"></li>
+				  
+				   <% if (rptMessageList.Items.Count > 0) { %>                    
+                    <asp:Repeater runat="server" DataSourceID="sdsMessageList11" ID="rptMessageList"   OnItemDataBound="rptMessageList_ItemDataBound"    onitemcommand="rptMessageList_ItemCommand">
+                <ItemTemplate>
+                     <li style="margin-top: -30px; margin-bottom: 0px;"><asp:LinkButton for="test1" ID="lbtnMessage" CssClass="chkmes" style="margin:30px 0px 0 0;" runat="server" CommandName="2" CommandArgument='<%# Eval("ParentID") + "," + Eval("MessageID") %>'>
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg">
+                                                   <img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/>
+                                               </div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser" style="width:65%;"><%# Eval("ReceiverName") %></div> 
+                                <div class="mdays" style="width: 35%; position: relative; text-align: right;"><asp:Label runat="server" ID="lblDate" Text='<%# Eval("DatePosted") %>'></asp:Label></div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext"><%# Eval("Message") %></div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </asp:LinkButton></li>
+				  <li role="separator" class="divider"></li> 
+                </ItemTemplate>
+            </asp:Repeater>    
+             <asp:SqlDataSource ID="sdsMessageList11" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+	ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" SelectCommand="SELECT Tbl_Mailbox.ParentID, U_Email,U_ProfilePic,SenderID, Tbl_Users.U_Firstname + ' ' + Tbl_Users.U_Lastname as Name, Tbl_Mailbox.ParentID
+                                            ReceiverID,SenderName,ReceiverName,Tbl_Mailbox.MessageID,Message,Tbl_Mailbox.DatePosted , MessageStatus 
+                                            FROM Tbl_Mailbox                                            
+                                            INNER JOIN Tbl_MailboxMaster ON Tbl_MailboxMaster.ParentID=Tbl_Mailbox.ParentID
+                                            INNER JOIN Tbl_Users ON Tbl_MailboxMaster.ReceiverID=Tbl_Users.UserID 
+                                            WHERE Tbl_Mailbox.MessageID IN (SELECT MAX(MessageID) From Tbl_Mailbox Group By ParentID) AND  (Tbl_MailboxMaster.SenderID=? AND BlockStatus IS NULL AND MessageType IS NULL  AND Tbl_Mailbox.SDeleted IS NULL )  ORDER By DatePosted DESC">
+                       <SelectParameters>
+                           <asp:CookieParameter CookieName="FRUserID" Name="?" />
+                       </SelectParameters>
+</asp:SqlDataSource>      
+                  
+                  <li><a href="massenger.aspx"><div class="mtext1">See All Messages <img src="../images/seeall.png" /></div></a></li>
+                  <% } else
+                                   { %>	
+                                <li>
+									<p class="text-center" style="padding:10px; margin: 0 0 0px !important;">You have no message </p>
+								</li>
+                                <% } %>
+                </ul>
+               </li>
+			   <li class="dropdown">
+                    <a id="lbViewAlerts" class="dropdown-toggle count-info" data-toggle="dropdown" href="notifications.aspx">
+                        <i class="fa fa-bell"></i> <asp:Label runat="server" ID="lblTotalNotifications" CssClass="label label-warning" ></asp:Label>
+                    </a>
+                    <ul class="dropdown-menu" id="notifyblock" style="color:#fff;">
+					<% if (rptNotifications.Items.Count > 0) { %>
+					<asp:Repeater runat="server" DataSourceID="sdsNotifications" ID="rptNotifications"   OnItemDataBound="rptNotifications_ItemDataBound"    onitemcommand="rptMessageList_ItemCommand">
+                <ItemTemplate>
+                     <li style="padding: 10px 5px 3px 20px;">					 
+					    <div class="mesb">
+							
+							  <div class="mimageb">
+									<div class="mimg">
+										  <img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/>
+									</div>
+							  </div><!--mimageb-->
+							  <div class="mtextb">
+								  <div class="m1">
+									<a href='../lightbox/brand-item-view?v=<%# Eval("ItemID") %>' class="fancybox">
+									<div class="mtext"><%# Eval("Title") %></div>
+									<div class="mdays" style="width: 30%; position: relative; text-align: right;"><asp:Label runat="server" ID="lblDatePosted" Text='<%# Eval("DatePosted") %>'></asp:Label></div>
+									</a>
+								 </div>
+                             
+							  </div><!--mtextb-->
+						  
+                      </div><!--mseb-->
+					  <li role="separator" class="divider"></li> 
+                 </li>
+                </ItemTemplate>
+            </asp:Repeater> 
+                        <asp:SqlDataSource ID="sdsNotifications" runat="server" 
+                            ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                            ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" SelectCommand="SELECT Distinct Top 5 Tbl_Users.UserID, Tbl_Users.U_Firstname + ' ' + Tbl_Users.U_Lastname as SenderName, Title,U_ProfilePic,Tbl_Notifications.DatePosted,ISNULL(ReadStatus,0) as ReadStatus, ItemID  From 
+Tbl_Users INNER JOIN Tbl_Notifications ON Tbl_Users.UserID=Tbl_Notifications.UserID 
+INNER JOIN Tbl_NotifyFor ON Tbl_Notifications.NotifyID=Tbl_NotifyFor.NotifyID
+Where RecipID=?
+ORDER BY Tbl_Notifications.DatePosted DESC">
+                            <SelectParameters>
+                                <asp:SessionParameter Name="?" SessionField="UserID" />
+                            </SelectParameters>
+                        </asp:SqlDataSource>
+						<li><a href="../editor/notifications.aspx"><div class="mtext1">See All Notifications <img src="../images/seeall.png" /></div></a></li>
+						 <% } else
+                                   { %>	
+                                <li>
+									<p class="text-center" style="padding:10px; margin: 0 0 0px !important;">You have no notification </p>
+								</li>
+                                <% } %>
+                    </ul>
+                </li>
+              
+            </ul>

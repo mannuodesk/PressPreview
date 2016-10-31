@@ -1,0 +1,53 @@
+﻿ <li class="dropdown">
+                    <a id="lbViewAlerts" class="dropdown-toggle count-info" data-toggle="dropdown" href="#" style="padding-bottom: 0px;">
+                        <i class="fa fa-bell"></i> <asp:Label runat="server" ID="lblTotalNotifications" CssClass="label label-warning" ></asp:Label>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                         <asp:GridView ID="grdNotifications" runat="server" AutoGenerateColumns="False" 
+                            DataSourceID="sdsNotifications" GridLines="None" 
+                            onrowdatabound="grdNotifications_RowDataBound" ShowHeader="False">
+                            <Columns>
+                                <asp:TemplateField HeaderText="StoreName" SortExpression="Fullname">
+                                    <EditItemTemplate>
+                                        <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("Fullname") %>'></asp:TextBox>
+                                    </EditItemTemplate>
+                                    <ItemTemplate>
+                                       <li>
+                                            <div class="dropdown-messages-box">
+                                                <a href="../profile/edit.aspx?v=<%# Eval("UserID")%>" class="pull-left">
+                                                    <img alt="image" class="img-circle" style="width:50px; height:50px;" src='<%# Eval("U_ProfilePic","../../brandslogoThumb/{0}") %>'>
+                                                </a>
+                                                <div>
+                                                    <small class="pull-right"><asp:Label runat="server" ID="lblDatePosted" Text='<%# Bind("DatePosted") %>'></asp:Label> <asp:Label runat="server" ID="lblRead" Visible="False" Text='<%# Eval("ReadStatus") %>'></asp:Label></small>
+                                                   <%-- <strong><%# Eval("StoreName") %></strong>--%>  <span><%# Eval("Title") %></span> . <br>
+                                                    <small class="text-muted"><asp:Label runat="server" ID="lblDatePosted2" Text='<%# Bind("DatePosted") %>'></asp:Label></small>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="divider"></li>
+                                        
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            
+                        </asp:GridView>
+                        <asp:SqlDataSource ID="sdsNotifications" runat="server" 
+                            ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                            ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" SelectCommand="SELECT Distinct Top 5 Tbl_Users.UserID, Title,U_ProfilePic,Tbl_Notifications.DatePosted,ISNULL(ReadStatus,0) as ReadStatus From 
+Tbl_Users INNER JOIN Tbl_Notifications ON Tbl_Users.UserID=Tbl_Notifications.UserID 
+INNER JOIN Tbl_NotifyFor ON Tbl_Notifications.NotifyID=Tbl_NotifyFor.NotifyID
+Where RecipID=?
+ORDER BY Tbl_Notifications.DatePosted DESC">
+                            <SelectParameters>
+                                <asp:SessionParameter Name="?" SessionField="UserID" />
+                            </SelectParameters>
+                        </asp:SqlDataSource>
+						  <li>
+                                            <div class="text-center link-block">
+                                                <a href="../notifications/">
+                                                    <i class="fa fa-bell"></i> <strong>View All Notifications</strong>
+                                                </a>
+                                            </div>
+                                        </li>
+                    </ul>
+                </li>

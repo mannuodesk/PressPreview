@@ -1,0 +1,69 @@
+﻿<nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <asp:Image runat="server" CssClass="img-circle" ImageUrl="#"  AlternateText="profile pic" ID="imgUserphoto"/>
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Hi  <asp:Label ID="lblUsername" runat="server" Text="David William"></asp:Label></strong>
+                              <b class="caret"></b></span> </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="../profile/">Profile</a></li>
+                            <li><a href="#">Mailbox</a></li>
+                            <li class="divider"></li>
+                            <li><a href="../logout.aspx">Logout</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        PRESS PREVIEW
+                    </div>
+                </li>
+                <li>
+                    <a href="../home/"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a>                    
+                </li>
+                 <li>
+                    <a href="../brands/"><i class="fa fa-btc"></i> <span class="nav-label">Brands</span> </a>                    
+                </li>
+                 <li>
+                    <a href="../editors/"><i class="fa fa-edit"></i> <span class="nav-label">Influencers</span></a>                    
+                </li>
+                 <li>
+                    <a href="../categories/"><i class="fa fa-th-large"></i> <span class="nav-label">Categories</span></a>                    
+                </li>
+				 <li>
+                    <a href="../seasons/"><i class="fa fa-th-large"></i> <span class="nav-label">Seasons</span></a>                    
+                </li>
+				 <li>
+                    <a href="../holidays/"><i class="fa fa-th-large"></i> <span class="nav-label">Holidays</span></a>                    
+                </li>
+                 <li>
+                    <a href="../lookbooks/"><i class="fa fa-film"></i> <span class="nav-label">Look Books</span></a>                    
+                </li>
+               
+                
+				<li>
+                    <a href="../events/"><i class="fa fa-envelope"></i> <span class="nav-label">Events </span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+						<li><a href="../events/">Events</a></li>  
+                        <li><a href="../eventcategory/">Category</a></li>                                           
+                    </ul>
+                </li>
+                <li>
+                    <a href="../notifications/addnew.aspx"><i class="fa fa-bell"></i> <span class="nav-label">Notifications</span>  </a>
+                </li>
+
+				<li>
+                    <a href="#"><i class="fa fa-image"></i> <span class="nav-label">Activity Page </span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+						<li><a href="../slider/">Activity Page Slider</a></li> 
+						<li><a href="../feature1/">Feature 1 Items</a></li>  
+                        <li><a href="../feature2/">Feature 2 Items</a></li>                                           
+                    </ul>
+                </li>
+				
+                              
+            </ul>
+
+        </div>
+    </nav>

@@ -1,0 +1,31 @@
+img {
+    max-width: 100%;
+}
+
+#content .box {
+  width: 50%;
+  padding: 6px;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 12px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+footer {
+    font-family: 'TeXGyreCursorRegular', Arial, sans-serif;
+    border-top: 1px solid #ddd;
+    margin-top: 35px;
+    padding-top: 6px;
+    text-align: center;
+    font-size: 12px;
+}
+
+@media screen and (min-width: 720px) {
+  #content .box { width: 33%; }
+}
+
+@media screen and (min-width: 992px) {
+  #content .box { width: 20%; }
+}

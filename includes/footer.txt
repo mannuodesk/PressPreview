@@ -1,0 +1,5 @@
+﻿<div class="footerbg">
+     <div class="starter-template">
+        <div class="col-md-12">©<%: DateTime.Now.Year %> Press Preview</div>
+     </div>    
+  </div>

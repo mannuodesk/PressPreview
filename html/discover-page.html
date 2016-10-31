@@ -1,0 +1,868 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Profile Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+<script type="application/javascript" src="js/custom.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script>
+   jQuery(document).ready(function(){
+   jQuery("#loaddata").click(function(){ 
+   jQuery.ajax({url:"loadpage/discover.html",success:function(ajaxresult){
+   jQuery("#ajaxrequest").html(ajaxresult);
+  }});
+ });
+ 
+ jQuery("#loaddatan").click(function(){ 
+   jQuery.ajax({url:"loadpage/discover.html",success:function(ajaxresult){
+   jQuery("#ajaxrequest").html(ajaxresult);
+  }});
+ });
+});
+</script>
+
+    
+</head>
+
+<body>
+
+<div class="wrapper">
+<!--Header-->
+    <div class="headerbgm">
+           <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div style="margin-top:15px;">
+              <div class="logob"><a href="home-page.html">Press Preview</a></div>
+              <div class="logos"><a href="home-page.html">Logo Branding</a></div>
+            </div>  
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            
+            
+         <div class="col-md-3">   
+            <ul class="nav navbar-nav" id="firstb">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="images/menumail.png" /></a>
+                <ul class="dropdown-menu"  id="emailblock"><li><a href="compose-page.html">
+                      <div class="mesb">
+                        <div class="mtext3">Your Messages</div> 
+                        <div class="mtext2"> | &nbsp;&nbsp;&nbsp; Compose</div>
+                       </div> 
+                   </a></li>
+                  <li role="separator" class="divider"></li>
+                  
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">2 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">14 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Morbi id justo eu lacus molestie tempor a lacus. Suspendisse non justo ut ante sol...</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">13 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">Vestibulum mattis est ligula, eget tempus magna elementum sed.</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  
+                  <li><a href="#">
+                      <div class="mesb">
+                          <div class="mimageb"><div class="mimg"><img src="images/comimg.png" /></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muser">User Name</div> 
+                                <div class="mdays">12 days</div>
+                             </div>
+                             <div class="m1">
+                                <div class="mtext">ed eleifend quam fermentum, interdum orci sed, sagittis arcu. Donec lacinia aug...</div>
+                             </div>
+                             <div class="m1"></div>
+                          </div><!--mtextb-->
+                      </div><!--mseb-->
+                  </a></li>
+                  <li role="separator" class="divider"></li>
+                  
+                  <li><a href="messenger-page.html"><div class="mtext1">See All Messages <img src="images/seeall.png" /></div></a></li>
+                  
+                </ul>
+              
+              <li class="dropdown" style="margin-top:-5px;">
+                <a href="#"><img src="images/alram.png" /></a>
+              </li>
+            </ul>
+         </div>   
+            
+            
+            <ul class="nav navbar-nav" id="firstbb">
+              <li><a href="#">Activity</a></li>
+              <li><a href="discover-page.html">Discover</a></li>
+              <li><a href="brand-page.html">Brands</a></li>
+              <li><a href="#">Inbox</a></li>
+              <li><a href="#">Create</a></li>
+            </ul>
+            
+            
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="images/menuright.png" /></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#"><img src="images/profile.png" /><span class="sp"> My Profile</span></a></li>
+                  <li><a href="#"><img src="images/settings.png" /><span class="sp"> Account Settings</span></a></li>
+                  <li><a href="#"><img src="images/help.png" /><span class="sp"> Help</span></a></li>
+                  <li><a href="#"><img src="images/logout.png" /><span class="sp"> Log Out</span></a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+    </div><!--header bg-->
+<!--Headerend-->
+
+
+<!--text-->
+
+<div class="wrapperwhite">
+          
+      <div class="colrow">   
+         <div class="colr"><div class="colb"><a  href="#">Collection </a></div><img src="images/li.png" /></div>
+          <div class="dropdowndis">          
+            <span class="folheading"><a  href="#">Categories</a> <span class="caret"></span></span>
+                             <div class="dropdowndis-content">
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Dresses</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Shoes</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Glasses</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Joggers</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Jewellery</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Bags</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Shirts</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> caps</span></a></p>
+                              </div><!--dropdowndis-content-->
+         </div><!--dropdowndis-->
+                                
+          <div class="dropdowndis">          
+            <span class="folheading"><a  href="#">Season</a> <span class="caret"></span></span>
+                             <div class="dropdowndis-content1">
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Winter </span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Summer</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Spring</span></a></p>
+                                      <p class="submen"><a href=""><i class="fa fa-angle-double-right"></i><span class="sp1"> Autum</span></a></p>
+                              </div><!--dropdowndis-content-->
+         </div><!--dropdowndis-->
+      </div> <!--per-->
+</div><!--wrapperwhite-->
+
+
+
+<div class="col-md-12 col-xs-12  discoverb">     
+     <div class="discovewrap"> 
+           
+            <div id="contentbox">
+                <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+                
+                
+                <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+             <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+             <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+               
+               <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+               
+               <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+                
+                
+                <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+             <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+             <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/discopic.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+             
+              <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+               
+               <div class="box">
+                    <div class="disblock">
+                 <a href=""><div class="dbl"><div class="hover ehover13"><img class="img-responsive"  src="images/group.png" alt="image"/><div class="overlay"><h2 class="titlet">Title Of Product</h2><h2 class="linenew"></h2><h2>jan 21, 2016</h2></div><!--overlay--></div><!--hover ehover13--></div></a>
+                 <div class="disname"><div class="mesbd">
+                          <div class="mimageb"><div class="mimgd"><a href=""><img src="images/comimg.png" /></a></div></div><!--mimageb-->
+                          <div class="mtextb">
+                             <div class="m1">
+                               <div class="muserd"><a href="">Lookbook Name</a></div> 
+                               <div class="muserdb">By Brand Name</div>                                 
+                             </div>
+                             <div class="m1">
+                                <div class="mtextd">Product Info lorem ipsum dolor sit amet, consectetur</div>
+                             </div>
+                             <div class="m1">
+                                <div class="vlike"><img src="images/views.png" /> &nbsp;25</div>
+                                <div class="vlike"><img src="images/liked.png" /> &nbsp;100</div>
+                                <div class="mdaysd">2 days</div>
+                             </div>
+                          </div><!--mtextb-->
+                      </div><!--mseb--></div>
+               </div></div><!--box-->
+       </div><!--content-->
+       
+       <div id="contentbox">
+           <div id="ajaxrequest"></div>
+       </div>          
+
+</div><!--col-md-10 col-sm-12 col-xs-12-->     
+         
+         
+     
+     <div class="discovewraps">
+              
+              <!--search-->
+                  <div class="col-md-12 discrigblock">
+                         <div class="searchb">
+                             <div class="serheading">Search</div> 
+                             <div class="serinput">
+                                 <span class="fa fa-search"></span>
+                                 <input type="text" name="search" id="search" placeholder="" value="" class="sein" />
+                             </div> <!--serinput-->
+                         </div><!--search-->
+                  </div><!--colmd12-->
+                  <div class="dissp"></div>
+                  
+            <!--colors-->
+                  <div class="col-md-12 discrigblock">
+                         <div class="searchb">
+                             <div class="serheading" style="margin-bottom:10px;">Color</div> 
+                               <div class="color"><div class="color1"><img src="images/c1.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c2.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c3.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c4.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c5.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c6.jpg"></div></div>                               
+                               <div class="color"><div class="color1"><img src="images/c7.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c8.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c9.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c10.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c11.jpg"></div></div>
+                               <div class="color"><div class="color1"><img src="images/c12.jpg"></div></div>
+                         </div><!--search-->
+                  </div><!--colmd12-->
+                  <div class="dissp"></div>      
+                  
+                  
+                  <div class="col-md-12 discrigblock">
+                         <div class="searchb">
+                             <div class="serheading" style="margin-bottom:10px;">Brands</div> 
+                             
+                             <div class="dblock">
+                               <input type="checkbox" id="test6"/><label for="test6"><div>Brand name 1</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test7"/><label for="test7"><div>Brand name 2</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test8"/><label for="test8"><div>Brand name 3</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test9"/><label for="test9"><div>Brand name 4</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test10"/><label for="test10"><div>Brand name 5</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test11"/><label for="test11"><div>Brand name 6</div></label>
+                             </div> 
+                             
+                             <div id="seebmore" style="display:none;">
+                             <div class="dblock">
+                               <input type="checkbox" id="test12"/><label for="test12"><div>Brand name 7</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test13"/><label for="test13"><div>Brand name 8</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test14"/><label for="test14"><div>Brand name 9</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test15"/><label for="test15"><div>Brand name 10</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test16"/><label for="test16"><div>Brand name 11</div></label>
+                             </div> 
+                             <div class="dblock">
+                               <input type="checkbox" id="test17"/><label for="test17"><div>Brand name 12</div></label>
+                             </div> 
+                             </div>
+                         </div><!--search-->
+                         
+                         <div class="bmore" onclick="showbmore()">View More</div>
+                         <div class="bfewer" onclick="showbfewer()" style="display:none;">See fewer</div>
+                         
+                  </div><!--colmd12-->
+                         
+                  <div class="dissp"></div> 
+                  
+                  
+          <!--tags-->
+                  <div class="col-md-12 discrigblock">
+                         <div class="searchb">
+                             <div class="serheading" style="margin-bottom:20px;">Related Tags</div> 
+                             
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">Long Name</a></div>
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">NA</a></div>
+                             <div class="tagblock"><a href="">NA</a></div>
+                             <div class="tagblock"><a href="">Long Name</a></div>
+                             <div class="tagblock"><a href="">1</a></div>
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">Tag Name</a></div>
+                             <div class="tagblock"><a href="">1</a></div>
+                             <div class="tagblock"><a href="">2</a></div>
+                             
+                            <div id="tagfewer">
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">Long Name</a></div>
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">NA</a></div>
+                             <div class="tagblock"><a href="">NA</a></div>
+                             <div class="tagblock"><a href="">Long Name</a></div>
+                             <div class="tagblock"><a href="">1</a></div>
+                             <div class="tagblock"><a href="">Name</a></div>
+                             <div class="tagblock"><a href="">Tag Name</a></div>
+                             <div class="tagblock"><a href="">1</a></div>
+                             <div class="tagblock"><a href="">2</a></div>
+                            </div> 
+                             
+                         </div><!--search-->
+                         
+                         <div class="fewer" onclick="showtags()">See fewer tags</div>
+                         <div class="fewerf" onclick="showtagsf()" style="display:none;">See full tags</div>
+                  </div><!--colmd12-->
+                  <div class="dissp"></div>                                 
+
+              
+              
+     </div><!--discoverwraps-->
+     
+     
+</div><!--col-md-12-->
+
+
+
+
+
+
+<!--footer-->
+  <div class="footerbg">
+     <div class="row">
+        <div class="col-md-11 col-xs-10">©2015 Press Preview</div>
+        <div class="col-md-pull-1 col-xs-pull-1">
+           <div class="f1"><a id="loaddata"><img src="images/footerarrow.png" /></a></div>
+           <div class="f2"><a id="loaddatan">Expand</a></div>
+        </div>
+      </div>    
+  </div><!--footer-->
+<!--footer-->
+
+</div><!--wrapper-->
+
+    <!-- Javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="masonry/js/libs/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="masonry/js/libs/imagesloaded.3.1.8.min.js"></script>
+    <script src="masonry/js/libs/jquery.masonry.3.2.1.min.js"></script>
+    <script src="masonry/js/base.js" type="text/javascript"></script>
+
+</body>
+</html>

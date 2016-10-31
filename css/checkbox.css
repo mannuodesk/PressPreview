@@ -1,0 +1,62 @@
+[type=checkbox]:checked,[type=checkbox]:not(:checked){position:absolute;left:-9999px}[type=checkbox]:checked+label,[type=checkbox]:not(:checked)+label{position:relative;padding-left:25px;cursor:pointer}[type=checkbox]:checked+label:before,[type=checkbox]:not(:checked)+label:before{content:'';position:absolute;left:0;top:2px;width:17px;height:17px;background:#f3f3f3;border:1px solid #d6d2d2}[type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:3px;left:4px;font-size:16px;line-height:.8;color:#000;transition:all .2s}[type=checkbox]:not(:checked)+label:after{opacity:0;transform:scale(0)}[type=checkbox]:checked+label:after{opacity:1;transform:scale(1)}
+
+
+
+ @media screen and (min-width: 768px) and (max-width: 1024px), (min-device-width: 768px) and
+(max-device-width: 1024px) and (orientation : landscape) {
+/* CSS */ 
+}
+ 
+ @media screen and (max-width: 768px), (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : portrait) {
+/* CSS */ 
+}
+
+ @media screen and (min-width: 600px) and (max-width: 960px), (min-device-width: 600px) and
+(max-device-width: 960px) and (orientation : landscape) {
+/* CSS */ 
+}
+ 
+ @media screen and (max-width: 600px), (min-device-width: 600px) and (max-device-width: 960px) and (orientation : portrait) {
+	 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+}
+ 
+ @media screen and (min-width: 360px) and (max-width: 640px), (min-device-width: 360px) and
+(max-device-width: 640px) and (orientation : landscape) {
+		 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+
+}
+ 
+ @media screen and (max-width: 360px), (min-device-width: 360px) and (max-device-width: 640px) and (orientation : portrait) {
+	 	 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+
+}
+ 
+ 
+ @media screen and (min-width: 320px) and (max-width: 568px), (min-device-width: 320px) and
+(max-device-width: 568px) and (orientation : landscape) {
+		 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+
+}
+ 
+ 
+ 
+@media screen and (max-width: 320px), (min-device-width: 320px) and (max-device-width: 568px) and (orientation : portrait) {
+	 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+}
+ 
+ @media screen and (min-width: 320px) and (max-width: 480px), (min-device-width: 320px) and
+(max-device-width: 480px) and (orientation : landscape) {
+		 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+
+}
+ 
+ 
+ 
+ @media screen and (max-width: 320px), (min-device-width: 320px) and (max-device-width: 480px) and (orientation : portrait) {
+	 [type=checkbox]:checked+label:after,[type=checkbox]:not(:checked)+label:after{content: '■';position:absolute;top:7px;left:4px;font-size:10px;line-height:.8;color:#000;transition:all .2s}
+}
+
+
+
+
+

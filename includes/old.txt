@@ -1,0 +1,7 @@
+﻿SelectCommand="SELECT Tbl_Mailbox.ParentID, U_Email,U_ProfilePic,SenderID, Tbl_Users.U_Firstname + ' ' + Tbl_Users.U_Lastname as Name, Tbl_Mailbox.ParentID
+                                            ReceiverID,SenderName,ReceiverName,Tbl_Mailbox.MessageID,Message,Tbl_Mailbox.DatePosted , MessageStatus 
+                                            FROM Tbl_Mailbox 
+                                            INNER JOIN Tbl_MailboxFor ON Tbl_MailboxFor.MessageID=Tbl_Mailbox.MessageID
+                                            INNER JOIN Tbl_MailboxMaster ON Tbl_MailboxMaster.ParentID=Tbl_Mailbox.ParentID
+                                            INNER JOIN Tbl_Users ON Tbl_MailboxMaster.SenderID=Tbl_Users.UserID 
+                                            WHERE Tbl_Mailbox.MessageID IN (SELECT MAX(MessageID) From Tbl_Mailbox Group By ParentID) AND  (Tbl_MailboxFor.ReceiverID=? AND BlockStatus IS NULL AND MessageType IS NULL)  ORDER By DatePosted DESC">

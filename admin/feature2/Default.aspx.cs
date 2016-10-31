@@ -1,0 +1,237 @@
+﻿using System.Data.SqlClient;
+using DLS.DatabaseServices;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class admin_home_Default : Page
+{
+  
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!IsPostBack)
+            {
+                if (Common.Getunread_Alerts() > 0)
+                {
+                    lblTotalNotifications.Visible = true;
+                    lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
+                }
+                var alCommonControls = new ArrayList { lblUsername, imgUserphoto };
+                Common.AdminSettings(alCommonControls);
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+    
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+           
+            var db = new DatabaseManagement();
+            if(e.CommandName=="1") // Mark as Feature 1
+            {
+                int recordID = Convert.ToInt32(e.CommandArgument);  // get the item id
+                //int sortOrder = db.GetMaxID("SortOrder", "Tbl_Items") + 8; // Get the sort order 
+                int sortOrder = 0;
+                const string getMaxOrderNo = "Select MAX(SortOrder) From Tbl_Items Where IsFeatured2=1";
+                SqlDataReader dr = db.ExecuteReader(getMaxOrderNo);
+                if(dr.HasRows)
+                {
+                    dr.Read();
+                    sortOrder = dr.IsDBNull(0) ? 1 : Convert.ToInt32(dr[0])+1;
+                }
+
+                dr.Close();
+                String setSortOrder = string.Format("Update Tbl_Items Set SortOrder={0}, IsFeatured2={1}  Where ItemID={2}", sortOrder,1, recordID);
+                db.ExecuteSQL(setSortOrder);
+                GridView1.DataBind();
+                ErrorMessage.ShowSuccessAlert(lblStatus, "Item is marked as Feature 2.", divAlerts);
+            }
+            else if(e.CommandName=="2") // Un Mark as Feature 1
+            {
+                int recordID = Convert.ToInt32(e.CommandArgument);  // get the item id
+                // get the sort order of the item
+                int sortOrder =
+                    Convert.ToInt32(db.GetExecuteScalar("Select SortOrder From Tbl_Items Where ItemID=" + recordID));
+                // update the sort order field for the selected item. 
+                string updateItem = string.Format("Update Tbl_Items Set IsFeatured2=NULL,SortOrder=NULL WHERE ItemID={0}", recordID);
+                db.ExecuteSQL(updateItem);
+                var lstItemID=new List<int>();
+                string getItemIDs = string.Format("SELECT ItemID From Tbl_Items Where IsFeatured2=1 AND SortOrder>{0} ORDER BY SortOrder ", sortOrder);
+                SqlDataReader dr = db.ExecuteReader(getItemIDs);
+                if(dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                       lstItemID.Add(Convert.ToInt32(dr[0]));
+                    }
+                }
+
+                dr.Close();
+                dr.Dispose();
+
+                // Adjust the sort order of the pre dessor items
+                foreach (int itemId in lstItemID)
+                {
+                    string updateSortOrder = string.Format(
+                        "Update Tbl_Items Set SortOrder=SortOrder-1 Where ItemID={0}", itemId);
+                    db.ExecuteSQL(updateSortOrder);
+                }
+                ErrorMessage.ShowSuccessAlert(lblStatus, "Item is removed from the Feature 2.", divAlerts);
+            }
+            // close the db connections
+            GridView1.DataBind();
+            db._sqlConnection.Close();
+            db._sqlConnection.Dispose();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+   protected void grdNotifications_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var lblDatePosted = (Label)e.Row.FindControl("lblDatePosted");
+                DateTime dbDate = Convert.ToDateTime(lblDatePosted.Text);
+                lblDatePosted.Text = Common.GetRelativeTime(dbDate);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    [WebMethod, ScriptMethod]
+    public static void UpdateNotifications(string userID)
+    {
+        var db = new DatabaseManagement();
+        string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
+                                           1, IEUtils.ToInt(userID));
+        db.ExecuteSQL(insertQuery);
+
+    }
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if(e.Row.RowType==DataControlRowType.DataRow)
+            {
+                var isFeature1 = (Label)(e.Row.FindControl("lblFeature1"));
+                var btnMF = (Button)e.Row.FindControl("btnMF");
+                var btnUMF = (Button)e.Row.FindControl("btnUMF");
+
+                if (isFeature1.Text == "Yes")
+                {
+                    
+                    btnMF.Visible = false;
+                    btnUMF.Visible = true;
+                }
+                else
+                {
+                    btnMF.Visible = true;
+                    btnUMF.Visible = false;
+                }
+            }
+
+            
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            try
+            {
+                GridView1.DataSourceID = "";
+                if (ddbrandName.SelectedValue != "0" && txtName.Text != "") // Search by both
+                {
+                    GridView1.DataSource = sdsSearchByBoth;
+                }
+                else if (ddbrandName.SelectedValue == "0" && txtName.Text != "") // Search by Item name only
+                {
+                    GridView1.DataSource = sdsSearchItemOnly;
+                }
+                else if (ddbrandName.SelectedValue != "0" && txtName.Text == "") // Search by brand only
+                {
+                    GridView1.DataSource = sdsSearchBrandOnly;
+                }
+                GridView1.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    protected void btnViewAll_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ddbrandName.SelectedValue = "0";
+            txtName.Text = "";
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = sdsSlider;
+            GridView1.DataBind();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+        
+    }
+
+    [ScriptMethod()]
+    [WebMethod]
+    public static List<string> GetItemTitle(string lbName,string lbUser)
+    {
+        var empResult = new List<string>();
+        var db = new DatabaseManagement();
+        using (var con = new SqlConnection(db.ConnectionString))
+        {
+            using (var cmd = new SqlCommand())
+            {
+                cmd.CommandText = "SELECT Top 10 Title From Tbl_Items Where UserID="+ Convert.ToInt32(lbUser) +" AND Title LIKE  '" + lbName + "%'";
+                cmd.Connection = con;
+                con.Open();
+                //  cmd.Parameters.AddWithValue("@SearchName", lbName);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    empResult.Add(dr["Title"].ToString());
+                }
+                con.Close();
+                db._sqlConnection.Close();
+                return empResult;
+            }
+
+        }
+
+    }
+}

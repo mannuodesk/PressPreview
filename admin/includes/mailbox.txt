@@ -1,0 +1,7 @@
+﻿<li>
+                    <a href="#"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="../messages/brands.aspx">Brands</a></li>
+                        <li><a href="../messages/editors.aspx">Influencers</a></li>                       
+                    </ul>
+                </li>

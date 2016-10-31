@@ -1,0 +1,1 @@
+﻿<div class=""><asp:Image runat="server" ID="imgBanner"  CssClass="img-responsive" ImageUrl="../images/banner.jpg" alt="homeimage" width="100%" /></div>
