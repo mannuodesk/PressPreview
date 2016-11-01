@@ -52,7 +52,7 @@ public partial class editor_discover_lookbook_details : Page
     }
     [WebMethod, ScriptMethod]
     public static List<Items> LoadData(int pageIndex)
-
+{
 try
     {
   int pagesize = 4;

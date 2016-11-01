@@ -38,6 +38,13 @@
         });
     };
 </script>
+    <style>
+        .signup {
+    margin-top: 77px;
+    min-height: 200px;
+    background: #333;
+}
+    </style>
 </head>
 
 <body>
@@ -69,7 +76,7 @@
 <!--signup-->
 
 <!--text-->
-      <div class="col-md-12">
+      <div class="col-md-12" style="margin-bottom: 34px;">
           <div id="divAlerts" runat="server" class="alert" Visible="False">
                                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                          <asp:Label runat="server" ID="lblStatus" for="PageMessage"  Text="" Visible="True"></asp:Label>

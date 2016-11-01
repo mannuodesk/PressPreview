@@ -88,7 +88,7 @@
            </div><!--.col-md-5 -->
            <div class="col-md-1 col-xs-12" id="signupor" style="margin-top:10%; text-align:center;"><img src="images/or.png" /></div><!--.col-md-4 -->
            <div class="col-md-1 col-xs-12" id="signuporn" style="text-align:center;"><img src="images/orn.png" /></div><!--.col-md-4 -->
-           <div class="col-md-5 col-xs-12">
+           <div class="col-md-5 col-xs-12" style="margin-bottom: 50px;">
                <div class="col-md-12 loginhn" style="margin-top: 10px;">Create A new Account</div>
                <div class="col-md-12 logintn">Create your own Press Preview account.</div>
                  

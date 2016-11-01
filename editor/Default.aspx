@@ -114,17 +114,17 @@
 
         $.each(items, function (index, val) {
             console.log(index);
-            console.log(val.ItemId);
+            console.log(val);
             pageCount = val.PageCount;
-            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 30px;' > " +
+            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                 " <div class='hover ehover13'> " +
                     "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
                         "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                             "     <div class='overlay'> " +
-                                "         <h2>" + val + " (Author)</h2> " +
+                                "         <h2>" + val.Name + " (Author)</h2> " +
                                     "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
                                         "         <h2 class='linenew'></h2> " +
-                                            "         <h2>" + val.Dated + "</h2> " +
+                                            "         <h2>" + val.DatePosted + "</h2> " +
                                                 "     </div> " +
                                                     "     </a>" +
                                                         "     &nbsp;<!--overlay--></div> " +
@@ -205,7 +205,7 @@
             console.log(index);
             console.log(val.ItemId);
             pageCount = val.PageCount;
-            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 30px;' > " +
+            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                 " <div class='hover ehover13'> " +
                     "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
                         "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
@@ -347,7 +347,7 @@
            <div class="row featurette">
                <asp:Repeater ID="rptFeatured1" runat="server" DataSourceID="sdsFeatured1">
                    <ItemTemplate>
-                       <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:0px;    margin-top: 30px;">
+                       <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:0px;    margin-top: 21px;">
                  <div class="hover ehover13">
                      <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                     <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">
@@ -388,7 +388,7 @@
      <!-- START THE FEATURETTES -->
          <div class="col-md-12" style="padding-bottom: 70px;">
            <div id="featured2" class="row featurette">
-              <%-- <asp:Repeater ID="rptFeatured2" runat="server" DataSourceID="sdsFeatured2">
+<%--               <asp:Repeater ID="rptFeatured2" runat="server" DataSourceID="sdsFeatured2">
                    <ItemTemplate>
                        <div class="col-md-4 col-sm-6 col-xs-12 homelist" style="padding-bottom:0px">
                            <div class="hover ehover13">
@@ -418,11 +418,44 @@
 									dbo.Tbl_Items.DatePosted as [dated],UserID,IsDeleted,IsPublished, IsFeatured2, IsFeatured1,SortOrder,DatePosted  FROM Tbl_Items ) AS a 
 									INNER JOIN Tbl_Brands ON Tbl_Brands.UserID=a.UserID  
 									
-                            WHERE IsFeatured2=1 AND IsPublished=1 AND IsDeleted IS NULL AND IsFeatured1 IS NULL AND SortOrder BETWEEN 1 AND 3  ORDER BY SortOrder"></asp:SqlDataSource>
-                          
-             --%>
+                            WHERE IsFeatured2=1 AND IsPublished=1 AND IsDeleted IS NULL AND IsFeatured1 IS NULL AND SortOrder BETWEEN 1 AND 10  ORDER BY SortOrder"></asp:SqlDataSource>
+                          --%>
+             
               
-          </div><!--<!--row featurette-->
+          </div>
+             
+             
+             
+             
+             <script>
+                 $(function () {
+                     $('#log_grid_1.paginated').each(function () {
+                         var currentPage = 0;
+                         var numPerPage = 3;
+                         var $grid = $(this);
+                         $grid.bind('repaginate', function () {
+                             $grid.find('.log_grid_1_record').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+                         });
+                         $grid.trigger('repaginate');
+                         var numRows = $grid.find('.log_grid_1_record').length;
+                         var numPages = Math.ceil(numRows / numPerPage);
+                         var $pager = $('<div>Page </div>');
+                         for (var page = 0; page < numPages; page++) {
+                             $('<span></span>').text(page + 1).bind('click', {
+                                 newPage: page
+                             }, function (event) {
+                                 currentPage = event.data['newPage'];
+                                 $grid.trigger('repaginate');
+                                 $(this).addClass('active').siblings().removeClass('active');
+                             }).appendTo($pager).addClass('clickable');
+                         }
+                         $pager.insertBefore($grid).find('span.page-number:first').addClass('active');
+                     });
+                 });
+</script>
+             
+             
+             <!--<!--row featurette-->
             <div id="divPostsLoader">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;"><img src="../images/ajax-loader.gif" ></div>
                      <a href="#"  class="loadMore">Load More</a>
@@ -452,7 +485,7 @@
    <script type="text/javascript">
        $(document).ready(function () {
            var userId = '<%= Request.Cookies["FRUserId"].Value %>';
-           $("#lbViewMessageCount").click(function () {
+           $("#lbViewMessageCount").hover(function () {
 
                $.ajax({
                    type: "POST",
@@ -476,7 +509,7 @@
            });
 
 
-           $("#lbViewAlerts").click(function () {
+           $("#lbViewAlerts").hover(function () {
 
                $.ajax({
                    type: "POST",
@@ -534,13 +567,15 @@
                         //  var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                           var id = url[1];
                           var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
+                          //var pageUrl = 'http://localhost:2080/editor/' + id;
                           //window.location = pageUrl;
                           window.history.pushState('d', 't', pageUrl);
                      }
 
                   },
                   beforeClose: function () {
-                     window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/editor/');
+                      window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/editor/');
+                      //window.history.pushState('d', 't', 'http://localhost:2080/editor/');
                   }
               });
 
@@ -549,3 +584,4 @@
 
 </body>
 </html>
+

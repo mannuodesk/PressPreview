@@ -75,19 +75,19 @@
         });
 
         $("#lbtnWishList").on('click', function (e) {
-            e.preventDefault();
+            //e.preventDefault();
             var v = '<%= Request.QueryString["v"] %>';
             var userId = '<%= Request.Cookies["FRUserId"].Value %>';
-            //  alert(message);
+            // alert(v);
             $.ajax({
                 type: "POST",
                 url: "itemview2.aspx\\AddToWishList",
                 contentType: "application/json; charset=utf-8",
-                data: "{'v':'" + v + "', 'userId':" + userId + "}",
+                data: "{'v':'" + v + "', 'userid':'" + userId + "'}",
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {

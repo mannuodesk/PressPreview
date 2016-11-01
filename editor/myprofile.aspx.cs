@@ -174,7 +174,7 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
         }
     }
     // Top menu message list binding
-    protected void rptMessageList_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    /*protected void rptMessageList_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
         try
         {
@@ -193,7 +193,7 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-    }
+    }*/
 
     protected void grdNotifications_RowDataBound(object sender, GridViewRowEventArgs e)
     {

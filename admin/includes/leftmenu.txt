@@ -49,9 +49,9 @@
                         <li><a href="../eventcategory/">Category</a></li>                                           
                     </ul>
                 </li>
-                <li>
+              <!--  <li>
                     <a href="../notifications/addnew.aspx"><i class="fa fa-bell"></i> <span class="nav-label">Notifications</span>  </a>
-                </li>
+                </li> --!>
 
 				<li>
                     <a href="#"><i class="fa fa-image"></i> <span class="nav-label">Activity Page </span> <span class="fa arrow"></span></a>

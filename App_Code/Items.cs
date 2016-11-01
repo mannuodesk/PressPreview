@@ -23,5 +23,7 @@ public class Items
     public string ProfilePic;
     public string DatePosted;
     public string Dated;
+    public int sortOrder;
+
 
 }

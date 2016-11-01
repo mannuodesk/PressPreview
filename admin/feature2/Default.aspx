@@ -70,7 +70,7 @@
                         <%--<asp:LinkButton runat="server" ID="btnSave" class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin:3px;"  Text="Add New<i class='ace-icon fa fa-plus' style='margin-left:5px;'></i>" PostBackUrl="addnew.aspx"></asp:LinkButton>--%>
                          <asp:LinkButton runat="server" ID="btnSort" 
                             class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin:3px;"  
-                            Text="Reorder Feature 1 Items&lt;i class='ace-icon fa fa-sort-amount-asc' style='margin-left:5px;'&gt;&lt;/i&gt;" 
+                            Text="Reorder Feature 2 Items&lt;i class='ace-icon fa fa-sort-amount-asc' style='margin-left:5px;'&gt;&lt;/i&gt;" 
                             PostBackUrl="sort.aspx"></asp:LinkButton>
                     </h2>
                 </div>

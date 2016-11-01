@@ -47,7 +47,7 @@
           </div>  
     </div>
    <%-- <div class="col-md-3"></div>--%>
-    <div runat="server" id="dvSuccess" class="col-md-12 wrapperforget;" style="text-align:center; margin-top:60px;">
+    <div runat="server" id="dvSuccess" class="col-md-12 wrapperforget;" style="text-align:center; margin-top:100px;">
           <div class="textforget" style="margin-left:25px;">Congratulations!</div>
           <div class="textforgett">Your account has been created. An email will be sent to you after your account is <br />approved by the admin. <br/> <br/><br/> Please check your inbox.</div>          
           <div class="forgetform">                                 

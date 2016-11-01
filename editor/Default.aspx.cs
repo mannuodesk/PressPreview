@@ -129,64 +129,94 @@ namespace editor
 
         [WebMethod, ScriptMethod]
         public static List<Items> GetData(int pageIndex)
-        {
-            try
             {
-                
+            try
+                {
+
                 var db = new DatabaseManagement();
                 var itemList = new List<Items>();
-                    var cmd = new SqlCommand("GetFeatured2Items");
-                    db._sqlConnection.Open();
-                    cmd.Connection = db._sqlConnection;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                    cmd.Parameters.AddWithValue("@PageSize", 10);
-                    cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+                var cmd = new SqlCommand("GetFeatured2Items");
+                db._sqlConnection.Open();
+                cmd.Connection = db._sqlConnection;
+                cmd.CommandType = CommandType.StoredProcedure;
+                //cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
+                //cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
+                cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
 
-                    int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
-                    SqlDataReader dr = cmd.ExecuteReader();
+                int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
+                SqlDataReader dr = cmd.ExecuteReader();
 
-                    if (dr.HasRows)
+                pageIndex = 1;
+                int startItems = ((pageIndex - 1) * 15) + 1;
+                int endItems = (startItems + 15) - 1;
+                int tempCount = 1;
+
+
+                if (dr.HasRows)
                     {
-                        while (dr.Read())
+                    while (dr.Read())
                         {
-                           var objitem = new Items
+                        var objitem = new Items
+                        {
+                            PageCount = pageCount,
+                            ItemId = IEUtils.ToInt(dr["ItemID"]),
+                            ItemKey = dr["ItemKey"].ToString(),
+                            Name = dr["Name"].ToString(),
+
+                            RowNum = IEUtils.ToInt(dr["row"]),
+                            Title = dr["Title"].ToString(),
+
+                            BrandId = IEUtils.ToInt(dr["BrandID"]),
+
+                            DatePosted = dr["dated"].ToString(),
+
+                            sortOrder = IEUtils.ToInt(dr["SortOrder"]),
+
+                            FeatureImg = dr["FeatureImg"].ToString()
+                        };
+                        if (tempCount >= startItems && tempCount <= endItems)
                             {
-                                PageCount = pageCount,
-                                ItemId = IEUtils.ToInt(dr["ItemID"]),
-                                ItemKey = dr["ItemKey"].ToString(),
-                                Name = dr["Name"].ToString(),
-                               
-                                RowNum = IEUtils.ToInt(dr["row"]),
-                                Title = dr["Title"].ToString(),
-                                
-                                BrandId = IEUtils.ToInt(dr["BrandID"]),
-                              
-                                DatePosted = dr["dated"].ToString(),
-                              
-                                
-                                FeatureImg = dr["FeatureImg"].ToString()
-                            };
-
                             itemList.Add(objitem);
-
+                            }
+                        tempCount++;
                         }
                     }
+                itemList = sortListBySortOrder(itemList);
+                return itemList;
 
 
-                    return itemList;
 
-
-
-            }
+                }
             catch (Exception ex)
-            {
+                {
                 // ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-            }
+                }
 
             return null;
-        }
+            }
 
+
+
+        private static List<Items> sortListBySortOrder(List<Items> itemsList)
+            {
+
+            for (int iCounter = 0; iCounter < itemsList.Count; iCounter++)
+                {
+                for (int jCounter = 0; jCounter < itemsList.Count; jCounter++)
+                    {
+                    if (itemsList[iCounter].sortOrder < itemsList[jCounter].sortOrder)
+                        {
+                        Items temp = new Items();
+                        temp = itemsList[iCounter];
+                        itemsList[iCounter] = itemsList[jCounter];
+                        itemsList[jCounter] = temp;
+                        }
+                    }
+                }
+            return itemsList;
+            }
         [WebMethod, ScriptMethod]
         public static void DeleteItem(string id)
         {

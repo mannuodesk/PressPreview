@@ -389,6 +389,7 @@ public partial class lightbox_item_view : Page
                 db.ExecuteSQL(updateQuery1);
             }
             GetCommentsCount();
+            ItemLikes();
             txtComment.Value = "";
             rptPosts.DataBind();
             db._sqlConnection.Close();
