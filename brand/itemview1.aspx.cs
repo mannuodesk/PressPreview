@@ -11,23 +11,27 @@ public partial class lightbox_item_view : Page
     private string[] _loggedInUser;
     protected void Page_Load(object sender, EventArgs e)
     {
-     
+
         try
         {
-            if(!IsPostBack)
+            itemID = Convert.ToInt32(Request.QueryString["v"]);
+            Label200.Text = itemID.ToString();
+            if (!IsPostBack)
             {
-                 itemID = Convert.ToInt32(Request.QueryString["v"]);
-                 if (itemID != 0)
-                 {
-                     GetLoggedInUserInfo();
-                     SetTotalViews();
-                     LoadItemData();
-                     LoadBrandProfileImage();
-                     
-                     ItemLikes();
-                     GetCommentsCount();
-                     hidField.Value = itemID.ToString();
-                 }
+                itemID = Convert.ToInt32(Request.QueryString["v"]);
+                if (itemID != 0)
+                {
+                    GetLoggedInUserInfo();
+                    SetTotalViews();
+                    LoadItemData();
+                    LoadBrandProfileImage();
+
+                    ItemLikes();
+                    GetCommentsCount();
+                    rptPosts.DataSource = sdsPosts;
+                    rptPosts.DataBind();
+                    hidField.Value = itemID.ToString();
+                }
             }
             {
                 itemID = Convert.ToInt32(hidField.Value);
@@ -61,11 +65,11 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string UserDp = string.Format("SELECT U_ProfilePic From Tbl_Users Where UserID={0}",
                                           IEUtils.ToInt(Session["UserID"]));
             SqlDataReader dr = db.ExecuteReader(UserDp);
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[0];
@@ -81,13 +85,13 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string itemRecord =
                 string.Format(
                     "SELECT ItemID,Title,Description,RetailPrice,WholesalePrice,StyleNumber,StyleName,Color,Views,DatePosted,UserID,Likes  From Tbl_Items Where ItemID={0} AND IsPublished=1 AND IsDeleted IS NULL",
                     itemID);
             SqlDataReader dr = db.ExecuteReader(itemRecord);
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 lblItemTitle.Text = dr[1].ToString();
@@ -152,7 +156,7 @@ public partial class lightbox_item_view : Page
                                        IEUtils.ToInt(Session["UserID"]),
                                        IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(isAlreadyLiked);
-            lbtnLike.Enabled = !dr.HasRows;
+            //lbtnLike.Enabled = !dr.HasRows;
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }
@@ -167,7 +171,7 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string qryAddLike = string.Format("INSERT INTO Tbl_Item_Likes(ItemID,UserID,BrandID) VALUES({0},{1},{2})", itemID, IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
             db.ExecuteSQL(qryAddLike);
             rptHoliday.DataBind();
@@ -242,7 +246,7 @@ public partial class lightbox_item_view : Page
 
     protected void GetCommentsCount()
     {
-        var db=new DatabaseManagement();
+        var db = new DatabaseManagement();
         lblPostCount.Text =
                db.GetExecuteScalar(string.Format("Select COUNT(PostId) From Tbl_Posts Where ItemID={0}",
                                                itemID));
@@ -253,8 +257,21 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             var userCookie = Request.Cookies["FrUserID"];
+            _loggedInUser = new string[2];
+            String selectQuery =
+                string.Format(
+                    "SELECT UserKey, U_Firstname + ' ' + U_Lastname as Name from Tbl_Users Where UserID={0}",
+                    IEUtils.ToInt(Session["UserID"]));
+            SqlDataReader dr = db.ExecuteReader(selectQuery);
+            if (dr.HasRows)
+            {
+                dr.Read();
+                _loggedInUser[0] = dr[0].ToString();
+                _loggedInUser[1] = dr[1].ToString();
+            }
+            dr.Close();
             if (userCookie != null)
             {
                 string addPost =
@@ -319,11 +336,11 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            if(e.Item.ItemType==ListItemType.Item || e.Item.ItemType==ListItemType.AlternatingItem)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var rptComments = (Repeater) e.Item.FindControl("rptComments");
-               
-                int postId = Convert.ToInt32(((Label) e.Item.FindControl("lblPostID")).Text);
+                var rptComments = (Repeater)e.Item.FindControl("rptComments");
+
+                int postId = Convert.ToInt32(((Label)e.Item.FindControl("lblPostID")).Text);
                 string getPostComments =
                     string.Format(
                         "SELECT Tbl_Comments.Message, Tbl_Comments.DatePosted, U_Firstname + '  ' + U_Lastname as Username, Tbl_Users.U_ProfilePic, Tbl_Comments.PostId,CommentId  FROM Tbl_Users INNER JOIN Tbl_Comments ON Tbl_Comments.UserID=Tbl_Users.UserID WHERE (Tbl_Comments.PostId = {0})",
@@ -340,7 +357,7 @@ public partial class lightbox_item_view : Page
         }
     }
 
-    
+
     protected void rptPosts_OnItemCommand(object source, RepeaterCommandEventArgs e)
     {
         try
@@ -348,9 +365,9 @@ public partial class lightbox_item_view : Page
             var db = new DatabaseManagement();
             var userCookie = Request.Cookies["FrUserID"];
             int postId = IEUtils.ToInt(e.CommandArgument);
-            if(e.CommandName=="1")
+            if (e.CommandName == "1")
             {
-                
+
                 var txtReply = (TextBox)e.Item.FindControl("txtReply");
                 if (userCookie != null)
                 {
@@ -362,13 +379,15 @@ public partial class lightbox_item_view : Page
                     IEUtils.ToInt(lblUserID.Text));
                     db.ExecuteSQL(addComment);
                 }
+                rptPosts.DataSource = sdsPosts;
                 rptPosts.DataBind();
                 txtReply.Text = "";
             }
-            else if(e.CommandName=="3")
+            else if (e.CommandName == "3")
             {
                 string deleteComment = string.Format("Delete From Tbl_Posts Where PostId={0}", postId);
                 db.ExecuteSQL(deleteComment);
+                rptPosts.DataSource = sdsPosts;
                 rptPosts.DataBind();
                 GetCommentsCount();
             }
@@ -389,8 +408,9 @@ public partial class lightbox_item_view : Page
             {
                 string deleteComment = string.Format("Delete From Tbl_Comments Where CommentId={0}", commentId);
                 db.ExecuteSQL(deleteComment);
+                rptPosts.DataSource = sdsPosts;
                 rptPosts.DataBind();
-                
+
             }
         }
         catch (Exception ex)
@@ -402,8 +422,8 @@ public partial class lightbox_item_view : Page
     {
         const string script = "parent.$.fancybox.close();";
         ScriptManager.RegisterStartupScript(this, GetType(), "", "parent.$.fancybox.close();", true);
-        
+
     }
 
-   
+
 }

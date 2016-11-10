@@ -16,7 +16,8 @@ public partial class signup : System.Web.UI.Page
     {
         try
         {
-            var db = new DatabaseManagement();
+            SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+            /*var db = new DatabaseManagement();
             string updateQuery = string.Format("UPDATE Tbl_Users Set U_Type={0},U_CoverPic={1} Where UserKey={2}",
                 IEUtils.SafeSQLString("Brand"),
                 IEUtils.SafeSQLString("brandimage.jpg"),
@@ -47,7 +48,9 @@ public partial class signup : System.Web.UI.Page
                         );
             db.ExecuteSQL(insertQuery);
             db._sqlConnection.Close();
-            Response.Redirect("brand/myprofile.aspx?v=" + Request.QueryString["k"]);
+            Response.Redirect("brand/myprofile.aspx?v=" + Request.QueryString["k"]);*/
+
+            Response.Redirect("brand/myprofile.aspx");
 
             //var sb = new StringBuilder();
             //sb.Append(
@@ -66,7 +69,7 @@ public partial class signup : System.Web.UI.Page
     {
         try
         {
-            var db = new DatabaseManagement();
+           /* var db = new DatabaseManagement();
             string updateQuery = string.Format("UPDATE Tbl_Users Set U_Type={0}, U_CoverPic={1} Where UserKey={2}",
                 IEUtils.SafeSQLString("Editor"),
                 IEUtils.SafeSQLString("profilebanner.jpg"),
@@ -96,8 +99,9 @@ public partial class signup : System.Web.UI.Page
                         IEUtils.SafeSQLDate(DateTime.UtcNow)
                         );
             db.ExecuteSQL(insertQuery);
-            db._sqlConnection.Close();
-            Response.Redirect("editor/myprofile.aspx?v=" + Request.QueryString["k"]);
+            db._sqlConnection.Close();*/
+            //Response.Redirect("editor/myprofile.aspx?v=" + Request.QueryString["k"]);
+            Response.Redirect("editor/myprofile.aspx",false);
             //var sb = new StringBuilder();
             //sb.Append(
             //    "Congratulation ! <br/></br>. Your account has been created. A confirmation email has been sent to your email. Please verify your email.");

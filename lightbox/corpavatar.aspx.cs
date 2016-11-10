@@ -91,12 +91,19 @@ public partial class home : System.Web.UI.Page
 
     protected void save_btn_OnServerClick(object sender, EventArgs e)
     {
-        var db = new DatabaseManagement();
+        SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+        if(signedUpUser != null)
+        {
+            signedUpUser.profilePicURL = imageName;
+        }
+        
+        Session["profilePicURL"] = imageName;
+        /*var db = new DatabaseManagement();
         string updateUserProfile =
               string.Format("UPDATE Tbl_Users Set U_ProfilePic={0} Where UserID={1}",
                             IEUtils.SafeSQLString(imageName),
                             IEUtils.ToInt(Session["UserID"].ToString()));
-        db.ExecuteSQL(updateUserProfile);
+        db.ExecuteSQL(updateUserProfile);*/
 
     }
     protected void upload_btn_OnServerClick(object sender, EventArgs e)

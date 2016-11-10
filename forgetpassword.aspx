@@ -34,7 +34,7 @@
 
 
 <!--text-->
-    <div class="wrapperforget" runat="server" ID="divEmailSection">
+    <div class="wrapperforget" style="padding-top:10%" runat="server" ID="divEmailSection">
           <div class="textforget">Password Reset</div>
           <div class="textforgett">Enter email address that you used to register. An email will be sent to you with a link to reset you password</div>
           

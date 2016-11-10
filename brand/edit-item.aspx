@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Press Preview - Add Item</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -76,18 +76,20 @@
              var itemcolor;
              errorFlag = false;
              var CategoriesSelectedlength = $("#chkCategories input:checked").length;
-      
+
              var SeasonsSelectedlength = $("#chkDefaultSeasons input:checked").length;
-        
-           //  SeasonsSelected=("#chkDefaultSeasons input:checked");
+
+             //  SeasonsSelected=("#chkDefaultSeasons input:checked");
              var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
-           
-          //   HolidaySelected = $("#chkDefaultHoliday input:checked");
+
+             //   HolidaySelected = $("#chkDefaultHoliday input:checked");
 
 
 
              var itemDetail = $("txtDescription_designEditor").val();
-             alert(itemDetail);
+             var desc = $('#txtDescription').html();
+             console.log(desc);
+             //alert(itemDetail);
              itemcolor = $('#colbtn').css("background-color");
 
              $("#dzItemFeatured .dz-image img").each(function () {
@@ -103,7 +105,7 @@
                  errorMessage = "Please enter TITLE";
                  var errorDiv = "<p class='errorMessage' id='errorTitle'>" + errorMessage + "</p>"
                  $("#title_add").append(errorDiv);
-                 errorFlag=true;
+                 errorFlag = true;
              }
              else {
                  $("#errorTitle").remove();
@@ -200,58 +202,61 @@
              else {
                  $("#errorHoliday").remove();
              }
-//             if (thumbnailImages.length < 1) {
-//                 $("#errorthumbnail").remove();
-//                 errorMessage = "Please add thumbnail Image";
-//                 var errorDiv = "<p class='errorMessage' id='errorthumbnail'>" + errorMessage + "</p>"
-//                 $("#thumbnail_add").append(errorDiv);
-//                 errorFlag = true;
-//             }
-//             else {
-//                 $("#errorthumbnail").remove();
-//             }
-//             if (featureImage.length < 1) {
-//                 $("#errorfeature").remove();
-//                 errorMessage = "Please add feature Image";
-//                 var errorDiv = "<p class='errorMessage' id='errorfeature'>" + errorMessage + "</p>"
-//                 $("#feature_add").append(errorDiv);
-//                 errorFlag = true;
-//             }
-//             else {
-//                 $("#errorfeature").remove();
-//             }
+             //             if (thumbnailImages.length < 1) {
+             //                 $("#errorthumbnail").remove();
+             //                 errorMessage = "Please add thumbnail Image";
+             //                 var errorDiv = "<p class='errorMessage' id='errorthumbnail'>" + errorMessage + "</p>"
+             //                 $("#thumbnail_add").append(errorDiv);
+             //                 errorFlag = true;
+             //             }
+             //             else {
+             //                 $("#errorthumbnail").remove();
+             //             }
+             //             if (featureImage.length < 1) {
+             //                 $("#errorfeature").remove();
+             //                 errorMessage = "Please add feature Image";
+             //                 var errorDiv = "<p class='errorMessage' id='errorfeature'>" + errorMessage + "</p>"
+             //                 $("#feature_add").append(errorDiv);
+             //                 errorFlag = true;
+             //             }
+             //             else {
+             //                 $("#errorfeature").remove();
+             //             }
 
              if (errorFlag == true) {
                  $(".errorMessage").css("display", "block");
              }
              else {
                  var v = '<%= Request.QueryString["v"] %>';
+                 //Console.log(<%=ResolveUrl("edit-item.aspx/SaveItem")%>)
                  $.ajax({
                      type: "POST",
                      contentType: "application/json; charset=utf-8",
-                     url: "edit-item.aspx\\SaveItem",
-                     data: '{TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:'+ v +'}',
+                     url: '<%= ResolveUrl("edit-item.aspx/SaveItem") %>',
+                     data: '{TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
                      //data: { "TitleText": TitleText, "RetailText": RetailText, "WholesaleText": WholesaleText, "StyleNumberText": StyleNumberText, "StyleNameText": StyleNameText },
                      dataType: "json",
                      success: function (data) {
-                         
+
                          localStorage.setItem("Result", "Done");
-                         window.location=document.referrer;
+                         window.location = document.referrer;
                      },
                      error: function (result) {
                          localStorage.setItem("Result", "ErrorMessageAlert");
+
+                         window.location.reload();
                          //alert("No Match"); 
-                       //  response("No Match Found");
+                         //  response("No Match Found");
                      }
                  });
              }
          }
          $(document).ready(function () {
              //option A
-            $("#frm1").submit(function(e){
-                //alert('submit intercepted');
-                e.preventDefault(e);
-            });
+             $("#frm1").submit(function (e) {
+                 //alert('submit intercepted');
+                 e.preventDefault(e);
+             });
              //$("#btnPublish").on('click',(function(event) {
              //    event.preventDefault();
              //    event.stopPropagation();
@@ -259,9 +264,9 @@
              //    if(cnt==0) {
              //        alert('Please select category !');
              //        event.preventDefault();
-                    
+
              //    }
-                     
+
              //    var imageArray1 = [];
              //    $("#dzItemFeatured .dz-image img").each(function(){
              //        imageArray1.push($(this).attr('src'));
@@ -274,12 +279,12 @@
              //           event.preventDefault();
              //        event.stopPropagation();
              //        }
-                     
+
              //    }
              //}));
-            
+
              $("#btnPreview").click(function () {
-               
+
                  $(".lightboxheadertext").html($("#txtItemTitle").val());
                  $("#dvdescription").html($("#txtDescription").val());
                  $("#dvRetail").html($("#txtRetail").val());
@@ -287,42 +292,42 @@
                  $("#dvstyleNo").html($("#txtStyleNumber").val());
                  $("#dvstyleName").html($("#txtStyleName").val());
                  $("#modal_imgicon").attr('src', $('#imgUserIcon').attr('src'));
-                
-//                var checkboxList = [];
-//                $("[id*=CheckBoxList1] input:checked").each(function () {
-//                    checkboxList.push($(this).val());
-//                });
-//                if (checkboxList.length > 0) {
-//                    alert("Selected Value(s): " + checkboxList);
-//                } else {
-//                    alert("No item has been selected.");
-//                }
+
+                 //                var checkboxList = [];
+                 //                $("[id*=CheckBoxList1] input:checked").each(function () {
+                 //                    checkboxList.push($(this).val());
+                 //                });
+                 //                if (checkboxList.length > 0) {
+                 //                    alert("Selected Value(s): " + checkboxList);
+                 //                } else {
+                 //                    alert("No item has been selected.");
+                 //                }
 
                  var imageArray = [];
                  //alert(imageArray.length);
-//                    $(".dz-image img").each(function(){
-//                            imageArray.push($(this).attr('src'));
-//                    });
-                 $("#dzItemFeatured .dz-image img").each(function(){
+                 //                    $(".dz-image img").each(function(){
+                 //                            imageArray.push($(this).attr('src'));
+                 //                    });
+                 $("#dzItemFeatured .dz-image img").each(function () {
                      imageArray.push($(this).attr('src'));
                  });
-                
-                 $("#dzItemPics .dz-image img").each(function(){
+
+                 $("#dzItemPics .dz-image img").each(function () {
                      imageArray.push($(this).attr('src'));
                  });
-               
-//                for (var x = 0; x < checkboxList.length; x++) {
-//                    var item = "<label>" + checkboxList[x] + "</label><br/>";
-//                    $("#modal_checkboxlist").append(item);
-//                }
+
+                 //                for (var x = 0; x < checkboxList.length; x++) {
+                 //                    var item = "<label>" + checkboxList[x] + "</label><br/>";
+                 //                    $("#modal_checkboxlist").append(item);
+                 //                }
                  //$("#modal_image").remove();
-                // $('#modal_image img').remove();
+                 // $('#modal_image img').remove();
                  $('#modal_image br').remove();
                  for (var y = 0; y < imageArray.length; y++) {
                      var itemx = "<img id=" + y + " src=" + imageArray[y] + " /><br/>";
                      $("#modal_image").append(itemx);
                  }
-                                 <%--data-toggle="modal" data-target="#myModal"--%>
+                 <%--data-toggle="modal" data-target="#myModal"--%>
                  //$("#button1").attr("data-toggle", "modal");
                  //$("#button1").attr("data-target", "#myModal");
 
@@ -334,7 +339,7 @@
         var itemId = '<%= Request.QueryString["v"] %>';
         Dropzone.options.dzItemPics = {
 
-        // Validate the file type. only accept images
+            // Validate the file type. only accept images
             acceptedFiles: 'image/*',
             dictDefaultMessage: "Click or Drag Images here to upload",
             maxFiles: 100,
@@ -357,7 +362,7 @@
 
                 });
                 // Validate the dimensions of the image....
-                this.on('thumbnail', function(file) {
+                this.on('thumbnail', function (file) {
                     if (file.width < 800 || file.height < 800) {
                         file.rejectDimensions();
                     } else {
@@ -371,7 +376,7 @@
                     // Create the remove button
                     var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -75%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
-                   
+
                     var _this = this;
                     // Listen to the click event
                     removeButton.addEventListener("click", function (e) {
@@ -408,9 +413,9 @@
                 });
 
             },
-            accept: function(file, done) {
+            accept: function (file, done) {
                 file.acceptDimensions = done;
-                file.rejectDimensions = function() {
+                file.rejectDimensions = function () {
                     done('The image must be at least 800 x 800px');
                 };
             }
@@ -419,7 +424,7 @@
     </script>
     <script type="text/javascript">
         var itemId = '<%= Request.QueryString["v"] %>';
-        
+
         // Dropzone for featured image
         Dropzone.options.dzItemFeatured = {
             // Validate the file type. only accept images
@@ -500,8 +505,8 @@
             accept: function (file, done) {
                 file.acceptDimensions = done;
                 file.rejectDimensions = function () {
-                     done('The image must be at least 800 x 800px');
-                    
+                    done('The image must be at least 800 x 800px');
+
                 };
             }
         };
@@ -517,7 +522,7 @@
     <script type="text/javascript">
         function HideLabel() {
             setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
-            setTimeout(function() { $('.alert').fadeOut(); }, 4000);
+            setTimeout(function () { $('.alert').fadeOut(); }, 4000);
             setTimeout(function () { $('#<%=vs1.ClientID%>').fadeOut(); }, 4000);
         };
     </script>
@@ -879,7 +884,7 @@
                                      <asp:SqlDataSource ID="sdsDefaultCats" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (10) CategoryID, Title FROM dbo.Tbl_Categories ORDER BY Title">
+                                         SelectCommand="SELECT TOP(10) CategoryID, Title FROM dbo.Tbl_Categories ORDER BY Title">
                                      </asp:SqlDataSource>
                                       <asp:SqlDataSource ID="sdsMoreCats" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
@@ -989,7 +994,7 @@
                   
                   
           <!--tags-->
-                  <div class="col-md-12 discrigblock">
+                  <%--<div class="col-md-12 discrigblock">
                       <asp:updatepanel runat="server" ID="up_Tags">
                           <ContentTemplate>
                               <div class="searchb">
@@ -1007,6 +1012,7 @@
                                      ValidationGroup="gpTags"></asp:RequiredFieldValidator>
                              </div>
                              </asp:Panel>
+
                              <div class="smalltext">Separate tags with commas</div>
                              <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
                                       onitemcommand="rptTags_ItemCommand">
@@ -1044,7 +1050,74 @@
                       </asp:updatepanel>
                          <!--search-->
                          
-                  </div><!--colmd12-->
+                  </div>--%>
+      <!--colmd12-->
+
+
+
+
+
+          <div class="col-md-12 discrigblock">
+                      <asp:updatepanel runat="server" ID="up_Tags">
+                          <ContentTemplate>
+                              <div class="searchb">
+                             <div class="serheading" style="margin-bottom:20px;">Related Tags</div> 
+                            <asp:Panel runat="server" DefaultButton="btnAddTag">
+                             <div class="searchsm">
+                                 <div class="searctext">
+                                     <input type="text" runat="server" name="search" ID="txtTag" placeholder="" value="" class="sein1" tabindex="17"  /></div>
+                                 <div class="searcadd">
+                                   <asp:Button  runat="server" name="login" ID="btnAddTag" 
+                                         OnClick="btnAddTag_OnServerClick" class="hvr-sweep-to-right3" Text="Add" 
+                                         tabindex="18" ValidationGroup="gpTags"></asp:Button></div>
+                                 <asp:RequiredFieldValidator ID="RfvTags" runat="server" 
+                                     ErrorMessage="This field is required" ControlToValidate="txtTag" 
+                                     ValidationGroup="gpTags"></asp:RequiredFieldValidator>
+                             </div>
+                                <asp:HiddenField ID="hidField" runat="server" />
+                             </asp:Panel>
+                             <div class="smalltext">Separate tags with commas</div>
+                             <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
+                                      onitemcommand="rptTags_ItemCommand">
+                                 <ItemTemplate>
+                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><i id="I1" runat="server" class="fa fa-times-circle-o" style="padding-right:10px;" ></i><%# Eval("TagName") %></asp:LinkButton> </div>
+                                 </ItemTemplate>
+                             </asp:Repeater>
+                                                             <asp:SqlDataSource ID="sdsTags" runat="server" 
+                                      ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                      SelectCommand="SELECT Top 20 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">--%>
+                                      <SelectParameters>
+                                          <asp:ControlParameter ControlID="hidField" Name="itemID" PropertyName="Value" 
+                                              Type="Int32" />
+                                             <%--  <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />
+                                   --%>
+                                      </SelectParameters>
+                                  </asp:SqlDataSource>
+                                   <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
+                                      ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                      
+                                      SelectCommand="SELECT Top 10 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 10 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">--%>
+                                      <SelectParameters>
+                                          <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />
+                                      </SelectParameters>
+                                  </asp:SqlDataSource>
+                         </div>
+                          <div class="fewer" runat="server" ID="dvTagToggles">
+                              <asp:LinkButton runat="server" ID="btn_MoreTags" 
+                                     CssClass="fewer" Text="View More" onclick="btn_MoreTags_Click" 
+                                  TabIndex="19" ></asp:LinkButton> 
+                                 <asp:LinkButton runat="server" CssClass="fewer" ID="btn_LessTags" 
+                                     Text="See fewer" Visible="False" onclick="btn_LessTags_Click" 
+                                  TabIndex="19" ></asp:LinkButton></div>
+                          </ContentTemplate>
+                      </asp:updatepanel>
+                         <!--search-->
+                         
+                  </div>
                   <div class="dissp"></div>                                 
 
      </div><!--discoverwraps-->
@@ -1392,7 +1465,7 @@
 <script type="text/javascript" src="http://cdn.ucb.org.br/Scripts/formValidator/js/jquery.validationEngine.js"
     charset="utf-8"></script>
     <script type="text/javascript">
-        $("#colbtn").live("click",(function (e) {
+        $("#colbtn").live("click", (function (e) {
             $(".popupbox").toggle();
         }));
     </script>
@@ -1413,7 +1486,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-//                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {
@@ -1437,7 +1510,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-//                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {

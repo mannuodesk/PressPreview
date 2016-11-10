@@ -30,39 +30,39 @@
        }
    </style>
      <script type="text/javascript">
+         var selectedSorting = "default";
          $(document).ready(function () {
+             selectedSorting = "default";
+             $('.grid').empty();
              SearchText();
-            
+             $('#norecord').hide();
+             $('#LoaderItem').show();
+             SearchText();
+
              GetRecords();
          });
+         $(window).scroll(function () {
+             if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                 $('#LoaderItem').show();
+                 //   $("#loadMore").fadeIn();
+                 if (selectedSorting == "default") {
+                     GetRecords();
+                 }
+                 if (selectedSorting == "category") {
+                     GetRecordsByCategoryDef(catID);
+                 }
 
-
-
-         //$(window).resize(function ()
-         //{
-         //    $('.grid').masonry('destroy');
-         //    var masonry = $('.grid');
-         //    masonry.masonry({
-         //        itemSelector: '.boxn1'
-         //    });
-         //    //$(masonry).append(fragment);
-         //    $(masonry).masonry('reloadItems');
-         //    $(masonry).masonry('layout');
-
-         //});
-
-
-         //$(window).load(function () {
-         //    $('.grid').masonry('destroy');
-         //    var masonry = $('.grid');
-         //    masonry.masonry({
-         //        itemSelector: '.boxn1'
-         //    });
-         //    //$(masonry).append(fragment);
-         //    $(masonry).masonry('reloadItems');
-         //    $(masonry).masonry('layout');
-
-         //});
+                 if (selectedSorting == "season") {
+                     GetRecordsBySeasonDef(SeasID);
+                 }
+                 if (selectedSorting == "holiday") {
+                     GetRecordsByHolidayDef(holiID);
+                 }
+                 if (selectedSorting == "title") {
+                     GetRecordsByTitle(titlee);
+                 }
+             }
+         });
          function SearchText() {
              $("#txtsearch").autocomplete({
                  source: function (request, response) {
@@ -103,13 +103,11 @@
              }
 
          }
-     </script>  
-     <script type="text/javascript">
 
          $(function () {
              $("div").slice(0, 4).show();
              $(".loadMore").on('click', function (e) {
-               
+
 
                  e.preventDefault();
                  var id = $(this).attr('id');
@@ -121,23 +119,23 @@
                  switch (id) {
                      case 'default':
                          $('.loadMore').show();
-                         $('.grid').masonry('destroy');
+                         //$('.grid').masonry('destroy');
                          GetRecords();
                          break;
                      case 'byCategory':
                          $('.loadMore').show();
-                         $('.grid').masonry('destroy');
-                         GetRecordsByCategory(selectedcat);
+                         //$('.grid').masonry('destroy');
+                         GetRecordsByCategoryDef(selectedcat);
                          break;
                      case 'bySeason':
                          $('.loadMore').show();
-                         $('.grid').masonry('destroy');
-                         GetRecordsBySeason(selectedseason);
+                         //$('.grid').masonry('destroy');
+                         GetRecordsBySeasonDef(selectedseason);
                          break;
                      case 'byHoliday':
                          $('.loadMore').show();
-                         $('.grid').masonry('destroy');
-                         GetRecordsByHoliday(selectedholiday);
+                         //$('.grid').masonry('destroy');
+                         GetRecordsByHolidayDef(selectedholiday);
                          break;
                  }
 
@@ -151,49 +149,70 @@
          var pageCount_cat = 0;
          // Page variables for search by Season
          var pageIndex_season = 0;
-         var pageCount_season;
+         var pageCount_season = 0;
          // Page variables for search by Holiday
          var pageIndex_holiday = 0;
-         var pageCount_holiday;
+         var pageCount_holiday = 0;
          // Page variables for search by Title
          var pageIndex_title = 0;
-         var pageCount_title;
+         var pageCount_title = 0;
+
+
 
          var selectedcat = 0;
          function GetCategory(categoryid) {
              selectedcat = categoryid;
+             pageIndex_cat = 0;
+             pageCount_cat = 0;
+             $('#norecord').hide();
+             $('#LoaderItem').show();
+
              $('.loadMore').prop('id', 'byCategory');
              $('.loadMore').show();
+             $('.grid').empty();
+             $('.grid').masonry('destroy');
              GetRecordsByCategoryDef(categoryid);
          }
 
          var selectedseason = 0;
          function GetSeason(seasonid) {
+             pageIndex_season = 0;
+             pageCount_season = 0;
              selectedseason = seasonid;
              $('.loadMore').prop('id', 'bySeason');
              $('.loadMore').show();
+             $('.grid').empty();
+             $('.grid').masonry('destroy');
              GetRecordsBySeasonDef(seasonid);
          }
 
          var selectedholiday = 0;
          function GetHoliday(hoidayid) {
+             pageIndex_holiday = 0;
+             pageCount_holiday = 0;
              selectedholiday = hoidayid;
              $('.loadMore').prop('id', 'byHoliday');
              $('.loadMore').show();
+             $('.grid').empty();
+             $('.grid').masonry('destroy');
              GetRecordsByHolidayDef(hoidayid);
          }
 
          function GetTitle(title) {
-             alert($('#' + title).val());
+             pageIndex_title = 0;
+             pageCount_title = 0;
+             $('.grid').empty();
+             $('.grid').masonry('destroy');
+             //alert($('#' + title).val());
              GetRecordsByTitle(title);
          }
+
+
          // Defualt
          function GetRecords() {
+             selectedSorting = "default";
              pageIndex++;
-             if (pageIndex == 1 || pageIndex <= pageCount) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
+             $('#loader').show();
                  //send a query to server side to present new content
                  $.ajax({
                      type: "POST",
@@ -203,27 +222,24 @@
                      dataType: "json",
                      success: OnSuccess
                  });
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
 
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-              //   $('.loadMore').val('No more records');
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
          }
 
          // By category (Default)
+         var catID;
          function GetRecordsByCategoryDef(categoryid) {
-             pageIndex_cat = 1;
-             pageCount_cat = 0;
+             catID = categoryid;
+             pageIndex_cat++;
+             selectedSorting = "category";
+             // Page variables for search by Season
+             pageIndex_season = 0;
+             pageCount_season = 0;
+             // Page variables for search by Holiday
+             pageIndex_holiday = 0;
+             pageCount_holiday = 0;
+             // Page variables for search by Title
+             pageIndex_title = 0;
+             pageCount_title = 0;
              $('#loader').show();
 
              //send a query to server side to present new content
@@ -236,68 +252,24 @@
                  success: OnSuccessCate
              });
 
-             if (pageCount_cat <= 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                // var mess = '<label class="loadMore"> No more record </label>';
-               //  $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             } else {
-
-             }
-
-         }
-
-         // By Category (load More)
-         function GetRecordsByCategory(categoryid) {
-             pageIndex_cat++;
-             if (pageIndex_cat == 1 || pageIndex_cat <= pageCount_cat) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-lookbooks.aspx\\GetDataByCategory",
-                     data: '{pageIndex: ' + pageIndex_cat + ', categoryid:' + categoryid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessCate
-                 });
-
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                // var mess = '<label class="loadMore"> No more record </label>';
-                // $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
          }
 
          // By Season (Defualt)
+         var SeasID;
          function GetRecordsBySeasonDef(seasonid) {
-             pageIndex_season = 1;
+             SeasID = seasonid;
+             pageIndex_season++;
+             selectedSorting = "season";
+             // Page variables for search by Category
+             pageIndex_cat = 0;
+             pageCount_cat = 0;
+             // Page variables for search by Holiday
+             pageIndex_holiday = 0;
+             pageCount_holiday = 0;
+             // Page variables for search by Title
+             pageIndex_title = 0;
+             pageCount_title = 0;
              $('#loader').show();
-             pageCount_season = 0;
              //send a query to server side to present new content
              $.ajax({
                  type: "POST",
@@ -307,68 +279,31 @@
                  dataType: "json",
                  success: OnSuccessSession
              });
-             if (pageCount_season < 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                 //$('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
+           
          }
 
-         // By Season pagination
-
-         // By Season
-         function GetRecordsBySeason(seasonid) {
-             pageIndex_season++;
-             if (pageIndex_season == 1 || pageIndex_season <= pageCount_season) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-lookbooks.aspx\\GetDataBySeason",
-                     data: '{pageIndex: ' + pageIndex_season + ',seasonid:' + seasonid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessSession
-                 });
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                // $('#divPostsLoader').append(mess);
-                // setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
+        
 
 
 
          // By Holiday
+         var holiID;
          function GetRecordsByHolidayDef(holidayid) {
-             pageIndex_holiday = 1;
-             pageCount_holiday = 0;
+             holiID = holidayid;
+             selectedSorting = "holiday";
+             // Page variables for search by Category
+             pageIndex_cat = 0;
+             pageCount_cat = 0;
+             // Page variables for search by Season
+             pageIndex_season = 0;
+             pageCount_season = 0;
+             // Page variables for search by Title
+             pageIndex_title = 0;
+             pageCount_title = 0;
+
+             pageIndex_holiday++;
+
+
              // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
              $('#loader').show();
 
@@ -381,67 +316,33 @@
                  dataType: "json",
                  success: OnSuccessHoliday
              });
-             if (pageCount_holiday < 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                 //$('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
          }
 
 
-         // By Holiday
-         function GetRecordsByHoliday(holidayid) {
-             pageIndex_holiday++;
-             if (pageIndex_holiday == 1 || pageIndex_holiday <= pageCount_holiday) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-lookbooks.aspx\\GetDataByHoliday",
-                     data: '{pageIndex: ' + pageIndex_holiday + ', holidayid:' + holidayid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessHoliday
-                 });
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                // var mess = '<label class="loadMore"> No more record </label>';
-                /// $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
+  
 
          // By Title
+         var titlee;
          function GetRecordsByTitle(title) {
-             $('.grid').empty();
-             pageIndex_title = 1;
-             //pageIndex_title++;
-             if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
+             titlee = title;
+             selectedSorting = "title";
+             // Page variables for search by Category
+             pageIndex_cat = 0;
+             pageCount_cat = 0;
+             // Page variables for search by Season
+             pageIndex_season = 0;
+             pageCount_season = 0;
+             // Page variables for search by Holiday
+             pageIndex_holiday = 0;
+             pageCount_holiday = 0;
+
+             //pageIndex_title = 1;
+             pageIndex_title++;
+             //if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
+
+
+             // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+             $('#loader').show();
 
                  //send a query to server side to present new content
                  $.ajax({
@@ -453,95 +354,92 @@
                      success: OnSuccess
 
                  });
-             } else {
-                 alert("error");
-                 $('#loadMore').remove();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                // var mess = '<label id="loadMore"> No more record </label>';
-                // $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('#loadMore').fadeOut(); }, 4000);
-             }
+        
          }
 
+         var hasItem = false;
          function OnSuccess(data) {
+             $('#LoaderItem').show();
+             $('#norecord').hide();
              console.log(data);
              var items = data.d;
              var fragment;
+             if (items.length != 0) {
+                 hasItem = true;
+                 var $grid = $('.grid');
+                 $grid.masonry({
+                     itemSelector: '.boxn1',
+                     transitionDuration: '0.4s',
+                 });
+                 $.each(items, function (index, val) {
+                     console.log(index);
+                     console.log(val.ItemId);
+                     pageCount = val.PageCount;
+                     fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
+                         "<div class='disblock'>" +
+                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
+                                 "<div class='dbl'> <div class='hover ehover13'>" +
+                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                         "<div class='overlay'>" +
+                                             "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
+                                                 "</div><!-- hover ehover13--></div> <!-- dbl -->" +
+                                                     "</a>" +
+                                                         "<div class='disname'>" +
+                                                             "<div class='mesbd'>" +
+                                                                 "<div class='mimageb'>" +
+                                                                     "<div class='mimgd'>" +
+                                                                         "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
+                                                                             "</div> <!-- mimageb -->" +
+                                                                                 "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
+                                                                                     "<div class='m1'>" +
+                                                                                         "<div class='muserd'>" +
+                                                                                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" + val.Title + "</a>" +
+                                                                                                 "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                     "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                         "</a>" +
+                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                                 "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                                     "</a>" +
+                                                                                                                         "</div> <!-- muserd -->" +
+                                                                                                                             "<div class='muserdb'>By " + val.Name + "</div>" +
+                                                                                                                                 "</div> <!-- m1 -->" +
+                                                                                                                                     "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                         "<div class='mtextd'> " + val.Description + " </div>" +
+                                                                                                                                             "</div> <!-- m1 -->" +
+                                                                                                                                                 "<div class='m1'>" +
+                                                                                                                                                     "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
+                                                                                                                                                         "<!-- <div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div>  vlike -->" +
+                                                                                                                                                             "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
+                                                                                                                                                                 "</div> <!-- m1-->" +
+                                                                                                                                                                     "</div> <!-- mtextb -->" +
+                                                                                                                                                                         "</div><!-- mesbd -->" +
+                                                                                                                                                                             "</div> <!-- disname -->" +
+                                                                                                                                                                                 "</div></div>";
 
-             $.each(items, function (index, val) {
-                 console.log(index);
-                 console.log(val.ItemId);
-                 pageCount = val.PageCount;
-                 fragment += "<div class='boxn1' style='float:left;visibility:hidden'  id='b" + val.LookId + "'>" +
-                     "<div class='disblock'>" +
-                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
-                             "<div class='dbl'> <div class='hover ehover13'>" +
-                                 "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
-                                     "<div class='overlay'>" +
-                                         "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
-                                             "</div><!-- hover ehover13--></div> <!-- dbl -->" +
-                                                 "</a>" +
-                                                     "<div class='disname'>" +
-                                                         "<div class='mesbd'>" +
-                                                             "<div class='mimageb'>" +
-                                                                 "<div class='mimgd'>" +
-                                                                     "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
-                                                                         "</div> <!-- mimageb -->" +
-                                                                             "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
-                                                                                 "<div class='m1'>" +
-                                                                                     "<div class='muserd'>" +
-                                                                                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" + val.Title + "</a>" +
-                                                                                             "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                 "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                     "</a>" +
-                                                                                                        "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                             "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                                 "</a>" +
-                                                                                                                     "</div> <!-- muserd -->" +
-                                                                                                                         "<div class='muserdb'>By " + val.Name + "</div>" +
-                                                                                                                             "</div> <!-- m1 -->" +
-                                                                                                                                 "<div class='m1' style='word-wrap:break-word;'>" +
-                                                                                                                                     "<div class='mtextd'> " + val.Description + " </div>" +
-                                                                                                                                         "</div> <!-- m1 -->" +
-                                                                                                                                             "<div class='m1'>" +
-                                                                                                                                                 "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
-                                                                                                                                                     "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
-                                                                                                                                                         "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
-                                                                                                                                                             "</div> <!-- m1-->" +
-                                                                                                                                                                 "</div> <!-- mtextb -->" +
-                                                                                                                                                                     "</div><!-- mesbd -->" +
-                                                                                                                                                                         "</div> <!-- disname -->" +
-                                                                                                                                                                             "</div></div>";
+                 });
+                 var $items = $(fragment);
+                 $items.hide();
+                 $grid.append($items);
+                 $grid.masonry('layout');
+                 $items.imagesLoaded(function () {
+                     $grid.masonry('appended', $items);
+                     $grid.masonry('layout');
+                     $items.show();
+                     $('#LoaderItem').hide();
+                 });
+             }
+             else if (hasItem == false) {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No Record Found");
+                 $('#norecord').show();
+             }
+             else {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No More Record Found");
+                 $('#norecord').show();
+             }
 
-             });
-
-             
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.boxn1'
-             });
-            
-             $(masonry).append(fragment);
-         
-
-             setTimeout(function () {
-                 
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".boxn1").css("visibility", "visible");
-             }, 2000);
-             //$(masonry).append(fragment).masonry('appended', fragment, true);
-             //$(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
+     
              $('#loader').hide();
              if (pageCount <= 1) {
                  $('.loadMore').hide();
@@ -550,231 +448,267 @@
          }
 
          function OnSuccessCate(data) {
+             $('#LoaderItem').show();
+             $('#norecord').hide();
+             console.log(data);
              var items = data.d;
-             $('.grid').empty();
              var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_cat = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
-                     "<div class='disblock'>" +
-                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
-                             "<div class='dbl'> <div class='hover ehover13'>" +
-                                 "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
-                                     "<div class='overlay'>" +
-                                         "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
-                                             "</div><!-- hover ehover13--></div> <!-- dbl -->" +
-                                                 "</a>" +
-                                                     "<div class='disname'>" +
-                                                         "<div class='mesbd'>" +
-                                                             "<div class='mimageb'>" +
-                                                                 "<div class='mimgd'>" +
-                                                                     "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
-                                                                         "</div> <!-- mimageb -->" +
-                                                                             "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
-                                                                                 "<div class='m1'>" +
-                                                                                     "<div class='muserd'>" +
-                                                                                          "<a href='profile-page-lookbook-details.aspx?v=" + val.LookId + "'>" + val.Title + "</a>" +
-                                                                                             "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                 "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                     "</a>" +
-                                                                                                         "<a href='edit-lookbook.aspx?v=" + val.LookBookKey + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                             "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                                 "</a>" +
-                                                                                                                     "</div> <!-- muserd -->" +
-                                                                                                                         "<div class='muserdb'>By " + val.Name + "</div>" +
-                                                                                                                             "</div> <!-- m1 -->" +
-                                                                                                                                 "<div class='m1' style='word-wrap:break-word;'>" +
-                                                                                                                                     "<div class='mtextd'> " + val.Description + " </div>" +
-                                                                                                                                         "</div> <!-- m1 -->" +
-                                                                                                                                             "<div class='m1'>" +
-                                                                                                                                                 "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
-                                                                                                                                                     "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
-                                                                                                                                                         "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
-                                                                                                                                                             "</div> <!-- m1-->" +
-                                                                                                                                                                 "</div> <!-- mtextb -->" +
-                                                                                                                                                                     "</div><!-- mesbd -->" +
-                                                                                                                                                                         "</div> <!-- disname -->" +
-                                                                                                                                                                             "</div></div>";
+             if (items.length != 0) {
+                 hasItem = true;
+                 var $grid = $('.grid');
+                 $grid.masonry({
+                     itemSelector: '.boxn1',
+                     transitionDuration: '0.4s',
+                 });
+                 $.each(items, function (index, val) {
+                     console.log(index);
+                     console.log(val.ItemId);
+                     pageCount = val.PageCount;
+                     fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
+                         "<div class='disblock'>" +
+                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
+                                 "<div class='dbl'> <div class='hover ehover13'>" +
+                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                         "<div class='overlay'>" +
+                                             "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
+                                                 "</div><!-- hover ehover13--></div> <!-- dbl -->" +
+                                                     "</a>" +
+                                                         "<div class='disname'>" +
+                                                             "<div class='mesbd'>" +
+                                                                 "<div class='mimageb'>" +
+                                                                     "<div class='mimgd'>" +
+                                                                         "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
+                                                                             "</div> <!-- mimageb -->" +
+                                                                                 "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
+                                                                                     "<div class='m1'>" +
+                                                                                         "<div class='muserd'>" +
+                                                                                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" + val.Title + "</a>" +
+                                                                                                 "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                     "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                         "</a>" +
+                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                                 "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                                     "</a>" +
+                                                                                                                         "</div> <!-- muserd -->" +
+                                                                                                                             "<div class='muserdb'>By " + val.Name + "</div>" +
+                                                                                                                                 "</div> <!-- m1 -->" +
+                                                                                                                                     "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                         "<div class='mtextd'> " + val.Description + " </div>" +
+                                                                                                                                             "</div> <!-- m1 -->" +
+                                                                                                                                                 "<div class='m1'>" +
+                                                                                                                                                     "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
+                                                                                                                                                         "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
+                                                                                                                                                             "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
+                                                                                                                                                                 "</div> <!-- m1-->" +
+                                                                                                                                                                     "</div> <!-- mtextb -->" +
+                                                                                                                                                                         "</div><!-- mesbd -->" +
+                                                                                                                                                                             "</div> <!-- disname -->" +
+                                                                                                                                                                                 "</div></div>";
+
+                 });
+                 var $items = $(fragment);
+                 $items.hide();
+                 $grid.append($items);
+                 $grid.masonry('layout');
+                 $items.imagesLoaded(function () {
+                     $grid.masonry('appended', $items);
+                     $grid.masonry('layout');
+                     $items.show();
+                     $('#LoaderItem').hide();
+                 });
+             }
+             else if (hasItem == false) {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No Record Found");
+                 $('#norecord').show();
+             }
+             else {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No More Record Found");
+                 $('#norecord').show();
+             }
 
 
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.boxn1'
-             });
-
-             $(masonry).append(fragment);
-
-
-             setTimeout(function () {
-
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".boxn1").css("visibility", "visible");
-             }, 2000);
-           //  $(masonry).append(fragment).masonry('appended', fragment, true);
-            // $(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
              $('#loader').hide();
-
+             if (pageCount <= 1) {
+                 $('.loadMore').hide();
+             }
          }
 
          function OnSuccessSession(data) {
+             $('#LoaderItem').show();
+             $('#norecord').hide();
+             console.log(data);
              var items = data.d;
-             $('.grid').empty();
              var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_season = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
-                     "<div class='disblock'>" +
-                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "' >" +
-                             "<div class='dbl'> <div class='hover ehover13'>" +
-                                 "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
-                                     "<div class='overlay'>" +
-                                         "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
-                                             "</div><!-- hover ehover13--></div> <!-- dbl -->" +
-                                                 "</a>" +
-                                                     "<div class='disname'>" +
-                                                         "<div class='mesbd'>" +
-                                                             "<div class='mimageb'>" +
-                                                                 "<div class='mimgd'>" +
-                                                                     "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
-                                                                         "</div> <!-- mimageb -->" +
-                                                                             "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
-                                                                                 "<div class='m1'>" +
-                                                                                     "<div class='muserd'>" +
-                                                                                          "<a href='profile-page-lookbook-details.aspx?v=" + val.LookId + "' >" + val.Title + "</a>" +
-                                                                                             "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                 "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                     "</a>" +
-                                                                                                         "<a href='edit-lookbook.aspx?v=" + val.LookBookKey + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                             "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                                 "</a>" +
-                                                                                                                     "</div> <!-- muserd -->" +
-                                                                                                                         "<div class='muserdb'>By " + val.Name + "</div>" +
-                                                                                                                             "</div> <!-- m1 -->" +
-                                                                                                                                 "<div class='m1' style='word-wrap:break-word;'>" +
-                                                                                                                                     "<div class='mtextd'> " + val.Description + " </div>" +
-                                                                                                                                         "</div> <!-- m1 -->" +
-                                                                                                                                             "<div class='m1'>" +
-                                                                                                                                                 "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
-                                                                                                                                                     "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
-                                                                                                                                                         "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
-                                                                                                                                                             "</div> <!-- m1-->" +
-                                                                                                                                                                 "</div> <!-- mtextb -->" +
-                                                                                                                                                                     "</div><!-- mesbd -->" +
-                                                                                                                                                                         "</div> <!-- disname -->" +
-                                                                                                                                                                             "</div></div>";
+             if (items.length != 0) {
+                 hasItem = true;
+                 var $grid = $('.grid');
+                 $grid.masonry({
+                     itemSelector: '.boxn1',
+                     transitionDuration: '0.4s',
+                 });
+                 $.each(items, function (index, val) {
+                     console.log(index);
+                     console.log(val.ItemId);
+                     pageCount = val.PageCount;
+                     fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
+                         "<div class='disblock'>" +
+                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
+                                 "<div class='dbl'> <div class='hover ehover13'>" +
+                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                         "<div class='overlay'>" +
+                                             "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
+                                                 "</div><!-- hover ehover13--></div> <!-- dbl -->" +
+                                                     "</a>" +
+                                                         "<div class='disname'>" +
+                                                             "<div class='mesbd'>" +
+                                                                 "<div class='mimageb'>" +
+                                                                     "<div class='mimgd'>" +
+                                                                         "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
+                                                                             "</div> <!-- mimageb -->" +
+                                                                                 "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
+                                                                                     "<div class='m1'>" +
+                                                                                         "<div class='muserd'>" +
+                                                                                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" + val.Title + "</a>" +
+                                                                                                 "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                     "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                         "</a>" +
+                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                                 "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                                     "</a>" +
+                                                                                                                         "</div> <!-- muserd -->" +
+                                                                                                                             "<div class='muserdb'>By " + val.Name + "</div>" +
+                                                                                                                                 "</div> <!-- m1 -->" +
+                                                                                                                                     "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                         "<div class='mtextd'> " + val.Description + " </div>" +
+                                                                                                                                             "</div> <!-- m1 -->" +
+                                                                                                                                                 "<div class='m1'>" +
+                                                                                                                                                     "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
+                                                                                                                                                         "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
+                                                                                                                                                             "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
+                                                                                                                                                                 "</div> <!-- m1-->" +
+                                                                                                                                                                     "</div> <!-- mtextb -->" +
+                                                                                                                                                                         "</div><!-- mesbd -->" +
+                                                                                                                                                                             "</div> <!-- disname -->" +
+                                                                                                                                                                                 "</div></div>";
+
+                 });
+                 var $items = $(fragment);
+                 $items.hide();
+                 $grid.append($items);
+                 $grid.masonry('layout');
+                 $items.imagesLoaded(function () {
+                     $grid.masonry('appended', $items);
+                     $grid.masonry('layout');
+                     $items.show();
+                     $('#LoaderItem').hide();
+                 });
+             }
+             else if (hasItem == false) {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No Record Found");
+                 $('#norecord').show();
+             }
+             else {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No More Record Found");
+                 $('#norecord').show();
+             }
 
 
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.boxn1'
-             });
-
-             $(masonry).append(fragment);
-
-
-             setTimeout(function () {
-
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".boxn1").css("visibility", "visible");
-             }, 2000);
-             //$(masonry).append(fragment).masonry('appended', fragment, true);
-             //$(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
              $('#loader').hide();
-
+             if (pageCount <= 1) {
+                 $('.loadMore').hide();
+             }
          }
 
          function OnSuccessHoliday(data) {
+             $('#LoaderItem').show();
+             $('#norecord').hide();
+             console.log(data);
              var items = data.d;
-             $('.grid').empty();
              var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_holiday = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
-                     "<div class='disblock'>" +
-                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
-                             "<div class='dbl'> <div class='hover ehover13'>" +
-                                 "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
-                                     "<div class='overlay'>" +
-                                         "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
-                                             "</div><!-- hover ehover13--></div> <!-- dbl -->" +
-                                                 "</a>" +
-                                                     "<div class='disname'>" +
-                                                         "<div class='mesbd'>" +
-                                                             "<div class='mimageb'>" +
-                                                                 "<div class='mimgd'>" +
-                                                                     "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
-                                                                         "</div> <!-- mimageb -->" +
-                                                                             "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
-                                                                                 "<div class='m1'>" +
-                                                                                     "<div class='muserd'>" +
-                                                                                         "<a href='profile-page-lookbook-details.aspx?v=" + val.LookId + "'>" + val.Title + "</a>" +
-                                                                                             "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                 "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                     "</a>" +
-                                                                                                         "<a href='edit-lookbook.aspx?v=" + items.LookBookKey + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
-                                                                                                             "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
-                                                                                                                 "</a>" +
-                                                                                                                     "</div> <!-- muserd -->" +
-                                                                                                                         "<div class='muserdb'>By " + items.Name + "</div>" +
-                                                                                                                             "</div> <!-- m1 -->" +
-                                                                                                                                 "<div class='m1' style='word-wrap:break-word;'>" +
-                                                                                                                                     "<div class='mtextd'> " + items.Description + " </div>" +
-                                                                                                                                         "</div> <!-- m1 -->" +
-                                                                                                                                             "<div class='m1'>" +
-                                                                                                                                                 "<div class='vlike'><img src='../images/views.png' />" + items.Views + "</div> <!-- vlike -->" +
-                                                                                                                                                     "<div class='vlike'><img src='../images/liked.png' />" + items.Likes + "</div> <!-- vlike -->" +
-                                                                                                                                                         "<div class='mdaysd'><span id='lblDate2' >" + items.Dated + "</span></div> <!-- mdaysd -->" +
-                                                                                                                                                             "</div> <!-- m1-->" +
-                                                                                                                                                                 "</div> <!-- mtextb -->" +
-                                                                                                                                                                     "</div><!-- mesbd -->" +
-                                                                                                                                                                         "</div> <!-- disname -->" +
-                                                                                                                                                                             "</div></div>";
+             if (items.length != 0) {
+                 hasItem = true;
+                 var $grid = $('.grid');
+                 $grid.masonry({
+                     itemSelector: '.boxn1',
+                     transitionDuration: '0.4s',
+                 });
+                 $.each(items, function (index, val) {
+                     console.log(index);
+                     console.log(val.ItemId);
+                     pageCount = val.PageCount;
+                     fragment += "<div class='boxn1' style='float:left;'  id='b" + val.LookId + "'>" +
+                         "<div class='disblock'>" +
+                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" +
+                                 "<div class='dbl'> <div class='hover ehover13'>" +
+                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                         "<div class='overlay'>" +
+                                             "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
+                                                 "</div><!-- hover ehover13--></div> <!-- dbl -->" +
+                                                     "</a>" +
+                                                         "<div class='disname'>" +
+                                                             "<div class='mesbd'>" +
+                                                                 "<div class='mimageb'>" +
+                                                                     "<div class='mimgd'>" +
+                                                                         "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
+                                                                             "</div> <!-- mimageb -->" +
+                                                                                 "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
+                                                                                     "<div class='m1'>" +
+                                                                                         "<div class='muserd'>" +
+                                                                                             "<a href='profile-page-lookbook-details.aspx?v=" + val.LookBookKey + "'>" + val.Title + "</a>" +
+                                                                                                 "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                     "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                         "</a>" +
+                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                                 "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                                     "</a>" +
+                                                                                                                         "</div> <!-- muserd -->" +
+                                                                                                                             "<div class='muserdb'>By " + val.Name + "</div>" +
+                                                                                                                                 "</div> <!-- m1 -->" +
+                                                                                                                                     "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                         "<div class='mtextd'> " + val.Description + " </div>" +
+                                                                                                                                             "</div> <!-- m1 -->" +
+                                                                                                                                                 "<div class='m1'>" +
+                                                                                                                                                     "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
+                                                                                                                                                         "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
+                                                                                                                                                             "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
+                                                                                                                                                                 "</div> <!-- m1-->" +
+                                                                                                                                                                     "</div> <!-- mtextb -->" +
+                                                                                                                                                                         "</div><!-- mesbd -->" +
+                                                                                                                                                                             "</div> <!-- disname -->" +
+                                                                                                                                                                                 "</div></div>";
+
+                 });
+                 var $items = $(fragment);
+                 $items.hide();
+                 $grid.append($items);
+                 $grid.masonry('layout');
+                 $items.imagesLoaded(function () {
+                     $grid.masonry('appended', $items);
+                     $grid.masonry('layout');
+                     $items.show();
+                     $('#LoaderItem').hide();
+                 });
+             }
+             else if (hasItem == false) {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No Record Found");
+                 $('#norecord').show();
+             }
+             else {
+                 $('#LoaderItem').hide();
+                 $('#norecord').html("No More Record Found");
+                 $('#norecord').show();
+             }
 
 
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.boxn1'
-             });
-
-             $(masonry).append(fragment);
-
-
-             setTimeout(function () {
-
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".boxn1").css("visibility", "visible");
-             }, 2000);
-             //$(masonry).append(fragment).masonry('appended', fragment, true);
-              //$(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
              $('#loader').hide();
-
+             if (pageCount <= 1) {
+                 $('.loadMore').hide();
+             }
          }
 
          function GetFirstRecordSet() {
@@ -806,16 +740,16 @@
              //$(masonry).masonry('reloadItems');
              //$(masonry).masonry('layout');
              //When scroll down, the scroller is at the bottom with the function below and fire the lastPostFunc function
-             $(window).scroll(function () {
-                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                     //   $("#loadMore").fadeIn();
-                     //  GetRecords();
-                 }
-             });
+             //$(window).scroll(function () {
+             //    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+             //        //   $("#loadMore").fadeIn();
+             //        //  GetRecords();
+             //    }
+             //});
 
              $("#txtsearch").keydown(function (e) {
                  if (e.keyCode == 13) { // enter
-                     GetRecordsByTitle($("#txtsearch").val());
+                     GetTitle($("#txtsearch").val());
                      return false; //you can also say e.preventDefault();
                  }
              });
@@ -1076,77 +1010,21 @@ WHERE Tbl_Lookbooks.UserID=?">
                         Text="" Visible="True"></asp:Label>
                 </div>
                 <div class="grid">
-     <%--           <asp:Repeater runat="server" ID="rptLookbook"  DataSourceID="sdsLookbooks" 
-                    OnItemDataBound="rptLookbook_ItemDataBound" 
-                    onitemcommand="rptLookbook_ItemCommand">
-                    <ItemTemplate>
-                      <div class="boxn1" style="float:left;">
-                            <div class="disblock">
-                                <a href="profile-page-lookbook-details.aspx?v=<%# Eval("LookKey") %>">
-                                    <div class="dbl">
-                                        <div class="hover ehover13">
-                                            <img class="img-responsive" src="../photobank/<%# Eval("MainImg") %>" alt="<%# Eval("Title","{0}") %>" /><div class="overlay">
-                                                <h2 class="titlet"><%# Eval("Title","{0}") %></h2>
-                                                <h2 class="linenew"></h2>
-                                                <h2><asp:Label runat="server" ID="lblDate" Text='<%# Eval("DatePosted") %>'></asp:Label></h2>
-                                            </div>
-                                            <!--overlay-->
-                                        </div>
-                                        <!--hover ehover13-->
-                                    </div>
-                                </a>
-                                <div class="disname">
-                                    <div class="mesbd">
-                                        <div class="mimageb">
-                                            <div class="mimgd">
-                                                <a href="">
-                                                    <img src='../brandslogoThumb/<%# Eval("U_ProfilePic") %>' class="img-circle img-responsive" style="width:36px; height:36px;"/></a>
-                                            </div>
-                                        </div>
-                                        <!--mimageb-->
-                                        <div class="mtextb" style="width:75%; margin-left:15px;">
-                                            <div class="m1">
-                                                 <div class="muserd">
-                                                     <a href="profile-page-lookbook-details.aspx?v=<%# Eval("LookKey") %>" ><%# Eval("Title","{0}") %> </a>
-                                                      <asp:LinkButton runat="server" ID="lbtnRemove"  ToolTip="Delete Lookbook"   OnClientClick="return confirm('Are you sure, you want to delete ?')"  CommandName="1" CommandArgument='<%# Eval("LookID") %>' style="margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;">
-                                                        <i class="fa fa-times" aria-hidden="true" style="font-size:16px;"></i>
-                                                        </asp:LinkButton> &nbsp;&nbsp; &nbsp;&nbsp;
-                                                        <asp:LinkButton runat="server" ID="lbtnEdit" PostBackUrl='<%# Eval("LookID","edit-lookbook.aspx?v={0}") %>'  ToolTip="Edit Lookbook"  CommandArgument='<%# Eval("LookID") %>' style="margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;">
-                                                            <i class="fa fa-pencil" aria-hidden="true" style="font-size:16px;"></i>
-                                                        </asp:LinkButton>
-                                                </div>
-                                                
-                                                <div class="muserdb">By <%# Eval("Name","{0}") %></div>
-                                            </div>
-                                            <div class="m1" style="word-wrap: break-word;">
-                                                <div class="mtextd" ><%# Eval("Description","{0}") %></div>
-                                            </div>
-                                            <div class="m1">
-                                                <div class="vlike">
-                                                    <img src="../images/views.png" />
-                                                    &nbsp;<%# Eval("Views") %></div>
-                                                <div class="vlike">
-                                                    <img src="../images/liked.png" />
-                                                    &nbsp;<asp:Label runat="server" ID="lblLikes" Text='<%# Eval("LookID") %>'></asp:Label>
-                                                </div>
-                                                <div class="mdaysd">
-                                                    <asp:Label runat="server" ID="lblDate2"><%# Eval("DatePosted") %></asp:Label></div>
-                                            </div>
-                                        </div>
-                                        <!--mtextb-->
-                                    </div>
-                                    <!--mseb-->
-                                </div>
-                            </div>
-                        </div>
-                        <!--box-->
-
-                    </ItemTemplate>
-                    <FooterTemplate>
-                         <asp:Label ID="lblEmptyData" style="margin-left: 40%;" runat="server" Visible='<%# ((Repeater)Container.NamingContainer).Items.Count == 0 %>' Text="No lookbook found" />
-                     </FooterTemplate>
-                </asp:Repeater>--%>
                 </div>
+            <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                       
+                       
+                       
+                      <div id="norecord" style="display:none;    margin-bottom: 63px;    color: black;text-align: center;font-size: 13px;font-weight: bold;">
+                              <center> <span style="color:black "> No Record Found</span></center>
+                       </div>
 <%--                <asp:SqlDataSource runat="server" ID="sdsLookbooks" ConnectionString='<%$ ConnectionStrings:GvConnection %>' ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
                 SelectCommand="SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, 
                 dbo.Tbl_Brands.Logo, dbo.Tbl_Lookbooks.LookID, dbo.Tbl_Lookbooks.Title, 
@@ -1167,11 +1045,11 @@ ORDER BY dbo.Tbl_Lookbooks.DatePosted DESC">
                    <div id="ajaxrequest"></div>
                </div> --%>           
             </div>
-             <div id="divPostsLoader" style="margin-bottom:40px;">
+             <%--<div id="divPostsLoader" style="margin-bottom:40px;">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;">
                      <img src="../images/ajax-loader.gif" style="padding-bottom: 20px; position: relative; top: 40px; left: 60px;" ></div>
                      <a href="#" id="default"  class="loadMore">Load More</a>
-                 </div>
+                 </div>--%>
     </div><!--col-md-10 col-sm-12 col-xs-12-->   
 
             <!--text-->
@@ -1268,7 +1146,7 @@ ORDER BY dbo.Tbl_Lookbooks.DatePosted DESC">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-//                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -1292,7 +1170,7 @@ ORDER BY dbo.Tbl_Lookbooks.DatePosted DESC">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-//                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -1345,12 +1223,12 @@ ORDER BY dbo.Tbl_Lookbooks.DatePosted DESC">
                   }
               });
 
-              if (thisHash) {
-                  $(thisHash).trigger('click');
-              }
+              //if (thisHash) {
+              //    $(thisHash).trigger('click');
+              //}
           });
 </script>
-
+            <script src="../masonry/js/libs/imagesloaded.3.1.8.min.js"></script>
 <script src="../masonry/masonry.js" type="text/javascript"></script>
 <script type="text/javascript">
     $('.grid').masonry({

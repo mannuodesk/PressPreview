@@ -4,8 +4,9 @@ using System;
 using System.IO;
 using System.Web;
 using DLS.DatabaseServices;
-
-public class Itempics : IHttpHandler {
+using System.Collections.Generic;
+public class Itempics : IHttpHandler, System.Web.SessionState.IRequiresSessionState
+    {
     
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/plain";
@@ -14,19 +15,19 @@ public class Itempics : IHttpHandler {
         var httpCookie = HttpContext.Current.Request.Cookies["CurrentItemId"];
         if (httpCookie != null && !string.IsNullOrEmpty(httpCookie.Value))
         {
-            itemId = Convert.ToInt32(httpCookie.Value);
+            //itemId = Convert.ToInt32(httpCookie.Value);
         }
         else
         {
-            string insertEvent =
-           string.Format(
-               "INSERT INTO Tbl_Items(DatePosted) VALUES({0})",
-               IEUtils.SafeSQLDate(DateTime.Now)
-               );
-            db.ExecuteSQL(insertEvent);
-            itemId = Convert.ToInt32(db.GetExecuteScalar("SELECT MAX(ItemID) From Tbl_Items"));
-            var currItem = new HttpCookie("CurrentItemId") { Value = itemId.ToString() };
-            HttpContext.Current.Response.Cookies.Add(currItem);
+           // string insertEvent =
+           //string.Format(
+           //    "INSERT INTO Tbl_Items(DatePosted) VALUES({0})",
+           //    IEUtils.SafeSQLDate(DateTime.Now)
+           //    );
+           // db.ExecuteSQL(insertEvent);
+           // itemId = Convert.ToInt32(db.GetExecuteScalar("SELECT MAX(ItemID) From Tbl_Items"));
+           // var currItem = new HttpCookie("CurrentItemId") { Value = itemId.ToString() };
+           // HttpContext.Current.Response.Cookies.Add(currItem);
         }
         foreach (string fileName in context.Request.Files)
         {
@@ -36,7 +37,7 @@ public class Itempics : IHttpHandler {
             //Save file content goes here
             string fName = file.FileName;
             if (file.ContentLength > 0)
-            {
+                {
                 string fileExtension = Path.GetExtension(fName);
                 var fname = Common.RandomPinCode() + fileExtension;
                 var rootpath = HttpContext.Current.Server.MapPath("../tempstorage/");
@@ -48,19 +49,39 @@ public class Itempics : IHttpHandler {
                 File.Delete(imagepath); 
 
 
-                string insertQuery =
-                                    string.Format(
-                                        "INSERT INTO Tbl_ItemImages(ItemImg,ItemID,TempName) VALUES({0},{1},{2})",
-                                        IEUtils.SafeSQLString(fname),
-                                        itemId,
-                                        IEUtils.SafeSQLString(fName)
-                                        );
-                db.ExecuteSQL(insertQuery);
-
+                //string insertQuery =
+                //                    string.Format(
+                //                        "INSERT INTO Tbl_ItemImages(ItemImg,ItemID,TempName) VALUES({0},{1},{2})",
+                //                        IEUtils.SafeSQLString(fname),
+                //                        itemId,
+                //                        IEUtils.SafeSQLString(fName)
+                //                        );
+                //db.ExecuteSQL(insertQuery);
+                  
+                if (HttpContext.Current.Session["ThumbnailImageList"] == null)
+                    {
+                    FeatureImage fImage = new FeatureImage();
+                    fImage.FeatureImageName = fname;
+                    fImage.FeatureImageTempname = fName;
+                    List<FeatureImage> feaImageList = new List<FeatureImage>();
+                    feaImageList.Add(fImage);
+                    HttpContext.Current.Session["ThumbnailImageList"]=feaImageList;
+                    }
+                else
+                    {
+                    List<FeatureImage> feaImageList = (List<FeatureImage>)HttpContext.Current.Session["ThumbnailImageList"];
+                    FeatureImage fImage = new FeatureImage();
+                    fImage.FeatureImageName = fname;
+                    fImage.FeatureImageTempname = fName;
+                    feaImageList.Add(fImage);
+                    HttpContext.Current.Session["ThumbnailImageList"] = feaImageList;
+                    
+                    }
+            
              }
         }
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        //db._sqlConnection.Close();
+        //db._sqlConnection.Dispose();
     }
  
     public bool IsReusable {

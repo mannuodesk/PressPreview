@@ -44,7 +44,7 @@
         geocoder = new google.maps.Geocoder();
         InitializeMap();
 
-        
+
         var txtAddress = document.getElementById("txtLocation");
         var address = txtAddress.value;
         geocoder.geocode({ 'address': address }, function (results, status) {
@@ -156,7 +156,7 @@ div.ribbon {
             var eventId = GetParameterValues('v');
             //File Upload response from the server
             Dropzone.options.dropzoneForm = {
-            // Validate the file type. only accept images
+                // Validate the file type. only accept images
                 acceptedFiles: 'image/*',
                 maxFiles: 10,
                 dictDefaultMessage: "Click here to upload event pics (Optional)",
@@ -174,15 +174,15 @@ div.ribbon {
                         console.log(file);
                         console.log(resp);
                     });
-//                    // Validate the dimensions of the image....
-//                    this.on('thumbnail', function (file) {
-//                        if (file.width < 800 || file.height < 600) {
-//                            file.rejectDimensions();
-//                        }
-//                        else {
-//                            file.acceptDimensions();
-//                        }
-//                    });
+                    //                    // Validate the dimensions of the image....
+                    //                    this.on('thumbnail', function (file) {
+                    //                        if (file.width < 800 || file.height < 600) {
+                    //                            file.rejectDimensions();
+                    //                        }
+                    //                        else {
+                    //                            file.acceptDimensions();
+                    //                        }
+                    //                    });
 
                     this.on("addedfile", function (file) {
 
@@ -222,14 +222,14 @@ div.ribbon {
                     });
 
                 }
-//                accept: function (file, done) {
-//                    file.acceptDimensions = done;
-//                    file.rejectDimensions = function () {
-//                        done('The image must be at least 800 x 600 px');
-//                    };
-//                }
-            };   
-   
+                //                accept: function (file, done) {
+                //                    file.acceptDimensions = done;
+                //                    file.rejectDimensions = function () {
+                //                        done('The image must be at least 800 x 600 px');
+                //                    };
+                //                }
+            };
+
         </script>
     <script type="text/javascript">
         //File Upload response from the server
@@ -244,7 +244,7 @@ div.ribbon {
             return new window.Blob([ab], { type: 'image/jpeg' });
         }
         var eventId = GetParameterValues('v');
-       
+
         // modal window template
         var modalTemplate = '<div class="modal"><div class="image-container"></div> <button name="upload" class="crop-upload" value="upload" /> </div>';
 
@@ -286,7 +286,7 @@ div.ribbon {
                     if (file.width < 336) {
                         return;
                     }
-                    
+
                     // cache filename to re-assign it to cropped file
                     var cachedFilename = file.name;
                     // remove not cropped file from dropzone ( we will replace it)
@@ -345,7 +345,7 @@ div.ribbon {
 
                         // Create the remove button
                         var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -225px; margin-left: 320px; z-index: 100; border-radius: 10px; background:red; border:0; color:#fff;'>X</button>");
-                       
+
                         // Listen to the click event
                         removeButton.addEventListener("click", function (e) {
                             // Make sure the button click doesn't submit the form:
@@ -359,7 +359,7 @@ div.ribbon {
 
                         // Add the button to the file preview element.
                         file.previewElement.appendChild(removeButton);
-                        
+
 
                         // upload cropped file with dropzone
                         this.processQueue();
@@ -417,14 +417,14 @@ div.ribbon {
             //                };
             //            }
         };
-   
-   
+
+
     </script>
     <script type="text/javascript">
         //File Upload response from the server
         var eventId = GetParameterValues('v');
         Dropzone.options.dzCenter = {
-        // Validate the file type. only accept images
+            // Validate the file type. only accept images
             acceptedFiles: 'image/*',
             dictDefaultMessage: "Click here to upload event content image (required)",
             maxFiles: 1,
@@ -441,15 +441,15 @@ div.ribbon {
                     console.log(file);
                     console.log(resp);
                 });
-//                // Validate the dimensions of the image....
-//                this.on('thumbnail', function (file) {
-//                    if (file.width < 800 || file.height < 600) {
-//                        file.rejectDimensions();
-//                    }
-//                    else {
-//                        file.acceptDimensions();
-//                    }
-//                });
+                //                // Validate the dimensions of the image....
+                //                this.on('thumbnail', function (file) {
+                //                    if (file.width < 800 || file.height < 600) {
+                //                        file.rejectDimensions();
+                //                    }
+                //                    else {
+                //                        file.acceptDimensions();
+                //                    }
+                //                });
 
                 this.on("addedfile", function (file) {
 
@@ -489,12 +489,12 @@ div.ribbon {
                 });
 
             }
-//            accept: function (file, done) {
-//                file.acceptDimensions = done;
-//                file.rejectDimensions = function () {
-//                    done('The image must be at least 800 x 600px');
-//                };
-//            }
+            //            accept: function (file, done) {
+            //                file.acceptDimensions = done;
+            //                file.rejectDimensions = function () {
+            //                    done('The image must be at least 800 x 600px');
+            //                };
+            //            }
         };
     </script>
 
@@ -601,8 +601,46 @@ div.ribbon {
                                          </div>   
                                           <div class="form-group">
                                           <label>Featured Image</label><span class="text-danger">*</span>
+                                              <div id="image-cropper">
+  <!-- This is where the preview image is displayed -->
+  <div class="cropit-preview dz-message" onclick="selectImage()">  <center>   <h2>ADD EVENT IMAGE</h2>
+                                                      <p>Choose an image that captures your event.</p></center></div>
+  
+  <!-- This range input controls zoom -->
+  <!-- You can add additional elements here, e.g. the image icons -->
+  <input type="range" class="cropit-image-zoom-input" />
+  
+  <!-- This is where user selects new image -->
+  <input type="file" class="cropit-image-input" />
+  <div class="btn download-btn" style="display:none"><span class="icon icon-box-add"></span>Download cropped image</div>
+  <!-- The cropit- classes above are needed
+       so cropit can identify these elements -->
+</div>
+
+                                          
+
+                                                  <style>
+                                                      .cropit-preview {
+  /* You can specify preview size in CSS */
+  width: 625px;
+  height: 301px;
+      border-style: dashed;
+    border-color: #cccccc;
+    border-width: 1px;
+}
+                                                      #dzFeatured{
+                                                          display:none !important
+                                                      }
+                                                  </style>
+
+
+
+                                             
+                                             
+                                                            <asp:Image ID="CropedImage" ImageUrl="" runat="server"/>
+                                             
                                               <div  class="dropzone" id="dzFeatured">
-                                                  <div class="dz-message" data-dz-message>
+                                                  <div style="display:none" class="dz-message" data-dz-message>
                                                       <h2>ADD EVENT IMAGE</h2>
                                                       <p>Choose an image that captures your event.</p>
                                                   </div>
@@ -781,7 +819,7 @@ div.ribbon {
 
     <!-- Sparkline -->
     <script src="../js/plugins/sparkline/jquery.sparkline.min.js"></script>
-
+<script src="../../cropper/jquery.cropit.js"></script>
     <!-- Sparkline demo data  -->
     <script src="../js/demo/sparkline-demo.js"></script>
    
@@ -791,7 +829,7 @@ div.ribbon {
                 var userId = '<%= Session["UserID"] %>';
                 $.ajax({
                     type: "POST",
-                    url: $(location).attr('pathname')+"\\UpdateNotifications",
+                    url: $(location).attr('pathname') + "\\UpdateNotifications",
                     contentType: "application/json; charset=utf-8",
                     data: "{'userID':'" + userId + "'}",
                     dataType: "json",
@@ -803,10 +841,10 @@ div.ribbon {
                         //                    if (msg.d == true) {
 
                         $('#<%=lblTotalNotifications.ClientID%>').hide("slow");;
-                        return false;  
+                        return false;
                     }
                 });
-           
+
             });
         });
     </script>
@@ -814,11 +852,11 @@ div.ribbon {
           function ActiveTabChanged(sender, e) {
 
               var headerText = sender.get_activeTab().get_headerText();
-              
+
               if (headerText == "Image") {
                   ValidatorEnable(document.getElementById("<%=RfvEmbedVideo.ClientID %>"), false);
               } else {
-                 
+
                   ValidatorEnable(document.getElementById("<%=RfvEmbedVideo.ClientID %>"), false);
               }
           }
@@ -827,16 +865,16 @@ div.ribbon {
 
               var ddlst = document.getElementById("<%=ddRsvpType.ClientID%>");
               var text = ddlst.options[ddlst.selectedIndex].text;
-              
+
               if (text == 'External Link') {
                   ValidatorEnable(document.getElementById("<%=RevExternalLink.ClientID %>"), true);
                   ValidatorEnable(document.getElementById("<%=RevMailTo.ClientID %>"), false);
-                  
+
               }
               else {
                   ValidatorEnable(document.getElementById("<%=RevExternalLink.ClientID %>"), false);
                   ValidatorEnable(document.getElementById("<%=RevMailTo.ClientID %>"), true);
-                  
+
               }
 
           }
@@ -845,9 +883,51 @@ div.ribbon {
             $(function () {
                 $("#txtStartDate").datepicker();
                 $("#txtEndDate").datepicker();
+                $('#image-cropper').cropit({
+                    allowDragNDrop: true,
+                    smallImage: 'stretch',
+                    minZoom: 'fill',
+                    maxZoom: '3.5'
+                });
+
+                // In the demos I'm passing in an imageState option
+                // so it renders an image by default:
+                // $('#image-cropper').cropit({ imageState: { src: { imageSrc } } });
+
+                // Exporting cropped image
+                $('.download-btn').click(function () {
+                    var imageData = $('#image-cropper').cropit('export');
+                    window.open(imageData);
+                });
+            });
+            $("#btnSave").hover(function () {
+                imageData = $('#image-cropper').cropit('export', { type: 'image/jpeg', });
+                // var Tempimg = $("#image-cropper").attr("src");
+                $("#CropedImage").attr("src", imageData);
+
+
+                var ImageSrc = $("#CropedImage").attr("src");
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "addnew.aspx\\GetItemTitle",
+                    data: "{ImageSrc:'" + ImageSrc + "'}",
+                    dataType: "json",
+                    success: function (data) {
+                        response(data.d);
+                    },
+                    error: function (result) {
+                        //alert("No Match");
+                        response("No Match Found");
+                    }
+                });
+
             });
 
-           
+            //function selectImage() {
+            //    $(".cropit-image-input").click()
+            //}
+
   </script>
     </form>
 </body>

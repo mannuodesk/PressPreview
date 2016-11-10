@@ -5,7 +5,8 @@ using System.IO;
 using System.Web;
 using DLS.DatabaseServices;
 
-public class Featured : IHttpHandler {
+public class Featured : IHttpHandler, System.Web.SessionState.IRequiresSessionState
+{
     
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/plain";
@@ -29,15 +30,21 @@ public class Featured : IHttpHandler {
                 var featured1 = Utility.GenerateThumbNail(fname, imagepath, "imgLarge/", 642);
                 var featured2 = Utility.GenerateThumbNail(fname, imagepath, "imgMedium/", 418);
                 File.Delete(imagepath); 
-                
-                     string dbQuery = string.Format("UPDATE Tbl_Lookbooks Set MainImg={0} WHERE LookID={1} ",
+                if(context.Session["EditLookbookDetailsData"]==null)
+                {
+                    EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
+                    editLookbookDetailsData.LookBookFeaturedImage = "";
+                    context.Session["EditLookbookDetailsData"] = editLookbookDetailsData;
+                }
+                (context.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage = fname;
+                     /*string dbQuery = string.Format("UPDATE Tbl_Lookbooks Set MainImg={0} WHERE LookID={1} ",
                                                     IEUtils.SafeSQLString(fname),
                                                     lookID);
-                     db.ExecuteSQL(dbQuery);
+                     db.ExecuteSQL(dbQuery);*/
              }
         }
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        /*db._sqlConnection.Close();
+        db._sqlConnection.Dispose();*/
     }
  
     public bool IsReusable {

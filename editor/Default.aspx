@@ -28,7 +28,7 @@
 
          };
 
-         
+
 </script>
     <style>
         #featured2{
@@ -75,9 +75,9 @@
     var pageCount;
 
     function GetRecords() {
-     
+
         pageIndex++;
-        if (pageIndex == 1 || pageIndex <= pageCount) {
+  
             // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
             $('#loader').show();
 
@@ -89,52 +89,52 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                  //  data = JSON.parse(data);
+                    //  data = JSON.parse(data);
                     parseResonse(data);
 
                 }
             });
-          
-        }
-        else {
-            $('.loadMore').hide();
-
-            setTimeout(function () { //alert('callback');
-            }, 2000);
-            // var mess = '<label class="loadMore"> No more record </label>';
-            /// $('#divPostsLoader').append(mess);
-            //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-        }
     }
-
+    var hasItem = false;
     function parseResonse(data) {
-        $('#featured2').empty();
         var items = data.d;
         var fragment;
+        if (items.length != 0) {
+            $('#LoaderItem').show();
+            var hasItem = false;
+            $.each(items, function (index, val) {
+                console.log(index);
+                console.log(val);
+                pageCount = val.PageCount;
+                fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
+                    " <div class='hover ehover13'> " +
+                        "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
+                            "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
+                                "     <div class='overlay'> " +
+                                    "         <h2>" + val.Name + " </h2> " +
+                                        "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
+                                            "         <h2 class='linenew'></h2> " +
+                                                "         <h2>" + val.DatePosted + "</h2> " +
+                                                    "     </div> " +
+                                                        "     </a>" +
+                                                            "     &nbsp;<!--overlay--></div> " +
+                                                                "   <!--hover ehover13--> " +
+                                                                    "  </div><!--col-md-4 col-sm-6 col-xs-12-->";
 
-        $.each(items, function (index, val) {
-            console.log(index);
-            console.log(val);
-            pageCount = val.PageCount;
-            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
-                " <div class='hover ehover13'> " +
-                    "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-                        "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
-                            "     <div class='overlay'> " +
-                                "         <h2>" + val.Name + " (Author)</h2> " +
-                                    "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
-                                        "         <h2 class='linenew'></h2> " +
-                                            "         <h2>" + val.DatePosted + "</h2> " +
-                                                "     </div> " +
-                                                    "     </a>" +
-                                                        "     &nbsp;<!--overlay--></div> " +
-                                                            "   <!--hover ehover13--> " +
-                                                                "  </div><!--col-md-4 col-sm-6 col-xs-12-->";
+            });
+            $('#featured2').append(fragment);
+            $('#LoaderItem').hide();
+        } else if (hasItem == false) {
+            $('#LoaderItem').hide();
+            //$('#norecord').html("No Record Found");
+            //$('#norecord').show();
+        } else {
+            $('#LoaderItem').hide();
+            //$('#norecord').html("No More Record Found");
+            //$('#norecord').show();
+        }
 
-        });
-
-        $('#featured2').empty();
-        $('#featured2').append(fragment);
+        
 
         $('#loader').hide();
         if (pageCount <= 1) {
@@ -142,60 +142,60 @@
         }
     }
 
-//    GetRecords.done(function (data) {
-//        var items = data.d;
-//        var fragment;
+    //    GetRecords.done(function (data) {
+    //        var items = data.d;
+    //        var fragment;
 
-//        $.each(items, function (index, val) {
-//            alert(val.ItemId);
-//            console.log(index);
-//            console.log(val.ItemId);
-//            pageCount = val.PageCount;
-//            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' > " +
-//                " <div class='hover ehover13'> " +
-//                    "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-//                        "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
-//                            "     <div class='overlay'> " +
-//                                "         <h2>" + val + " (Author)</h2> " +
-//                                    "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
-//                                        "         <h2 class='linenew'></h2> " +
-//                                            "         <h2>" + val.Dated + "</h2> " +
-//                                                "     </div> " +
-//                                                    "     </a>" +
-//                                                        "     &nbsp;<!--overlay--></div> " +
-//                                                            "   <!--hover ehover13--> " +
-//                                                                "  </div><!--col-md-4 col-sm-6 col-xs-12-->";
+    //        $.each(items, function (index, val) {
+    //            alert(val.ItemId);
+    //            console.log(index);
+    //            console.log(val.ItemId);
+    //            pageCount = val.PageCount;
+    //            fragment += " <div class='col-md-4 col-sm-6 col-xs-12' > " +
+    //                " <div class='hover ehover13'> " +
+    //                    "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
+    //                        "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
+    //                            "     <div class='overlay'> " +
+    //                                "         <h2>" + val + " </h2> " +
+    //                                    "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
+    //                                        "         <h2 class='linenew'></h2> " +
+    //                                            "         <h2>" + val.Dated + "</h2> " +
+    //                                                "     </div> " +
+    //                                                    "     </a>" +
+    //                                                        "     &nbsp;<!--overlay--></div> " +
+    //                                                            "   <!--hover ehover13--> " +
+    //                                                                "  </div><!--col-md-4 col-sm-6 col-xs-12-->";
 
-//        });
-
-
-//        $('#featured2').append(fragment);
-//        $('#featured2 undefined').remove();
-//        $('#loader').hide();
-//        if (pageCount <= 1) {
-//            $('.loadMore').hide();
-//        }
+    //        });
 
 
-//    });
+    //        $('#featured2').append(fragment);
+    //        $('#featured2 undefined').remove();
+    //        $('#loader').hide();
+    //        if (pageCount <= 1) {
+    //            $('.loadMore').hide();
+    //        }
 
-//    function GetFirstRecordSet() {
 
-//        $('#loader').show();
+    //    });
 
-//        //send a query to server side to present new content
-//        $.ajax({
-//            type: "POST",
-//            url: "Default.aspx\\GetData",
-//            data: '{pageIndex:1}',
-//            contentType: "application/json; charset=utf-8",
-//            dataType: "json",
-//            success: OnSuccess
-//        });
+    //    function GetFirstRecordSet() {
 
-//    }
+    //        $('#loader').show();
 
-    function OnSuccess(data,cb) {
+    //        //send a query to server side to present new content
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "Default.aspx\\GetData",
+    //            data: '{pageIndex:1}',
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            success: OnSuccess
+    //        });
+
+    //    }
+
+    function OnSuccess(data, cb) {
         //  console.log(data);
         $('#featured2').empty();
         var items = data.d;
@@ -210,7 +210,7 @@
                     "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
                         "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                             "     <div class='overlay'> " +
-                                "         <h2>" + val + " (Author)</h2> " +
+                                "         <h2>" + val + " </h2> " +
                                     "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
                                         "         <h2 class='linenew'></h2> " +
                                             "         <h2>" + val.Dated + "</h2> " +
@@ -222,7 +222,7 @@
 
         });
 
-        
+
         $('#featured2').append(fragment);
         if ($.isFunction(cb)) {
             cb.call();
@@ -234,15 +234,17 @@
 
     }
     $(document).ready(function () {
+        $('#LoaderItem').show();
+        $('#featured2').empty();
         GetRecords();
-        //When scroll down, the scroller is at the bottom with the function below and fire the lastPostFunc function
-        $(window).scroll(function () {
-            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-               // $("#loadMore").fadeIn();
-                //  GetRecords();
-            }
-        });
 
+    });
+    //When scroll down, the scroller is at the bottom with the function below and fire the lastPostFunc function
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            // $("#loadMore").fadeIn();
+            GetRecords();
+        }
     });
      </script>
 </head>
@@ -352,7 +354,7 @@
                      <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                     <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">
 						<div class="overlay">
-							<h2><%# Eval("Name","{0}") %> (Author)</h2>
+							<h2><%# Eval("Name","{0}") %> </h2>
 							<h4><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h4>
                             <h2 class="linenew"></h2>
 							<h2><%# Eval("DatePosted","{0}") %></h2>
@@ -395,7 +397,7 @@
                                <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                                <img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:333px;" alt="">
                                <div class="overlay">
-                                   <h2><%# Eval("Name","{0}") %> (Author)</h2>
+                                   <h2><%# Eval("Name","{0}") %> </h2>
                                    <h3><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h3>
                                    <h2 class="linenew"></h2>
                                    <h2><%# Eval("dated", "{0}")%></h2>
@@ -425,8 +427,21 @@
           </div>
              
              
-             
-             
+                         <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                       
+                       
+                       <div style="display:none">
+                       <div id="norecord" style="display:none;    margin-bottom: 63px;">
+                           No Record Found
+                       </div>
+             </div>
              <script>
                  $(function () {
                      $('#log_grid_1.paginated').each(function () {
@@ -456,9 +471,11 @@
              
              
              <!--<!--row featurette-->
+             <div style="display:none">
             <div id="divPostsLoader">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;"><img src="../images/ajax-loader.gif" ></div>
                      <a href="#"  class="loadMore">Load More</a>
+                 </div>
                  </div>
          </div><!--col-md-12-->
           
@@ -564,13 +581,13 @@
                       if (url.length > 1) {
                           url = url[1].split('=');
 
-                        //  var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                          //  var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                           var id = url[1];
                           var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
                           //var pageUrl = 'http://localhost:2080/editor/' + id;
                           //window.location = pageUrl;
                           window.history.pushState('d', 't', pageUrl);
-                     }
+                      }
 
                   },
                   beforeClose: function () {

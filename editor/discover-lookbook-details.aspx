@@ -193,11 +193,27 @@
                        <div class="grid" id="mygrid" style="height:auto !important;">
 
                        </div>
-                        <div id="divPostsLoader" style="margin-bottom:58px;">
+
+
+                        <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                       
+                       
+                       
+                       <div id="norecord" style="display:none;    margin-bottom: 63px;">
+                           No Record Found
+                       </div>
+                        <!--<div id="divPostsLoader" style="margin-bottom:58px;">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;">
                      <img src="../images/ajax-loader.gif" style="padding-bottom: 20px; position: relative; top: 40px; left: 60px;" ></div>
                      <a href="#" id="default"  class="loadMore">Load More</a>
-                 </div>
+                 </div>--!>
                        <!--box-->
                    </div>
        
@@ -229,33 +245,18 @@
               GetRecords();
           });
 
+             $(window).scroll(function () {
+           if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+               //   $("#loadMore").fadeIn();
+               GetRecords();
+           }
+       });
 
-
-          var $container = $('.grid');
-          $container.on('imagesLoaded', (function () {
-              $container.masonry({
-                  itemSelector: '.box',
-                  isFitWidth: true,
-                  isAnimated: true
-              });
-          }));
-          //    $('.grid').masonry({
-          //    // options
-          //        itemSelector: '.boxn1'
-          //    });
-
-          var masonryUpdate = function () {
-              setTimeout(function () {
-                  $('.grid').masonry();
-              }, 5000);
-          };
-
-
-          var pageIndex = -1;
+          var pageIndex = 0;
           var pageCount;
           function GetRecords() {
               pageIndex++;
-              if (pageIndex == 0 || pageIndex <= pageCount) {
+              //if (pageIndex == 0 || pageIndex <= pageCount) {
                   // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
                   $('#loader').show();
 
@@ -268,7 +269,7 @@
                       dataType: "json",
                       success: OnSuccess
                   });
-              } else {
+             /* else {
                   $('.loadMore').hide();
                   var masonry = $('.grid');
                   masonry.masonry({
@@ -282,19 +283,27 @@
                   }, 2000);
                   //   $('.loadMore').val('No more records');
                   //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-              }
+              } */
           }
 
 
 
 
 
-
+ var hasItem = false;
           function OnSuccess(data) {
+                  $('#norecord').hide();
+           $('#LoaderItem').show();
               console.log(data);
               var items = data.d;
               var fragment;
-
+     if (items.length != 0) {
+               hasItem = true;
+               var $grid = $('.grid');
+               $grid.masonry({
+                   itemSelector: '.box',
+                   transitionDuration: '0.4s',
+               });
               $.each(items, function (index, val) {
                   console.log(index);
                   console.log(val.ItemId);
@@ -326,7 +335,7 @@
                                                                                                                   "          <!--mimageb--> " +
                                                                                                                       "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
                                                                                                                           "              <div class='m1'> " +
-                                                                                                                              "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemID + "'class='fancybox'>" + val.Title + "</a></div> " +
+                                                                                                                              "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></div> " +
                                                                                                                                   "                  <div class='muserdb'>By " + val.Name + "</div> " +
                                                                                                                                       "              </div> " +
                                                                                                                                           "              <div class='m1'> " +
@@ -339,7 +348,7 @@
                                                                                                                                                                       "                  <div class='vlike'> " +
                                                                                                                                                                           "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
                                                                                                                                                                                       "                  <div class='mdaysd' > " +
-                                                                                                                                                                                          "                      <span ID='lblDate2'>" + val.dated + "</span> " +
+                                                                                                                                                                                          "                      <span ID='lblDate2'>" + val.Dated + "</span> " +
                                                                                                                                                                                               "                  </div> " +
                                                                                                                                                                                                   "              </div> " +
                                                                                                                                                                                                       "          </div> " +
@@ -351,24 +360,35 @@
                                                                                                                                                                                                                               " </div>";
 
               });
-
-
+          }
+         else if (hasItem == false) {
+               $('#LoaderItem').hide();
+               $('#norecord').html("No Record Found");
+               $('#norecord').show();
+           }
+           else {
+               $('#LoaderItem').hide();
+               $('#norecord').html("No More Record Found");
+               $('#norecord').show();
+           }
               var masonry = $('.grid');
               masonry.masonry({
                   itemSelector: '.box'
               });
 
-              $(masonry).append(fragment);
-              $(masonry).hide();
-              setTimeout(function () {
-                  $(masonry).show();
-                  $(masonry).masonry('reloadItems');
-                  $(masonry).masonry('layout');
-                  $(".box").css("visibility", "visible");
-              }, 2000);
-              //$(masonry).append(fragment).masonry('appended', fragment, true);
-              //$(masonry).append(fragment).masonry('reload');
-              //  $(".grid").append(data.d).masonry('reload');
+                var $items = $(fragment);
+           $items.hide();
+           $grid.append($items);
+           $grid.masonry('layout');
+           $items.imagesLoaded(function () {
+               $grid.masonry('appended', $items);
+               $grid.masonry('layout');
+               $items.show();
+               $('#LoaderItem').hide();
+           });
+
+
+           
               $('#loader').hide();
               if (pageCount <= 1) {
                   $('.loadMore').hide();
@@ -396,22 +416,22 @@
                   switch (id) {
                       case 'default':
                           $('.loadMore').show();
-                          $('.grid').masonry('destroy');
+                        //   $('.grid').masonry('destroy');
                           GetRecords();
                           break;
                       case 'byCategory':
                           $('.loadMore').show();
-                          $('.grid').masonry('destroy');
+                        //   $('.grid').masonry('destroy');
                           GetRecordsByCategory(selectedcat);
                           break;
                       case 'bySeason':
                           $('.loadMore').show();
-                          $('.grid').masonry('destroy');
+                        //   $('.grid').masonry('destroy');
                           GetRecordsBySeason(selectedseason);
                           break;
                       case 'byHoliday':
                           $('.loadMore').show();
-                          $('.grid').masonry('destroy');
+                        //   $('.grid').masonry('destroy');
                           GetRecordsByHoliday(selectedholiday);
                           break;
                   }
@@ -579,7 +599,7 @@
        <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-			var tempurl = window.location.href;
+            var tempurl = window.location.href;
             $(".fancybox").fancybox({
                 href: $(this).attr('href'),
                 fitToView: true,
@@ -613,9 +633,9 @@
 
                 },
                 beforeClose: function () {
-				window.location.reload();
-				var pageUrl = document.referrer; window.history.pushState('d', 't',tempurl );
-                   // window.history.go('http://presspreview.azurewebsites.net/editor/discover-lookbook-details.aspx');
+                    window.location.reload();
+                    var pageUrl = document.referrer; window.history.pushState('d', 't', tempurl);
+                    // window.history.go('http://presspreview.azurewebsites.net/editor/discover-lookbook-details.aspx');
                     //  window.location = 'http://presspreview.azurewebsites.net/editor/discover-lookbook-details.aspx';
                 }
             });

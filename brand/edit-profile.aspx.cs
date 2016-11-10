@@ -65,8 +65,27 @@ public partial class home : System.Web.UI.Page
                 Session["UserID"] = dr["UserID"].ToString();
                 Session["Username"] = dr["U_FirstName"].ToString();
                 Session["UserEmail"] = dr["U_Email"].ToString();
-                imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
-                imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
+                if (Session["coverPicURL"] != "" && Session["coverPicURL"] != null)
+                {
+                    imgCover.ImageUrl = "../profileimages/" + Session["coverPicURL"].ToString();
+                }
+                else
+                {
+                    imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
+                    Session["coverPicURL"] = imgCover.ImageUrl;
+                }
+                if (Session["profilePicURL"] != "" && Session["profilePicURL"] != null)
+                {
+                    imgProfile.ImageUrl = "../brandslogoThumb/" + Session["profilePicURL"].ToString();
+                }
+                else
+                {
+                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
+                    Session["profilePicURL"] = imgProfile.ImageUrl;
+                }
+                
+                
+                
             }
         }
         catch (Exception ex)
@@ -89,8 +108,24 @@ public partial class home : System.Web.UI.Page
                 if (dr.HasRows)
                 {
                     dr.Read();
-                    imgCover.ImageUrl = "../profileimages/" + dr[3];
-                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4];
+                    if (Session["coverPicURL"] != "" && Session["coverPicURL"] != null)
+                    {
+                        imgCover.ImageUrl = "../profileimages/" + Session["coverPicURL"].ToString();
+                    }
+                    else
+                    {
+                        imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
+                        Session["coverPicURL"] = imgCover.ImageUrl;
+                    }
+                    if (Session["profilePicURL"] != "" && Session["profilePicURL"] != null)
+                    {
+                        imgProfile.ImageUrl = "../brandslogoThumb/" + Session["profilePicURL"].ToString();
+                    }
+                    else
+                    {
+                        imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
+                        Session["profilePicURL"] = imgProfile.ImageUrl;
+                    }
                 }
             }
         }
@@ -235,9 +270,11 @@ public partial class home : System.Web.UI.Page
                 db.ExecuteSQL(updateBrandProfile);
                 string updateUserInfo =
                        string.Format(
-                           "Update Tbl_Users Set U_Firstname={0}, U_Lastname={1} Where UserID={2}",
+                           "Update Tbl_Users Set U_Firstname={0}, U_Lastname={1}, U_ProfilePic={2}, U_CoverPic={3}  Where UserID={4}",
                            IEUtils.SafeSQLString(txtfname.Value),
                            IEUtils.SafeSQLString(txtlname.Value),
+                           IEUtils.SafeSQLString(Session["profilePicURL"].ToString()),
+                           IEUtils.SafeSQLString(Session["coverPicURL"].ToString()),
                            IEUtils.ToInt(httpCookie.Value)
 
                            );

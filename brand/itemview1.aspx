@@ -95,13 +95,13 @@
           }
       }
 
-     
+
   </script>
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
 
-        
+
     });
 </script>
   <script language="JavaScript" type="text/javascript">
@@ -130,7 +130,7 @@
 
       function ToggleDisplayDeleteButton(id) {
           var elem = document.getElementById('pb' + id);
-         
+
           if (elem) {
               if (elem.style.display != 'block') {
                   elem.style.display = 'block';
@@ -138,7 +138,7 @@
               }
               else {
                   elem.style.display = 'none';
-                  elem.style.visibility = 'hidden';                
+                  elem.style.visibility = 'hidden';
               }
           }
       }
@@ -183,7 +183,7 @@
               jQuery(".comMenu").hide();
           }));
       });
-   
+
 </script>
 </head>
 <body>
@@ -314,10 +314,14 @@
                      <div class="serheading1">Like this Item</div> 
                      
                         <div class="biglike">
-                            <asp:LinkButton runat="server" ID="lbtnLike" class="mnLikes" OnClick="lbtnLike_Click">
+                            <asp:Label runat="server" ID="Label200" Visible="False"></asp:Label>
+                            <a href="../brand/BrandLikesPage.aspx?ItemId=<%= Label200.Text %>" target="_parent">
+                            <asp:LinkButton runat="server" ID="lbtnLike" Visible="false" class="mnLikes" OnClick="lbtnLike_Click">
                                         <%--<img src="../images/biglike.png" />--%>
                                         <i class="fa fa-heart " aria-hidden="true" id="round"></i>
-                                        Likes (<asp:Label runat="server" ID="lblTotalLikes"></asp:Label>)</asp:LinkButton>
+                                </asp:LinkButton>
+                            <i class="fa fa-heart " aria-hidden="true" id="round"></i>
+                                        Likes (<asp:Label runat="server" ID="lblTotalLikes"></asp:Label>)
                                         <% if (lblTotalLikes.Text != "0")
                                            {%>
                                         <div class="menudlist_list" id="list2" style="margin-top:20px;">
@@ -343,6 +347,7 @@
                                     <div class="mespace"></div>
                                     </div>
                             <% } %>
+                                </a>
                        </div>
                        
                     </div> 
@@ -405,13 +410,14 @@
                              <div class="serheading1">
                                  <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags">
                                  <ItemTemplate>
-                                     <div class="tagblock"><a href=""><i class="fa fa-times-circle-o"></i> <%# Eval("Title") %></a></div>
+                                     <div class="tagblock"><a href=""><i class="fa fa-times-circle-o"></i> <%# Eval("TagName") %></a></div>
                                  </ItemTemplate>
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">
+                                      SelectCommand="SELECT Top 20 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">--%>
                                       <SelectParameters>
                                           <asp:ControlParameter ControlID="hidField" Name="ItemID" PropertyName="Value" 
                                               Type="Int32" />
@@ -420,7 +426,8 @@
                                    <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">
+                                       SelectCommand="SELECT Top 40 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">--%>
                                       <SelectParameters>
                                           <asp:ControlParameter ControlID="hidField" Name="ItemID" PropertyName="Value" 
                                               Type="Int32" />
@@ -464,7 +471,7 @@
                 
                 <div class="col-md-12" style="margin:30px 0 30px 0; float:left; width:100%; border-bottom:#dadbdd solid 3px;"></div>   
              
-              <asp:Repeater runat="server" DataSourceID="sdsPosts" ID="rptPosts" OnItemDataBound="rptPosts_OnItemDataBound" OnItemCommand="rptPosts_OnItemCommand">
+              <asp:Repeater runat="server" ID="rptPosts" OnItemDataBound="rptPosts_OnItemDataBound" OnItemCommand="rptPosts_OnItemCommand">
                   <ItemTemplate>
                    
                       <div class="col-md-12" id='ph<%# Eval("PostId","{0}") %>'  onmouseover='showdeletebutton(<%# Eval("PostId") %>);' onmouseout="hidedeletebutton(<%# Eval("PostId") %>)">
@@ -586,43 +593,43 @@
 	<!-- custom scrollbar plugin -->
 	<script src="../customscroller/jquery.mCustomScrollbar.concat.min.js"></script>
     <script>
-       
+
         $(".menudlist").live("click",
             (function (e) {
-//            e.preventDefault();
-//            e.stopPropagation();
+                //            e.preventDefault();
+                //            e.stopPropagation();
 
-//            $(".menudlist_list").not(jQuery(this).next()).hide();
+                //            $(".menudlist_list").not(jQuery(this).next()).hide();
                 $(".menudlist_list").toggle();
 
             }));
-//        jQuery(".menudlist").click(function (e) {
-//            e.preventDefault();
-//            e.stopPropagation();
+        //        jQuery(".menudlist").click(function (e) {
+        //            e.preventDefault();
+        //            e.stopPropagation();
 
-//            jQuery(".menudlist_list").not(jQuery(this).next()).hide();
-//            jQuery(this).next().toggle();
+        //            jQuery(".menudlist_list").not(jQuery(this).next()).hide();
+        //            jQuery(this).next().toggle();
 
-//        });
+        //        });
 
-        $(".menudlist_list").find("li").live("click", 
+        $(".menudlist_list").find("li").live("click",
             (function (e) {
                 e.stopPropagation();
                 // alert(jQuery(this).text());
             }));
-//        jQuery(".menudlist_list").find("li").click(function (e) {
-//            // e.stopPropagation();
-//            // alert(jQuery(this).text());
-//        });
+        //        jQuery(".menudlist_list").find("li").click(function (e) {
+        //            // e.stopPropagation();
+        //            // alert(jQuery(this).text());
+        //        });
         $(document).live("click",
             (function (e) {
                 $(".menudlist_list").hide();
 
             }));
-//        jQuery(document).click(function (e) {
-//            jQuery(".menudlist_list").hide();
+        //        jQuery(document).click(function (e) {
+        //            jQuery(".menudlist_list").hide();
 
-//        });
+        //        });
     </script>
 <script type="application/javascript" src="../js/custom.js"></script>
     <script src="../js/autosize.js" type="text/javascript"></script>
@@ -631,7 +638,7 @@
         $(document).ready(function () {
             $("timeago").timeago();
             autosize(document.querySelectorAll('textarea'));
-            jQuery(".mnLikes").live("click",(function (e) {
+            jQuery(".mnLikes").live("click", (function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -645,20 +652,20 @@
                 // e.stopPropagation();
                 // alert(jQuery(this).text());
             });
-            jQuery(document).live("click",(function (e) {
+            jQuery(document).live("click", (function (e) {
                 jQuery(".menudlist_list").hide();
 
             }));
-           
-            
+
+
         });
     </script>
     <script type="text/javascript">
         function closeFancybox() {
-        
+
             parent.document.location.href = "http://presspreview.azurewebsites.net/brand/massenger.aspx";
             window.parent.jQuery.fancybox.close();
-            
+
 
         }
     </script>

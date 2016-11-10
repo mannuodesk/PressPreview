@@ -167,7 +167,7 @@
                                             BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
                                             CssClass="table table-striped table-bordered table-hover" 
                                             DataSourceID="sdsBrands" ForeColor="Black" GridLines="Horizontal" 
-                                            Width="100%" AllowSorting="True" PageSize="15">
+                                            Width="100%" AllowSorting="True" PageSize="10">
                                             <Columns>
                                                 <asp:BoundField DataField="Name" HeaderText="Brand Name" SortExpression="Name">
                                                 </asp:BoundField>
@@ -251,7 +251,7 @@ WHERE (Tbl_Users.U_Type = 'Brand') AND (Tbl_Users.IsApproved=1) ORDER BY Tbl_Use
                                             BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
                                             CssClass="table table-striped table-bordered table-hover" 
                                             DataSourceID="sdsEditors" ForeColor="Black" GridLines="Horizontal" 
-                                        Width="100%" AllowSorting="True" PageSize="3">
+                                        Width="100%" AllowSorting="True" PageSize="10">
                                             <Columns>
                                                 <asp:BoundField DataField="Name" HeaderText="Influencer Name" 
                                                     SortExpression="Name"></asp:BoundField>
@@ -336,7 +336,7 @@ WHERE (Tbl_Users.U_Type = 'Brand') AND (Tbl_Users.IsApproved=1) ORDER BY Tbl_Use
                                             BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
                                             CssClass="table table-striped table-bordered table-hover" 
                                             DataSourceID="sdslookbooks" ForeColor="Black" GridLines="Horizontal" 
-                                        Width="100%" AllowSorting="True" PageSize="3" 
+                                        Width="100%" AllowSorting="True" PageSize="10" 
                                                 onrowdatabound="grdLookbooks_RowDataBound">
                                             <Columns>
                                                 <asp:BoundField DataField="Title" HeaderText="Lookbook Title" 

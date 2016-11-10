@@ -48,12 +48,18 @@ public partial class lightbox_message : System.Web.UI.Page
                 if (userCookie != null)
                 {
                     // Check if the brand already exists in the brand message list or not
-                    string checkBrand = string.Format("SELECT ReceiverID From Tbl_MailboxMaster Where SenderID={0} AND BlockStatus IS NULL",
-                        IEUtils.ToInt(_receiverID));
-                    if (db.RecordExist(checkBrand))  // if Brand already record exist, then brand can send message to that influencer. other wise not
+                    /*string checkBrand = string.Format("SELECT ReceiverID From Tbl_MailboxMaster Where SenderID={0} AND BlockStatus IS NULL",
+                        IEUtils.ToInt(_receiverID));*/
+                    string checkBrandSender = string.Format("SELECT * From Tbl_MailboxMaster Where SenderID={0} AND ReceiverID = {1} AND BlockStatus IS NULL",
+                        userCookie.Value, IEUtils.ToInt(_receiverID));
+                    string checkInfluencerSender = string.Format("SELECT * From Tbl_MailboxMaster Where ReceiverID={0} AND  SenderID= {1} AND BlockStatus IS NULL",
+                        userCookie.Value, IEUtils.ToInt(_receiverID));
+                    //if (db.RecordExist(checkBrand))  // if Brand already record exist, then brand can send message to that influencer. other wise not
+                    if (db.RecordExist(checkBrandSender))  
                     {
                         int parentId = 0;
-                        int receiverId = Convert.ToInt32(db.GetExecuteScalar(checkBrand));
+                        //int receiverId = Convert.ToInt32(db.GetExecuteScalar(checkBrand));
+                        int receiverId = _receiverID;
                         string getParentId =
                             string.Format(
                                 "SELECT ParentID FROM Tbl_MailboxMaster Where ReceiverID={0} AND SenderID={1} AND BlockStatus IS NULL",
@@ -69,6 +75,25 @@ public partial class lightbox_message : System.Web.UI.Page
                         PostMessage(parentId, userCookie, db, txtMessage.Text);
                         //
                         //    ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
+                    }
+                    else if(db.RecordExist(checkInfluencerSender))
+                    {
+                        int parentId = 0;
+                        //int receiverId = Convert.ToInt32(db.GetExecuteScalar(checkBrand));
+                        int receiverId = _receiverID;
+                        string getParentId =
+                            string.Format(
+                                "SELECT ParentID FROM Tbl_MailboxMaster Where SenderID={0} AND ReceiverID={1} AND BlockStatus IS NULL",
+                                receiverId, IEUtils.ToInt(userCookie.Value));
+                        SqlDataReader dr = db.ExecuteReader(getParentId);
+                        if (dr.HasRows)
+                        {
+                            dr.Read();
+                            parentId = IEUtils.ToInt(dr[0]);
+                        }
+                        dr.Close();
+                        dr.Dispose();
+                        PostMessage(parentId, userCookie, db, txtMessage.Text);
                     }
                     else
                     {

@@ -11,85 +11,108 @@ using System.Web.Services;
 using System.Web.UI.WebControls;
 
 public partial class admin_home_Default : System.Web.UI.Page
-{
-  
-    protected void Page_Load(object sender, EventArgs e)
     {
-        try
+
+    protected void Page_Load(object sender, EventArgs e)
         {
-            
-           
-            if (!IsPostBack)
+        try
             {
-                if (Common.Getunread_Alerts() > 0)
+
+
+            if (!IsPostBack)
                 {
+                if (Common.Getunread_Alerts() > 0)
+                    {
                     lblTotalNotifications.Visible = true;
                     lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
-                }
+                    }
                 var alCommonControls = new ArrayList { lblUsername, imgUserphoto };
-               Common.AdminSettings(alCommonControls);
-              
+                Common.AdminSettings(alCommonControls);
+
+                }
+            }
+        catch (Exception ex)
+            {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             }
         }
-        catch (Exception ex)
-        {
-            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-        }
-    }
 
     protected void DeleteUnsavedData()
-    {
-        try
         {
-            var db=new DatabaseManagement();
+        try
+            {
+            var db = new DatabaseManagement();
             const string deleteImages = "Delete from Tbl_EventImages Where EventID IN (SELECT EventID From Tbl_Events Where IsSaved IS NULL) ";
             db.ExecuteSQL(deleteImages);
             const string deleteUnsavedEvents = "Delete from Tbl_Events Where IsSaved IS NULL";
             db.ExecuteSQL(deleteUnsavedEvents);
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
-        }
+            }
         catch (Exception ex)
-        {
+            {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            }
         }
-    }
 
-    
+
     protected void btnCancel_Click(object sender, EventArgs e)
-    {
-        try
         {
-           Response.Redirect("Default.aspx");
-        }
+        try
+            {
+            Response.Redirect("Default.aspx",false);
+            }
         catch (Exception ex)
-        {
+            {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            }
         }
-    }
-   
-    protected void btnSave_Click(object sender, EventArgs e)
-    {
-        try
+    [WebMethod, ScriptMethod]
+    public static void GetItemTitle(string ImageSrc)
         {
+        HttpContext.Current.Session["ImageSrc"] = ImageSrc;
+
+        }
+    protected void btnSave_Click(object sender, EventArgs e)
+        {
+        try
+            {
             string mediaType = string.Empty;
             string centerMedia = string.Empty;
+            
+            var ImageSrc = HttpContext.Current.Session["ImageSrc"].ToString();
+            string[] converted = ImageSrc.Split(',');
+            var rootpath = HttpContext.Current.Server.MapPath("../../eventpics/");
+            var fname = Common.RandomPinCode() + ".jpg";
+            string fullpath = rootpath + fname;
+            Byte[] bytes = Convert.FromBase64String(converted[1]);
+            File.WriteAllBytes(fullpath, bytes);
 
+
+            var featureimageUrl = ImageSrc;
             // upload images to the database
-
+            int eventId = Convert.ToInt32(HttpContext.Current.Request.QueryString["v"]);
             var db = new DatabaseManagement();
-            string mainimg = db.GetExecuteScalar("SELECT Top 1 EImg From Tbl_EventImages Where EventID=" + Convert.ToInt32(Request.QueryString["v"]));
+            string insertQuery =
+                    string.Format(
+                        "INSERT INTO Tbl_EventImages(EImg,EventID,TempName) VALUES({0},{1},{2})",
+                        IEUtils.SafeSQLString(fname),
+                        eventId,
+                        IEUtils.SafeSQLString(fname)
+                        );
+            db.ExecuteSQL(insertQuery);
+            string mainimg = db.GetExecuteScalar("SELECT Top 1 EImg From Tbl_EventImages Where EventID=" + Convert.ToInt32(HttpContext.Current.Request.QueryString["v"]));
             if (string.IsNullOrEmpty(mainimg))
-            {
+                {
                 ErrorMessage.ShowErrorAlert(lblStatus, "Please upload atleast one event image.", divAlerts);
-            }
+                }
             else
-            {
+                {
                 string videoURL = string.Empty;
                 int videosource = 0;
                 string videoID = string.Empty;
                 switch (tbCenterMedia.ActiveTab.ID)
-                {
+                    {
                     case "tbImage":
                         mediaType = "image";
                         RfvEmbedVideo.Enabled = false;
@@ -97,7 +120,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                     case "tbVideo":
 
                         switch (ddVideoSource.SelectedValue)
-                        {
+                            {
                             case "1":
                                 videosource = 1;
                                 videoURL = "http://www.youtube.com/embed/" + txtEmbedVideo.Value;
@@ -107,22 +130,22 @@ public partial class admin_home_Default : System.Web.UI.Page
                                 videosource = 2;
                                 videoURL = "https://player.vimeo.com/video/" + txtEmbedVideo.Value;
                                 break;
-                        };
+                            };
                         videoID = txtEmbedVideo.Value;
                         mediaType = "embed";
                         RfvEmbedVideo.Enabled = true;
                         centerMedia = videoURL;
                         break;
-                }
+                    }
 
                 string updateQuery = string.Empty;
                 if (mediaType == "image")
-                {
+                    {
                     updateQuery = string.Format("UPDATE Tbl_Events Set EventTitle={0}," +
                                                   "StartDate={1},StartTime={2},EventPara1={3}," +
                                                   "EventPara2={4}," +
                                                   "ECategoryID={5},ECategory={6},ELocation={7}," +
-                                                  "ECity={8}, EventRSVP={9},IsSaved={10}, EndDate={11},EndTime={12},RSVPType={13},EGeoCode={14} WHERE EventID={15} ",
+                                                  "ECity={8}, EventRSVP={9},IsSaved={10}, EndDate={11},EndTime={12},RSVPType={13},EGeoCode={14},EFeaturePic={15} WHERE EventID={16} ",
                                                   IEUtils.SafeSQLString(txtEventTitle.Value),
                                                   "'" + Convert.ToDateTime(txtStartDate.Text).ToUniversalTime() + "'",
                                                   IEUtils.SafeSQLString(txtStartTime.Text),
@@ -134,19 +157,20 @@ public partial class admin_home_Default : System.Web.UI.Page
                                                   IEUtils.SafeSQLString(txtCity.Value),
                                                   IEUtils.SafeSQLString(txtRSVP.Value),
                                                   1,
-                                                  "'" + Convert.ToDateTime(txtEndDate.Text).ToUniversalTime() +"'",
+                                                  "'" + Convert.ToDateTime(txtEndDate.Text).ToUniversalTime() + "'",
                                                   IEUtils.SafeSQLString(txtEndTime.Text),
                                                   IEUtils.SafeSQLString(ddRsvpType.SelectedItem.Text),
                                                   IEUtils.SafeSQLString(map.InnerHtml),
+                                                   IEUtils.SafeSQLString(fname),
                                                  Convert.ToInt32(Request.QueryString["v"]));
-                }
+                    }
                 else if (mediaType == "embed")
-                {
+                    {
                     updateQuery = string.Format("UPDATE Tbl_Events Set EventTitle={0}," +
                                                      "StartDate={1},StartTime={2},EventPara1={3}," +
                                                      "EventPara2={4},EventMediaType={5}," +
                                                      "EventMedia={6},ECategoryID={7},ECategory={8},ELocation={9}," +
-                                                     "ECity={10}, EventRSVP={11},IsSaved={12},EndDate={13},EndTime={14}, RSVPType={15},VideoSource={16}, VideoID={17},EGeoCode={18} WHERE EventID={19} ",
+                                                     "ECity={10}, EventRSVP={11},IsSaved={12},EndDate={13},EndTime={14}, RSVPType={15},VideoSource={16}, VideoID={17},EGeoCode={18},EFeaturePic={19} WHERE EventID={20} ",
                                                      IEUtils.SafeSQLString(txtEventTitle.Value),
                                                      "'" + Convert.ToDateTime(txtStartDate.Text).ToUniversalTime() + "'",
                                                      IEUtils.SafeSQLString(txtStartTime.Text),
@@ -166,46 +190,47 @@ public partial class admin_home_Default : System.Web.UI.Page
                                                      videosource,
                                                      IEUtils.SafeSQLString(videoID),
                                                      IEUtils.SafeSQLString(map.InnerHtml),
+                                                      IEUtils.SafeSQLString(fname),
                                                     Convert.ToInt32(Request.QueryString["v"]));
-                }
+                    }
 
-                
+
                 db.ExecuteSQL(updateQuery);
                 db._sqlConnection.Close();
                 db._sqlConnection.Dispose();
                 DeleteUnsavedData();
-                Response.Redirect("Default.aspx");
+                Response.Redirect("Default.aspx",false);
                 // }
+                }
+
+
+
+            }
+        catch (Exception ex)
+            {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             }
 
-
-            
         }
-        catch (Exception ex)
-        {
-            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-        }
-
-    }
     protected void grdNotifications_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        try
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
+        try
             {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+                {
                 var lblDatePosted = (Label)e.Row.FindControl("lblDatePosted");
                 DateTime dbDate = Convert.ToDateTime(lblDatePosted.Text);
                 lblDatePosted.Text = Common.GetRelativeTime(dbDate);
+                }
+            }
+        catch (Exception ex)
+            {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             }
         }
-        catch (Exception ex)
-        {
-            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-        }
-    }
     [WebMethod, ScriptMethod]
     public static void UpdateNotifications(string userID)
-    {
+        {
         var db = new DatabaseManagement();
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
@@ -213,8 +238,8 @@ public partial class admin_home_Default : System.Web.UI.Page
         db._sqlConnection.Close();
         db._sqlConnection.Dispose();
 
-    }
-    
+        }
+
     //public void SaveUploadedFile(HttpFileCollection httpFileCollection)
     //{
 
@@ -231,7 +256,7 @@ public partial class admin_home_Default : System.Web.UI.Page
     //            var rootpath = Server.MapPath("../../eventpics/");
     //            var imagepath = rootpath + fname;
     //            file.SaveAs(imagepath);
-                
+
     //            var db = new DatabaseManagement();
     //            if (Session["CurrentEventId"].ToString() == "0")
     //            {
@@ -267,7 +292,7 @@ public partial class admin_home_Default : System.Web.UI.Page
     //}
     [WebMethod, ScriptMethod]
     public static void RemoveImage(string filename)
-    {
+        {
         var db = new DatabaseManagement();
         string actualName =
             db.GetExecuteScalar(
@@ -279,9 +304,9 @@ public partial class admin_home_Default : System.Web.UI.Page
         File.Delete("../../eventpics/" + actualName);
         db._sqlConnection.Close();
         db._sqlConnection.Dispose();
-       
+
+        }
+
+
+
     }
-
-
-   
-}

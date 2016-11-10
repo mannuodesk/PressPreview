@@ -27,147 +27,144 @@
 
           GetRecords();
       });
-
-
-
-      var $container = $('.grid');
-      $container.on('imagesLoaded', (function () {
-          $container.masonry({
-              itemSelector: '.box',
-              isFitWidth: true,
-              isAnimated: true
-          });
-      }));
-      //    $('.grid').masonry({
-      //    // options
-      //        itemSelector: '.boxn1'
-      //    });
-
-      var masonryUpdate = function () {
-          setTimeout(function () {
-              $('.grid').masonry();
-          }, 5000);
-      };
-
-
-      var pageIndex = -1;
+      $(window).scroll(function () {
+          if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+              //   $("#loadMore").fadeIn();
+              GetRecords();
+          }
+      });
+      var pageIndex = 0;
       var pageCount;
       function GetRecords() {
           pageIndex++;
-          if (pageIndex == 0 || pageIndex <= pageCount) {
-              // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-              $('#loader').show();
+          //if (pageIndex == 0 || pageIndex <= pageCount) {
+          // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+          $('#loader').show();
 
-              //send a query to server side to present new content
-              $.ajax({
-                  type: "POST",
-                  url: "discover-lookbook.aspx\\LoadData",
-                  data: '{pageIndex: ' + pageIndex + '}',
-                  contentType: "application/json; charset=utf-8",
-                  dataType: "json",
-                  success: OnSuccess
-              });
-          } else {
-              $('.loadMore').hide();
-              var masonry = $('.grid');
-              masonry.masonry({
-                  itemSelector: '.box'
-              });
+          //send a query to server side to present new content
+          $.ajax({
+              type: "POST",
+              url: "discover-lookbook.aspx\\LoadData",
+              data: '{pageIndex: ' + pageIndex + '}',
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              success: OnSuccess
+          });
+          //} else {
+          //    $('.loadMore').hide();
+          //    var masonry = $('.grid');
+          //    masonry.masonry({
+          //        itemSelector: '.box'
+          //    });
 
-              setTimeout(function () {
-                  $(masonry).show();
-                  $(masonry).masonry('reloadItems');
-                  $(masonry).masonry('layout');
-                  $(".box").css("visibility", "visible");
-              }, 2000);
-              //   $('.loadMore').val('No more records');
-              //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-          }
+          //    setTimeout(function () {
+          //        $(masonry).show();
+          //        $(masonry).masonry('reloadItems');
+          //        $(masonry).masonry('layout');
+          //        $(".box").css("visibility", "visible");
+          //    }, 2000);
+          //    //   $('.loadMore').val('No more records');
+          //    //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
+          //}
       }
 
 
-      function navigate(val) {
-          alert(val);
-      }
+      //function navigate(val) {
+      //    alert(val);
+      //}
 
 
-
+      var hasItem = false;
       function OnSuccess(data) {
+          $('#norecord').hide();
+          $('#LoaderItem').show();
           console.log(data);
           var items = data.d;
           var fragment;
+          if (items.length != 0) {
+              hasItem = true;
+              var $grid = $('.grid');
+              $grid.masonry({
+                  itemSelector: '.box',
+                  transitionDuration: '0.4s',
+              });
+              $.each(items, function (index, val) {
+                  console.log(index);
+                  console.log(val.ItemId);
+                  pageCount = val.PageCount;
+                  fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
+                      " <div class='disblock'> " +
+                              "      <div class='dbl'> " +
+                                  "      <a href='/editor/discover-lookbook-details.aspx?v=" + val.LookBookKey + "' class=''> " +
+                                  "          <div class='hover ehover13'> " +
+                                      "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
+                                          "                  <h2 class='titlet'>" + val.Title + "</h2> " +
+                                              "                  <h2 class='linenew'></h2> " +
+                                                  "                  <h2> " +
+                                                      "                      <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
+                                                          "              </div> " +
+                                                              "              <!--overlay--> " +
+                                                                  "          </div> " +
+                                                                      "          <!--hover ehover13--> " +
+                                                                          "      </div> " +
+                                                                              "  </a> " +
+                                                                                  "  <div class='disname'> " +
+                                                                                      "      <div class='mesbd'> " +
+                                                                                          "          <div class='mimageb'> " +
+                                                                                              "              <div class='mimgd'> " +
+                                                                                                  "                  <a href=''> " +
+                                                                                                      "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
+                                                                                                          "              </div> " +
+                                                                                                              "          </div> " +
+                                                                                                                  "          <!--mimageb--> " +
+                                                                                                                      "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
+                                                                                                                          "              <div class='m1'> " +
+                                                                                                                              "                  <div class='muserd'><a href='/editor/discover-lookbook-details.aspx?v=" + val.LookBookKey + "' >" + val.Title + "</a></div> " +
+                                                                                                                                  "                  <div class='muserdb'>By " + val.Name + "</div> " +
+                                                                                                                                      "              </div> " +
+                                                                                                                                          "              <div class='m1'> " +
+                                                                                                                                              "                  <div class='mtextd'>" + val.Description + "</div> " +
+                                                                                                                                                  "              </div> " +
+                                                                                                                                                      "              <div class='m1' style='font-size:12px;'> " +
+                                                                                                                                                          "                  <div class='vlike'> " +
+                                                                                                                                                              "                      <img src='../images/views.png' /> " +
+                                                                                                                                                                  "                      &nbsp;" + val.Views + "</div> " +
+                                                                                                                                                                      "                  <!-- <div class='vlike'> " +
+                                                                                                                                                                          "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> --> " +
+                                                                                                                                                                                      "                  <div class='mdaysd' > " +
+                                                                                                                                                                                          "                      <span ID='lblDate2'>" + val.Dated + "</span> " +
+                                                                                                                                                                                              "                  </div> " +
+                                                                                                                                                                                                  "              </div> " +
+                                                                                                                                                                                                      "          </div> " +
+                                                                                                                                                                                                          "          <!--mtextb--> " +
+                                                                                                                                                                                                              "      </div> " +
+                                                                                                                                                                                                                  "      <!--mseb--> " +
+                                                                                                                                                                                                                      "  </div> " +
+                                                                                                                                                                                                                          " </div> " +
+                                                                                                                                                                                                                              " </div>";
 
-          $.each(items, function (index, val) {
-              console.log(index);
-              console.log(val.ItemId);
-              pageCount = val.PageCount;
-              fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
-                  " <div class='disblock'> " +
-                          "      <div class='dbl'> " +
-                              "      <a href='/editor/discover-lookbook-details.aspx?v=" + val.LookBookKey + "' class=''> " +
-                              "          <div class='hover ehover13'> " +
-                                  "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
-                                      "                  <h2 class='titlet'>" + val.Title + "</h2> " +
-                                          "                  <h2 class='linenew'></h2> " +
-                                              "                  <h2> " +
-                                                  "                      <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
-                                                      "              </div> " +
-                                                          "              <!--overlay--> " +
-                                                              "          </div> " +
-                                                                  "          <!--hover ehover13--> " +
-                                                                      "      </div> " +
-                                                                          "  </a> " +
-                                                                              "  <div class='disname'> " +
-                                                                                  "      <div class='mesbd'> " +
-                                                                                      "          <div class='mimageb'> " +
-                                                                                          "              <div class='mimgd'> " +
-                                                                                              "                  <a href=''> " +
-                                                                                                  "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
-                                                                                                      "              </div> " +
-                                                                                                          "          </div> " +
-                                                                                                              "          <!--mimageb--> " +
-                                                                                                                  "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
-                                                                                                                      "              <div class='m1'> " +
-                                                                                                                          "                  <div class='muserd'><a href='/editor/discover-lookbook-details.aspx?v=" + val.LookBookKey + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                              "                  <div class='muserdb'>By " + val.Name + "</div> " +
-                                                                                                                                  "              </div> " +
-                                                                                                                                      "              <div class='m1'> " +
-                                                                                                                                          "                  <div class='mtextd'>" + val.Description + "</div> " +
-                                                                                                                                              "              </div> " +
-                                                                                                                                                  "              <div class='m1' style='font-size:12px;'> " +
-                                                                                                                                                      "                  <div class='vlike'> " +
-                                                                                                                                                          "                      <img src='../images/views.png' /> " +
-                                                                                                                                                              "                      &nbsp;" + val.Views + "</div> " +
-                                                                                                                                                                  "                  <div class='vlike'> " +
-                                                                                                                                                                      "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
-                                                                                                                                                                                  "                  <div class='mdaysd' > " +
-                                                                                                                                                                                      "                      <span ID='lblDate2'>" + val.dated + "</span> " +
-                                                                                                                                                                                          "                  </div> " +
-                                                                                                                                                                                              "              </div> " +
-                                                                                                                                                                                                  "          </div> " +
-                                                                                                                                                                                                      "          <!--mtextb--> " +
-                                                                                                                                                                                                          "      </div> " +
-                                                                                                                                                                                                              "      <!--mseb--> " +
-                                                                                                                                                                                                                  "  </div> " +
-                                                                                                                                                                                                                      " </div> " +
-                                                                                                                                                                                                                          " </div>";
-
+              });
+          }
+          else if (hasItem == false) {
+              $('#LoaderItem').hide();
+              $('#norecord').html("No Record Found");
+              $('#norecord').show();
+          }
+          else {
+              $('#LoaderItem').hide();
+              $('#norecord').html("No More Record Found");
+              $('#norecord').show();
+          }
+          var $items = $(fragment);
+          $items.hide();
+          $grid.append($items);
+          $grid.masonry('layout');
+          $items.imagesLoaded(function () {
+              $grid.masonry('appended', $items);
+              $grid.masonry('layout');
+              $items.show();
+              $('#LoaderItem').hide();
           });
-
-
-          var masonry = $('.grid');
-          masonry.masonry({
-              itemSelector: '.box'
-          });
-
-          $(masonry).append(fragment);
-          $(masonry).hide();
-          setTimeout(function () {
-              $(masonry).show();
-              $(masonry).masonry('reloadItems');
-              $(masonry).masonry('layout');
-              $(".box").css("visibility", "visible");
-          }, 2000);
           //$(masonry).append(fragment).masonry('appended', fragment, true);
           //$(masonry).append(fragment).masonry('reload');
           //  $(".grid").append(data.d).masonry('reload');
@@ -198,22 +195,22 @@
               switch (id) {
                   case 'default':
                       $('.loadMore').show();
-                      $('.grid').masonry('destroy');
+                      //$('.grid').masonry('destroy');
                       GetRecords();
                       break;
                   case 'byCategory':
                       $('.loadMore').show();
-                      $('.grid').masonry('destroy');
+                      //$('.grid').masonry('destroy');
                       GetRecordsByCategory(selectedcat);
                       break;
                   case 'bySeason':
                       $('.loadMore').show();
-                      $('.grid').masonry('destroy');
+                      //$('.grid').masonry('destroy');
                       GetRecordsBySeason(selectedseason);
                       break;
                   case 'byHoliday':
                       $('.loadMore').show();
-                      $('.grid').masonry('destroy');
+                      //$('.grid').masonry('destroy');
                       GetRecordsByHoliday(selectedholiday);
                       break;
               }
@@ -420,11 +417,22 @@
                        <div class="grid" id="mygrid" style="height:auto !important;">
 
                        </div>
-                        <div id="divPostsLoader" style="margin-bottom:40px;">
+               <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                        <div id="norecord" style="display:none;">
+                           No Record Found
+                       </div>
+                        <%--<div id="divPostsLoader" style="margin-bottom:40px;">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;">
                      <img src="../images/ajax-loader.gif" style="padding-bottom: 20px; position: relative; top: 40px; left: 60px;" ></div>
                      <a href="#" id="default"  class="loadMore">Load More</a>
-                 </div>
+                 </div>--%>
                        <!--box-->
                    </div>
                    <!--content-->          
@@ -489,7 +497,47 @@
                   
                   
           <!--tags-->
-                  <div class="col-md-12 discrigblock">
+
+         <div class="col-md-12 discrigblock">
+                  <asp:updatepanel runat="server" ID="up_Tags">
+                          <ContentTemplate>
+                         <div class="searchb">
+                             <div class="serheading" style="margin-bottom:20px;">Related Tags</div> 
+                             
+                              <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
+                                      onitemcommand="rptTags_ItemCommand">
+                                 <ItemTemplate>
+                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><%# Eval("Title") %></asp:LinkButton> </div>
+                                 </ItemTemplate>
+                             </asp:Repeater>
+                                  <asp:SqlDataSource ID="sdsTags" runat="server" 
+                                      ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                      
+                                      SelectCommand="SELECT Top 25 [TagID], [Title] FROM [Tbl_LBTags]   ORDER BY [TagID]">
+                                      
+                                  </asp:SqlDataSource>
+                                  
+                                  <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
+                                      ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                      
+                                      SelectCommand="SELECT Top 50 [TagID], [Title] FROM [Tbl_LBTags]   ORDER BY [TagID]">
+                                     
+                                  </asp:SqlDataSource>
+                             
+                         </div><!--search-->
+                         
+                           <div class="fewer" runat="server" ID="dvTagToggles">
+                              <asp:LinkButton runat="server" ID="btn_MoreTags" 
+                                     CssClass="fewer" Text="see full tags" onclick="btn_MoreTags_Click" ></asp:LinkButton> 
+                                 <asp:LinkButton runat="server" CssClass="fewer" ID="btn_LessTags" 
+                                     Text="See fewer tags" Visible="False" onclick="btn_LessTags_Click" ></asp:LinkButton></div>
+                         </ContentTemplate>
+                      </asp:updatepanel>
+                  </div><!--colmd12-->
+
+                  <%--<div class="col-md-12 discrigblock">
                          <div class="searchb">
                              <div class="serheading" style="margin-bottom:20px;">Related Tags</div> 
                              
@@ -523,7 +571,7 @@
                          
                          <div class="fewer" onclick="showtags()">See fewer tags</div>
                          <div class="fewerf" onclick="showtagsf()" style="display:none;">See full tags</div>
-                  </div><!--colmd12-->
+                  </div>--%><!--colmd12-->
                   <div class="dissp"></div>                                 
 
               

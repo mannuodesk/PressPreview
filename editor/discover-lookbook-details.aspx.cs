@@ -14,23 +14,36 @@ using System.Collections.Generic;
 public partial class editor_discover_lookbook_details : Page
 {
     private string _pageUrl = HttpContext.Current.Request.Url.ToString();
-    public static string slookkey = null;
+
+    private string slookkey;
+    private string categoryCheck;
+    private string seasonCheck;
+    private string holidayCheck;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         NameValueCollection nvc = Request.QueryString;
+        if (Session["LookBookDetailSearch"] == null)
+        {
+            LookBookDetailSearch lookBookDetailSearch = new LookBookDetailSearch();
+            Session["LookBookDetailSearch"] = lookBookDetailSearch;
+        }
+
         if (nvc.HasKeys())
         {
             string lookkey = nvc.Get("v");
             if (lookkey != null)
             {
                 slookkey = lookkey;
+                (Session["LookBookDetailSearch"] as LookBookDetailSearch).slookkey = lookkey;
             }
             else
             {
                 slookkey = null;
+                (Session["LookBookDetailSearch"] as LookBookDetailSearch).slookkey = lookkey;
             }
         }
-         var al = new ArrayList { lblUsername, imgUserIcon };
+        var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
         if (!IsPostBack)
@@ -49,17 +62,33 @@ public partial class editor_discover_lookbook_details : Page
                 lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
             }
         }
+        else
+        {
+
+        }
     }
     [WebMethod, ScriptMethod]
     public static List<Items> LoadData(int pageIndex)
-{
-try
     {
-  int pagesize = 4;
+        try
+        {
+            int pagesize = 10;
             string brandid = "1";
             DatabaseManagement db = new DatabaseManagement();
             string fullQuery = string.Empty;
             string fullQuery2 = string.Empty;
+
+            string strCategoryCheck = "";
+            string strSeasonsCheck = "";
+            string strHolidayCheck = "";
+
+            if (HttpContext.Current.Session["DiscoverPageSearch"] != null)
+            {
+                strCategoryCheck = (HttpContext.Current.Session["LookBookDetailSearch"] as LookBookDetailSearch).categoryCheck;
+                strSeasonsCheck = (HttpContext.Current.Session["LookBookDetailSearch"] as LookBookDetailSearch).seasonsCheck;
+                strHolidayCheck = (HttpContext.Current.Session["LookBookDetailSearch"] as LookBookDetailSearch).holidayCheck;
+            }
+
             string @select =
                "SELECT distinct dbo.Tbl_Brands.Name, U_ProfilePic, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, " +
                " dbo.Tbl_Brands.Logo, a.ItemID, a.Title, a.row, a.DatePosted as [dated],a.UserID,IsDeleted,IsPublished," +
@@ -71,16 +100,55 @@ try
                " dbo.Tbl_Items.Views, CAST(dbo.Tbl_Items.DatePosted AS VARCHAR(12)) as DatePosted, " +
                " dbo.Tbl_Items.DatePosted as [dated],UserID,IsDeleted,IsPublished, Likes, RetailPrice FROM Tbl_Items ) AS a " +
                " INNER JOIN Tbl_Brands ON Tbl_Brands.UserID=a.UserID " +
-               " INNER JOIN dbo.Tbl_Users ON dbo.Tbl_Users.UserID=Tbl_Brands.UserID "+
+               " INNER JOIN dbo.Tbl_Users ON dbo.Tbl_Users.UserID=Tbl_Brands.UserID " +
                "INNER JOIN dbo.Tbl_LbItems ON a.ItemID=Tbl_LbItems.ItemID";
 
 
-            int start = (pageIndex * pagesize) + 1;
-            int end = ((pageIndex * pagesize) + pagesize);
+            //int start = (pageIndex * pagesize) + 1;
+            //int end = ((pageIndex * pagesize) + pagesize);
+            int startItems = ((pageIndex - 1) * pagesize) + 1;
+            int endItems = (startItems + pagesize) - 1;
+            int tempCount = 1;
+
             var itemList = new List<Items>();
-            string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1  AND row BETWEEN  " + start + "  AND " + end + "AND Tbl_LbItems.LookID=(SELECT LOOKID FROM TBL_LOOKBOOKS WHERE LOOKKEY='" + slookkey + "')";
-            string wherecluse2 = " Where  a.IsDeleted IS NULL AND a.IsPublished=1  AND Tbl_LbItems.LookID = (SELECT LOOKID FROM TBL_LOOKBOOKS WHERE LOOKKEY = '" + slookkey + "')";;
-            const string orderBy = " ORDER BY a.DatePosted DESC";            //NameValueCollection nvc = Request.QueryString;
+            string strSlookKey = "";
+            if ((LookBookDetailSearch)HttpContext.Current.Session["LookBookDetailSearch"] != null)
+            {
+                strSlookKey = (HttpContext.Current.Session["LookBookDetailSearch"] as LookBookDetailSearch).slookkey;
+            }
+
+            //string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1  AND row BETWEEN  " + start + "  AND " + end + "AND Tbl_LbItems.LookID=(SELECT LOOKID FROM TBL_LOOKBOOKS WHERE LOOKKEY='" + strSlookKey + "')";
+            string wherecluse = " Where  a.IsDeleted IS NULL AND a.IsPublished=1  AND Tbl_LbItems.LookID = (SELECT LOOKID FROM TBL_LOOKBOOKS WHERE LOOKKEY = '" + strSlookKey + "')";
+            string wherecluse2 = " Where  a.IsDeleted IS NULL AND a.IsPublished=1  AND Tbl_LbItems.LookID = (SELECT LOOKID FROM TBL_LOOKBOOKS WHERE LOOKKEY = '" + strSlookKey + "')";
+
+
+            if (!string.IsNullOrEmpty(strCategoryCheck))
+            {
+                const string categoryJoin = " INNER JOIN Tbl_ItemsCategory ON Tbl_ItemsCategory.ItemID=a.ItemID  ";
+                select = select + categoryJoin;
+                wherecluse = wherecluse + " AND Tbl_ItemsCategory.CategoryID=" + IEUtils.ToInt(strCategoryCheck);
+                wherecluse2 = wherecluse2 + " AND Tbl_ItemsCategory.CategoryID=" + IEUtils.ToInt(strCategoryCheck);
+            }
+
+            if (!string.IsNullOrEmpty(strSeasonsCheck))
+            {
+                const string seasonjoin = " INNER JOIN Tbl_ItemSeasons ON Tbl_ItemSeasons.ItemID=a.ItemID  ";
+                select = select + seasonjoin;
+                wherecluse = wherecluse + " AND Tbl_ItemSeasons.SeasonID=" + IEUtils.ToInt(strSeasonsCheck);
+                wherecluse2 = wherecluse2 + " AND Tbl_ItemSeasons.SeasonID=" + IEUtils.ToInt(strSeasonsCheck);
+            }
+
+            if (!string.IsNullOrEmpty(strHolidayCheck))
+            {
+                const string holidayjoin = " INNER JOIN Tbl_ItemHolidays ON Tbl_ItemHolidays.ItemID=a.ItemID  ";
+                select = select + holidayjoin;
+                wherecluse = wherecluse + " AND Tbl_ItemHolidays.HolidayID=" + IEUtils.ToInt(strHolidayCheck);
+                wherecluse2 = wherecluse2 + " AND Tbl_ItemHolidays.HolidayID=" + IEUtils.ToInt(strHolidayCheck);
+            }
+
+            //const string orderBy = " ORDER BY a.DatePosted DESC";
+            const string orderBy = " ORDER BY a.ItemID DESC";
+            //NameValueCollection nvc = Request.QueryString;
             //if(nvc.HasKeys())  // check for the query string parameter. if the URL has query string keys, get those values 
             //{
             //string category = nvc.Get("c");
@@ -219,7 +287,7 @@ try
                         ProfilePic = dr["U_ProfilePic"].ToString(),
                         RowNum = IEUtils.ToInt(dr["row"]),
                         Title = dr["Title"].ToString(),
-                        // Likes = LbLikes(IEUtils.ToInt(dr["ItemID"])),
+                        Likes = LbLikes(IEUtils.ToInt(dr["ItemID"])),
                         Views = IEUtils.ToInt(dr["Views"]),
                         BrandId = IEUtils.ToInt(dr["BrandID"]),
                         BrandKey = dr["BrandKey"].ToString(),
@@ -229,7 +297,12 @@ try
                         FeatureImg = dr["FeatureImg"].ToString()
                     };
 
-                    itemList.Add(objitem);
+                    //itemList.Add(objitem);
+                    if (tempCount >= startItems && tempCount <= endItems)
+                    {
+                        itemList.Add(objitem);
+                    }
+                    tempCount++;
 
                 }
             }
@@ -252,6 +325,7 @@ try
             return null;
         }
     }
+
     protected void LoadLookbook()
     {
         try
@@ -268,12 +342,12 @@ try
             //ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
-    protected int LbLikes(int lookId)
+    protected static int LbLikes(int lookId)
     {
         try
         {
             var db = new DatabaseManagement();
-            string followers = string.Format("SELECT COUNT(ID) as TotalLikes From Tbl_LookBook_Likes  Where LookID={0}", lookId);
+            string followers = string.Format("SELECT COUNT(Id) as TotalLikes From Tbl_Item_Likes  Where ItemID={0}", lookId);
             SqlDataReader dr = db.ExecuteReader(followers);
             int result = 0;
             if (dr.HasRows)
@@ -329,14 +403,38 @@ try
             //    "Where  Tbl_ItemsCategory.CategoryID={0} dbo.Tbl_Items.IsDeleted IS NULL AND dbo.Tbl_Items.IsPublished=1 " +
             //"ORDER BY dbo.Tbl_Items.DatePosted DESC",
             // categryId);
+            NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                if (nvc["s"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).seasonsCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("s");
+                }
+                if (nvc["h"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).holidayCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("h");
+                }
+            }
 
             if (QuerystringExist())
                 CheckQuerystringKey("c", categry);
             else
                 _pageUrl = "discover-lookbook-details.aspx?c=" + categry;
             lbCategory.Text = categry;
-            Response.Redirect(_pageUrl);
-
+            (Session["LookBookDetailSearch"] as LookBookDetailSearch).categoryCheck = categry;
+            categoryCheck = categry;
+            //Response.Redirect(_pageUrl,false);
+            Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString, false);
         }
         catch (Exception ex)
         {
@@ -357,12 +455,12 @@ try
                 if (Request.QueryString[key] != null)
                 {
                     Request.QueryString[key] = value;
-                    Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString);
+                    Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString, false);
                 }
                 else
                 {
                     nvc.Add(key, value);
-                    Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString);
+                    Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString, false);
                 }
             }
         }
@@ -398,12 +496,36 @@ try
             // rptLookbook.DataSourceID = "";
             // rptLookbook.DataSource = db.ExecuteReader(qrySeason);
             // rptLookbook.DataBind();
-
+            NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                if (nvc["c"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).seasonsCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("c");
+                }
+                if (nvc["h"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).holidayCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("h");
+                }
+            }
             if (QuerystringExist())
                 CheckQuerystringKey("s", season);
             else
                 _pageUrl = "discover-lookbook-details.aspx?s=" + season;
-            Response.Redirect(_pageUrl);
+            (Session["LookBookDetailSearch"] as LookBookDetailSearch).seasonsCheck = season;
+            this.seasonCheck = season;
+            //Response.Redirect(_pageUrl);
+            Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString, false);
         }
         catch (Exception ex)
         {
@@ -431,14 +553,38 @@ try
             // rptLookbook.DataSourceID = "";
             // rptLookbook.DataSource = db.ExecuteReader(qryHoliday);
             // rptLookbook.DataBind();
-
+            NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                if (nvc["c"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).seasonsCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("c");
+                }
+                if (nvc["s"] != null)
+                {
+                    if (Session["LookBookDetailSearch"] as LookBookDetailSearch != null)
+                        (Session["LookBookDetailSearch"] as LookBookDetailSearch).holidayCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc.Remove("s");
+                }
+            }
             if (QuerystringExist())
                 CheckQuerystringKey("h", holiday);
             else
             {
                 _pageUrl = "discover-lookbook-details.aspx?h=" + holiday;
             }
-            Response.Redirect(_pageUrl);
+            (Session["LookBookDetailSearch"] as LookBookDetailSearch).holidayCheck = holiday;
+            this.holidayCheck = holiday;
+            //Response.Redirect(_pageUrl);
+            Response.Redirect("discover-lookbook-details.aspx?" + Request.QueryString, false);
         }
         catch (Exception ex)
         {
@@ -451,7 +597,7 @@ try
         {
             if (e.CommandName == "1")
             {
-               // txtsearch.Value = string.Empty;
+                // txtsearch.Value = string.Empty;
                 string category = e.CommandArgument.ToString();
                 ByCategory(category);
             }
@@ -468,7 +614,7 @@ try
         {
             if (e.CommandName == "1")
             {
-               // txtsearch.Value = string.Empty;
+                // txtsearch.Value = string.Empty;
                 string season = e.CommandArgument.ToString();
                 BySeason(season);
             }
@@ -485,7 +631,7 @@ try
         {
             if (e.CommandName == "1")
             {
-               // txtsearch.Value = string.Empty;
+                // txtsearch.Value = string.Empty;
                 string holiday = e.CommandArgument.ToString();
                 ByHoliday(holiday);
             }

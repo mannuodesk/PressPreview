@@ -15,7 +15,7 @@ public partial class home : System.Web.UI.Page
     private int _brandID;
     protected void Page_Load(object sender, EventArgs e)
     {
-        var al = new ArrayList {lblUsername, imgUserIcon};
+        var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
         if (!IsPostBack)
@@ -24,7 +24,7 @@ public partial class home : System.Web.UI.Page
             {
                 LoadBrandData();
                 SetTotalViews();
-               
+
                 BrandLikes();
                 if (Common.Getunread_Messages() > 0)
                 {
@@ -43,7 +43,7 @@ public partial class home : System.Web.UI.Page
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             }
-            
+
         }
     }
 
@@ -55,22 +55,22 @@ public partial class home : System.Web.UI.Page
             string followers = string.Format("SELECT COUNT(Id) as TotalLikes From Tbl_BrandsLikes Where UserID=(SELECT UserID From Tbl_Users Where UserKey={0})", IEUtils.SafeSQLString(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(followers);
             int result = 0;
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 if (!dr.IsDBNull(0))
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
-            lblTotolLikes.Text= result.ToString();
+            lblTotolLikes.Text = result.ToString();
         }
         catch (Exception ex)
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-       
+
     }
-    
+
     [System.Web.Script.Services.ScriptMethod()]
     [System.Web.Services.WebMethod]
     public static List<string> GetItemTitle(string lbName)
@@ -84,7 +84,7 @@ public partial class home : System.Web.UI.Page
                 cmd.CommandText = "SELECT Top 10 Title From Tbl_Items Where Title LIKE  '%" + lbName + "%'";
                 cmd.Connection = con;
                 con.Open();
-              //  cmd.Parameters.AddWithValue("@SearchName", lbName);
+                //  cmd.Parameters.AddWithValue("@SearchName", lbName);
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -94,10 +94,10 @@ public partial class home : System.Web.UI.Page
                 db._sqlConnection.Close();
                 return empResult;
             }
-           
+
         }
-      
-   }
+
+    }
     protected void SetTotalViews()
     {
         try
@@ -122,7 +122,6 @@ public partial class home : System.Web.UI.Page
                 db.ExecuteSQL(qryViews);
 
             }
-
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }
@@ -130,7 +129,7 @@ public partial class home : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-       
+
     }
     protected void LoadBrandData()
     {
@@ -184,12 +183,12 @@ public partial class home : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-          //  ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            //  ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             return 0;
         }
-       
+
     }
-    
+
     // Top menu message list binding
     protected void rptMessageList_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
@@ -273,12 +272,30 @@ public partial class home : System.Web.UI.Page
         db.ExecuteSQL(insertQuery);
 
     }
+    private static List<Items> sortListBySortOrder(List<Items> itemsList)
+        {
 
+        for (int iCounter = 0; iCounter < itemsList.Count; iCounter++)
+            {
+            for (int jCounter = 0; jCounter < itemsList.Count; jCounter++)
+                {
+                if (itemsList[iCounter].ItemId > itemsList[jCounter].ItemId)
+                    {
+                    Items temp = new Items();
+                    temp = itemsList[iCounter];
+                    itemsList[iCounter] = itemsList[jCounter];
+                    itemsList[jCounter] = temp;
+                    }
+                }
+            }
+        return itemsList;
+        }
     [WebMethod, ScriptMethod]
     public static List<Items> GetData(int pageIndex, string v)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -290,14 +307,16 @@ public partial class home : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserKey", v);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -317,19 +336,23 @@ public partial class home : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
+                        //itemList.Add(objitem);
 
                     }
                 }
 
             }
-
+sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -347,6 +370,7 @@ public partial class home : System.Web.UI.Page
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -366,7 +390,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -386,19 +412,23 @@ public partial class home : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
 
             }
-
+sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -410,12 +440,12 @@ public partial class home : System.Web.UI.Page
 
         return null;
     }
-
     [WebMethod, ScriptMethod]
     public static List<Items> GetDataBySeason(int pageIndex, int seasonid, string v)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -435,7 +465,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -455,19 +487,23 @@ public partial class home : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
 
             }
-
+sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -480,11 +516,13 @@ public partial class home : System.Web.UI.Page
         return null;
     }
 
+
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid,string v)
+    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid, string v)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -504,7 +542,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -524,19 +564,23 @@ public partial class home : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
 
             }
-
+sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -554,6 +598,7 @@ public partial class home : System.Web.UI.Page
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -573,7 +618,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -593,19 +640,23 @@ public partial class home : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
 
             }
-
+sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -629,4 +680,48 @@ public partial class home : System.Web.UI.Page
 
     }
 
+    protected void LikeItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var db = new DatabaseManagement();
+            var httpCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+            string selectQuery = string.Format("Select * from Tbl_BrandsLikes where LikeID={0} AND UserId=(SELECT UserID From Tbl_Users Where UserKey={1})",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+            SqlDataReader dr = db.ExecuteReader(selectQuery);
+            if (dr != null && dr.HasRows)
+            {
+                string deleteQuery = string.Format("DELETE FROM  Tbl_BrandsLikes WHERE LikeID={0} AND UserID=(SELECT UserID From Tbl_Users Where UserKey={1})",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(deleteQuery);
+            }
+            else
+            {
+
+                string insertQuery = string.Format("INSERT INTO  Tbl_BrandsLikes(LikeID,UserID) Values({0},(SELECT UserID From Tbl_Users Where UserKey={1}))",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(insertQuery);
+            }
+            db._sqlConnection.Close();
+            db._sqlConnection.Dispose();
+            Response.Redirect("brand-items.aspx?v=" + Request.QueryString["v"]);
+        }
+        catch (Exception exc)
+        {
+            string str = exc.ToString();
+        }
+        //After receiving Theme counter Form dm please set it on that label
+    }
 }

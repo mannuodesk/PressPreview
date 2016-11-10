@@ -16,6 +16,10 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="../js/jquery.autocomplete.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).ready(function () {
+    // Handler for .ready() called.
+    $("#scroll").animate({ scrollTop: $("#scroll")[0].scrollHeight }, 1000);
+});
     $(function () {
         initializer();
         setHeight();
@@ -104,7 +108,7 @@
 </script>
 
 </head>
-<body style="overflow:hidden;">
+<body>
 <form runat="server" ID="frmMassener">
 
 <asp:scriptmanager runat="server" EnablePageMethods="True" EnablePartialRendering="True">
@@ -468,7 +472,7 @@
                                 <ItemTemplate>
                                     <div class="replyimgblock">
                                           <div class="repimg">
-                                              <a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox"><img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" style="height: 150px; width: 150px;" alt="<%# Eval("Title","{0}") %>" /> </a>
+                                              <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" style="height: 150px; width: 150px;" alt="<%# Eval("Title","{0}") %>" /> </a>
                                           </div>
                                           <div class="retext">
                                               <b><%# Eval("Title")%>" </b><br />
@@ -730,7 +734,7 @@
 
                       // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                         var id = url[1];
-                       var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                       var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
                        //window.location = pageUrl;
                        window.history.pushState('d', 't', pageUrl);
                         }
@@ -738,7 +742,7 @@
                    },
                    beforeClose: function () {
                        
-                       window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/massenger');
+                       window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/editor/massenger');
                    }
                });
 

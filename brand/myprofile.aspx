@@ -193,14 +193,14 @@ select option {
               <div class="relinw"></div>
           </div><!--likeblock-->
           
-          <div class="likeblock">
+          <%--<div class="likeblock">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
-              <%-- <div class="reinput"><input class="seinre" placeholder="Enter Link" /></div>--%>              <%--<div class="resubtext"><a href="">Submit</a></div>--%>
+              <%-- <div class="reinput"><input class="seinre" placeholder="Enter Link" /></div>--%>              <%--<div class="resubtext"><a href="">Submit</a></div>
                <div class="resubtext">
                    <button type="button" runat="server" name="signup" ID="btnSubmit_Social_Links" class="hvr-sweep-to-rightup2" style="margin-top: -14px; margin-right: 48px; margin-bottom: 10px; float:right;"   OnServerClick="btnSubmit_Social_Links_OnServerClick" >Submit</button> 
                 </div>
-              <%-- <div class="recross"><a href=""><img src="../images/smcross.jpg" /></a></div>--%>
-          </div><!--likeblock-->
+              <%-- <div class="recross"><a href=""><img src="../images/smcross.jpg" /></a></div>
+          </div>--%><!--likeblock-->
            </ContentTemplate>
          </asp:updatepanel>
           

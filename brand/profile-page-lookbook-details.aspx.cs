@@ -561,6 +561,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     {
         try
         {
+        int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -580,7 +581,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -606,7 +609,13 @@ public partial class lookbookDetails : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
                         _lbDescription = objitem.Description;
-                        itemList.Add(objitem);
+
+                        if (tempCount >= startItems && tempCount <= endItems)
+                            {
+                            itemList.Add(objitem);
+                            }
+                        tempCount++;
+                        // itemList.Add(objitem);
 
                     }
                 }
@@ -630,6 +639,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     {
         try
         {
+        int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -650,7 +660,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -676,7 +688,11 @@ public partial class lookbookDetails : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                            {
+                            itemList.Add(objitem);
+                            }
+                        tempCount++;
 
                     }
                 }
@@ -700,6 +716,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     {
         try
         {
+        int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -720,7 +737,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -746,7 +765,11 @@ public partial class lookbookDetails : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                            {
+                            itemList.Add(objitem);
+                            }
+                        tempCount++;
 
                     }
                 }
@@ -770,6 +793,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     {
         try
         {
+        int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -790,7 +814,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -816,7 +842,11 @@ public partial class lookbookDetails : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                            {
+                            itemList.Add(objitem);
+                            }
+                        tempCount++;
 
                     }
                 }
@@ -840,6 +870,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     {
         try
         {
+        int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -860,7 +891,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -886,7 +919,11 @@ public partial class lookbookDetails : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                            {
+                            itemList.Add(objitem);
+                            }
+                        tempCount++;
 
                     }
                 }

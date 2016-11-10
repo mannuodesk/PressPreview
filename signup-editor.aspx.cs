@@ -162,7 +162,7 @@ public partial class signup_editor : System.Web.UI.Page
                             "                   Hello " + txtfname.Value + " ! , <br/> <br />                                                                                                " +
                             "                   You are receiving this mail because you created an online account on our website. One more step of activation is required                                             " +
                             "                   before you get your own panel and customize every thing according to your need. Please click the link to confirm                                       " +
-                           "                   <a href='http://www.temp-dev.com/confirm.aspx?ck=" + userkey + "&v=" + userdetails[3] + "' target='_blank'>http://www.temp-dev.com/confirm.aspx?ck=" + userkey + "&v=" + userdetails[3] + "</a>" +
+                           "                   <a href='http://presspreview.azurewebsites.net/confirm.aspx?ck=" + userkey + "&v=" + userdetails[3] + "' target='_blank'>http://www.temp-dev.com/confirm.aspx?ck=" + userkey + "&v=" + userdetails[3] + "</a>" +
                             "                   <br/> <br />                                                                                                                                  " +
                             "                   Please find your account details below: <br/><br/>                                                                                      " +
                             "                   <b>Username: </b> " + userdetails[1] + " <br/>                                                                                          " +

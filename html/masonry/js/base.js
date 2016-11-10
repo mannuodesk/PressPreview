@@ -22,4 +22,12 @@ function init_masonry(){
           isAnimated: true
         });
     });
+    var jQuerycontainer = jQuery('#contentbox2');
+
+    jQuerycontainer.imagesLoaded(function () {
+        jQuerycontainer.masonry({
+            itemSelector: '.box',
+            isAnimated: true
+        });
+    });
 }

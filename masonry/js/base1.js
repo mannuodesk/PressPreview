@@ -22,6 +22,14 @@ function init_masonry(){
           isAnimated: true
         });
     });
+    var jQuerycontainer = jQuery('#contentbox2');
+
+    jQuerycontainer.imagesLoaded(function () {
+        jQuerycontainer.masonry({
+            itemSelector: '.box1',
+            isAnimated: true
+        });
+    });
 }
 
 function init_masonry(){
@@ -31,6 +39,14 @@ function init_masonry(){
         jQuerycontainer.masonry({
           itemSelector: '.boxn1',
           isAnimated: true
+        });
+    });
+    var jQuerycontainer = jQuery('#contentbox2');
+
+    jQuerycontainer.imagesLoaded(function () {
+        jQuerycontainer.masonry({
+            itemSelector: '.boxn1',
+            isAnimated: true
         });
     });
 }

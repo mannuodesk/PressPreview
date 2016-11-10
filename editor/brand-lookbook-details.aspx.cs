@@ -14,6 +14,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     private static int LookId;
     protected void Page_Load(object sender, EventArgs e)
     {
+
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         if (!IsPostBack)
@@ -22,7 +23,7 @@ public partial class lookbookDetails : System.Web.UI.Page
             {
                 LoadBrandData();
                 LoadLookBook();
-              
+
                 SetTotalViews();
                 if (Common.Getunread_Messages() > 0)
                 {
@@ -46,15 +47,16 @@ public partial class lookbookDetails : System.Web.UI.Page
     protected void LoadLookBook()
     {
         var db = new DatabaseManagement();
-        string LbData = string.Format("SELECT LookID, Description, Views From Tbl_Lookbooks Where LookKey={0}",
+        string LbData = string.Format("SELECT LookID, Title, Description, Views From Tbl_Lookbooks Where LookKey={0}",
                                       IEUtils.SafeSQLString(Request.QueryString["k"]));
         SqlDataReader dr = db.ExecuteReader(LbData);
         if (dr.HasRows)
         {
             dr.Read();
-            lblDescription.Text = Server.HtmlDecode(dr[1].ToString());
+            lblTitle.Text = dr[1].ToString();
+            lblDescription.Text = Server.HtmlDecode(dr[2].ToString());
             LookId = IEUtils.ToInt(dr[0]);
-            lblTotolViews.Text = dr.IsDBNull(2) ? "0" : dr[2].ToString();
+            lblTotolViews.Text = dr.IsDBNull(3) ? "0" : dr[3].ToString();
 
 
         }
@@ -154,29 +156,29 @@ public partial class lookbookDetails : System.Web.UI.Page
         try
         {
             var db = new DatabaseManagement();
-           
-                string BrandData = string.Format("Select Name,Url,City,Country, Bio,TotalViews, U_ProfilePic,U_CoverPic,Url,History From Tbl_Brands INNER JOIN Tbl_Users ON Tbl_Brands.UserID=Tbl_Users.UserID Where Tbl_Brands.UserID=(SELECT UserID From Tbl_Users Where UserKey={0})", IEUtils.SafeSQLString(Request.QueryString["v"]));
-                SqlDataReader dr = db.ExecuteReader(BrandData);
-                if (dr.HasRows)
-                {
-                    dr.Read();
-                    lbBrandName.InnerText = dr[0].ToString();
-                    lbWebURL.HRef = dr[1].ToString();
-                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[6];
-                    imgCover.ImageUrl = "../profileimages/" + dr[7];
-                    lblCity.Text = dr[2].ToString();
-                    lblCountry.Text = dr[3].ToString();
-                   // lblAbout.Text = dr[4].ToString();
-                    if (dr.IsDBNull(5))
-                        lblTotolViews.Text = "0";
-                    else
-                        lblTotolViews.Text = dr[5].ToString();
-                    lbWebURL.InnerText = dr[8].ToString();
-                    lbWebURL.HRef = "http://" + dr[8].ToString();
-                   // lblHistory.Text = dr[9].ToString();
-                }
-                dr.Close();
-            
+
+            string BrandData = string.Format("Select Name,Url,City,Country, Bio,TotalViews, U_ProfilePic,U_CoverPic,Url,History From Tbl_Brands INNER JOIN Tbl_Users ON Tbl_Brands.UserID=Tbl_Users.UserID Where Tbl_Brands.UserID=(SELECT UserID From Tbl_Users Where UserKey={0})", IEUtils.SafeSQLString(Request.QueryString["v"]));
+            SqlDataReader dr = db.ExecuteReader(BrandData);
+            if (dr.HasRows)
+            {
+                dr.Read();
+                lbBrandName.InnerText = dr[0].ToString();
+                lbWebURL.HRef = dr[1].ToString();
+                imgProfile.ImageUrl = "../brandslogoThumb/" + dr[6];
+                imgCover.ImageUrl = "../profileimages/" + dr[7];
+                lblCity.Text = dr[2].ToString();
+                lblCountry.Text = dr[3].ToString();
+                // lblAbout.Text = dr[4].ToString();
+                if (dr.IsDBNull(5))
+                    lblTotolViews.Text = "0";
+                else
+                    lblTotolViews.Text = dr[5].ToString();
+                lbWebURL.InnerText = dr[8].ToString();
+                lbWebURL.HRef = "http://" + dr[8].ToString();
+                // lblHistory.Text = dr[9].ToString();
+            }
+            dr.Close();
+
             db._sqlConnection.Close();
         }
         catch (Exception ex)
@@ -189,7 +191,7 @@ public partial class lookbookDetails : System.Web.UI.Page
         try
         {
             DatabaseManagement db = new DatabaseManagement();
-            string followers = string.Format("SELECT COUNT(ID) as TotalLikes From Tbl_LookBook_Likes  Where LookID={0}", lookId);
+            string followers = string.Format("SELECT COUNT(Id) as TotalLikes From Tbl_Item_Likes  Where ItemID={0}", lookId);
             SqlDataReader dr = db.ExecuteReader(followers);
             int result = 0;
             if (dr.HasRows)
@@ -203,10 +205,10 @@ public partial class lookbookDetails : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-          //  ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            //  ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             return 0;
         }
-        
+
     }
     protected void rptLookbook_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
@@ -230,7 +232,7 @@ public partial class lookbookDetails : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
-    
+
 
     protected void txtsearch_TextChanged(object sender, EventArgs e)
     {
@@ -239,15 +241,15 @@ public partial class lookbookDetails : System.Web.UI.Page
         {
             using (var cmd = new SqlCommand())
             {
-                
-                    string qrySearch = "SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, dbo.Tbl_Brands.Logo, Tbl_Lookbooks.LookID," +
-                                       " Tbl_Lookbooks.Title, Tbl_Lookbooks.LookKey, Tbl_Lookbooks.Description, Tbl_Lookbooks.MainImg, Tbl_Lookbooks.Views," +
-                                       " CAST(Tbl_Lookbooks.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Lookbooks.DatePosted as [dated] FROM dbo.Tbl_Brands " +
-                                       " INNER JOIN Tbl_Lookbooks ON dbo.Tbl_Brands.UserID = Tbl_Lookbooks.UserID " +
-                                       " Where dbo.Tbl_Brands.UserID =(SELECT UserID From Tbl_Users Where UserKey=" + IEUtils.SafeSQLString(Request.QueryString["v"]) + ") AND Tbl_Lookbooks.Title LIKE '" + txtsearch.Text + "%'  AND Tbl_Lookbooks.IsDeleted IS NULL AND Tbl_Lookbooks.IsPublished = 1  " +
-                                       " ORDER BY Tbl_Lookbooks.DatePosted DESC";
-                    cmd.CommandText = qrySearch;
-                
+
+                string qrySearch = "SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, dbo.Tbl_Brands.Logo, Tbl_Lookbooks.LookID," +
+                                   " Tbl_Lookbooks.Title, Tbl_Lookbooks.LookKey, Tbl_Lookbooks.Description, Tbl_Lookbooks.MainImg, Tbl_Lookbooks.Views," +
+                                   " CAST(Tbl_Lookbooks.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Lookbooks.DatePosted as [dated] FROM dbo.Tbl_Brands " +
+                                   " INNER JOIN Tbl_Lookbooks ON dbo.Tbl_Brands.UserID = Tbl_Lookbooks.UserID " +
+                                   " Where dbo.Tbl_Brands.UserID =(SELECT UserID From Tbl_Users Where UserKey=" + IEUtils.SafeSQLString(Request.QueryString["v"]) + ") AND Tbl_Lookbooks.Title LIKE '" + txtsearch.Text + "%'  AND Tbl_Lookbooks.IsDeleted IS NULL AND Tbl_Lookbooks.IsPublished = 1  " +
+                                   " ORDER BY Tbl_Lookbooks.DatePosted DESC";
+                cmd.CommandText = qrySearch;
+
                 cmd.Connection = con;
                 con.Open();
 
@@ -260,7 +262,7 @@ public partial class lookbookDetails : System.Web.UI.Page
         }
     }
 
-    
+
     protected void btnSearch_OnClick(object sender, EventArgs e)
     {
         var db = new DatabaseManagement();
@@ -268,15 +270,15 @@ public partial class lookbookDetails : System.Web.UI.Page
         {
             using (var cmd = new SqlCommand())
             {
-                
-                    string qrySearch = "SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, dbo.Tbl_Brands.Logo, Tbl_Lookbooks.LookID," +
-                                     " Tbl_Lookbooks.Title, Tbl_Lookbooks.LookKey, Tbl_Lookbooks.Description, Tbl_Lookbooks.MainImg, Tbl_Lookbooks.Views," +
-                                     " CAST(Tbl_Lookbooks.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Lookbooks.DatePosted as [dated] FROM dbo.Tbl_Brands " +
-                                     " INNER JOIN Tbl_Lookbooks ON dbo.Tbl_Brands.UserID = Tbl_Lookbooks.UserID " +
-                                     " Where dbo.Tbl_Brands.UserID =(SELECT UserID From Tbl_Users Where UserKey=" + IEUtils.SafeSQLString(Request.QueryString["v"]) + ") AND Tbl_Lookbooks.Title LIKE '" + txtsearch.Text + "%'  AND Tbl_Lookbooks.IsDeleted IS NULL AND Tbl_Lookbooks.IsPublished = 1 " +
-                                     " ORDER BY Tbl_Lookbooks.DatePosted DESC";
-                    cmd.CommandText = qrySearch;
-                
+
+                string qrySearch = "SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, dbo.Tbl_Brands.Logo, Tbl_Lookbooks.LookID," +
+                                 " Tbl_Lookbooks.Title, Tbl_Lookbooks.LookKey, Tbl_Lookbooks.Description, Tbl_Lookbooks.MainImg, Tbl_Lookbooks.Views," +
+                                 " CAST(Tbl_Lookbooks.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Lookbooks.DatePosted as [dated] FROM dbo.Tbl_Brands " +
+                                 " INNER JOIN Tbl_Lookbooks ON dbo.Tbl_Brands.UserID = Tbl_Lookbooks.UserID " +
+                                 " Where dbo.Tbl_Brands.UserID =(SELECT UserID From Tbl_Users Where UserKey=" + IEUtils.SafeSQLString(Request.QueryString["v"]) + ") AND Tbl_Lookbooks.Title LIKE '" + txtsearch.Text + "%'  AND Tbl_Lookbooks.IsDeleted IS NULL AND Tbl_Lookbooks.IsPublished = 1 " +
+                                 " ORDER BY Tbl_Lookbooks.DatePosted DESC";
+                cmd.CommandText = qrySearch;
+
                 cmd.Connection = con;
                 con.Open();
 
@@ -376,16 +378,26 @@ public partial class lookbookDetails : System.Web.UI.Page
     protected static int GetUserID(string v)
     {
         var db = new DatabaseManagement();
-        return
-            Convert.ToInt32(
-                db.GetExecuteScalar(string.Format("SELECT UserID From Tbl_Users Where UserKey={0}",v)));
+        try
+        {
+            //string selectQuery = string.Format("SELECT UserID From Tbl_Users Where UserKey={0}", IEUtils.SafeSQLString(v));
+            string selectQuery = string.Format("SELECT UserID From Tbl_Brands Where BrandKey={0}", IEUtils.SafeSQLString(v));
 
+            int userID = 0;
+            userID = Convert.ToInt32(db.GetExecuteScalar(selectQuery));
+            return userID;
+        }
+        catch (Exception exc)
+        {
+            return 0;
+        }
     }
     [WebMethod, ScriptMethod]
-    public static List<Items> GetData(int pageIndex, string lookId,string v)
+    public static List<Items> GetData(int pageIndex, string lookId, string brandId)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -397,15 +409,17 @@ public partial class lookbookDetails : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@UserId", GetUserID(v));
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
+                cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(GetUserID(brandId)));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -425,13 +439,17 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
+                        //itemList.Add(objitem);
 
                     }
                 }
@@ -451,10 +469,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByCategory(int pageIndex, int categoryid, string lookId,string v)
+    public static List<Items> GetDataByCategory(int pageIndex, int categoryid, string lookId, string brandId)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -467,7 +486,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@UserId", GetUserID(v));
+                cmd.Parameters.AddWithValue("@UserId", GetUserID(brandId));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
                 cmd.Parameters.AddWithValue("@CategoryID", categoryid);
                 cmd.Parameters.AddWithValue("@PageSize", 10);
@@ -475,7 +494,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -495,13 +516,17 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
@@ -521,10 +546,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataBySeason(int pageIndex, int seasonid, string lookId,string v)
+    public static List<Items> GetDataBySeason(int pageIndex, int seasonid, string lookId, string brandId)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -537,7 +563,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@UserId", GetUserID(v));
+                cmd.Parameters.AddWithValue("@UserId", GetUserID(brandId));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
                 cmd.Parameters.AddWithValue("@SeasonID", seasonid);
                 cmd.Parameters.AddWithValue("@PageSize", 10);
@@ -545,7 +571,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -565,13 +593,17 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
@@ -591,10 +623,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid, string lookId,string v)
+    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid, string lookId, string brandId)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -607,7 +640,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@UserId", GetUserID(v));
+                cmd.Parameters.AddWithValue("@UserId", GetUserID(brandId));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
                 cmd.Parameters.AddWithValue("@HolidayID", holidayid);
                 cmd.Parameters.AddWithValue("@PageSize", 10);
@@ -615,7 +648,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -635,13 +670,18 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
@@ -661,10 +701,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByTitle(int pageIndex, string title, string lookId, string v)
+    public static List<Items> GetDataByTitle(int pageIndex, string title, string lookId, string brandId)
     {
         try
         {
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -677,7 +718,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@UserId", GetUserID(v));
+                cmd.Parameters.AddWithValue("@UserId", GetUserID(brandId));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
                 cmd.Parameters.AddWithValue("@Title", title);
                 cmd.Parameters.AddWithValue("@PageSize", 10);
@@ -685,7 +726,9 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-
+                int startItems = ((pageIndex - 1) * pagesize) + 1;
+                int endItems = (startItems + pagesize) - 1;
+                int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -705,13 +748,17 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        itemList.Add(objitem);
+                        if (tempCount >= startItems && tempCount <= endItems)
+                        {
+                            itemList.Add(objitem);
+                        }
+                        tempCount++;
 
                     }
                 }
@@ -741,5 +788,5 @@ public partial class lookbookDetails : System.Web.UI.Page
 
     }
 
-    
+
 }

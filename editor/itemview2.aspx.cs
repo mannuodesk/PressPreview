@@ -9,10 +9,11 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
+using System.Drawing;
 
 public partial class lightbox_item_view : Page
 {
-    private  int itemID;
+    private int itemID;
     private int _receiverID = 0;
     private static string[] _loggedInUser;
     protected void Page_Init(object sender, EventArgs e)
@@ -37,6 +38,7 @@ public partial class lightbox_item_view : Page
     {
         try
         {
+            Label200.Attributes.Add("onchange", "ChangeColor()");
             ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
             if (!IsPostBack)
             {
@@ -46,10 +48,10 @@ public partial class lightbox_item_view : Page
                 SetTotalViews();
                 ItemLikes();
                 GetCommentsCount();
-              //  hidField.Value = itemID.ToString();
+                //  hidField.Value = itemID.ToString();
             }
 
-            WishlistButtonStatus(IEUtils.ToInt(Request.QueryString["v"]),IEUtils.ToInt(Session["UserID"]));
+            WishlistButtonStatus(IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]));
             rptTags.DataBind();
             dvTagToggles.Visible = rptTags.Items.Count > 20;
         }
@@ -63,11 +65,11 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string userDp = string.Format("SELECT U_ProfilePic, UserKey   From Tbl_Users Where UserID=(SELECT UserID From Tbl_Items Where ItemID={0})",
                                           IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(userDp);
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[0];
@@ -83,17 +85,17 @@ public partial class lightbox_item_view : Page
     {
         try
         {
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string itemRecord =
                 string.Format(
                     "SELECT ItemID,Title,Description,RetailPrice,WholesalePrice,StyleNumber,StyleName,Color,Tbl_Items.Views,Tbl_Items.DatePosted,Tbl_Items.UserID,  U_Firstname + ' ' + U_Lastname as Name, Likes  From Tbl_Items INNER JOIN Tbl_Users ON Tbl_Items.UserID=Tbl_Users.UserID  Where ItemID={0} AND IsPublished=1 AND IsDeleted IS NULL",
                     IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(itemRecord);
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 lblItemID.Text = dr[0].ToString();
-                Session["ItemdID"]  = dr[0].ToString();
+                Session["ItemdID"] = dr[0].ToString();
                 lblItemTitle.Text = dr[1].ToString();
                 lblDescription.Text = dr[2].ToString();
                 lblRetailPrice.Text = dr[3].ToString();
@@ -121,7 +123,7 @@ public partial class lightbox_item_view : Page
     protected void GetLoggedInUserInfo()
     {
         var db = new DatabaseManagement();
-        _loggedInUser=new string[2];
+        _loggedInUser = new string[2];
         var userCookie = Request.Cookies["FrUserID"];
         if (userCookie != null)
         {
@@ -130,7 +132,7 @@ public partial class lightbox_item_view : Page
                     "SELECT UserKey, U_Firstname + ' ' + U_Lastname as Name from Tbl_Users Where UserID={0}",
                     IEUtils.ToInt(userCookie.Value));
             SqlDataReader dr = db.ExecuteReader(selectQuery);
-            if(dr.HasRows)
+            if (dr.HasRows)
             {
                 dr.Read();
                 _loggedInUser[0] = dr[0].ToString();
@@ -146,8 +148,8 @@ public partial class lightbox_item_view : Page
             string isAlreadyViewd = string.Format("SELECT ID From Tbl_Item_Views Where UserID={0} AND ItemID={1}",
                                                   IEUtils.ToInt(Session["UserID"]),
                                                   IEUtils.ToInt(Request.QueryString["v"]));
-           SqlDataReader dr = db.ExecuteReader(isAlreadyViewd);
-            if(!dr.HasRows)
+            SqlDataReader dr = db.ExecuteReader(isAlreadyViewd);
+            if (!dr.HasRows)
             {
                 dr.Close();
                 dr.Dispose();
@@ -156,12 +158,12 @@ public partial class lightbox_item_view : Page
                     IEUtils.ToInt(Session["UserID"]),
                     IEUtils.SafeSQLDate(DateTime.UtcNow));
                 db.ExecuteSQL(addview);
-                int totalViews = Convert.ToInt32(lblTotolViews.Text)+1;
+                int totalViews = Convert.ToInt32(lblTotolViews.Text) + 1;
                 string qryViews = string.Format("UPDATE Tbl_Items Set Views={0}  Where ItemID={1}", totalViews, IEUtils.ToInt(Request.QueryString["v"]));
                 db.ExecuteSQL(qryViews);
-                
+
             }
-            
+
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }
@@ -176,12 +178,20 @@ public partial class lightbox_item_view : Page
         try
         {
             var db = new DatabaseManagement();
-                       string isAlreadyLiked = string.Format("SELECT ID From Tbl_Item_Likes Where UserID={0} AND ItemID={1}",
-                                                  IEUtils.ToInt(Session["UserID"]),
-                                                  IEUtils.ToInt(Request.QueryString["v"]));
+            string isAlreadyLiked = string.Format("SELECT ID From Tbl_Item_Likes Where UserID={0} AND ItemID={1}",
+                                       IEUtils.ToInt(Session["UserID"]),
+                                       IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(isAlreadyLiked);
-            lbtnLike.Enabled = !dr.HasRows;
-            
+            if (dr != null && dr.HasRows)
+            {
+                LikesLabel.Text = "UnLike";
+            }
+            else
+            {
+                LikesLabel.Text = "Like";
+            }
+            //lbtnLike.Enabled = !dr.HasRows;
+
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }
@@ -196,51 +206,95 @@ public partial class lightbox_item_view : Page
     {
         try
         {
+            string selectQuery = string.Format("Select * from Tbl_Item_Likes Where ItemID={0} AND UserID={1} AND BrandID={2}", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
             var db = new DatabaseManagement();
-            string qryAddLike = string.Format("INSERT INTO Tbl_Item_Likes(ItemID,UserID,BrandID) VALUES({0},{1},{2})", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
-            db.ExecuteSQL(qryAddLike);
-            if (lblTotalLikes.Text == "")
-                lblTotalLikes.Text = "0";
-            lblTotalLikes.Text = (Convert.ToInt32(lblTotalLikes.Text) + 1).ToString();
+            SqlDataReader dr = db.ExecuteReader(selectQuery);
+            if (dr != null && dr.HasRows)
+            {
+                Color color = new Color();
+                LikesLabel.Text = "Like";
+                //lbtnLike.ForeColor = color;
+                string deleteQuery = string.Format("DELETE from Tbl_Item_Likes Where ItemID={0} AND UserID={1} AND BrandID={2}", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(deleteQuery);
+                if (lblTotalLikes.Text == "")
+                    lblTotalLikes.Text = "0";
+                else
+                    lblTotalLikes.Text = (Convert.ToInt32(lblTotalLikes.Text) - 1).ToString();
+                int TotalLikesRemaining = Convert.ToInt32(lblTotalLikes.Text);
+                string queryLikes = string.Format("UPDATE Tbl_Items Set Likes={0}  Where ItemID={1}", TotalLikesRemaining, IEUtils.ToInt(Request.QueryString["v"]));
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(queryLikes);
+                rptHoliday.DataBind();
+                //lbtnLike.ForeColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                LikesLabel.Text = "UnLike";
+                Color color = new Color();
+                //lbtnLike.ForeColor = color;
+                string qryAddLike = string.Format("INSERT INTO Tbl_Item_Likes(ItemID,UserID,BrandID) VALUES({0},{1},{2})", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(qryAddLike);
+                if (lblTotalLikes.Text == "")
+                    lblTotalLikes.Text = "0";
+                lblTotalLikes.Text = (Convert.ToInt32(lblTotalLikes.Text) + 1).ToString();
 
-            int TotalLikes = Convert.ToInt32(lblTotalLikes.Text);
-            string qryLikes = string.Format("UPDATE Tbl_Items Set Likes={0}  Where ItemID={1}", TotalLikes, IEUtils.ToInt(Request.QueryString["v"]));
-            db.ExecuteSQL(qryLikes);
-            rptHoliday.DataBind();
-            int notifyID = db.GetMaxID("NotifyID", "Tbl_Notifications");
-            string notificationTitle = "<a href='influencer-profile.aspx?v=" + _loggedInUser[0] + "' >" + _loggedInUser[1] +
-                                       "</a> likes your item  <a href='itemview1.aspx?v=" + IEUtils.ToInt(lblItemID.Text) + "' class='fancybox'>" + lblItemTitle.Text + "</a>";
-            string addNotification =
-                     string.Format("INSERT INTO Tbl_Notifications(UserID,Title,DatePosted,ItemID) VALUES({0},{1},{2},{3})",
+                int TotalLikes = Convert.ToInt32(lblTotalLikes.Text);
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                string qryLikes = string.Format("UPDATE Tbl_Items Set Likes={0}  Where ItemID={1}", TotalLikes, IEUtils.ToInt(Request.QueryString["v"]));
+                db.ExecuteSQL(qryLikes);
+                rptHoliday.DataBind();
+                int notifyID = db.GetMaxID("NotifyID", "Tbl_Notifications");
+                string notificationTitle = "<a href='influencer-profile.aspx?v=" + _loggedInUser[0] + "' >" + _loggedInUser[1] +
+                                           "</a> likes your item  <a href='itemview1.aspx?v=" + IEUtils.ToInt(lblItemID.Text) + "' class='fancybox'>" + lblItemTitle.Text + "</a>";
+                string addNotification =
+                         string.Format("INSERT INTO Tbl_Notifications(UserID,Title,DatePosted,ItemID) VALUES({0},{1},{2},{3})",
 
-                                   IEUtils.ToInt(Session["UserID"]),
-                                   IEUtils.SafeSQLString(notificationTitle),
-                                   IEUtils.SafeSQLDate(DateTime.UtcNow),
-                                   IEUtils.ToInt(lblItemID.Text)
+                                       IEUtils.ToInt(Session["UserID"]),
+                                       IEUtils.SafeSQLString(notificationTitle),
+                                       IEUtils.SafeSQLDate(DateTime.UtcNow),
+                                       IEUtils.ToInt(lblItemID.Text)
+
+                             );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(addNotification);
+
+                string
+                    updateQuery =
+                     string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                  IEUtils.ToInt(notifyID),
+                                   IEUtils.ToInt(lblUserID.Text)
 
                          );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(updateQuery);
+                string
+                     updateQuery1 =
+                      string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                   IEUtils.ToInt(notifyID),
+                                   1
 
-            db.ExecuteSQL(addNotification);
+                          );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(updateQuery1);
+                //lbtnLike.ForeColor = System.Drawing.Color.Black;
+            }
 
-            string
-                updateQuery =
-                 string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
-                              IEUtils.ToInt(notifyID),
-                               IEUtils.ToInt(lblUserID.Text)
-
-                     );
-
-            db.ExecuteSQL(updateQuery);
-            string
-                 updateQuery1 =
-                  string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
-                               IEUtils.ToInt(notifyID),
-                               1
-
-                      );
-
-            db.ExecuteSQL(updateQuery1);
-            
             ItemLikes();
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
@@ -268,26 +322,26 @@ public partial class lightbox_item_view : Page
         btn_MoreTags.Visible = true;
         btn_LessTags.Visible = false;
     }
-     [WebMethod, ScriptMethod]
-    public static void AddToWishList(int v,int userid)
+    [WebMethod, ScriptMethod]
+    public static void AddToWishList(int v, int userid)
     {
         try
         {
             var db = new DatabaseManagement();
             //if (!WishlistButtonStatus())
             //{
-                string addToWishList = string.Format("INSERT INTO Tbl_WishList(ItemID,UserID,DatePosted) VALUES({0},{1},{2})", v, userid, "'" + DateTime.UtcNow + "'");
-                db.ExecuteSQL(addToWishList);
-              //  ErrorMessage.ShowSuccessAlert(lblStatus, "This item has been added to your wish list.", divAlerts);
-                db._sqlConnection.Close();
-                db._sqlConnection.Dispose();
+            string addToWishList = string.Format("INSERT INTO Tbl_WishList(ItemID,UserID,DatePosted) VALUES({0},{1},{2})", v, userid, "'" + DateTime.UtcNow + "'");
+            db.ExecuteSQL(addToWishList);
+            //  ErrorMessage.ShowSuccessAlert(lblStatus, "This item has been added to your wish list.", divAlerts);
+            db._sqlConnection.Close();
+            db._sqlConnection.Dispose();
             //}
             //else
             //{
             //    ErrorMessage.ShowErrorAlert(lblStatus, "This item is already in your wish list.", divAlerts);
             //}
-           
-           // WishlistButtonStatus(userid);
+
+            // WishlistButtonStatus(userid);
         }
         catch (Exception ex)
         {
@@ -295,15 +349,15 @@ public partial class lightbox_item_view : Page
         }
     }
 
-    protected  void WishlistButtonStatus(int v, int userId)
+    protected void WishlistButtonStatus(int v, int userId)
     {
         try
         {
             var db = new DatabaseManagement();
-           // bool IsExist;
+            // bool IsExist;
             string isAlreadyAdded = "SELECT WishID From Tbl_WishList Where UserID=" + userId + " AND ItemID=" + v;
             SqlDataReader dr = db.ExecuteReader(isAlreadyAdded);
-            if(!dr.HasRows)
+            if (!dr.HasRows)
             {
                 dvlbtnWishlist.Visible = true;
                 dvlbwishlist.Visible = false;
@@ -317,14 +371,14 @@ public partial class lightbox_item_view : Page
 
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
-           // return IsExist;
+            // return IsExist;
         }
         catch (Exception ex)
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-           // return false;
+            // return false;
         }
-        
+
     }
 
     protected void GetCommentsCount()
@@ -356,7 +410,7 @@ public partial class lightbox_item_view : Page
                 int notifyID = db.GetMaxID("NotifyID", "Tbl_Notifications");
                 string username = Session["Username"].ToString();
                 string itemid = Request.QueryString["v"];
-                string notificationTitle = "<a href='influencer-profile.aspx?v=" + _loggedInUser[0] + "' >" + _loggedInUser[1] + "</a> commented on your item <a href='itemview1.aspx?v=" + IEUtils.ToInt(lblItemID.Text) + "' class='fancybox'>" + lblItemTitle.Text + "</a>"; 
+                string notificationTitle = "<a href='influencer-profile.aspx?v=" + _loggedInUser[0] + "' >" + _loggedInUser[1] + "</a> commented on your item <a href='itemview1.aspx?v=" + IEUtils.ToInt(lblItemID.Text) + "' class='fancybox'>" + lblItemTitle.Text + "</a>";
                 string addNotification =
                          string.Format("INSERT INTO Tbl_Notifications(UserID,Title,DatePosted,ItemID) VALUES({0},{1},{2},{3})",
 
@@ -419,16 +473,16 @@ public partial class lightbox_item_view : Page
                 rptComments.DataSource = sdsComments;
                 rptComments.DataBind();
 
-                var userId = Convert.ToInt32(((Label) e.Item.FindControl("lblUserID")).Text);
+                var userId = Convert.ToInt32(((Label)e.Item.FindControl("lblUserID")).Text);
                 var userCookie = HttpContext.Current.Request.Cookies["FrUserID"];
                 var spDelmenuP = (HtmlGenericControl)e.Item.FindControl("spDelmenuP");
-               // var spDelmenuC = (HtmlGenericControl)e.Item.FindControl("spDelmenuC");
+                // var spDelmenuC = (HtmlGenericControl)e.Item.FindControl("spDelmenuC");
                 if (userCookie != null)
                 {
                     spDelmenuP.Visible = userId.ToString() == userCookie.Value;
                     //spDelmenuC.Visible = userId.ToString() == userCookie.Value;
                 }
-                    
+
             }
         }
         catch (Exception ex)
@@ -483,7 +537,7 @@ public partial class lightbox_item_view : Page
             var db = new DatabaseManagement();
             var userCookie = Request.Cookies["FrUserID"];
             int commentId = IEUtils.ToInt(e.CommandArgument);
-           if (e.CommandName == "4")
+            if (e.CommandName == "4")
             {
                 string deleteComment = string.Format("Delete From Tbl_Comments Where CommentId={0}", commentId);
                 db.ExecuteSQL(deleteComment);
@@ -519,14 +573,14 @@ public partial class lightbox_item_view : Page
         dr.Dispose();
         return userinfo;
     }
-    protected static string[] GetReceiverBrandName(DatabaseManagement db,int v)
+    protected static string[] GetReceiverBrandName(DatabaseManagement db, int v)
     {
         string getBrandName =
             string.Format(
-                "SELECT U_Username,U_Firstname + ' ' + U_Lastname as Name  From Tbl_Users Where UserID=(SELECT UserID From Tbl_Items Where ItemID={0})",v);
+                "SELECT U_Username,U_Firstname + ' ' + U_Lastname as Name  From Tbl_Users Where UserID=(SELECT UserID From Tbl_Items Where ItemID={0})", v);
         var brandname = new string[2];
         SqlDataReader dr = db.ExecuteReader(getBrandName);
-        if(dr.HasRows)
+        if (dr.HasRows)
         {
             dr.Read();
             brandname[0] = dr[0].ToString();
@@ -537,14 +591,14 @@ public partial class lightbox_item_view : Page
         return brandname;
     }
     [WebMethod, ScriptMethod]
-    public static void PostGiftRequest(string message,int v)
+    public static void PostGiftRequest(string message, int v)
     {
         var userCookie = HttpContext.Current.Request.Cookies["FrUserID"];
         var userNameCookie = HttpContext.Current.Request.Cookies["Username"];
         var db = new DatabaseManagement();
         if (userNameCookie != null)
         {
-            string[] userInfo = GetRecipientID(db, GetReceiverBrandName(db,v)[0]);
+            string[] userInfo = GetRecipientID(db, GetReceiverBrandName(db, v)[0]);
             if (userCookie != null)
             {
                 // Check if the brand already exists in the brand message list or not
@@ -554,7 +608,7 @@ public partial class lightbox_item_view : Page
                 sb.Append(message);
                 string checkBrand = string.Format(
                     "SELECT UserID  From Tbl_Users Where U_Username={0}  AND U_Type='Brand' AND UserID IN (SELECT ReceiverID From Tbl_MailboxMaster Where ReceiverID={1} AND BlockStatus IS NULL)",
-                    IEUtils.SafeSQLString(GetReceiverBrandName(db,v)[0]),
+                    IEUtils.SafeSQLString(GetReceiverBrandName(db, v)[0]),
                     IEUtils.ToInt(userInfo[0]));
                 if (db.RecordExist(checkBrand))  // if Brand already record exist, then brand can send message to that influencer. other wise not
                 {
@@ -572,7 +626,7 @@ public partial class lightbox_item_view : Page
                     }
                     dr.Close();
                     dr.Dispose();
-                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(),v);
+                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(), v);
                     //
                     //    ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
                 }
@@ -589,15 +643,15 @@ public partial class lightbox_item_view : Page
                             );
                     db.ExecuteSQL(addMailboxMasterRecord);
                     parentId = Convert.ToInt32(db.GetExecuteScalar("SELECT ISNULL(MAX(ParentID),1) From Tbl_MailboxMaster"));
-                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(),v);
+                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(), v);
 
 
                 }
 
             }
         }
-       // txtGift.Value = string.Empty;
-       // ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
+        // txtGift.Value = string.Empty;
+        // ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
 
 
     }
@@ -638,7 +692,7 @@ public partial class lightbox_item_view : Page
                     }
                     dr.Close();
                     dr.Dispose();
-                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(),v);
+                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(), v);
                     //
                     //    ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
                 }
@@ -655,7 +709,7 @@ public partial class lightbox_item_view : Page
                             );
                     db.ExecuteSQL(addMailboxMasterRecord);
                     parentId = Convert.ToInt32(db.GetExecuteScalar("SELECT ISNULL(MAX(ParentID),1) From Tbl_MailboxMaster"));
-                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(),v);
+                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString(), v);
 
 
                 }
@@ -692,7 +746,7 @@ public partial class lightbox_item_view : Page
     //                    IEUtils.ToInt(userCookie.Value));
     //                if (db.RecordExist(checkBrand))  // if Brand already record exist, then brand can send message to that influencer. other wise not
     //                {
-                        
+
     //                    int receiverId = Convert.ToInt32(db.GetExecuteScalar(checkBrand));
     //                    string getParentId =
     //                        string.Format(
@@ -724,7 +778,7 @@ public partial class lightbox_item_view : Page
     //                    db.ExecuteSQL(addMailboxMasterRecord);
     //                    parentId = Convert.ToInt32(db.GetExecuteScalar("SELECT ISNULL(MAX(ParentID),1) From Tbl_MailboxMaster"));
     //                    PostMessage(userInfo, parentId, userCookie, db, sb.ToString());
-                       
+
 
     //                }
 
@@ -740,11 +794,11 @@ public partial class lightbox_item_view : Page
     //        ErrorMessage.ShowErrorAlert(lblStatus, ex.InnerException.Message, divAlerts);
     //    }
     //}
-    private static void PostMessage(string[] userInfo, int parentId, HttpCookie userCookie, DatabaseManagement db,string message,int v)
+    private static void PostMessage(string[] userInfo, int parentId, HttpCookie userCookie, DatabaseManagement db, string message, int v)
     {
-       // int messageID = Convert.ToInt32(db.GetExecuteScalar("SELECT MAX(MessageID) From Tbl_Mailbox"));
+        // int messageID = Convert.ToInt32(db.GetExecuteScalar("SELECT MAX(MessageID) From Tbl_Mailbox"));
         string messageKey = "";
-       
+
         string postMessage =
             string.Format(
                 "INSERT INTO Tbl_Mailbox(MKey,Message,DatePosted,ParentID,MessageStatus,UserID,ItemID) VALUES({0},{1},{2},{3},{4},{5},{6})",
@@ -776,7 +830,7 @@ public partial class lightbox_item_view : Page
                           userInfo[0]);
 
         db.ExecuteSQL(addQuery2);
-        
+
 
 
     }
@@ -804,7 +858,7 @@ public partial class lightbox_item_view : Page
     //    //                IEUtils.ToInt(userCookie.Value));
     //    //            if (db.RecordExist(checkBrand))  // if Brand already record exist, then brand can send message to that influencer. other wise not
     //    //            {
-                        
+
     //    //                int receiverId = Convert.ToInt32(db.GetExecuteScalar(checkBrand));
     //    //                string getParentId =
     //    //                    string.Format(
@@ -952,7 +1006,7 @@ public partial class lightbox_item_view : Page
 
     protected void menuPostDelete_OnClick(object sender, EventArgs e)
     {
-        
+
     }
 
     protected void rptComments_OnItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -961,19 +1015,19 @@ public partial class lightbox_item_view : Page
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var userId = Convert.ToInt32(((Label) e.Item.FindControl("lblUserID")).Text);
+                var userId = Convert.ToInt32(((Label)e.Item.FindControl("lblUserID")).Text);
                 var userCookie = HttpContext.Current.Request.Cookies["FrUserID"];
                 var spDelmenuC = (HtmlGenericControl)e.Item.FindControl("spDelmenuC");
                 if (userCookie != null)
                 {
                     spDelmenuC.Visible = userId.ToString() == userCookie.Value;
-                   
+
                 }
             }
         }
         catch (Exception ex)
         {
-            
+
             throw;
         }
     }

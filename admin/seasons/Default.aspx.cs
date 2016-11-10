@@ -41,7 +41,7 @@ public partial class admin_home_Default : System.Web.UI.Page
             {
                 int RecordID = Convert.ToInt32(e.CommandArgument);
                 var db = new DatabaseManagement();
-                String deleteQuery = string.Format("Delete From Tbl_Season  Where SeasonID={0}", RecordID);
+                String deleteQuery = string.Format("Delete From Tbl_Seasons  Where SeasonID={0}", RecordID);
                 db.ExecuteSQL(deleteQuery);
                 GridView1.DataBind();
                 ErrorMessage.ShowSuccessAlert(lblStatus, "Season Deleted", divAlerts);

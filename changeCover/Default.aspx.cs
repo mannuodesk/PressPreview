@@ -27,6 +27,12 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                 imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
             }
+            else
+            {
+                SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+                imgCover.ImageUrl = signedUpUser.coverPicURL;
+                imgProfile.ImageUrl = signedUpUser.profilePicURL;
+            }
         }
         catch (Exception ex)
         {
@@ -53,11 +59,14 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                     string coverpic = fname;
                     // if both the images are selected
                     // update user profile
-                    string updateUserProfile =
-                      string.Format("UPDATE Tbl_Users Set U_CoverPic={0} Where UserID={1}",
-                                    IEUtils.SafeSQLString(coverpic),
-                                    IEUtils.ToInt(Session["UserID"].ToString()));
-                    db.ExecuteSQL(updateUserProfile);
+                    SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+                    signedUpUser.coverPicURL = fname;
+                    //string updateUserProfile =
+                    //  string.Format("UPDATE Tbl_Users Set U_CoverPic={0} Where UserID={1}",
+                    //                IEUtils.SafeSQLString(coverpic),
+                    //                IEUtils.ToInt(Session["UserID"].ToString()));
+                    //db.ExecuteSQL(updateUserProfile);
+                    Response.Redirect("../editor/myprofile.aspx", false);
 
                 }
                 else

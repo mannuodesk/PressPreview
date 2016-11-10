@@ -52,9 +52,13 @@ public partial class frmlogin : System.Web.UI.Page
             }
                 else
                 {
-
+                    SignedUpUser signedUpUser = new SignedUpUser();
+                    signedUpUser.email = txtSignUpEmail.Value;
+                    signedUpUser.password = txtSignUpPassword.Text;
+                    signedUpUser.userName = txtUsername.Value;
                     int userId = db.GetMaxID("UserID", "Tbl_Users");
-                    string userkey = Encryption64.Encrypt(userId.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
+                    Session["signedUpUser"] = signedUpUser;
+                    /*string userkey = Encryption64.Encrypt(userId.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
                     string insertQuery =
                             string.Format(
                                 "INSERT INTO Tbl_Users(UserKey,U_Username,U_Email,U_Password,U_Status,U_EmailStatus,U_ProfilePic,DateCreated) " +
@@ -68,10 +72,11 @@ public partial class frmlogin : System.Web.UI.Page
                                 IEUtils.SafeSQLString("blank.png"),
                                 IEUtils.SafeSQLDate(DateTime.UtcNow)
                                 );
-                    db.ExecuteSQL(insertQuery);
+                    db.ExecuteSQL(insertQuery);*/
                  //   SendConfirmationEmail(userkey);
-                    SendActivationEmail();
-                    Response.Redirect("signup.aspx?k=" + userkey);
+                    //SendActivationEmail();
+                    //Response.Redirect("signup.aspx?k=" + userkey);
+                    Response.Redirect("signup.aspx");
                    
                 }
             

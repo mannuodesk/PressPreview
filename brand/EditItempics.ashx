@@ -5,11 +5,12 @@ using System.IO;
 using System.Web;
 using DLS.DatabaseServices;
 
-public class Itempics : IHttpHandler {
+public class Itempics : IHttpHandler, System.Web.SessionState.IRequiresSessionState
+{
     
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/plain";
-        var db = new DatabaseManagement();
+       // var db = new DatabaseManagement();
         int itemId = Convert.ToInt32(context.Request.QueryString["v"]);
         foreach (string fileName in context.Request.Files)
         {
@@ -29,19 +30,38 @@ public class Itempics : IHttpHandler {
                 File.Delete(imagepath);
 
 
-                string insertQuery =
+                /*string insertQuery =
                                     string.Format(
                                         "INSERT INTO Tbl_ItemImages(ItemImg,ItemID,TempName) VALUES({0},{1},{2})",
                                         IEUtils.SafeSQLString(fname),
                                         itemId,
                                         IEUtils.SafeSQLString(fName)
-                                        );
-                db.ExecuteSQL(insertQuery);
+                                        );*/
+
+                if (context.Session["EditItemDetails"] == null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    editItemDetails.ImagesToAdd = new System.Collections.Generic.List<ItemImageFileName>();
+                    context.Session["EditItemDetails"] = editItemDetails;
+                }
+                else
+                {
+                    if((context.Session["EditItemDetails"] as EditItemDetails).ImagesToAdd==null)
+                    {
+                        (context.Session["EditItemDetails"] as EditItemDetails).ImagesToAdd = new System.Collections.Generic.List<ItemImageFileName>();
+                    }
+                }
+                ItemImageFileName itemImageFileName = new ItemImageFileName();
+                itemImageFileName.FileName = fname;
+                itemImageFileName.TempFileName = fName;
+                (context.Session["EditItemDetails"] as EditItemDetails).ImagesToAdd.Add(itemImageFileName);
+                
+                //db.ExecuteSQL(insertQuery);
 
              }
         }
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        //db._sqlConnection.Close();
+        //db._sqlConnection.Dispose();
     }
  
     public bool IsReusable {

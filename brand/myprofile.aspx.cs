@@ -6,15 +6,15 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
+using System.Globalization;
 
 public partial class brandProfile : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
+      if (!IsPostBack)
         {
             LoadUserData();
-
         }
     }
 
@@ -23,32 +23,43 @@ public partial class brandProfile : System.Web.UI.Page
     {
         try
         {
-            var db = new DatabaseManagement();
-            string getUserData = string.Format("SELECT UserID, U_Email,U_Firstname,U_CoverPic,U_ProfilePic From Tbl_Users Where UserKey={0}",
-                                               IEUtils.SafeSQLString(Request.QueryString["v"]));
-            SqlDataReader dr = db.ExecuteReader(getUserData);
-            if(dr.HasRows)
+            SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+            txtEmail.Value = signedUpUser.email;
+            if (signedUpUser.coverPicURL != "" && signedUpUser.coverPicURL != null)
             {
-                dr.Read();
-                var aCookie = new HttpCookie("FrUserID") { Value = dr["UserID"].ToString() };
-                HttpContext.Current.Response.Cookies.Add(aCookie);
-                var UsernameCookie = new HttpCookie("Username") { Value = dr["U_FirstName"].ToString() };
-                HttpContext.Current.Response.Cookies.Add(UsernameCookie);
-                var emailCookie = new HttpCookie("UserEmail") { Value = dr["U_Email"].ToString() };
-                HttpContext.Current.Response.Cookies.Add(emailCookie);
-                txtEmail.Value = dr[1].ToString();
-                Session["UserID"] = dr["UserID"].ToString();
-                Session["Username"] = dr["U_FirstName"].ToString();
-                Session["UserEmail"] = dr["U_Email"].ToString();
-                imgCover.ImageUrl = "../profileimages/" + dr[3];
-                imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4];
+                imgCover.ImageUrl = "../profileimages/"+signedUpUser.coverPicURL;
             }
+            if (signedUpUser.profilePicURL != "" && signedUpUser.profilePicURL!=null)
+            {
+                imgProfile.ImageUrl = "../brandslogoThumb/"+signedUpUser.profilePicURL;
+            }
+            var db = new DatabaseManagement();
+            /* string getUserData = string.Format("SELECT UserID, U_Email,U_Firstname,U_CoverPic,U_ProfilePic From Tbl_Users Where UserKey={0}",
+                                                IEUtils.SafeSQLString(Request.QueryString["v"]));
+             SqlDataReader dr = db.ExecuteReader(getUserData);
+             if(dr.HasRows)
+             {
+                 dr.Read();
+                 var aCookie = new HttpCookie("FrUserID") { Value = dr["UserID"].ToString() };
+                 HttpContext.Current.Response.Cookies.Add(aCookie);
+                 var UsernameCookie = new HttpCookie("Username") { Value = dr["U_FirstName"].ToString() };
+                 HttpContext.Current.Response.Cookies.Add(UsernameCookie);
+                 var emailCookie = new HttpCookie("UserEmail") { Value = dr["U_Email"].ToString() };
+                 HttpContext.Current.Response.Cookies.Add(emailCookie);
+                 txtEmail.Value = dr[1].ToString();
+                 Session["UserID"] = dr["UserID"].ToString();
+                 Session["Username"] = dr["U_FirstName"].ToString();
+                 Session["UserEmail"] = dr["U_Email"].ToString();
+                 imgCover.ImageUrl = "../profileimages/" + dr[3];
+                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4];
+             }*/
         }
         catch (Exception ex)
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
+    
     protected void btnSignup_ServerClick(object sender, EventArgs e)
     {
         try
@@ -104,7 +115,7 @@ public partial class brandProfile : System.Web.UI.Page
                  ErrorMessage.ShowErrorAlert(lblStatus, "Brand name already exist. Try another name", divAlerts);
              } else
              {
-                 string updateBrandProfile =
+                /* string updateBrandProfile =
                string.Format(
                    "Update Tbl_Brands Set Name={0}, Logo={1},Bio={2}," +
                    "Province={3},City={4},PostalCode={5},Address={6}," +
@@ -139,7 +150,88 @@ public partial class brandProfile : System.Web.UI.Page
                  db.ExecuteSQL(updateUserProfile);
                  Common.EmptyTextBoxes(this);
                  txtHistory.Text = string.Empty;
-                 txtAbout.Text = string.Empty;
+                 txtAbout.Text = string.Empty;*/
+                 //string userkey = Encryption64.Encrypt(userId.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
+                 int userId = db.GetMaxID("UserID", "Tbl_Users");
+                 string userkey = Encryption64.Encrypt(userId.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
+                 
+                 SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+                 string profilePicURL="blank.png";
+                 string coverPictureURL="brandimage.jpg";
+                 if (signedUpUser.profilePicURL != "" && signedUpUser.profilePicURL!=null)
+                 {
+                     profilePicURL=signedUpUser.profilePicURL;
+                 }
+                 if (signedUpUser.coverPicURL != "" && signedUpUser.coverPicURL!=null)
+                 {
+                     coverPictureURL=signedUpUser.coverPicURL;
+                 }
+                 string insertQuery =
+                         string.Format(
+                             "INSERT INTO Tbl_Users(U_Username,U_Email,U_Password,U_Status,U_EmailStatus,U_ProfilePic,DateCreated,U_Firstname,U_Lastname,U_Type,U_CoverPic,UserKey) " +
+                             "VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11})",
+                             IEUtils.SafeSQLString(signedUpUser.userName),
+                             IEUtils.SafeSQLString(signedUpUser.email),
+                             IEUtils.SafeSQLString(signedUpUser.password),
+                             1,
+                             1,
+                             IEUtils.SafeSQLString(profilePicURL),
+                             IEUtils.SafeSQLDate(DateTime.UtcNow),
+                             IEUtils.SafeSQLString(txtfname.Value),
+                             IEUtils.SafeSQLString(txtlname.Value),
+                             IEUtils.SafeSQLString("Brand"),
+                             IEUtils.SafeSQLString(coverPictureURL),
+                             IEUtils.SafeSQLString(userkey)
+                             );
+                 db.ExecuteSQL(insertQuery);
+
+                 int brandID = db.GetMaxID("BrandID", "Tbl_Brands");
+
+                 string editorKey = Encryption64.Encrypt(brandID.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
+
+                 string getUserId = string.Format("SELECT UserID From Tbl_Users Where UserKey={0}",
+                                             "'"+userkey+"'");
+                 int addeduserId = 0;
+                 SqlDataReader dr = db.ExecuteReader(getUserId);
+                 if (dr.HasRows)
+                 {
+                     dr.Read();
+                     addeduserId = Convert.ToInt32(dr[0]);
+                 }
+                 dr.Close();
+                 dr.Dispose();
+
+                 insertQuery =
+                    string.Format(
+                        "INSERT INTO Tbl_Brands(BrandKey,UserID,DatePosted,Name,Logo,Bio,Province,City,PostalCode,Address,Phone,Email,History,Url,Org,Designation,Address2,Country,InstagramURL,TwitterURL,FbURL,YoutubeURL,PinterestURL) " +
+                        "VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22})",
+                        IEUtils.SafeSQLString(editorKey),
+                        addeduserId,
+                        IEUtils.SafeSQLDate(DateTime.UtcNow),
+                        IEUtils.SafeSQLString(txtbname.Value),
+                        IEUtils.SafeSQLString(profilePicURL),
+                        IEUtils.SafeSQLString(txtAbout.Text),
+                        IEUtils.SafeSQLString(ddStates.Items[ddStates.SelectedIndex].Text),
+                        IEUtils.SafeSQLString(txtCity.Value),
+                        IEUtils.SafeSQLString(txtzip.Value),
+                        IEUtils.SafeSQLString(txtAddress1.Value),
+                        IEUtils.SafeSQLString(txtPhone.Value),
+                        IEUtils.SafeSQLString(txtEmail.Value),
+                        IEUtils.SafeSQLString(txtHistory.Text),
+                        IEUtils.SafeSQLString(txtWeb.Value),
+                        IEUtils.SafeSQLString(txtorg.Value),
+                        IEUtils.SafeSQLString(txtdesig.Value),
+                        IEUtils.SafeSQLString(txtAddress2.Value),
+                        IEUtils.SafeSQLString(txtCountry.Value),
+                        IEUtils.SafeSQLString(txtInstagram.Value),
+                        IEUtils.SafeSQLString(txtTwitter.Value),
+                        IEUtils.SafeSQLString(txtFacebook.Value),
+                        IEUtils.SafeSQLString(txtYoutube.Value),
+                        IEUtils.SafeSQLString(txtPinterest.Value)
+                        );
+                 db.ExecuteSQL(insertQuery);
+                 db._sqlConnection.Close();
+
                  Response.Redirect("../confirm.aspx");
              }
            

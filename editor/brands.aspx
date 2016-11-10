@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
 <script src="../js/sample.js"></script>
 <script type="text/javascript">
 		jQuery(document).ready(function() {
@@ -55,7 +55,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
                       
-         <div class="col-md-2">   
+         <div class="col-md-2" style="color:white;">   
             <!--#INCLUDE FILE="../includes/messgTopInfluencer.txt" --> 
          </div>   
                        

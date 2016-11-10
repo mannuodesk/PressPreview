@@ -5,11 +5,12 @@ using System.IO;
 using System.Web;
 using DLS.DatabaseServices;
 
-public class Featured : IHttpHandler {
+public class Featured : IHttpHandler, System.Web.SessionState.IRequiresSessionState
+{
     
     public void ProcessRequest (HttpContext context) {
         context.Response.ContentType = "text/plain";
-        var db = new DatabaseManagement();
+        /*var db = new DatabaseManagement();*/
         foreach (string fileName in context.Request.Files)
         {
             HttpPostedFile file = context.Request.Files.Get(fileName);
@@ -27,15 +28,21 @@ public class Featured : IHttpHandler {
                 var featured1 = Utility.GenerateThumbNail(fname, imagepath, "imgLarge/", 642);
                 var featured2 = Utility.GenerateThumbNail(fname, imagepath, "imgMedium/", 418);
                 File.Delete(imagepath);
-                string dbQuery = string.Format("UPDATE Tbl_Items Set FeatureImg={0} WHERE ItemID={1} ",
+                if(context.Session["EditItemDetails"]==null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    context.Session["EditItemDetails"] = editItemDetails;
+                }
+                (context.Session["EditItemDetails"] as EditItemDetails).FeaturedImage = fname;
+                /*string dbQuery = string.Format("UPDATE Tbl_Items Set FeatureImg={0} WHERE ItemID={1} ",
                                                     IEUtils.SafeSQLString(fname),
                                                     itemId);
-                     db.ExecuteSQL(dbQuery);
-                
-             }
+                     db.ExecuteSQL(dbQuery);*/
+
+            }
         }
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        /*db._sqlConnection.Close();
+        db._sqlConnection.Dispose();*/
     }
  
     public bool IsReusable {

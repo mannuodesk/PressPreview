@@ -122,9 +122,9 @@ public partial class editor_editor_profile : System.Web.UI.Page
                     //lblCountry.Text = dr[2].ToString();
                     lblCity.Text = dr.IsDBNull(1) ? "City not specified" : dr[1].ToString();
                     lblCountry.Text = dr.IsDBNull(2) ? "Country not specified" : dr[2].ToString();
-                    lblAbout.Text = dr.IsDBNull(3) ? "No information provided" : dr[3].ToString();
-                    lblTimeLine.Text = dr.IsDBNull(4) ? "No information provided" : dr[4].ToString();
-                    lblEditorialCalender.Text = dr.IsDBNull(5) ? "No information provided" : dr[5].ToString();
+                    lblAbout.Text = dr.IsDBNull(3) ? "No information provided" :Server.HtmlDecode( dr[3].ToString());
+                    lblTimeLine.Text = dr.IsDBNull(4) ? "No information provided" : Server.HtmlDecode(dr[4].ToString());
+                    lblEditorialCalender.Text = dr.IsDBNull(5) ? "No information provided" :Server.HtmlDecode( dr[5].ToString());
                     //lblTimeLine.Text = dr[4].ToString();
                     //lblEditorialCalender.Text = dr[5].ToString();
                     lblTotolViews.Text = dr.IsDBNull(6) ? "0" : (Convert.ToInt32(dr[6]) + 1).ToString();

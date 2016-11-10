@@ -28,6 +28,12 @@ public partial class change_Profile : System.Web.UI.Page
                 imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
             }
+            else
+            {
+                SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+                imgCover.ImageUrl = signedUpUser.coverPicURL;
+                imgProfile.ImageUrl = signedUpUser.profilePicURL;
+            }
         }
         catch (Exception ex)
         {
@@ -54,11 +60,14 @@ public partial class change_Profile : System.Web.UI.Page
                     string coverpic = fname;
                     // if both the images are selected
                     // update user profile
-                    string updateUserProfile =
-                      string.Format("UPDATE Tbl_Users Set U_ProfilePic={0} Where UserID={1}",
-                                    IEUtils.SafeSQLString(coverpic),
-                                    IEUtils.ToInt(Session["UserID"].ToString()));
-                    db.ExecuteSQL(updateUserProfile);
+                    SignedUpUser signedUpUser = (SignedUpUser)Session["signedUpUser"];
+                    signedUpUser.profilePicURL = fname;
+                    //string updateUserProfile =
+                    //  string.Format("UPDATE Tbl_Users Set U_ProfilePic={0} Where UserID={1}",
+                    //                IEUtils.SafeSQLString(coverpic),
+                    //                IEUtils.ToInt(Session["UserID"].ToString()));
+                    //db.ExecuteSQL(updateUserProfile);
+                    Response.Redirect("../editor/myprofile.aspx", false);
 
                 }
                 else
@@ -75,6 +84,7 @@ public partial class change_Profile : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
+        
     }
 
     protected void btnSave_OnClick(object sender, EventArgs e)

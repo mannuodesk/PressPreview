@@ -76,13 +76,13 @@
              var itemcolor;
              errorFlag = false;
              var CategoriesSelectedlength = $("#chkCategories input:checked").length;
-      
+
              var SeasonsSelectedlength = $("#chkDefaultSeasons input:checked").length;
-        
-           //  SeasonsSelected=("#chkDefaultSeasons input:checked");
+
+             //  SeasonsSelected=("#chkDefaultSeasons input:checked");
              var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
-           
-          //   HolidaySelected = $("#chkDefaultHoliday input:checked");
+
+             //   HolidaySelected = $("#chkDefaultHoliday input:checked");
 
 
 
@@ -102,7 +102,7 @@
                  errorMessage = "Please enter TITLE";
                  var errorDiv = "<p class='errorMessage' id='errorTitle'>" + errorMessage + "</p>"
                  $("#title_add").append(errorDiv);
-                 errorFlag=true;
+                 errorFlag = true;
              }
              else {
                  $("#errorTitle").remove();
@@ -232,24 +232,24 @@
                      //data: { "TitleText": TitleText, "RetailText": RetailText, "WholesaleText": WholesaleText, "StyleNumberText": StyleNumberText, "StyleNameText": StyleNameText },
                      dataType: "json",
                      success: function (data) {
-                         
+
                          localStorage.setItem("Result", "Done");
                          window.location.reload();
                      },
                      error: function (result) {
                          localStorage.setItem("Result", "ErrorMessageAlert");
                          //alert("No Match"); 
-                       //  response("No Match Found");
+                         //  response("No Match Found");
                      }
                  });
              }
          }
          $(document).ready(function () {
              //option A
-            $("#frm1").submit(function(e){
-               // alert('submit intercepted');
-                e.preventDefault(e);
-            });
+             $("#frm1").submit(function (e) {
+                 // alert('submit intercepted');
+                 e.preventDefault(e);
+             });
              //$("#btnPublish").on('click',(function(event) {
              //    event.preventDefault();
              //    event.stopPropagation();
@@ -257,9 +257,9 @@
              //    if(cnt==0) {
              //        alert('Please select category !');
              //        event.preventDefault();
-                    
+
              //    }
-                     
+
              //    var imageArray1 = [];
              //    $("#dzItemFeatured .dz-image img").each(function(){
              //        imageArray1.push($(this).attr('src'));
@@ -272,12 +272,12 @@
              //           event.preventDefault();
              //        event.stopPropagation();
              //        }
-                     
+
              //    }
              //}));
-            
+
              $("#btnPreview").click(function () {
-               
+
                  $(".lightboxheadertext").html($("#txtItemTitle").val());
                  $("#dvdescription").html($("#txtDescription").val());
                  $("#dvRetail").html($("#txtRetail").val());
@@ -285,34 +285,34 @@
                  $("#dvstyleNo").html($("#txtStyleNumber").val());
                  $("#dvstyleName").html($("#txtStyleName").val());
                  $("#modal_imgicon").attr('src', $('#imgUserIcon').attr('src'));
-                
-//                var checkboxList = [];
-//                $("[id*=CheckBoxList1] input:checked").each(function () {
-//                    checkboxList.push($(this).val());
-//                });
-//                if (checkboxList.length > 0) {
-//                    alert("Selected Value(s): " + checkboxList);
-//                } else {
-//                    alert("No item has been selected.");
-//                }
+
+                 //                var checkboxList = [];
+                 //                $("[id*=CheckBoxList1] input:checked").each(function () {
+                 //                    checkboxList.push($(this).val());
+                 //                });
+                 //                if (checkboxList.length > 0) {
+                 //                    alert("Selected Value(s): " + checkboxList);
+                 //                } else {
+                 //                    alert("No item has been selected.");
+                 //                }
 
                  var imageArray = [];
-                 
-//                    $(".dz-image img").each(function(){
-//                            imageArray.push($(this).attr('src'));
-//                    });
-                 $("#dzItemFeatured .dz-image img").each(function(){
+
+                 //                    $(".dz-image img").each(function(){
+                 //                            imageArray.push($(this).attr('src'));
+                 //                    });
+                 $("#dzItemFeatured .dz-image img").each(function () {
                      imageArray.push($(this).attr('src'));
                  });
-                
-                 $("#dzItemPics .dz-image img").each(function(){
+
+                 $("#dzItemPics .dz-image img").each(function () {
                      imageArray.push($(this).attr('src'));
                  });
-               
-//                for (var x = 0; x < checkboxList.length; x++) {
-//                    var item = "<label>" + checkboxList[x] + "</label><br/>";
-//                    $("#modal_checkboxlist").append(item);
-//                }
+
+                 //                for (var x = 0; x < checkboxList.length; x++) {
+                 //                    var item = "<label>" + checkboxList[x] + "</label><br/>";
+                 //                    $("#modal_checkboxlist").append(item);
+                 //                }
                  //$("#modal_image").remove();
                  $('#modal_image img').remove();
                  $('#modal_image br').remove();
@@ -320,7 +320,7 @@
                      var itemx = "<img id=" + y + " src=" + imageArray[y] + " /><br/>";
                      $("#modal_image").append(itemx);
                  }
-                                 <%--data-toggle="modal" data-target="#myModal"--%>
+                 <%--data-toggle="modal" data-target="#myModal"--%>
                  //$("#button1").attr("data-toggle", "modal");
                  //$("#button1").attr("data-target", "#myModal");
 
@@ -332,7 +332,7 @@
         var itemId = '<%= Session["CurrentItemId"] %>';
         Dropzone.options.dzItemPics = {
 
-        // Validate the file type. only accept images
+            // Validate the file type. only accept images
             acceptedFiles: 'image/*',
             dictDefaultMessage: "Click or Drag Images here to upload",
             maxFiles: 100,
@@ -355,21 +355,21 @@
 
                 });
                 // Validate the dimensions of the image....
-//                this.on('thumbnail', function(file) {
-//                    if (file.width < 800 || file.height < 800) {
-//                        file.rejectDimensions();
-//                    } else {
-//                        file.acceptDimensions();
-//                    }
-//                });
+                //                this.on('thumbnail', function(file) {
+                //                    if (file.width < 800 || file.height < 800) {
+                //                        file.rejectDimensions();
+                //                    } else {
+                //                        file.acceptDimensions();
+                //                    }
+                //                });
 
                 this.on("addedfile", function (file) {
 
                     // this.options.thumbnail.call(this, file, file_image);
                     // Create the remove button
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -75%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -450px;margin-left: 100px; z-index: 1000; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
-                   
+
                     var _this = this;
                     // Listen to the click event
                     removeButton.addEventListener("click", function (e) {
@@ -406,18 +406,18 @@
                 });
 
             }
-//            accept: function(file, done) {
-//                file.acceptDimensions = done;
-//                file.rejectDimensions = function() {
-//                    done('The image must be at least 800 x 800px');
-//                };
-//            }
+            //            accept: function(file, done) {
+            //                file.acceptDimensions = done;
+            //                file.rejectDimensions = function() {
+            //                    done('The image must be at least 800 x 800px');
+            //                };
+            //            }
         };
 
     </script>
     <script type="text/javascript">
         var itemId = '<%= Session["CurrentItemId"] %>';
-        
+
         // Dropzone for featured image
         Dropzone.options.dzItemFeatured = {
             // Validate the file type. only accept images
@@ -498,9 +498,9 @@
             accept: function (file, done) {
                 file.acceptDimensions = done;
                 file.rejectDimensions = function () {
-                     done('The image must be at least 800 x 800px');
-//                    $("#divAlerts").show();
-//                    $('#divAlerts').html('The image must be at least 800 x 800px');
+                    done('The image must be at least 800 x 800px');
+                    //                    $("#divAlerts").show();
+                    //                    $('#divAlerts').html('The image must be at least 800 x 800px');
                 };
             }
         };
@@ -516,7 +516,7 @@
     <script type="text/javascript">
         function HideLabel() {
             setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
-            setTimeout(function() { $('.alert').fadeOut(); }, 4000);
+            setTimeout(function () { $('.alert').fadeOut(); }, 4000);
             setTimeout(function () { $('#<%=vs1.ClientID%>').fadeOut(); }, 4000);
         };
     </script>
@@ -952,7 +952,8 @@
                              <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
                                       onitemcommand="rptTags_ItemCommand">
                                  <ItemTemplate>
-                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><i id="I1" runat="server" class="fa fa-times-circle-o" style="padding-right:10px;" ></i><%# Eval("Title") %></asp:LinkButton> </div>
+                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# ((itemTags)(Container.DataItem)).tagName %>'>
+                                         <i id="I1" runat="server" class="fa fa-times-circle-o" style="padding-right:10px;" ></i><%# ((itemTags)(Container.DataItem)).tagName %></asp:LinkButton> </div>
                                  </ItemTemplate>
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsTags" runat="server" 
@@ -1121,7 +1122,7 @@
                              <div id="rlTags" class="serheading1">
                              <asp:Repeater runat="server" ID="rptModTags" DataSourceID="sdsModTags" >
                                  <ItemTemplate>
-                                     <div class="tagblock"><%# Eval("Title") %> </div>
+                                     <div class="tagblock"><%# ((itemTags)Container.DataItem).tagName %> </div>
                                  </ItemTemplate>
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsModTags" runat="server" 
@@ -1199,7 +1200,7 @@
 <script type="text/javascript" src="http://cdn.ucb.org.br/Scripts/formValidator/js/jquery.validationEngine.js"
     charset="utf-8"></script>
     <script type="text/javascript">
-        $("#colbtn").live("click",(function (e) {
+        $("#colbtn").live("click", (function (e) {
             $(".popupbox").toggle();
         }));
     </script>
@@ -1220,7 +1221,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-//                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {
@@ -1244,7 +1245,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-//                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="itemview2.aspx.cs" Inherits="lightbox_item_view" Async="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="itemview2.aspx.cs" Inherits="lightbox_item_view" Async="true" EnableEventValidation="false" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -16,7 +16,25 @@
 <script src="../ckeditor/ckeditor.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <style type="text/css">
+        .liked{
+            color:#4c92c6;
+        }
+        .unliked{
+            color:#808080;
+        }
+       
+    </style>
 <script type="text/javascript">
+    function ChangeColor(val) {
+        alert($('#Label200').val());
+        if (val == "rgb(26, 26, 26)") {
+            alert($('#lbtnLike').css('color', 'rgb(0, 0, 0)'));
+        }
+        else {
+            $('#lbtnLike').css('color', '#4c92c6');
+        }
+    }
     $(document).ready(function () {
         $("#btnGetGift").on('click', function (e) {
             e.preventDefault();
@@ -75,19 +93,21 @@
         });
 
         $("#lbtnWishList").on('click', function (e) {
-            //e.preventDefault();
+            e.preventDefault();
             var v = '<%= Request.QueryString["v"] %>';
             var userId = '<%= Request.Cookies["FRUserId"].Value %>';
-            // alert(v);
+            //  alert(message);
             $.ajax({
                 type: "POST",
                 url: "itemview2.aspx\\AddToWishList",
                 contentType: "application/json; charset=utf-8",
+
                 data: "{'v':'" + v + "', 'userid':'" + userId + "'}",
+                //data: "{'v':'" + v + "', 'userId':" + userId + "}",
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -124,7 +144,7 @@
 
 
     });
-   
+
 </script>
 <script src="../js/sample.js"></script>
   <script language="JavaScript" type="text/javascript">
@@ -158,7 +178,7 @@
               m1.style.display = 'block';
               m1.style.visibility = 'visible';
           }
-          
+
 
       }
 
@@ -200,7 +220,7 @@
           }
       }
 
-     
+
   </script>
     <script type="text/javascript">
         function HideLabel() {
@@ -376,23 +396,24 @@
                      <div class="serheading1">Like this Item</div> 
                      
                        <div class="biglike">
-                            <asp:LinkButton runat="server" ID="lbtnLike" CssClass="mnLikes"  OnClick="lbtnLike_Click">
+                           <asp:Label runat="server" ID="Label200" Visible="False"></asp:Label>
+                            <asp:LinkButton runat="server" ID="lbtnLike" CssClass="mnLikes" Visible="true" OnClick="lbtnLike_Click">
                                         <%--<img src="../images/biglike.png" />--%>
                                         <i class="fa fa-heart " aria-hidden="true" id="round"></i>
-                                        Likes (<asp:Label runat="server"   ID="lblTotalLikes"></asp:Label>)</asp:LinkButton>
+                                        <asp:Label runat="server" ID="LikesLabel" Visible="True"></asp:Label> (<asp:Label runat="server"   ID="lblTotalLikes"></asp:Label>)</asp:LinkButton>
                                         <% if (lblTotalLikes.Text != "0")
                                            {%>
-                                        <div class="menudlist_list" id="list2" style="margin-top:20px;">
-                                            <div class="mespace"></div>
+                                        <%--<div class="menudlist_list" id="list2" style="margin-top:20px;">
+                                            <div class="mespace"></div>--%>
                                              <asp:Repeater ID="rptHoliday" runat="server" DataSourceID="sdsLikes" >
                                                 <ItemTemplate>
                                     
-                                                    <li class="menudli" style="line-height: 30px;">
+                                                    <%--<li class="menudli" style="line-height: 30px;">
                                                         <a href="#" style="cursor:default; top:0px; padding: 0px 0px 5px 5px;">
                                                               <i class="fa fa-long-arrow-right" style="font-size:10px; font-weight:bold; margin-right:5px;"></i>
                                                               <%#Eval("Name")%>
                                                         </a>
-                                                    </li>     
+                                                    </li>   --%>  
                                                 </ItemTemplate>
                                             </asp:Repeater>
                                      <asp:SqlDataSource runat="server" ID="sdsLikes" ConnectionString='<%$ ConnectionStrings:GvConnection %>' ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
@@ -403,8 +424,8 @@
                                       </SelectParameters>   
                   
                                         </asp:SqlDataSource>
-                                    <div class="mespace"></div>
-                                    </div>
+                                    <%--<div class="mespace"></div>
+                                    </div>--%>
                                     <% } %>
                           
                        </div>
@@ -468,15 +489,14 @@
                              <div class="serheading1">
                                  <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags">
                                  <ItemTemplate>
-                                     <div class="tagblock"><a><i class="fa fa-times-circle-o"></i> <%# Eval("Title") %></a></div>
+                                     <div class="tagblock"><a><i class="fa fa-times-circle-o"></i> <%# Eval("TagName") %></a></div>
                                  </ItemTemplate>
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] 
-Where ItemID=?  
-ORDER BY [TagID]">
+                                      SelectCommand="SELECT Top 20 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">--%>
                                       <SelectParameters>
                                           <asp:QueryStringParameter Name="ItemID" QueryStringField="v" Type="Int32" />
                                       </SelectParameters>
@@ -484,9 +504,8 @@ ORDER BY [TagID]">
                                    <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] 
-Where ItemID=? 
- ORDER BY [TagID]">
+                                       SelectCommand="SELECT Top 40 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">--%>
                                       <SelectParameters>
                                           <asp:QueryStringParameter Name="ItemID" QueryStringField="v" Type="Int32" />
                                       </SelectParameters>
@@ -668,8 +687,8 @@ Where ItemID=?
     <script type="text/javascript">
         $(document).ready(function () {
             //  var content = $('#myMessage').html();
-              $("#lbtnMessage").fancybox({
-              //  content:content,
+            $("#lbtnMessage").fancybox({
+                //  content:content,
                 fitToView: true,
                 frameWidth: '600px',
                 frameHeight: '300px',
@@ -749,9 +768,9 @@ Where ItemID=?
         });
     });
 
-    
+
     function callreq() {
-        jQuery('#txtGift').val='';
+        jQuery('#txtGift').val = '';
         jQuery('#req').hide();
     }
 
@@ -767,7 +786,7 @@ Where ItemID=?
     }
 
     function hideRequestSample() {
-        
+
         jQuery('#txtSample').html('');
         jQuery('#req1').hide();
         jQuery('#dvmessage').show();
@@ -776,7 +795,7 @@ Where ItemID=?
     <script type="text/javascript">
         function closeFancybox() {
 
-            parent.document.location.href = "http://presspreview.azurewebsites.net/brand/massenger.aspx";
+            parent.document.location.href = "http://localhost:60797//massenger.aspx";
             window.parent.jQuery.fancybox.close();
 
 

@@ -1,4 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="editor-wishlist.aspx.cs" Inherits="editor_wishlist" %>
+<%--<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" CodeFile="editor-wishlist.aspx.cs" Inherits="editor_wishlist" %>--%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,56 +13,13 @@
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<!--lightbox-->
-	<link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+        <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
+   <script src="../js/jquery-ui.min.js"></script>
+   <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+  
 <!--custom scroller-->
     
-     <script type="text/javascript">
-         $(document).ready(function () {
-             SearchText();
-         });
-
-         function SearchText() {
-             $("#txtsearch").autocomplete({
-                 source: function (request, response) {
-                     $.ajax({
-                         type: "POST",
-                         contentType: "application/json; charset=utf-8",
-                         url: "editor-wishlist\\GetItemTitle",
-                         data: "{'lbName':'" + document.getElementById('txtsearch').value + "'}",
-                         dataType: "json",
-                         success: function (data) {
-                             response(data.d);
-                         },
-                         error: function (result) {
-                             alert("No Match");
-                         }
-                     });
-                 }
-             });
-         }  
-    </script> 
-    <script type=text/javascript>
-        function doClick(buttonName, e) {
-            //the purpose of this function is to allow the enter key to 
-            //point to the correct button to click.
-            var key;
-
-            if (window.event)
-                key = window.event.keyCode;     //IE
-            else
-                key = e.which;     //firefox
-
-            if (key == 13) {
-                //Get the button the user wants to have clicked
-                var btn = document.getElementById(buttonName);
-                if (btn != null) { //If we find the button click it
-                    btn.click();
-                    event.keyCode = 0
-                }
-            }
-        }
-</script>
+   
 <script type="text/javascript">
     function HideLabel() {
         setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
@@ -70,10 +29,10 @@
 </head>
 
 <body>
-<form runat="server" ID="frm_Wishlist">
-     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
-                        </asp:ScriptManager>
-<div class="wrapper">
+<form runat="server" id="frm_Wishlist" >
+     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+    
+    <div class="wrapper">
 <!--Header-->
     <div class="headerbgm">
            <nav class="navbar navbar-default">
@@ -137,7 +96,7 @@
           </div><!--col-md-12-->
           
           <div class="mesblockinf">
-                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Messenger</a>
+                <a href="massenger.aspx"><i class="fa fa-envelope" aria-hidden="true"></i> Messenger</a>
           </div><!--mesblock-->
           
           <div class="col-md-10 col-xs-8 ptext">
@@ -215,14 +174,32 @@
                              <div class="serinputp">
                                  <asp:Button runat="server" ID="btnSearch" style="position: absolute; width: 0px; height: 0px;z-index: -1;"  OnClick="btnSearch_OnClick">
                                 </asp:Button>
-                                <%-- <span class="fa fa-search"></span>--%>
-                                <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1"  runat="server"></asp:TextBox>
+                              <%--  <span class="fa fa-search"></span>--%>
+                                 <asp:TextBox  ID="txtsearch" placeholder="     Search" CssClass="seins1" style="margin-top:15px;"  runat="server"></asp:TextBox>
+                               
                              </div> <!--serinput-->
                        </div><!--searchpro-->
                        <div class="lineclook"></div>
-           
+           <div class="lines"><hr /></div>
             <div id="contentbox" style="padding-top:20px;">
-                <div id="divAlerts" runat="server" class="alert" visible="False">
+                            <div class="grid">
+                
+                </div>
+                               <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                       
+                       
+                       
+                       <div id="norecord" style="display:none;    margin-bottom: 63px;">
+                           No Record Found
+                       </div>
+                <%--<div id="divAlerts" runat="server" class="alert" visible="False">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <asp:Label runat="server" ID="lblStatus" for="PageMessage"
                         Text="" Visible="True"></asp:Label>
@@ -251,12 +228,12 @@
                   <!-- Delete button -->
                  <div class="smalcress">
                     
-                    <%-- <a href=""></a>--%>
+                   //<a href=""></a>
                  </div> <!-- Delete button -->
                  <div class="disname"><div class="mesbd">
                           <div class="mimageb">
                               <div class="mimgd">
-                              <a href="" style="width:36px;"><img src='../brandslogoThumb/<%# Eval("logo") %>'  class="img-circle" style="width:36px; height:36px;"/></a>
+                              <a href="" style="width:36px;"><img src='../brandslogoThumb/<%# Eval("Logo") %>'  class="img-circle" style="width:36px; height:36px;"/></a>
                            </div>
                           </div><!--mimageb-->
                           <div class="mtextb">
@@ -298,12 +275,12 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                           <asp:SessionParameter SessionField="UserID" Name="?" runat="server"></asp:SessionParameter>
                       </SelectParameters>
                 </asp:SqlDataSource>
-               
+               --%>
             </div><!--content-->
        
-           <div id="contentbox">
+          <%-- <div id="contentbox">
                <div id="ajaxrequest"></div>
-           </div>          
+           </div> --%>         
 
 </div>
 </div><!--wrapperblock-->
@@ -330,6 +307,251 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
     <script src="../js/bootstrap.js"></script>
     <script type="application/javascript" src="../js/custom.js"></script>
     <script type="text/javascript">
+        var pageIndex = 0;
+        $(document).ready(function () {
+            $('#norecord').hide();
+            $('#LoaderItem').show();
+            $('.grid').empty();
+            SearchText();
+            GetRecords();
+
+
+
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    if (selectedSorting == "title") {
+                        GetRecordsByTitle(titlee);
+                    }
+                    else {
+                        GetRecords();
+                    }
+          
+                }
+            });
+
+            function SearchText() {
+                $("#txtsearch").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "editor-wishlist.aspx\\GetItemTitle",
+                            data: "{lbName:'" + document.getElementById('txtsearch').value + "'}",
+                            dataType: "json",
+                            success: function (data) {
+                                response(data.d);
+                            },
+                            error: function (result) {
+                                //alert("No Match");
+                                response("No Match Found");
+                            }
+                        });
+                    }
+                });
+            }
+            $("#txtsearch").keydown(function (e) {
+                if (e.keyCode == 13) { // enter
+                    pageIndex_title = 0;
+                    pageCount_title = 0;
+                    $('.grid').empty();
+                    $('.grid').masonry('destroy');
+                    GetTitle($("#txtsearch").val());
+                    return false; //you can also say e.preventDefault();
+                }
+            });
+
+
+           
+            function GetRecords() {
+                selectedSorting="default"
+                pageIndex++;
+                //send a query to server side to present new content
+                var v = '<%= Request.Cookies["FRUserId"].Value %>';
+                $.ajax({
+                    type: "POST",
+                    url: "editor-wishlist.aspx\\GetData",
+                    data: '{pageIndex: ' + pageIndex + ', v:"' + v + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnSuccess
+                });
+            }
+
+
+            // By Title
+            var titlee;
+            function GetRecordsByTitle(title) {
+                titlee = title;
+                selectedSorting = "title";
+        
+                //pageIndex_title = 1;
+                pageIndex_title++;
+                //if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
+
+
+                // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+                $('#loader').show();
+                var v = '<%= Request.Cookies["FRUserId"].Value %>';
+                //send a query to server side to present new content
+                $.ajax({
+                    type: "POST",
+                    url: "editor-wishlist.aspx\\GetItemTitle",
+                    data: '{pageIndex: ' + pageIndex_title + ', title:"' + title + '", v:"' + v + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnSuccess
+
+                });
+            }
+
+            function GetTitle(title) {
+                pageIndex = 0;
+                pageIndex_title = 0;
+                pageCount_title = 0;
+                $('.grid').empty();
+                $('.grid').masonry('destroy');
+                //alert($('#' + title).val());
+                GetRecordsByTitle(title);
+            }
+            // By Title
+            var titlee;
+            function GetRecordsByTitle(title) {
+                titlee = title;
+                selectedSorting = "title";
+
+                //pageIndex_title = 1;
+                pageIndex_title++;
+                //if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
+
+
+                // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+                $('#loader').show();
+                var v = '<%= Request.Cookies["FRUserId"].Value %>';
+                //send a query to server side to present new content
+                $.ajax({
+                    type: "POST",
+                    url: "editor-wishlist.aspx\\GetDataByTitle",
+                    data: '{pageIndex: ' + pageIndex_title + ', title:"' + title + '", v:"' + v + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnSuccess
+
+                });
+             
+            }
+
+            var hasItem = false;
+            function OnSuccess(data) {
+                $('#LoaderItem').show();
+                $('#norecord').hide();
+
+                console.log(data);
+                var items = data.d;
+                var fragment;
+                if (items.length != 0) {
+                    hasItem = true;
+                    var $grid = $('.grid');
+                    $grid.masonry({
+                        itemSelector: '.boxn1',
+                        transitionDuration: '0.4s',
+                    });
+                    $.each(items, function (index, val) {
+                        console.log(index);
+                        console.log(val.ItemId);
+                        pageCount = val.PageCount;
+                        fragment += "<div class='boxn1 boxn2' style='float:left;'  id='b" + val.ItemId + "'>" +
+                            "<div class='disblock'>" +
+                                "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" +
+                                    "<div class='dbl'> <div class='hover ehover13'>" +
+                                        "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                            "<div class='overlay'>" +
+                                                "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
+                                                    "</div><!-- hover ehover13--></div> <!-- dbl -->" +
+                                                        "</a>" +
+                                                            "<div class='disname'>" +
+                                                                "<div class='mesbd'>" +
+                                                                    "<div class='mimageb'>" +
+                                                                        "<div class='mimgd'>" +
+                                                                            "<a href=''><img src='../brandslogoThumb/" + val.ProfilePic + "' class='img-circle img-responsive' style='width:px; height:36px' /></a></div> <!-- mimgd -->" +
+                                                                                "</div> <!-- mimageb -->" +
+                                                                                    "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
+                                                                                        "<div class='m1'>" +
+                                                                                            "<div class='muserd'>" +
+                                                                                                "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
+
+                                                                                                                            "</div> <!-- muserd -->" +
+                                                                                                                                "<div class='muserdb'>By " + val.Name + "</div>" +
+                                                                                                                                    "</div> <!-- m1 -->" +
+                                                                                                                                        "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                            "<div class='mtextd'> " + val.Description + " </div>" +
+                                                                                                                                                "</div> <!-- m1 -->" +
+                                                                                                                                                    "<div class='m1'>" +
+                                                                                                                                                        "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
+                                                                                                                                                            "<div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> <!-- vlike -->" +
+                                                                                                                                                                "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
+                                                                                                                                                                    "</div> <!-- m1-->" +
+                                                                                                                                                                        "</div> <!-- mtextb -->" +
+                                                                                                                                                                            "</div><!-- mesbd -->" +
+                                                                                                                                                                                "</div> <!-- disname -->" +
+                                                                                                                                                                                    "</div></div>";
+
+                    });
+                    var $items = $(fragment);
+                    $items.hide();
+                    $grid.append($items);
+                    $grid.masonry('layout');
+                    $items.imagesLoaded(function () {
+                        $grid.masonry('appended', $items);
+                        $grid.masonry('layout');
+                        $items.show();
+                        $('#LoaderItem').hide();
+                    });
+                }
+                else if (hasItem == false) {
+                    $('#LoaderItem').hide();
+                    $('#norecord').html("No Record Found");
+                    $('#norecord').show();
+                }
+                else {
+                    $('#LoaderItem').hide();
+                    $('#norecord').html("No More Record Found");
+                    $('#norecord').show();
+                }
+
+                $('#loader').hide();
+                if (pageCount <= 1) {
+                    $('.loadMore').hide();
+                }
+
+            }
+
+        });
+
+
+
+
+      
+        //function doClick(buttonName, e) {
+        //    //the purpose of this function is to allow the enter key to 
+        //    //point to the correct button to click.
+        //    var key;
+
+        //    if (window.event)
+        //        key = window.event.keyCode;     //IE
+        //    else
+        //        key = e.which;     //firefox
+
+        //    if (key == 13) {
+        //        //Get the button the user wants to have clicked
+        //        var btn = document.getElementById(buttonName);
+        //        if (btn != null) { //If we find the button click it
+        //            btn.click();
+        //            event.keyCode = 0
+        //        }
+        //    }
+        //}
+
         $(document).ready(function () {
             var userId = '<%= Request.Cookies["FRUserId"].Value %>';
             $("#lbViewMessageCount").mouseover(function () {
@@ -354,8 +576,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                 });
 
             });
-
-
+          
             $("#lbViewAlerts").mouseover(function () {
 
                 $.ajax({
@@ -380,7 +601,103 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
             });
 
         });
-    </script>   
+    </script>
+     <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             var userkey = '<%= Request.QueryString["v"] %>';
+             $(".fancybox").fancybox({
+                 href: $(this).attr('href'),
+                 fitToView: true,
+                 frameWidth: '100%',
+                 frameHeight: '100%',
+                 width: '87%',
+                 height: '100%',
+                 autoSize: false,
+                 closeBtn: true,
+                 closeClick: false,
+                 openEffect: 'fade',
+                 closeEffect: 'fade',
+                 type: "iframe",
+                 opacity: 0.7,
+                 onStart: function () {
+                     $("#fancybox-overlay").css({ "position": "fixed" });
+                 },
+                 beforeShow: function () {
+
+                     var url = $(this).attr('href');
+                     url = (url == null) ? '' : url.split('?');
+                     if (url.length > 1) {
+                         url = url[1].split('=');
+
+                         // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                         var id = url[1];
+                         var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2/' + id;
+                         //window.location = pageUrl;
+                         window.history.pushState('d', 't', pageUrl);
+                     }
+
+                 },
+                 beforeClose: function () {
+                     var currentpageurl = 'http://presspreview.azurewebsites.net/editor/brand-items?v=' + userkey;
+                     window.history.pushState('d', 't', currentpageurl);
+
+                 }
+             });
+
+         });
+</script>
+
+   <script type="text/javascript">
+       $(document).ready(function () {
+           //  var content = $('#myMessage').html();
+           $(".mesblockinf").fancybox({
+
+               fitToView: true,
+               frameWidth: '600px',
+               frameHeight: '270px',
+               width: '600px',
+               height: '270px',
+               autoSize: false,
+               closeBtn: true,
+               closeClick: false,
+               openEffect: 'fade',
+               closeEffect: 'fade',
+               type: "iframe",
+               opacity: 0.7,
+               onStart: function () {
+                   $("#fancybox-overlay").css({ "position": "fixed" });
+               }
+               //               beforeShow: function () {
+
+               //                    var url = $(this).attr('href');
+               //                                      url = (url == null) ? '' : url.split('?');
+               //                                      if (url.length > 1) {
+               //                                          url = url[1].split('=');
+
+               //                   // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+               //                     var id = url[1];
+               //                   var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2.aspx?v=' + id;
+               //                   //  window.location = pageUrl;
+               //                   window.history.pushState('d', 't', pageUrl);
+               //                    }
+
+               //               },
+               //               beforeClose: function () {
+               //                   window.location = 'http://presspreview.azurewebsites.net/editor/brand-items';
+               //               }
+           });
+
+       });
+</script>
+       <script src="../masonry/js/libs/imagesloaded.3.1.8.min.js"></script>
+<script src="../masonry/masonry.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $('.grid').masonry({
+        // options
+        itemSelector: '.boxn1'
+    });
+</script>
 </form>
 </body>
 </html>

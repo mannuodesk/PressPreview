@@ -1,3 +1,5 @@
+﻿
+
 ﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true" CodeFile="myprofile.aspx.cs" Inherits="pr_brand_myprofile" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
@@ -18,7 +20,12 @@
 <script type="text/javascript" src="../js/modernizr.custom.79639.js"></script> 
  <script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="../js/sample.js"></script>
+<link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
 <style>
+  #imgUserIcon{
+    min-width: 61px;
+    margin-right: -22px;
+  }
 select {
 	    width:100%;
         padding: 12px;
@@ -98,9 +105,11 @@ select option {
 
 
      <div class="remainblock">
-           <div class="replaytext"> <a href="../changeCover/"  runat="server" ><img src="../images/replaceimage.png" /></a></div><div class="lines"><hr /></div>
-          <div class="replaimg"><a href=""><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" style="border-radius:50%;"/></a></div>
-          <div class="replaimg"><a href="../changeProfile/"  class="fancybox"><img  src="../images/replaceimage1.png" /></a></div>
+          <div class="replaytext">
+             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
+          </div><div class="lines"><hr /></div>
+          <div class="replaimg"><a href="#"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></a></div>
+           <div class="replaimg"><a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" ><img  src="../images/replaceimage1.png" /></a></div>
           <div class="lines"><hr /></div>
          <asp:updatepanel runat="server">
              <ContentTemplate>
@@ -160,15 +169,15 @@ select option {
               <div class="relinw"></div>
           </div><!--likeblock-->
           
-          <div class="likeblock">
+          <%--<div class="likeblock">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
              <%-- <div class="reinput"><input class="seinre" placeholder="Enter Link" /></div>--%>
-              <%--<div class="resubtext"><a href="">Submit</a></div>--%>
+              <%--<div class="resubtext"><a href="">Submit</a></div>
                <div class="resubtext">
                    <button type="button" runat="server" name="signup" ID="btnSubmit_Social_Links" class="hvr-sweep-to-rightup2" style="margin-top: -14px; margin-right: 48px; margin-bottom: 10px; float:right;"   OnServerClick="btnSubmit_Social_Links_OnServerClick" >Submit</button> 
                 </div>
-             <%-- <div class="recross"><a href=""><img src="../images/smcross.jpg" /></a></div>--%>
-          </div><!--likeblock-->
+             <%-- <div class="recross"><a href=""><img src="../images/smcross.jpg" /></a></div>
+          </div>--%><!--likeblock-->
              </ContentTemplate>
          </asp:updatepanel>
          
@@ -420,15 +429,14 @@ select option {
 
 </div><!--wrapper-->
 
-    <!-- Javascript
+        <!-- Javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../js/bootstrap.js"></script>
     <script src="../masonry/js/libs/imagesloaded.3.1.8.min.js"></script>
     <script src="../masonry/js/libs/jquery.masonry.3.2.1.min.js"></script>
     <script src="../masonry/js/base.js" type="text/javascript"></script>
-    		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    		<script type="text/javascript">
+ <script type="text/javascript">
 
     		    function DropDown(el) {
     		        this.dd = el;
@@ -469,86 +477,31 @@ select option {
 
 		</script>
         <script type="application/javascript" src="../js/custom.js"></script>
-        <script type="text/javascript">
-            function openfileDialog() {
-                $("#fupCover").click();
-            }
+    <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $(".fancybox").fancybox({
+                  fitToView: true,
+                  frameWidth: '100%',
+                  frameHeight: '100%',
+                  width: '100%',
+                  height: '100%',
+                  autoSize: false,
 
-            function openprofilePicDialog() {
-                $("#fupCover").click();
-            }
+                  closeClick: true,
+                  openEffect: 'fade',
+                  closeEffect: 'fade',
+                  type: "iframe",
+                  opacity: 0.7,
+                  afterClose: function () {
+                      location.reload();
+                      return;
+                  }
 
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new window.FileReader();
-                    reader.onload = function (e) {
-                        $('#blah')
-                            .attr('src', e.target.result)
-                            .width('100%')
-                            .height(200);
-                    };
+              });
+          });
+</script>
 
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $("#fupCover").change(function () {
-                readURL(this);
-            });
-        </script>
-        
-<script type="text/javascript">
-    $(document).ready(function () {
-        var userId = '<%= Request.Cookies["FRUserId"].Value %>';
-        $("#lbViewMessageCount").click(function () {
-
-            $.ajax({
-                type: "POST",
-                url: $(location).attr('pathname') + "\\UpdateMessageStatus",
-                contentType: "application/json; charset=utf-8",
-                data: "{'userID':'" + userId + "'}",
-                dataType: "json",
-                async: true,
-                error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
-                },
-                success: function (msg) {
-                    //                    if (msg.d == true) {
-
-                    $('#<%=lblTotalMessages.ClientID%>').hide("slow");
-                    $('#<%=lblTotalMessages.ClientID%>').val = "";
-                    return false;
-                }
-            });
-
-        });
-
-
-        $("#lbViewAlerts").click(function () {
-
-            $.ajax({
-                type: "POST",
-                url: $(location).attr('pathname') + "\\UpdateNotifications",
-                contentType: "application/json; charset=utf-8",
-                data: "{'userID':'" + userId + "'}",
-                dataType: "json",
-                async: true,
-                error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
-                },
-                success: function (msg) {
-                    //                    if (msg.d == true) {
-
-                    $('#<%=lblTotalNotifications.ClientID%>').hide("slow");
-                    $('#<%=lblTotalNotifications.ClientID%>').val = "";
-                    return false;
-                }
-            });
-
-        });
-
-    });
-    </script>   
 
 </form>
 </body>

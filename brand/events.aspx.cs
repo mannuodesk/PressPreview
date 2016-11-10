@@ -5,9 +5,12 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
+using System.Data.SqlClient;
+using System.Collections.Generic;
 
 public partial class events_Default : System.Web.UI.Page
 {
+    public static string[] monthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
     protected void Page_Load(object sender, EventArgs e)
     {
         var al = new ArrayList { lblUsername, imgUserIcon };
@@ -101,10 +104,10 @@ public partial class events_Default : System.Web.UI.Page
             }
 
             
-            sdsEvent.SelectCommand = searchQuery;
-            dlEvents.DataSourceID = "";
-            dlEvents.DataSource = sdsEvent;
-            dlEvents.DataBind();
+            //sdsEvent.SelectCommand = searchQuery;
+            //dlEvents.DataSourceID = "";
+            //dlEvents.DataSource = sdsEvent;
+            //dlEvents.DataBind();
         }
         catch (Exception  ex)
         {
@@ -195,5 +198,162 @@ public partial class events_Default : System.Web.UI.Page
 
     }
 
-    
+    [WebMethod, ScriptMethod]
+    public static List<Events> GetEvents()
+    {
+        List<Events> EventList = new List<Events>();
+        Events events = new Events();
+        var db = new DatabaseManagement();
+        using (var con = new SqlConnection(db.ConnectionString))
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where EventTitle IS NOT NULL  ORDER BY EventID DESC";
+                cmd.Connection = con;
+                con.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        events = new Events();
+                        events.EventID = dr["EventID"].ToString();
+                        events.EventTitle = dr["EventTitle"].ToString();
+                        DateTime date = Convert.ToDateTime((dr["StartDate"].ToString()));
+                        events.StartDate = monthNames[date.Month] + " " + date.Day + ", ";
+                        events.StartTime = dr["StartTime"].ToString();
+                        events.EFeaturePic = dr["EFeaturePic"].ToString();
+                        events.EventLocation = dr["ELocation"].ToString();
+                        EventList.Add(events);
+                    }
+                }
+            }
+        }
+
+        return EventList;
+    }
+    [WebMethod, ScriptMethod]
+    public static List<Events> GetEventsSearching(string title, string city, string category)
+    {
+        List<Events> EventList = new List<Events>();
+        Events events = new Events();
+        try
+        {
+            string searchQuery = string.Empty;
+
+            if (title == "" && city == "0" && category == "0")
+            {
+                searchQuery =
+                            string.Format(
+
+                       "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events]");
+            }
+            else
+            {
+                if (title != "")
+                {
+                    if (city != "0")
+                    {
+                        if (category != "0")
+                        {
+                            searchQuery =
+                            string.Format(
+                                //"SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where EventTitle LIKE  '%' + {0} + '%'  OR ECity={1} OR ECategoryID={2}",
+                       "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where EventTitle LIKE  '%' + {0} + '%'  OR ECity={1} AND ECategoryID={2}",
+                       IEUtils.SafeSQLString(title),
+                       IEUtils.SafeSQLString(city),
+                       IEUtils.ToInt(category));
+                        }
+                        else
+                        {
+                            searchQuery =
+                           string.Format(
+                      "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where EventTitle LIKE  '%' + {0} + '%'  OR ECity={1}",
+                      IEUtils.SafeSQLString(title),
+                      IEUtils.SafeSQLString(city));
+                        }
+                    }
+                    else
+                    {
+                        searchQuery =
+                           string.Format(
+                      "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where EventTitle LIKE '%' + {0} + '%'",
+                      IEUtils.SafeSQLString(title));
+                    }
+                }
+                else
+                {
+                    if (city != "0")
+                    {
+                        if (category != "0")
+                        {
+                            searchQuery =
+                           string.Format(
+                                //"SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where  ECity={0} OR ECategoryID={1}",
+                      "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where  ECity={0} AND ECategoryID={1}",
+
+                      IEUtils.SafeSQLString(city),
+                      IEUtils.ToInt(category));
+                        }
+                        else
+                        {
+                            searchQuery =
+                           string.Format(
+                      "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where  ECity={0}",
+
+                      IEUtils.SafeSQLString(city));
+                        }
+                    }
+                }
+                if (title != "" && city != "0" && category != "0")
+                {
+
+                }
+                else if (title == "" && city == "0")
+                {
+                    searchQuery =
+                    string.Format(
+                        //"SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where  ECategoryID={0}",
+                        "SELECT [EventID], [EventTitle], [StartDate], [StartTime], [EFeaturePic], [ELocation] FROM [Tbl_Events] Where  ECategoryID={0}",
+                        IEUtils.ToInt(category
+                        ));
+                }
+            }
+
+
+            var db = new DatabaseManagement();
+            using (var con = new SqlConnection(db.ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = searchQuery;
+                    cmd.Connection = con;
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            events = new Events();
+                            events.EventID = dr["EventID"].ToString();
+                            events.EventTitle = dr["EventTitle"].ToString();
+                            DateTime date = Convert.ToDateTime((dr["StartDate"].ToString()));
+                            events.StartDate = monthNames[date.Month] + " " + date.Day + ", ";
+                            events.StartTime = dr["StartTime"].ToString();
+                            events.EFeaturePic = dr["EFeaturePic"].ToString();
+                            events.EventLocation = dr["ELocation"].ToString();
+                            EventList.Add(events);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+
+
+        return EventList;
+    }
 }

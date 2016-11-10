@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="discover.aspx.cs" Inherits="home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="discover.aspx.cs" Inherits="home" %>
 
 <!DOCTYPE html>
 
@@ -8,8 +8,19 @@
 <title>Discover</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        #contentbox2, .wishlistitemsa {
+    margin: auto;
+    float: left;
+    width: 100%;
+}
         .grid{
             font-size:0px;
+        }
+        .hideresetbutton{
+            display:none;
+        }
+        .showresetbutton{
+            display:block;
         }
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
@@ -36,147 +47,173 @@
            GetRecords();
        });
 
-
-
-       var $container = $('.grid');
-       $container.on('imagesLoaded', (function () {
-           $container.masonry({
-               itemSelector: '.box',
-               isFitWidth: true,
-               isAnimated: true
-           });
-       }));
-       //    $('.grid').masonry({
-       //    // options
-       //        itemSelector: '.boxn1'
-       //    });
-
-       var masonryUpdate = function () {
-           setTimeout(function () {
-               $('.grid').masonry();
-           }, 5000);
-       };
-
-
-       var pageIndex = -1;
+       $(window).scroll(function () {
+           if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+               //   $("#loadMore").fadeIn();
+               GetRecords();
+           }
+       });
+       var pageIndex = 0;
        var pageCount;
        function GetRecords() {
            pageIndex++;
-           if (pageIndex == 0 || pageIndex <= pageCount) {
-               // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-               $('#loader').show();
+           //////if (pageIndex == 1 || pageIndex <= pageCount) {
+           // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+           $('#loader').show();
 
-               //send a query to server side to present new content
-               $.ajax({
-                   type: "POST",
-                   url: "discover.aspx\\LoadData",
-                   data: '{pageIndex: ' + pageIndex + '}',
-                   contentType: "application/json; charset=utf-8",
-                   dataType: "json",
-                   success: OnSuccess
-               });
-           } else {
-               $('.loadMore').hide();
-               var masonry = $('.grid');
-               masonry.masonry({
-                   itemSelector: '.box'
-               });
-               setTimeout(function () {
-                   $(masonry).show();
-                   $(masonry).masonry('reloadItems');
-                   $(masonry).masonry('layout');
-                   $(".box").css("visibility", "visible");
-               }, 2000);
-               //   $('.loadMore').val('No more records');
-               //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-           }
+           //send a query to server side to present new content
+           $.ajax({
+               type: "POST",
+               url: "discover.aspx\\LoadData",
+               data: '{pageIndex: ' + pageIndex + '}',
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: OnSuccess
+           });
+           ////////} else {
+           ////////    $('.loadMore').hide();
+           ////////    var masonry = $('.grid');
+           ////////    masonry.masonry({
+           ////////        itemSelector: '.box'
+           ////////    });
+           ////////    setTimeout(function () {
+           ////////        $(masonry).show();
+           ////////        $(masonry).masonry('reloadItems');
+           ////////        $(masonry).masonry('layout');
+           ////////        $(".box").css("visibility", "visible");
+           ////////    }, 5000);
+           ////////    //   $('.loadMore').val('No more records');
+           ////////    //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
+           ////////}
        }
 
 
 
 
-
-
+       var hasItem = false;
        function OnSuccess(data) {
+           $("#contentbox").removeAttr("style");
+           $('#norecord').hide();
+           $('#LoaderItem').show();
            console.log(data);
            var items = data.d;
            var fragment;
+           if (items.length != 0) {
+               hasItem = true;
+               var $grid = $('.grid');
+               $grid.masonry({
+                   itemSelector: '.box',
+                   transitionDuration: '0.4s',
+               });
+               $.each(items, function (index, val) {
+                   console.log(index);
+                   console.log(val.ItemId);
+                   pageCount = val.PageCount;
+                   fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
+                                    " <div class='disblock'> " +
+                                        "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
+                                                "<div class='dbl'> " +
+                                        "          <div class='hover ehover13'> " +
+                                                        "<img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
+                                           "                  <h2 class='titlet'>" + val.Title + "</h2> " +
+                                               "              <h2 class='linenew'></h2> " +
+                                                   "          <h2> " +
+                                                       "          <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
+                                                    "</div> " +
+                                                               "              <!--overlay--> " +
+                                                 "</div> " +
+                                                 "<!--hover ehover13--> " +
+                                                                           "      </div> " +
+                                                                               "  </a> " +
+                                                                                   "  <div class='disname'> " +
+                                                                                       "      <div class='mesbd'> " +
+                                                                                           "          <div class='mimageb'> " +
+                                                                                               "              <div class='mimgd'> " +
+                                                                                                   "                  <a href=''> " +
+                                                                                                       "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
+                                                                                                           "              </div> " +
+                                                                                                               "          </div> " +
+                                                                                                                   "          <!--mimageb--> " +
+                                                                                                                       "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
+                                                                                                                           "              <div class='m1'> " +
+                                                                                                                               "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemId + "'class='fancybox'>" + val.Title + "</a></div> " +
+                                                                                                                                   "                  <div class='muserdb'>By " + val.Name + "</div> " +
+                                                                                                                                       "              </div> " +
+                                                                                                                                           "              <div class='m1'> " +
+                                                                                                                                               "                  <div class='mtextd'>" + val.Description + "</div> " +
+                                                                                                                                                   "              </div> " +
+                                                                                                                                                       "              <div class='m1' style='font-size:12px;'> " +
+                                                                                                                                                           "                  <div class='vlike'> " +
+                                                                                                                                                               "                      <img src='../images/views.png' /> " +
+                                                                                                                                                                   "                      &nbsp;" + val.Views + "</div> " +
+                                                                                                                                                                       "                  <div class='vlike'> " +
+                                                                                                                                                                           "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
+                                                                                                                                                                                       "                  <div class='mdaysd' > " +
+                                                                                                                                                                                           "                      <span ID='lblDate2'>" + val.DatePosted + "</span> " +
+                                                                                                                                                                                               "                  </div> " +
+                                                                                                                                                                                                   "              </div> " +
+                                                                                                                                                                                                       "          </div> " +
+                                                                                                                                                                                                           "          <!--mtextb--> " +
+                                                                                                                                                                                                               "      </div> " +
+                                                                                                                                                                                                                   "      <!--mseb--> " +
+                                                                                                                                                                                                                       "  </div> " +
+                                                                                                                                                                                                                           " </div> " +
+                                                                                                                                                                                                                               " </div>";
 
-           $.each(items, function (index, val) {
-               console.log(index);
-               console.log(val.ItemId);
-               pageCount = val.PageCount;
-               fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
-                   " <div class='disblock'> " +
-                       "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
-                           "      <div class='dbl'> " +
-                               "          <div class='hover ehover13'> " +
-                                   "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
-                                       "                  <h2 class='titlet'>" + val.Title + "</h2> " +
-                                           "                  <h2 class='linenew'></h2> " +
-                                               "                  <h2> " +
-                                                   "                      <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
-                                                       "              </div> " +
-                                                           "              <!--overlay--> " +
-                                                               "          </div> " +
-                                                                   "          <!--hover ehover13--> " +
-                                                                       "      </div> " +
-                                                                           "  </a> " +
-                                                                               "  <div class='disname'> " +
-                                                                                   "      <div class='mesbd'> " +
-                                                                                       "          <div class='mimageb'> " +
-                                                                                           "              <div class='mimgd'> " +
-                                                                                               "                  <a href=''> " +
-                                                                                                   "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
-                                                                                                       "              </div> " +
-                                                                                                           "          </div> " +
-                                                                                                               "          <!--mimageb--> " +
-                                                                                                                   "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
-                                                                                                                       "              <div class='m1'> " +
-                                                                                                                           "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemID + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                               "                  <div class='muserdb'>By " + val.Name + "</div> " +
-                                                                                                                                   "              </div> " +
-                                                                                                                                       "              <div class='m1'> " +
-                                                                                                                                           "                  <div class='mtextd'>" + val.Description + "</div> " +
-                                                                                                                                               "              </div> " +
-                                                                                                                                                   "              <div class='m1' style='font-size:12px;'> " +
-                                                                                                                                                       "                  <div class='vlike'> " +
-                                                                                                                                                           "                      <img src='../images/views.png' /> " +
-                                                                                                                                                               "                      &nbsp;" + val.Views + "</div> " +
-                                                                                                                                                                   "                  <div class='vlike'> " +
-                                                                                                                                                                       "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
-                                                                                                                                                                                   "                  <div class='mdaysd' > " +
-                                                                                                                                                                                       "                      <span ID='lblDate2'>" + val.dated + "</span> " +
-                                                                                                                                                                                           "                  </div> " +
-                                                                                                                                                                                               "              </div> " +
-                                                                                                                                                                                                   "          </div> " +
-                                                                                                                                                                                                       "          <!--mtextb--> " +
-                                                                                                                                                                                                           "      </div> " +
-                                                                                                                                                                                                               "      <!--mseb--> " +
-                                                                                                                                                                                                                   "  </div> " +
-                                                                                                                                                                                                                       " </div> " +
-                                                                                                                                                                                                                           " </div>";
+               });
+           }
+           else if (hasItem == false) {
+               $('#LoaderItem').hide();
+               $('#norecord').html("No Record Found");
+               $('#norecord').show();
+           }
+           else {
+               $('#LoaderItem').hide();
+               $('#norecord').html("No More Record Found");
+               $('#norecord').show();
+           }
 
+
+           var $items = $(fragment);
+           $items.hide();
+           $grid.append($items);
+           $grid.masonry('layout');
+           $items.imagesLoaded(function () {
+               $grid.masonry('appended', $items);
+               $grid.masonry('layout');
+               $items.show();
+               $('#LoaderItem').hide();
            });
+           //var $items = $(fragment);
+           //$items.hide();
+           //$grid.append($items).masonry('appended', $items);
+           //$grid.masonry('layout');
+           //$items.imagesLoaded(function () {
+           //    $grid.masonry('layout');
+
+           //});
+
+           //$items.imagesLoaded().Done(function () {
+           //    $items.show();
+
+           //});
 
 
-           var masonry = $('.grid');
-           masonry.masonry({
-               itemSelector: '.box'
-           });
+           //$items.imagesLoaded().progress(function (imgLoad, image) {
+           //    // get item
+           //    // image is imagesLoaded class, not <img>, <img> is image.img
+           //    var $item = $(image.img).parents('.item');
+           //    $grid.masonry('layout');
+           //    // un-hide item
+           //    $item.show();
+           //    // masonry does its thing
+           //    $grid.masonry('appended', $item);
+           //});
 
-           $(masonry).append(fragment);
-           $(masonry).hide();
-           setTimeout(function () {
-               $(masonry).show();
-               $(masonry).masonry('reloadItems');
-               $(masonry).masonry('layout');
-               $(".box").css("visibility", "visible");
-               $(masonry).show();
-           }, 2000);
-           //$(masonry).append(fragment).masonry('appended', fragment, true);
-           //$(masonry).append(fragment).masonry('reload');
-           //  $(".grid").append(data.d).masonry('reload');
+
+
+
+
            $('#loader').hide();
            if (pageCount <= 1) {
                $('.loadMore').hide();
@@ -204,22 +241,22 @@
                switch (id) {
                    case 'default':
                        $('.loadMore').show();
-                       $('.grid').masonry('destroy');
+                       //$('.grid').masonry('destroy');
                        GetRecords();
                        break;
                    case 'byCategory':
                        $('.loadMore').show();
-                       $('.grid').masonry('destroy');
+                       //$('.grid').masonry('destroy');
                        GetRecordsByCategory(selectedcat);
                        break;
                    case 'bySeason':
                        $('.loadMore').show();
-                       $('.grid').masonry('destroy');
+                       //$('.grid').masonry('destroy');
                        GetRecordsBySeason(selectedseason);
                        break;
                    case 'byHoliday':
                        $('.loadMore').show();
-                       $('.grid').masonry('destroy');
+                       //$('.grid').masonry('destroy');
                        GetRecordsByHoliday(selectedholiday);
                        break;
                }
@@ -275,613 +312,7 @@
 
        }
      </script>  
-     <script type="text/javascript">
-
-
-
-         // Page variables for search by Category
-         var pageIndex_cat = 0;
-         var pageCount_cat = 0;
-         // Page variables for search by Season
-         var pageIndex_season = 0;
-         var pageCount_season;
-         // Page variables for search by Holiday
-         var pageIndex_holiday = 0;
-         var pageCount_holiday;
-         // Page variables for search by Title
-         var pageIndex_title = 0;
-         var pageCount_title;
-         var temp = 'Test';
-         var selectedcat = 0;
-         function GetCategory(categoryid) {
-             selectedcat = categoryid;
-             $('.loadMore').prop('id', 'byCategory');
-             $('.loadMore').show();
-             GetRecordsByCategoryDef(categoryid);
-         }
-
-         var selectedseason = 0;
-         function GetSeason(seasonid) {
-             selectedseason = seasonid;
-             $('.loadMore').prop('id', 'bySeason');
-             $('.loadMore').show();
-             GetRecordsBySeasonDef(seasonid);
-         }
-
-         var selectedholiday = 0;
-         function GetHoliday(hoidayid) {
-             selectedholiday = hoidayid;
-             $('.loadMore').prop('id', 'byHoliday');
-             $('.loadMore').show();
-             GetRecordsByHolidayDef(hoidayid);
-         }
-
-         function GetTitle(title) {
-             alert($('#' + title).val());
-             GetRecordsByTitle(title);
-         }
-         // Defualt
-
-
-         // By category (Default)
-         function GetRecordsByCategoryDef(categoryid) {
-             pageIndex_cat = 1;
-             pageCount_cat = 0;
-             $('#loader').show();
-
-             //send a query to server side to present new content
-             $.ajax({
-                 type: "POST",
-                 url: "profile-page-items.aspx\\GetDataByCategory",
-                 data: '{pageIndex: ' + pageIndex_cat + ', categoryid:' + categoryid + '}',
-                 contentType: "application/json; charset=utf-8",
-                 dataType: "json",
-                 success: OnSuccessCate
-             });
-
-             if (pageCount_cat <= 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.box'
-                 });
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".box").css("visibility", "visible");
-                 }, 2000);
-                 // var mess = '<label class="loadMore"> No more record </label>';
-                 //  $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             } else {
-
-             }
-
-         }
-
-         // By Category (load More)
-         function GetRecordsByCategory(categoryid) {
-             pageIndex_cat++;
-             if (pageIndex_cat == 1 || pageIndex_cat <= pageCount_cat) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-items.aspx\\GetDataByCategory",
-                     data: '{pageIndex: ' + pageIndex_cat + ', categoryid:' + categoryid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessCate
-                 });
-
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.box'
-                 });
-
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".box").css("visibility", "visible");
-                 }, 2000);
-                 // var mess = '<label class="loadMore"> No more record </label>';
-                 // $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-         // By Season (Defualt)
-         function GetRecordsBySeasonDef(seasonid) {
-             pageIndex_season = 1;
-             $('#loader').show();
-             pageCount_season = 0;
-             //send a query to server side to present new content
-             $.ajax({
-                 type: "POST",
-                 url: "profile-page-items.aspx\\GetDataBySeason",
-                 data: '{pageIndex: ' + pageIndex_season + ',seasonid:' + seasonid + '}',
-                 contentType: "application/json; charset=utf-8",
-                 dataType: "json",
-                 success: OnSuccessSession
-             });
-             if (pageCount_season < 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                 //$('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-         // By Season pagination
-
-         // By Season
-         function GetRecordsBySeason(seasonid) {
-             pageIndex_season++;
-             if (pageIndex_season == 1 || pageIndex_season <= pageCount_season) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-items.aspx\\GetDataBySeason",
-                     data: '{pageIndex: ' + pageIndex_season + ',seasonid:' + seasonid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessSession
-                 });
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                 // $('#divPostsLoader').append(mess);
-                 // setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-
-
-         // By Holiday
-         function GetRecordsByHolidayDef(holidayid) {
-             pageIndex_holiday = 1;
-             pageCount_holiday = 0;
-             // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-             $('#loader').show();
-
-             //send a query to server side to present new content
-             $.ajax({
-                 type: "POST",
-                 url: "profile-page-items.aspx\\GetDataByHoliday",
-                 data: '{pageIndex: ' + pageIndex_holiday + ', holidayid:' + holidayid + '}',
-                 contentType: "application/json; charset=utf-8",
-                 dataType: "json",
-                 success: OnSuccessHoliday
-             });
-             if (pageCount_holiday < 1) {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 //var mess = '<label class="loadMore"> No more record </label>';
-                 //$('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-
-         // By Holiday
-         function GetRecordsByHoliday(holidayid) {
-             pageIndex_holiday++;
-             if (pageIndex_holiday == 1 || pageIndex_holiday <= pageCount_holiday) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-items.aspx\\GetDataByHoliday",
-                     data: '{pageIndex: ' + pageIndex_holiday + ', holidayid:' + holidayid + '}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccessHoliday
-                 });
-             } else {
-                 $('.loadMore').hide();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 // var mess = '<label class="loadMore"> No more record </label>';
-                 /// $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-         // By Title
-         function GetRecordsByTitle(title) {
-             $('.grid').empty();
-             pageIndex_title = 1;
-             //pageIndex_title++;
-             if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
-                 // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
-                 $('#loader').show();
-
-                 //send a query to server side to present new content
-                 $.ajax({
-                     type: "POST",
-                     url: "profile-page-items.aspx\\GetDataByTitle",
-                     data: '{pageIndex: ' + pageIndex_title + ', title:"' + title + '"}',
-                     contentType: "application/json; charset=utf-8",
-                     dataType: "json",
-                     success: OnSuccess
-
-                 });
-             } else {
-                 alert("error");
-                 $('#loadMore').remove();
-                 var masonry = $('.grid');
-                 masonry.masonry({
-                     itemSelector: '.boxn1'
-                 });
-                 setTimeout(function () {
-                     $(masonry).show();
-                     $(masonry).masonry('reloadItems');
-                     $(masonry).masonry('layout');
-                     $(".boxn1").css("visibility", "visible");
-                 }, 2000);
-                 // var mess = '<label id="loadMore"> No more record </label>';
-                 // $('#divPostsLoader').append(mess);
-                 //setTimeout(function () { $('#loadMore').fadeOut(); }, 4000);
-             }
-         }
-
-
-
-         function OnSuccessCate(data) {
-             var items = data.d;
-             $('.grid').empty();
-             var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_cat = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
-                     " <div class='disblock'> " +
-                         "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
-                             "      <div class='dbl'> " +
-                                 "          <div class='hover ehover13'> " +
-                                     "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
-                                         "                  <h2 class='titlet'>" + val.Title + "</h2> " +
-                                             "                  <h2 class='linenew'></h2> " +
-                                                 "                  <h2> " +
-                                                     "                      <span ID='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
-                                                         "              </div> " +
-                                                             "              <!--overlay--> " +
-                                                                 "          </div> " +
-                                                                     "          <!--hover ehover13--> " +
-                                                                         "      </div> " +
-                                                                             "  </a> " +
-                                                                                 "  <div class='disname'> " +
-                                                                                     "      <div class='mesbd'> " +
-                                                                                         "          <div class='mimageb'> " +
-                                                                                             "              <div class='mimgd'> " +
-                                                                                                 "                  <a href=''> " +
-                                                                                                     "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
-                                                                                                         "              </div> " +
-                                                                                                             "          </div> " +
-                                                                                                                 "          <!--mimageb--> " +
-                                                                                                                     "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
-                                                                                                                         "              <div class='m1'> " +
-                                                                                                                             "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemID + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                                 "                  <div class='muserdb'>By " + val.Name + "</div> " +
-                                                                                                                                     "              </div> " +
-                                                                                                                                         "              <div class='m1'> " +
-                                                                                                                                             "                  <div class='mtextd'>" + val.Description + "</div> " +
-                                                                                                                                                 "              </div> " +
-                                                                                                                                                     "              <div class='m1' style='font-size:12px;'> " +
-                                                                                                                                                         "                  <div class='vlike'> " +
-                                                                                                                                                             "                      <img src='../images/views.png' /> " +
-                                                                                                                                                                 "                      &nbsp;" + val.Views + "</div> " +
-                                                                                                                                                                     "                  <div class='vlike'> " +
-                                                                                                                                                                         "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
-                                                                                                                                                                                     "                  <div class='mdaysd' > " +
-                                                                                                                                                                                         "                      <span ID='lblDate2'>" + val.dated + "</span> " +
-                                                                                                                                                                                             "                  </div> " +
-                                                                                                                                                                                                 "              </div> " +
-                                                                                                                                                                                                     "          </div> " +
-                                                                                                                                                                                                         "          <!--mtextb--> " +
-                                                                                                                                                                                                             "      </div> " +
-                                                                                                                                                                                                                 "      <!--mseb--> " +
-                                                                                                                                                                                                                     "  </div> " +
-                                                                                                                                                                                                                         " </div> " +
-                                                                                                                                                                                                                             " </div>";
-
-
-
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.box'
-             });
-
-             $(masonry).append(fragment);
-             $(masonry).hide();
-
-             setTimeout(function () {
-                 $(masonry).show();
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".box").css("visibility", "visible");
-
-             }, 2000);
-             //  $(masonry).append(fragment).masonry('appended', fragment, true);
-             // $(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
-             $('#loader').hide();
-
-         }
-
-         function OnSuccessSession(data) {
-             var items = data.d;
-             $('.grid').empty();
-             var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_season = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
-                     " <div class='disblock'> " +
-                         "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
-                             "      <div class='dbl'> " +
-                                 "          <div class='hover ehover13'> " +
-                                     "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
-                                         "                  <h2 class='titlet'>" + val.Title + "</h2> " +
-                                             "                  <h2 class='linenew'></h2> " +
-                                                 "                  <h2> " +
-                                                     "                      <span ID='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
-                                                         "              </div> " +
-                                                             "              <!--overlay--> " +
-                                                                 "          </div> " +
-                                                                     "          <!--hover ehover13--> " +
-                                                                         "      </div> " +
-                                                                             "  </a> " +
-                                                                                 "  <div class='disname'> " +
-                                                                                     "      <div class='mesbd'> " +
-                                                                                         "          <div class='mimageb'> " +
-                                                                                             "              <div class='mimgd'> " +
-                                                                                                 "                  <a href=''> " +
-                                                                                                     "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
-                                                                                                         "              </div> " +
-                                                                                                             "          </div> " +
-                                                                                                                 "          <!--mimageb--> " +
-                                                                                                                     "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
-                                                                                                                         "              <div class='m1'> " +
-                                                                                                                             "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemID + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                                 "                  <div class='muserdb'>By " + val.Name + "</div> " +
-                                                                                                                                     "              </div> " +
-                                                                                                                                         "              <div class='m1'> " +
-                                                                                                                                             "                  <div class='mtextd'>" + val.Description + "</div> " +
-                                                                                                                                                 "              </div> " +
-                                                                                                                                                     "              <div class='m1' style='font-size:12px;'> " +
-                                                                                                                                                         "                  <div class='vlike'> " +
-                                                                                                                                                             "                      <img src='../images/views.png' /> " +
-                                                                                                                                                                 "                      &nbsp;" + val.Views + "</div> " +
-                                                                                                                                                                     "                  <div class='vlike'> " +
-                                                                                                                                                                         "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
-                                                                                                                                                                                     "                  <div class='mdaysd' > " +
-                                                                                                                                                                                         "                      <span ID='lblDate2'>" + val.dated + "</span> " +
-                                                                                                                                                                                             "                  </div> " +
-                                                                                                                                                                                                 "              </div> " +
-                                                                                                                                                                                                     "          </div> " +
-                                                                                                                                                                                                         "          <!--mtextb--> " +
-                                                                                                                                                                                                             "      </div> " +
-                                                                                                                                                                                                                 "      <!--mseb--> " +
-                                                                                                                                                                                                                     "  </div> " +
-                                                                                                                                                                                                                         " </div> " +
-                                                                                                                                                                                                                             " </div>";
-
-
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.box'
-             });
-
-             $(masonry).append(fragment);
-             $(masonry).hide();
-
-             setTimeout(function () {
-                 $(masonry).show();
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".box").css("visibility", "visible");
-
-             }, 2000);
-             //$(masonry).append(fragment).masonry('appended', fragment, true);
-             //$(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
-             $('#loader').hide();
-
-         }
-
-         function OnSuccessHoliday(data) {
-             var items = data.d;
-             $('.grid').empty();
-             var fragment;
-             $.each(items, function (index, val) {
-                 pageCount_holiday = val.PageCount;
-                 if (pageCount_cat <= 1) {
-                     $('.loadMore').hide();
-                     // var mess = '<label class="loadMore"> No more record </label>';
-                     //  $('#divPostsLoader').append(mess);
-                     //setTimeout(function () { $('.loadMore').fadeOut(); }, 4000);
-                 }
-                 fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
-                     " <div class='disblock'> " +
-                         "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
-                             "      <div class='dbl'> " +
-                                 "          <div class='hover ehover13'> " +
-                                     "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
-                                         "                  <h2 class='titlet'>" + val.Title + "</h2> " +
-                                             "                  <h2 class='linenew'></h2> " +
-                                                 "                  <h2> " +
-                                                     "                      <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
-                                                         "              </div> " +
-                                                             "              <!--overlay--> " +
-                                                                 "          </div> " +
-                                                                     "          <!--hover ehover13--> " +
-                                                                         "      </div> " +
-                                                                             "  </a> " +
-                                                                                 "  <div class='disname'> " +
-                                                                                     "      <div class='mesbd'> " +
-                                                                                         "          <div class='mimageb'> " +
-                                                                                             "              <div class='mimgd'> " +
-                                                                                                 "                  <a href=''> " +
-                                                                                                     "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
-                                                                                                         "              </div> " +
-                                                                                                             "          </div> " +
-                                                                                                                 "          <!--mimageb--> " +
-                                                                                                                     "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
-                                                                                                                         "              <div class='m1'> " +
-                                                                                                                             "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemID + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                                 "                  <div class='muserdb'>By " + val.Name + "</div> " +
-                                                                                                                                     "              </div> " +
-                                                                                                                                         "              <div class='m1'> " +
-                                                                                                                                             "                  <div class='mtextd'>" + val.Description + "</div> " +
-                                                                                                                                                 "              </div> " +
-                                                                                                                                                     "              <div class='m1' style='font-size:12px;'> " +
-                                                                                                                                                         "                  <div class='vlike'> " +
-                                                                                                                                                             "                      <img src='../images/views.png' /> " +
-                                                                                                                                                                 "                      &nbsp;" + val.Views + "</div> " +
-                                                                                                                                                                     "                  <div class='vlike'> " +
-                                                                                                                                                                         "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
-                                                                                                                                                                                     "                  <div class='mdaysd' > " +
-                                                                                                                                                                                         "                      <asp:Label runat='server' ID='lblDate2'>" + val.dated + "</asp:Label> " +
-                                                                                                                                                                                             "                  </div> " +
-                                                                                                                                                                                                 "              </div> " +
-                                                                                                                                                                                                     "          </div> " +
-                                                                                                                                                                                                         "          <!--mtextb--> " +
-                                                                                                                                                                                                             "      </div> " +
-                                                                                                                                                                                                                 "      <!--mseb--> " +
-                                                                                                                                                                                                                     "  </div> " +
-                                                                                                                                                                                                                         " </div> " +
-                                                                                                                                                                                                                             " </div>";
-
-
-             });
-             var masonry = $('.grid');
-             masonry.masonry({
-                 itemSelector: '.box'
-             });
-
-             $(masonry).append(fragment);
-             $(masonry).hide();
-
-             setTimeout(function () {
-                 $(masonry).show();
-                 $(masonry).masonry('reloadItems');
-                 $(masonry).masonry('layout');
-                 $(".box").css("visibility", "visible");
-             }, 2000);
-             //$(masonry).append(fragment).masonry('appended', fragment, true);
-             //$(masonry).append(fragment).masonry('reload');
-             //  $(".grid").append(data.d).masonry('reload');
-             $('#loader').hide();
-
-         }
-
-         function GetFirstRecordSet() {
-
-             $('#loader').show();
-
-             //send a query to server side to present new content
-             $.ajax({
-                 type: "POST",
-                 url: "profile-page-items.aspx\\GetData",
-                 data: '{pageIndex:1}',
-                 contentType: "application/json; charset=utf-8",
-                 dataType: "json",
-                 success: OnSuccess
-             });
-             //              if(pageCount=1) {
-             //                  $('#loadMore').remove();
-             //                  var mess = '<label id="loadMore"> No more record </label>';
-             //                  $('#divPostsLoader').append(mess);
-             //                  setTimeout(function () { $('#loadMore').fadeOut(); }, 4000);
-             //              }
-         }
-         $(document).ready(function () {
-             //$('.grid').masonry('destroy');
-             //var masonry = $('.grid');
-             //masonry.masonry({
-             //    itemSelector: '.boxn1'
-             //});
-             //$(masonry).masonry('reloadItems');
-             //$(masonry).masonry('layout');
-             //When scroll down, the scroller is at the bottom with the function below and fire the lastPostFunc function
-             $(window).scroll(function () {
-                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                     //   $("#loadMore").fadeIn();
-                     //  GetRecords();
-                 }
-             });
-
-             $("#txtsearch").keydown(function (e) {
-                 if (e.keyCode == 13) { // enter
-                     GetRecordsByTitle($("#txtsearch").val());
-                     return false; //you can also say e.preventDefault();
-                 }
-             });
-         });
-     </script>
+ 
        
  <script type="text/javascript">
      function HideLabel() {
@@ -1041,15 +472,29 @@
                    </div>
                    </div>
          
-                   <div id="contentbox">
+                   <div id="contentbox" style="height:none">
                        <div class="grid" id="mygrid" style="height:auto !important;">
 
                        </div>
-                        <div id="divPostsLoader" style="margin-bottom:40px;">
+                       <div id="LoaderItem"  style="display:none;">
+                           <center>
+         <%--                  <i class="fa fa-spinner" aria-hidden="true"></i>--%>
+                           <img src="../images/ring.gif" />
+                           <%-- <img src="../images/Rainbow.gif"  /> --%>
+                           </center>
+
+                       </div>
+                       
+                       
+                       
+                       <div id="norecord" style="display:none;    margin-bottom: 63px;">
+                           No Record Found
+                       </div>
+                        <%--<div id="divPostsLoader" style="margin-bottom:40px;">
                      <div id="loader" style="width:100%; margin:0 auto; display:none;">
                      <img src="../images/ajax-loader.gif" style="padding-bottom: 20px; position: relative; top: 40px; left: 60px;" ></div>
                      <a href="#" id="default"  class="loadMore">Load More</a>
-                 </div>
+                 </div>--%>
                        <!--box-->
                    </div>
                    <!--content-->
@@ -1067,7 +512,7 @@
                                 </asp:Button>
                              <div class="serinput">
                                  <span class="fa fa-search"></span>
-                                 <asp:TextBox  runat="server" ID="txtsearch" placeholder=" search by brand name" value="" CssClass="sein"   />
+                                 <asp:TextBox  runat="server" ID="txtsearch" placeholder=" search by item name" value="" CssClass="sein"   />
                                
                                     
                              </div> <!--serinput-->
@@ -1080,6 +525,7 @@
                          <div class="searchb">
                              <div class="serheading" style="margin-bottom:10px;">Color <span class="text-danger">*</span></div> 
                               <div id="trigger" style="width:100%;">
+                                  <button id="eliminateColor" runat="server" onserverclick="eliminateColor_Click"  class="btn btn-link"><i class="fa fa-times-circle"></i> Reset</button>
                                    <input type="text" runat="server"  name="search" id="colbtn" placeholder="" readonly="readonly" value="" class="sein1" style="cursor:pointer; background: #F4F4F4;" tabindex="8">
                                         <%--<i class='ace-icon fa fa-pencil' style='position: relative;right: 26px; top: 13px;'></i>--%>
                                          <img src="../images/color.png"  alt="" style='position: relative; right: 16px; top: -26px; float: right;;'/>
@@ -1198,22 +644,23 @@
                               <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
                                       onitemcommand="rptTags_ItemCommand">
                                  <ItemTemplate>
-                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><%# Eval("Title") %></asp:LinkButton> </div>
+                                     <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><%# Eval("TagName") %></asp:LinkButton> </div>
                                  </ItemTemplate>
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      
-                                      SelectCommand="SELECT Top 25 [TagID], [Title] FROM [Tbl_ItemTags]   ORDER BY [TagID]">
+                                      SelectCommand="SELECT Top 25 [TagID], [TagName] FROM [Tbl_Tags] ORDER BY [TagID]">
+                                      <%--SelectCommand="SELECT Top 25 [TagID], [Title] FROM [Tbl_ItemTags]   ORDER BY [TagID]">--%>
                                       
                                   </asp:SqlDataSource>
                                   
                                   <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      
-                                      SelectCommand="SELECT Top 50 [TagID], [Title] FROM [Tbl_ItemTags]   ORDER BY [TagID]">
+                                      SelectCommand="SELECT [TagID], [TagName] FROM [Tbl_Tags] ORDER BY [TagID]">
+
+                                      <%--SelectCommand="SELECT [TagID], [Title] FROM [Tbl_ItemTags]   ORDER BY [TagID]">--%>
                                      
                                   </asp:SqlDataSource>
                              
@@ -1282,6 +729,7 @@
     });
 </script>
 <script type="text/javascript">
+    
     $("#colbtn").click(function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -1379,10 +827,11 @@
                beforeShow: function () {
 
                    var url = $(this).attr('href');
+
                    url = (url == null) ? '' : url.split('?');
                    if (url.length > 1) {
                        url = url[1].split('=');
-
+                       //alert(url);
                        //var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                        var id = url[1];
                        var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
