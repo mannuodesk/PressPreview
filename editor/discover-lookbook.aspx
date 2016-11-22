@@ -6,8 +6,23 @@
 <title>Press Preview - Discover Page - Lookbook</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+      .menudlist{
+        margin: 12px 0 0 !important;
+        color: #a4a4a4 !important;
+      }
         .grid{
             font-size:0px;
+        }
+        @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait)
+    {
+        .addlineblock1, .colrow {
+    display: block !important ;
+    
+}
+    
+}
+ #contentbox{
+          height: inherit  !important;
         }
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
@@ -23,6 +38,57 @@
    <script src="../js/jquery-ui.min.js"></script>
 
   <script type="text/javascript">
+      function doClick(ee,e)
+      {
+          if (e.key == "Enter")
+          {
+              $('#btnSearch').click();
+          }
+          
+      }
+      function GetTitle(title) {
+          pageIndex_title = 0;
+          pageCount_title = 0;
+          $('.grid').empty();
+          $('.grid').masonry('destroy');
+          //alert($('#' + title).val());
+          GetRecordsByTitle(title);
+      }
+      function GetRecordsByTitle(title) {
+          titlee = title;
+          selectedSorting = "title";
+          // Page variables for search by Category
+          pageIndex_cat = 0;
+          pageCount_cat = 0;
+          // Page variables for search by Season
+          pageIndex_season = 0;
+          pageCount_season = 0;
+          // Page variables for search by Holiday
+          pageIndex_holiday = 0;
+          pageCount_holiday = 0;
+
+          //pageIndex_title = 1;
+          pageIndex_title++;
+          //if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
+
+
+          // $('#divPostsLoader').prepend('<img src="../images/ajax-loader.gif">');
+          $('#loader').show();
+
+          //send a query to server side to present new content
+          $.ajax({
+              type: "POST",
+              url: "discover-lookbook.aspx\\GetDataByTitle",
+              data: '{pageIndex: ' + pageIndex_title + ', title:"' + title + '"}',
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              success: OnSuccess
+
+          });
+
+      }
+
+      
       $(document).ready(function () {
 
           GetRecords();
@@ -140,7 +206,7 @@
                                                                                                                                                                                                               "      </div> " +
                                                                                                                                                                                                                   "      <!--mseb--> " +
                                                                                                                                                                                                                       "  </div> " +
-                                                                                                                                                                                                                          " </div> " +
+                                                                                                                                                                                                                          " <div class='lineclook'></div></div> " +
                                                                                                                                                                                                                               " </div>";
 
               });
@@ -354,7 +420,7 @@
     </div>
 </div>
 <div class="l">
-    <button class="menudlist" id="a">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+    <asp:Label class="menudlist"  runat="server"  ID="btnSeason" Text="Seasons" tabindex="13">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px; margin-left:6px; margin-top:-5px;"></i></asp:Label>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
               <asp:Repeater ID="rptSeasons" runat="server" DataSourceID="sdsSeasons" 
@@ -375,7 +441,7 @@
 </div>    
 
 <div class="l">
-    <button class="menudlist" id="a">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+    <asp:Label class="menudlist"  runat="server"  ID="btnHoiday" Text="Holidays" tabindex="13">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px; margin-left:6px; margin-top:-5px;"></i></asp:Label>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
             <asp:Repeater ID="rptHoliday" runat="server" DataSourceID="sdsHoliday" 
@@ -451,7 +517,7 @@
                                 </asp:Button>
                              <div class="serinput">
                                  <span class="fa fa-search"></span>
-                                 <asp:TextBox  runat="server" ID="txtsearch" placeholder="search by brand name" value="" CssClass="sein"  />
+                                 <asp:TextBox  runat="server" ID="txtsearch2" placeholder="search by lookbook name" value="" CssClass="sein"  />
                              </div> <!--serinput-->
                          </div><!--search-->
                   </div><!--colmd12-->
@@ -468,7 +534,7 @@
                                  <ContentTemplate>
                              <div id="brandlst">
                               <asp:checkboxlist runat="server" ID="chkBrands"  OnSelectedIndexChanged="chkBrands_OnSelectedIndexChanged" AutoPostBack="True"
-                                         DataSourceID="sdsMoreBrands" DataTextField="Name" DataValueField="UserID" >
+                                         DataSourceID="sdsbrandsSearch" DataTextField="Name" DataValueField="UserID" >
                                      </asp:checkboxlist>
                               <asp:SqlDataSource runat="server" ID="sdsbrandsSearch" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
@@ -478,7 +544,7 @@
                              <asp:SqlDataSource runat="server" ID="sdsMoreBrands" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
                              ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
-                             SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
+                             SelectCommand="SELECT [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
                             
                              <%--<asp:Button runat="server"  ID="btnSearchBrands"  class="hvr-sweep-to-right3" Text="Apply" OnClick="btnSearchBrands_OnClick"></asp:Button>--%>
                              </div>

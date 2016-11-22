@@ -44,7 +44,7 @@
                            "  <label id='lblTime'>" + array[i].StartTime + "<label>" +
                        "</div>" +
                        "<div class='elisttitle'>" +
-                           "<a href='eventdetails.aspx?e='" + array[i].EventID + "'>" + array[i].EventTitle + "</a>" +
+                           "<a href='eventdetails.aspx?e=" + array[i].EventID + "'>" + array[i].EventTitle + "</a>" +
                        "</div>" +
                        "<div class='elistdate'>" +
                     array[i].EventLocation
@@ -217,7 +217,7 @@ select option {
 
 <!--text-->
 
-<div class="wrappereventlist">
+<div class="wrappereventlist" style="margin-bottom:5%">
       <div class="col-md-12 col-xs-12 etitle">
         Upcoming Events
       </div><!--col-md-12-->
@@ -240,7 +240,7 @@ select option {
                        <div class="elisttitle">
                            <a href='<%# Eval("EventID","eventdetails.aspx?e={0}") %>'><%# Eval("EventTitle") %></a>
                        </div>
-                       <div class="elistdate">
+                       <div id="<%# Eval("EventID") %>" class="elistdate eaddress">
                            <%# Eval("ELocation") %>
                        </div>  
                   </div>
@@ -259,7 +259,17 @@ select option {
           SelectCommand="">
            
       </asp:SqlDataSource>--%>
-       
+       <script>
+                           var elements = document.getElementsByClassName('eaddress');
+                           for (var i = 0; i < elements.length ; i++) {
+                               if (elements[i].innerText.length > 25) {
+                                   var desc = "";
+                                   desc = elements[i].innerText;
+                                   desc = desc.substring(0, 50);
+                                   document.getElementById(elements[i].id).innerText = desc + " ...";
+                               }
+                           }
+                      </script>
        <%-- <div class="ntlistbev">
            <div class="listimge"><a href=""><img src="images/eventlistimg.png" width="100%"/></a></div>
            <div class="elistdate">Sat, April 8 8:00 PM</div>

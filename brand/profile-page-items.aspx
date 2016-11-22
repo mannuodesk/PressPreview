@@ -374,7 +374,7 @@
              $('#norecord').hide();
              console.log(data);
              var items = data.d;
-             var fragment;
+             var fragment ='';
              if (items.length != 0) {
                  hasItem = true;
                  var $grid = $('.grid');
@@ -425,7 +425,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "</div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -514,7 +514,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "</div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -603,7 +603,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "</div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -692,7 +692,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "</div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -799,7 +799,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-              <!--#INCLUDE FILE="../includes/logo.txt" -->
+              <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">

@@ -19,19 +19,31 @@
     <style type="text/css">
         .liked{
             color:#4c92c6;
+            display:block !important;
         }
         .unliked{
             color:#808080;
+            display:block !important;
         }
-       
+             @media only screen and (max-width: 540px) {
+               .lightboxblockmain{
+                   width: 100% !important
+               }
+               .lightboxblockmain1m{
+                       margin: 0px 20px 0 0 !important;
+               }
+           }
     </style>
 <script type="text/javascript">
-    function ChangeColor(val) {
+    function ChangeColor(val)
+    {
         alert($('#Label200').val());
-        if (val == "rgb(26, 26, 26)") {
-            alert($('#lbtnLike').css('color', 'rgb(0, 0, 0)'));
+        if(val == "rgb(26, 26, 26)")
+        {
+            alert($('#lbtnLike').css('color','rgb(0, 0, 0)'));
         }
-        else {
+        else
+        {
             $('#lbtnLike').css('color', '#4c92c6');
         }
     }
@@ -397,10 +409,11 @@
                      
                        <div class="biglike">
                            <asp:Label runat="server" ID="Label200" Visible="False"></asp:Label>
-                            <asp:LinkButton runat="server" ID="lbtnLike" CssClass="mnLikes" Visible="true" OnClick="lbtnLike_Click">
+                            <asp:LinkButton runat="server" ID="lbtnLike" CssClass="mnLikes" Visible="true" OnClick="lbtnLike_Click" style="display:none"></asp:LinkButton>
+                           <a id="demoBtn" onclick="likeUnlike()" style="cursor:pointer">
                                         <%--<img src="../images/biglike.png" />--%>
-                                        <i class="fa fa-heart " aria-hidden="true" id="round"></i>
-                                        <asp:Label runat="server" ID="LikesLabel" Visible="True"></asp:Label> (<asp:Label runat="server"   ID="lblTotalLikes"></asp:Label>)</asp:LinkButton>
+                                        <i class="fa fa-heart " runat="server" aria-hidden="true" Id="round"></i>
+                                        <asp:Label runat="server" ID="LikesLabel" Visible="True">Likes</asp:Label> <asp:Label runat="server" ID="bracket1" Visible="True">(</asp:Label><asp:Label runat="server"   ID="lblTotalLikes"></asp:Label><asp:Label runat="server" ID="bracket2" Visible="True">)</asp:Label></a>
                                         <% if (lblTotalLikes.Text != "0")
                                            {%>
                                         <%--<div class="menudlist_list" id="list2" style="margin-top:20px;">
@@ -494,9 +507,8 @@
                              </asp:Repeater>
                                   <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
-                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 20 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
-                                      <%--SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">--%>
+                                      ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>"
+                                      SelectCommand="SELECT [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]"> 
                                       <SelectParameters>
                                           <asp:QueryStringParameter Name="ItemID" QueryStringField="v" Type="Int32" />
                                       </SelectParameters>
@@ -504,8 +516,9 @@
                                    <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                       SelectCommand="SELECT Top 40 [TagID], [TagName] FROM [Tbl_Tags] Where TagID IN (Select TagID from Tbl_ItemTagsMapping Where ItemID=?) ORDER BY [TagID]">
-                                      <%--SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=? ORDER BY [TagID]">--%>
+                                      SelectCommand="SELECT Top 40 [TagID], [Title] FROM [Tbl_ItemTags] 
+Where ItemID=? 
+ ORDER BY [TagID]">
                                       <SelectParameters>
                                           <asp:QueryStringParameter Name="ItemID" QueryStringField="v" Type="Int32" />
                                       </SelectParameters>
@@ -531,7 +544,7 @@
                      
                  <div class="col-md-12">
                      <asp:Panel runat="server" DefaultButton="btnAddPost">
-                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" style="width:40px; height:40px;" /></div>
+                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" /></div>
                     <div class="col-md-10">
                         <textarea runat="server" placeholder="Leave A Comments" class="textanew" name="texta" ID="txtComment" style="margin-bottom:-5px; line-height:1.3;"></textarea>
                         <asp:RequiredFieldValidator runat="server" ErrorMessage="Please enter some text"  style="float: right; padding: 5px;" Display="Static" ControlToValidate="txtComment" ValidationGroup="gpComment"></asp:RequiredFieldValidator>
@@ -657,7 +670,26 @@
   
 </div>
   
-   
+   <script type="text/javascript">
+       function likeUnlike()
+       {
+           $('#demobtn').css('color', '#FFF');
+           if ($('#demoBtn').hasClass('liked'))
+           {
+               $('#demobtn').css('color', '#000');
+               //document.getElementById('demoBtn').classList.remove('liked');
+               //document.getElementById('demoBtn').classList.add('unliked');
+           }
+           else
+           {
+               $('#demobtn').css('color', '#FFF');
+               //document.getElementById('demoBtn').classList.remove('unliked');
+               //document.getElementById('demoBtn').classList.add('liked');
+           }
+           document.getElementById('lbtnLike').click();
+           //__doPostBack('lbtnLike_Click', '');
+       }
+   </script>
     </form>
      <!-- Javascript
       <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

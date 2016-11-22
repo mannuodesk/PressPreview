@@ -7,7 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Press Preview - Edit LookBook</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<style>
+    #txtDescription_toolbarArea{
+        display: none;
+    }
+    #txtDescription_TabRow{
+        display: none
+    }
+</style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -25,82 +32,144 @@
  <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script src="../js/JSession.js" type="text/javascript"></script>
     <link href="../css/colorPicker.css" rel="stylesheet" type="text/css" />
-    
+    <style>
+  
+</style>
 
-   <script language="javascript" type="text/javascript">       $(document).ready(function () {
+   <script type="text/javascript">
+    jQuery(document).ready(function () {
+        $(document).ready(function () {
 
+            $(".fancybox").fancybox({
+                href: $(this).attr('href'),
+                fitToView: true,
+                frameWidth: '90%',
+                frameHeight: '100%',
+                width: '87%',
+                height: '100%',
+                autoSize: false,
+                closeBtn: true,
+                closeClick: false,
+                openEffect: 'fade',
+                closeEffect: 'fade',
+                type: "iframe",
+                opacity: 0.7,
+                onStart: function () {
+                    $("#fancybox-overlay").css({ "position": "fixed" });
+                },
+                beforeShow: function () {
 
+                    var url = $(this).attr('href');
+                    url = (url == null) ? '' : url.split('?');
+                    if (url.length > 1) {
+                        url = url[1].split('=');
 
-           $("#hidden_link").fancybox({
+                        // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                        var id = url[1];
+                        var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                        //window.location = pageUrl;
+                        window.history.pushState('d', 't', pageUrl);
+                    }
+                },
+                beforeClose: function () {
+                    window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
 
-               'title': 'Test Document',
+                }
 
-               'titleShow': true,
+            });
 
-               'titlePosition': 'over',
+        });
+       
 
-               'titleFormat': 'formatTitle',
+    });
+</script>
 
-               'type': 'iframe',
-
-               'width': '98%',
-
-               'height': '98%',
-
-               'hideOnOverlayClick': false,
-
-               'hideOnContentClick': false,
-
-               'overlayOpacity': 0.7,
-
-               'enableEscapeButton': false
-
-           });
-
-       });</script>
-
-    
+     <style>
+           .dropzone .dz-preview.dz-image-preview {
+        display: block;
+        }
+    </style>
     <script type="text/javascript">
         var lookId = '<%= Request.QueryString["v"] %>';
         // Dropzone for featured image
         Dropzone.options.dzItemFeatured = {
-        // Validate the file type. only accept images
+            // Validate the file type. only accept images
             acceptedFiles: 'image/*',
             dictDefaultMessage: "Click or Drag Image here to upload",
             maxFiles: 1,
-            url: "Editlookbook.ashx?v="+lookId,
-            thumbnailWidth: 310,
-            thumbnailHeight: 232,
+            url: "Editlookbook.ashx?v=" + lookId,
+            thumbnailWidth: null,
+            thumbnailHeight: null,
             init: function () {
 
                 this.on("maxfilesexceeded", function (data) {
                     var res = eval('(' + data.xhr.responseText + ')');
                 });
 
-                
+
                 // Get response on Success
                 this.on('success', function (file, resp) {
 
+                    var crossHeight = 0;
                     var imgName = resp;
                     file.previewElement.classList.add("dz-success");
                     console.log("Successfully uploaded :" + imgName);
+                    $("#dzItemFeatured .dz-image img").each(function () {
+                        console.log("FH : " + $(this).height());
+                        console.log("fW : " + $(this).width());
+                        var imgHeight = $(this).height();
+                        var imgWidth = $(this).width();
+                        if (imgHeight > 300) {
+                            var aspectRatio = 318 / imgHeight;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else if (imgWidth > 315) {
+                            var aspectRatio = 318 / imgWidth;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else {
+                            var ratioHeight = $(this).height();
+                            var ratioWidth = $(this).width();
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+
+                        }
+                    });
                     console.log(file);
                     console.log(resp);
                 });
-//                // Validate the dimensions of the image....
-//                this.on('thumbnail', function (file) {
-//                    if (file.width < 800 || file.height < 600) {
-//                        file.rejectDimensions();
-//                    }
-//                    else {
-//                        file.acceptDimensions();
-//                    }
-//                });
+                //                // Validate the dimensions of the image....
+                //                this.on('thumbnail', function (file) {
+                //                    if (file.width < 800 || file.height < 600) {
+                //                        file.rejectDimensions();
+                //                    }
+                //                    else {
+                //                        file.acceptDimensions();
+                //                    }
+                //                });
 
                 this.on("addedfile", function (file) {
 
                     // Create the remove button
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -75%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+                    var removeButton = Dropzone.createElement("<button style='position:absolute; top: 0; margin-left: 0; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
                     var _this = this;
                     // Listen to the click event
@@ -136,12 +205,12 @@
                 });
 
             }
-//            accept: function (file, done) {
-//                file.acceptDimensions = done;
-//                file.rejectDimensions = function () {
-//                    done('The image must be at least 800 x 600px');
-//                };
-//            }
+            //            accept: function (file, done) {
+            //                file.acceptDimensions = done;
+            //                file.rejectDimensions = function () {
+            //                    done('The image must be at least 800 x 600px');
+            //                };
+            //            }
         };
     </script>
      <script type="text/javascript">
@@ -170,7 +239,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-               <!--#INCLUDE FILE="../includes/logo.txt" -->
+               <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -260,7 +329,7 @@
                     <ItemTemplate>
                        <div class="box1">
                    <div class="loobblock">
-                      <div class="dbllook"><a href="../lightbox/brand-item-view?v=<%# Eval("ItemID") %>" class="fancybox">
+                      <div class="dbllook"><a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox">
                                               <div class="dbl">
                                         <div class="hover ehover13">
                                             <img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" alt="<%# Eval("Title","{0}") %>" /><div class="overlay">
@@ -280,18 +349,28 @@
                       </div>
                       
                      <div class="lookbooktext">
-                              <div class="mtextb" style="width:75%; margin-left:15px;">
+                              <div class="mtextb wrapParagraph" style="width:75%; margin-left:15px;">
                                             <div class="m1">
-                                                <div class="muserd"> <a href="../lightbox/brand-item-view?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></div>
+                                                <div class="muserd"> <a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></div>
                                                 <div class="muserdb">By <%# Eval("Name","{0}") %></div>
                                             </div>
                                             <div class="m1" style="word-wrap: break-word;">
-                                                <div class="mtextd" ><%# Eval("Description","{0}") %></div>
+                                                <div class="mtextd" id="<%# Eval("ItemID","{0}") %>" ><%# Eval("Description","{0}") %></div>
                                             </div>
                                            
                                         </div>
                      </div><!--lookbooktext--> 
-                      
+                       <script>
+                           var elements = document.getElementsByClassName('mtextd');
+                           for (var i = 0; i < elements.length ; i++) {
+                               if (elements[i].innerText.length > 50) {
+                                   var desc = "";
+                                   desc = elements[i].innerText;
+                                   desc = desc.substring(0, 50);
+                                   document.getElementById(elements[i].id).innerText = desc + " ...";
+                               }
+                           }
+                      </script>
                    </div><!--lookblock-->
                     
                    <div class="lineclook"></div>
@@ -335,9 +414,15 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                          <div class="searchb">
                              <div class="serheading">Publish</div>
                               <div class="pubbutt">
-                               <div class="del"><asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
-                                       onclick="lbtnDelete_Click"  Tabindex="21"
-                                       onclientclick="return confirm('Are you sure, you want to delete ?')" ></asp:LinkButton></div>
+                                       <div class="del"> <asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
+                                       onclick="lbtnDelete_Click" 
+                                       onclientclick="redirectToLookbooks()" 
+                                       TabIndex="22" ></asp:LinkButton></div>
+                               <script>
+                                   function redirectToLookbooks() {
+                                       location.href = '../brand/profile-page-lookbooks.aspx';
+                                   }
+                                  </script>
                               <a href="#" id="hidden_link" style="display:none;"></a>
 
                              <%--  <button type="button" runat="server"  name="login" ID="btnPreview"  class="hvr-sweep-to-rightup2" OnServerClick="btnPreview_OnServerClick"   tabindex="19">Preview</button>--%>
@@ -393,7 +478,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                  <ContentTemplate>
                                       <div id="seedefaultCats" tabindex="6">
                                  <div class="dblock">
-                                     <asp:CheckBoxList runat="server" ID="chkCategories" tabindex="21"
+                                     <asp:CheckBoxList runat="server" ID="chkCategories" tabindex="21" OnSelectedIndexChanged="chkCategories_SelectedIndexChanged"
                                          DataSourceID="sdsDefaultCats" DataTextField="Title" 
                                          DataValueField="CategoryID" CellPadding="4" CellSpacing="4" 
                                          RepeatColumns="2" Width="100%">
@@ -434,18 +519,18 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                  <ContentTemplate>
                                     <div id="seeDefaultSessions" tabindex="9">
                                  <div class="dblock">
-                                     <asp:CheckBoxList runat="server" ID="chkDefaultSeasons" 
-                                         DataSourceID="sdsMoreSeasons" DataTextField="Season" DataValueField="SeasonID">
+                                     <asp:CheckBoxList runat="server" ID="chkDefaultSeasons" OnSelectedIndexChanged="chkDefaultSeasons_SelectedIndexChanged"
+                                         DataSourceID="sdsDefaultSeasons" DataTextField="Season" DataValueField="SeasonID">
                                      </asp:CheckBoxList>
-                                     <asp:SqlDataSource ID="sdsDefaultSeasons" runat="server" 
+                                     <asp:SqlDataSource ID="sdsDefaultSeasons" runat="server"   
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (6) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
+                                         SelectCommand="SELECT TOP (10) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
                                      </asp:SqlDataSource>
                                       <asp:SqlDataSource ID="sdsMoreSeasons" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (9) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
+                                         SelectCommand="SELECT SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
                                      </asp:SqlDataSource>
                                  </div>
                             
@@ -474,14 +559,20 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                  <ContentTemplate>
                              <div id="seeDefaultHoliday" tabindex="12">
                                  <div class="dblock">
-                                     <asp:CheckBoxList runat="server" ID="chkDefaultHoliday" 
-                                         DataSourceID="sdsMoreHoliday" DataTextField="Title" DataValueField="HolidayID">
+                                     <asp:CheckBoxList runat="server" ID="chkDefaultHoliday" OnSelectedIndexChanged="chkDefaultHoliday_SelectedIndexChanged" 
+                                         DataSourceID="sdsDefaultHoliday" DataTextField="Title" DataValueField="HolidayID">
                                      </asp:CheckBoxList>
+                                     
+                                     <asp:SqlDataSource ID="sdsDefaultHoliday" runat="server" 
+                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                         SelectCommand="SELECT TOP (10) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                     </asp:SqlDataSource>
                                     
                                       <asp:SqlDataSource ID="sdsMoreHoliday" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (9) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                         SelectCommand="SELECT HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
                                      </asp:SqlDataSource>
                                  </div>
                             
@@ -588,7 +679,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-//                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -612,7 +703,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-//                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {

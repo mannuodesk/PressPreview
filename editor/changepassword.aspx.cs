@@ -4,13 +4,17 @@ using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
 using System;
+using System.Collections;
+using System.Data.SqlClient;
 
 public partial class frmlogin : System.Web.UI.Page
 {
     static readonly string MailSenderAddress = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"];
     protected void Page_Load(object sender, EventArgs e)
     {
-       txtOldPassword.Focus();
+        var al = new ArrayList { lblUsername, imgUserIcon };
+        Common.UserSettings(al);
+        txtOldPassword.Focus();
         if (Common.Getunread_Messages() > 0)
         {
             lblTotalMessages.Visible = true;
@@ -22,45 +26,65 @@ public partial class frmlogin : System.Web.UI.Page
             lblTotalNotifications.Visible = true;
             lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
         }
-
+       
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
     }
 
     protected void btnSignUp_ServerClick(object sender, EventArgs e)
     {
-       
+
     }
-    
+    private bool isPasswordCorrect(string password)
+    {
+        var httpCookie = Request.Cookies["FrUserID"];
+
+        var db = new DatabaseManagement();
+        if (httpCookie != null)
+        {
+            string getUserPassword = string.Format("SELECT U_Password From Tbl_Users Where UserID={0}",
+                                               IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(getUserPassword);
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    string passwordFromDB = dr["U_Password"].ToString();
+                    if (passwordFromDB == password)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     protected void btnChangePass_OnServerClick(object sender, EventArgs e)
     {
         try
         {
-            var db = new DatabaseManagement();
-
-            if (db.RecordExist("SELECT UserID From Tbl_Users Where UserKey=" + IEUtils.SafeSQLString(Request.QueryString["ck"]) + "AND U_Password=" + IEUtils.SafeSQLString(txtOldPassword.Value)))
+            if (isPasswordCorrect(txtOldPassword.Value))
             {
-                string insertQuery =
-                        string.Format(
-                            "Update Tbl_Users Set U_Password={0} Where UserKey={1} AND U_Email={2} ",
-                            IEUtils.SafeSQLString(txtSignUpPassword.Value),
-                            IEUtils.SafeSQLString(Request.QueryString["ck"]),
-                            IEUtils.SafeSQLString(Request.QueryString["email"])
-                           
-                            );
-                db.ExecuteSQL(insertQuery);
-                ErrorMessage.ShowSuccessAlert(lblStatus, "Your password changed successfully.", divAlerts);
-                dvForm.Visible = false;
+                var httpCookie = Request.Cookies["FrUserID"];
+                var db = new DatabaseManagement();
+                if (httpCookie != null)
+                {
+                    string updateUserPassword = string.Format("Update Tbl_Users set U_Password={0} Where UserID={1}",
+                                                       IEUtils.SafeSQLString(txtSignUpPassword.Value), IEUtils.ToInt(httpCookie.Value));
+                    db.ExecuteSQL(updateUserPassword);
+                }
+                Response.Redirect("editor-profile.aspx");
             }
             else
             {
-                ErrorMessage.ShowErrorAlert(lblStatus, "Incorrect Old Password.", divAlerts);
-                dvForm.Visible = true;
+                ErrorMessage.ShowErrorAlert(lblStatus, "Old Password Not Correct", divAlerts);
             }
         }
-        catch (Exception ex)
+        catch (Exception exc)
         {
-            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+            ErrorMessage.ShowErrorAlert(lblStatus, exc.Message, divAlerts);
         }
+        
     }
 
     // Top menu message list binding
@@ -147,5 +171,5 @@ public partial class frmlogin : System.Web.UI.Page
 
     }
 
-    
+
 }

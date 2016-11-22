@@ -70,9 +70,9 @@ public partial class admin_home_Default : System.Web.UI.Page
                 txtFbURL.Value = dr[16].ToString();
                 txtYoutube.Value = dr[17].ToString();
                 txtPinterest.Value = dr[18].ToString();
-                txtDescription.Value = dr[19].ToString();
-                txtTop.Value = dr[20].ToString();
-                txtEcalender.Value = dr[21].ToString();
+                   txtDescription.Text = Server.HtmlDecode(dr[19].ToString());
+                txtTop.Text =Server.HtmlDecode(dr[20].ToString());
+                txtEcalender.Text =Server.HtmlDecode( dr[21].ToString());
 
             }
             dr.Close();

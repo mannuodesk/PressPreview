@@ -75,8 +75,8 @@
                                                         <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("U_ProfilePic", "../../brandslogoThumb/{0}") %>' Width="50px"  CssClass="img-circle"/>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name" />
-                                                <asp:BoundField DataField="U_Email" HeaderText="Email" SortExpression="U_Email" />
+                                                <asp:BoundField DataField="FName" HeaderText="First Name" SortExpression="FName" />
+                                                <asp:BoundField DataField="LName" HeaderText="Last Name" SortExpression="LName" />
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:LinkButton ID="lbEdit" runat="server" CommandName="1" CommandArgument='<%# Eval("UserID", "{0}") %>' PostBackUrl='<%# Eval("UserID", "edit.aspx?v={0}") %>'
@@ -98,7 +98,7 @@
                                             <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                             <SortedDescendingHeaderStyle BackColor="#242121" />
                                         </asp:GridView>
-                                        <asp:SqlDataSource ID="sdsProfile" runat="server" ConnectionString="<%$ ConnectionStrings:GvConnection %>" ProviderName="<%$ ConnectionStrings:dbConnectionPP.ProviderName %>" SelectCommand="SELECT UserID, U_Email, U_Username, U_Password, U_Firstname + ' ' + U_Lastname as Name, U_ProfilePic FROM dbo.Tbl_Users
+                                        <asp:SqlDataSource ID="sdsProfile" runat="server" ConnectionString="<%$ ConnectionStrings:GvConnection %>" ProviderName="<%$ ConnectionStrings:dbConnectionPP.ProviderName %>" SelectCommand="SELECT UserID, U_Email, U_Username, U_Password, U_Firstname + ' ' + U_Lastname as Name,U_Lastname as LName,U_Firstname as FName, U_ProfilePic FROM dbo.Tbl_Users
 Where U_Type='Admin'"></asp:SqlDataSource>
                                     </div>
 

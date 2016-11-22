@@ -58,19 +58,57 @@ public partial class home : System.Web.UI.Page
                     .Equals(ViewState["CurrentAlphabet"]);
             alphabets.Add(alphabet);
         }
-        rptAlphabets.DataSource = alphabets;
-        rptAlphabets.DataBind();
+        //  rptAlphabets.DataSource = alphabets;
+        //  rptAlphabets.DataBind();
     }
-    private void BindDataList()
+      private void BindDataList()
     {
+    int pageIndex = 1;
+    int pagesize = 2;
+    var itemList = new List<BrandsSorting>();
         DatabaseManagement db = new DatabaseManagement();
         SqlCommand cmd = new SqlCommand("spx_GetBrands");
         db._sqlConnection.Open();
         cmd.Connection = db._sqlConnection;
         cmd.CommandType = CommandType.StoredProcedure;
+        Session["CurrentAlphabet"] = ViewState["CurrentAlphabet"].ToString();
+        string alphabets = ViewState["CurrentAlphabet"].ToString();
         cmd.Parameters.AddWithValue("@Alphabet", ViewState["CurrentAlphabet"]);
-        dlBrands.DataSource = cmd.ExecuteReader();
-        dlBrands.DataBind();
+        SqlDataReader dr = cmd.ExecuteReader();
+        int startItems = ((pageIndex - 1) * pagesize) + 1;
+        int endItems = (startItems + pagesize) - 1;
+        int tempCount = 1;
+        if (dr.HasRows)
+            {
+            while (dr.Read())
+                {
+
+                var objitem = new BrandsSorting
+                {
+                    brandId = IEUtils.ToInt(dr["BrandID"]),
+                    brandKey = IEUtils.ToString(dr["BrandKey"]),
+                    name = IEUtils.ToString(dr["Name"]),
+                    userId = IEUtils.ToInt(dr["UserID"]),
+                    userKey = IEUtils.ToString(dr["UserKey"])
+                    
+                };
+
+                if (tempCount >= startItems && tempCount <= endItems)
+                    {
+                    itemList.Add(objitem);
+                    }
+                tempCount++;
+
+                }
+            }
+
+
+
+
+
+
+        //dlBrands.DataSource = itemList;
+        //dlBrands.DataBind();
         db._sqlConnection.Close();
 
         if (ViewState["CurrentAlphabet"].ToString().Equals("ALL"))
@@ -79,6 +117,55 @@ public partial class home : System.Web.UI.Page
             lblView.Text = "Brands whose name starts with "
                         + ViewState["CurrentAlphabet"].ToString();
     }
+    
+      [WebMethod(EnableSession = true), ScriptMethod]
+    public static List<BrandsSorting> GetData(int pageIndex, string alphabet)
+        {
+        
+        int pagesize = 20;
+        var itemList = new List<BrandsSorting>();
+        DatabaseManagement db = new DatabaseManagement();
+        SqlCommand cmd = new SqlCommand("spx_GetBrands");
+        db._sqlConnection.Open();
+        cmd.Connection = db._sqlConnection;
+        cmd.CommandType = CommandType.StoredProcedure;
+        //string alphabets =HttpContext.Current.Session["CurrentAlphabet"].ToString();
+        cmd.Parameters.AddWithValue("@Alphabet", alphabet);
+        SqlDataReader dr = cmd.ExecuteReader();
+        int startItems = ((pageIndex - 1) * pagesize) + 1;
+        int endItems = (startItems + pagesize) - 1;
+        int tempCount = 1;
+        if (dr.HasRows)
+            {
+            while (dr.Read())
+                {
+
+                var objitem = new BrandsSorting
+                {
+                    brandId = IEUtils.ToInt(dr["BrandID"]),
+                    brandKey = IEUtils.ToString(dr["BrandKey"]),
+                    name = IEUtils.ToString(dr["Name"]),
+                    userId = IEUtils.ToInt(dr["UserID"]),
+                    userKey = IEUtils.ToString(dr["UserKey"])
+
+                };
+
+                if (tempCount >= startItems && tempCount <= endItems)
+                    {
+                    itemList.Add(objitem);
+                    }
+                tempCount++;
+
+                }
+            }
+
+
+
+
+        return itemList;
+
+        }
+
     protected void Alphabet_Click(object sender, EventArgs e)
     {
         LinkButton lnkAlphabet = (LinkButton)sender;

@@ -233,6 +233,10 @@ public partial class event_Default : System.Web.UI.Page
                         events.StartTime = dr["StartTime"].ToString();
                         events.EFeaturePic = dr["EFeaturePic"].ToString();
                         events.EventLocation = dr["ELocation"].ToString();
+                        if(events.EventLocation.Length > 50)
+                        {
+                            events.EventLocation = events.EventLocation.Substring(0, 20) + " ...";
+                        }
                         EventList.Add(events);
                     }
                 }

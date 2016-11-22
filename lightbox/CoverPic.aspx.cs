@@ -36,6 +36,17 @@ public partial class home : System.Web.UI.Page
                     var rootpath = HttpContext.Current.Server.MapPath("../photobank/");
                     var imagepath = rootpath + fname;
                     photo.SaveAs(imagepath);
+                     System.Drawing.Image originalImage = System.Drawing.Image.FromFile(imagepath);
+                    int width = originalImage.Width;
+                    int height = originalImage.Height;
+                    if(Session["BrandCoverPicUpload"]==null)
+                    {
+                        BrandCoverPicUpload brandCoverPicUpload = new BrandCoverPicUpload();
+                        Session["BrandCoverPicUpload"] = brandCoverPicUpload;
+                    }
+                    (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width = width;
+                    (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height = height;
+                    (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).originalImagePath=imagepath;
                     // Pre Size the image
                    if(Request.QueryString["v"]=="c")
                    {

@@ -5,6 +5,7 @@
                   <asp:Image runat="server" ID="imgUserIcon" ImageUrl="../images/menuright.png" CssClass="img-circle" style="width: 36px; height: 36px;"></asp:Image> <span> <img src="../images/triangle.png" /></span></a>
                 <ul class="dropdown-menu"><li><a href="profile-page-items"><img src="../images/profile.png" /><span class="sp"> My Profile</span></a></li>
                   <li><a href="#"><img src="../images/help.png" /><span class="sp"> Help</span></a></li>
+                  <li><a href="../brand/changepassword.aspx"><i class="fa fa-key" aria-hidden="true"></i><span class="sp"> Change Password</span></a></li>
                   <li><a href="../logout.aspx"><img src="../images/logout.png" /><span class="sp"> Log Out</span></a></li>
                 </ul>
               </li>

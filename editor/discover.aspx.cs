@@ -11,6 +11,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 public partial class home : System.Web.UI.Page
 {
@@ -84,6 +86,21 @@ public partial class home : System.Web.UI.Page
             }
             rptTags.DataBind();
             dvTagToggles.Visible = rptTags.Items.Count > 0;
+            NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                string brandid = nvc.Get("b");
+                if (brandid != null)
+                {
+                    brandid = brandid.TrimEnd(',');
+                    string[] ids = brandid.Split(',');
+                    for (int i = 0; i < chkBrands.Items.Count; i++ )
+                    {
+                        if (ids.Contains(chkBrands.Items[i].Value))
+                            chkBrands.Items[i].Selected = true;
+                    }
+                }
+            }
         }
         else
         {
@@ -128,9 +145,30 @@ public partial class home : System.Web.UI.Page
                 {
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).categoryCheck = category;
                     categoryCheck = category;
+                    
+                      var CategoryText="";
+                    var db = new DatabaseManagement();
+  using (var con = new SqlConnection(db.ConnectionString))
+                        {
+                        using (SqlCommand cmd = new SqlCommand())
+                            {
+                            cmd.CommandText = "select Title from Tbl_Categories where CategoryID="+category;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                                {
+                            CategoryText=dr["Title"].ToString();
+                                }
+                            con.Close();
+
+                            }
+                        }
+               lbCategory.Text = CategoryText +" <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
                 }
                 else
                 {
+                     lbCategory.Text = "Categories" +" <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).categoryCheck = null;
                     categoryCheck = null;
                 }
@@ -139,9 +177,33 @@ public partial class home : System.Web.UI.Page
                 {
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).seasonsCheck = season;
                     seasonsCheck = season;
+                    
+                    
+                     var SeasonText = "";
+                    var db = new DatabaseManagement();
+                    using (var con = new SqlConnection(db.ConnectionString))
+                        {
+                        using (SqlCommand cmd = new SqlCommand())
+                            {
+                            cmd.CommandText = "select Season from Tbl_Seasons where SeasonID=" + season;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                                {
+                                SeasonText = dr["Season"].ToString();
+                                }
+                            con.Close();
+
+                            }
+                        }
+                    btnSeason.Text = SeasonText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+               
+               
                 }
                 else
                 {
+                    btnSeason.Text = "Seasons" +" <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).seasonsCheck = null;
                     seasonsCheck = null;
                 }
@@ -150,9 +212,33 @@ public partial class home : System.Web.UI.Page
                 {
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).holidayCheck = holiday;
                     holidayCheck = holiday;
+                    
+                    
+                    
+                    var HolidayText = "";
+                    var db = new DatabaseManagement();
+                    using (var con = new SqlConnection(db.ConnectionString))
+                        {
+                        using (SqlCommand cmd = new SqlCommand())
+                            {
+                            cmd.CommandText = "select Title from Tbl_Holidays where HolidayID=" + holiday;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                                {
+                                HolidayText = dr["Title"].ToString();
+                                }
+                            con.Close();
+
+                            }
+                        }
+                    btnHoiday.Text = HolidayText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+               
                 }
                 else
                 {
+                     btnHoiday.Text = "Holidays" +" <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).holidayCheck = null;
                     holidayCheck = null;
                 }
@@ -641,8 +727,8 @@ public partial class home : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(strP1check))
             {
-                wherecluse = wherecluse + " AND  (a.RetailPrice>=0 AND a.RetailPrice<=100)  ";
-                wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=0 AND a.RetailPrice<=100)  ";
+                wherecluse = wherecluse + " AND  ((a.RetailPrice>=0 AND a.RetailPrice<=100)  ";
+                wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=0 AND a.RetailPrice<=100)  ";
                 bPriceCheck = true;
             }
 
@@ -650,8 +736,8 @@ public partial class home : System.Web.UI.Page
             {
                 if (bPriceCheck == false)
                 {
-                    wherecluse = wherecluse + " AND  (a.RetailPrice>=100 AND a.RetailPrice<=200)  ";
-                    wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=100 AND a.RetailPrice<=200)  ";
+                    wherecluse = wherecluse + " AND  ((a.RetailPrice>=100 AND a.RetailPrice<=200)  ";
+                    wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=100 AND a.RetailPrice<=200)  ";
                 }
                 else
                 {
@@ -665,8 +751,8 @@ public partial class home : System.Web.UI.Page
             {
                 if (bPriceCheck == false)
                 {
-                    wherecluse = wherecluse + " AND  (a.RetailPrice>=200 AND a.RetailPrice<=300)  ";
-                    wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=200 AND a.RetailPrice<=300)  ";
+                    wherecluse = wherecluse + " AND  ((a.RetailPrice>=200 AND a.RetailPrice<=300)  ";
+                    wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=200 AND a.RetailPrice<=300)  ";
                 }
                 else
                 {
@@ -680,8 +766,8 @@ public partial class home : System.Web.UI.Page
             {
                 if (bPriceCheck == false)
                 {
-                    wherecluse = wherecluse + " AND  (a.RetailPrice>=300 AND a.RetailPrice<=400)  ";
-                    wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=300 AND a.RetailPrice<=400)  ";
+                    wherecluse = wherecluse + " AND  ((a.RetailPrice>=300 AND a.RetailPrice<=400)  ";
+                    wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=300 AND a.RetailPrice<=400)  ";
                 }
                 else
                 {
@@ -695,8 +781,8 @@ public partial class home : System.Web.UI.Page
             {
                 if (bPriceCheck == false)
                 {
-                    wherecluse = wherecluse + " AND  (a.RetailPrice>=400 AND a.RetailPrice<=500)  ";
-                    wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=400 AND a.RetailPrice<=500)  ";
+                    wherecluse = wherecluse + " AND  ((a.RetailPrice>=400 AND a.RetailPrice<=500)  ";
+                    wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=400 AND a.RetailPrice<=500)  ";
                 }
                 else
                 {
@@ -710,8 +796,8 @@ public partial class home : System.Web.UI.Page
             {
                 if (bPriceCheck == false)
                 {
-                    wherecluse = wherecluse + " AND  (a.RetailPrice>=500)  ";
-                    wherecluse2 = wherecluse2 + " AND  (a.RetailPrice>=500)  ";
+                    wherecluse = wherecluse + " AND  ((a.RetailPrice>=500)  ";
+                    wherecluse2 = wherecluse2 + " AND  ((a.RetailPrice>=500)  ";
                 }
                 else
                 {
@@ -719,6 +805,12 @@ public partial class home : System.Web.UI.Page
                     wherecluse2 = wherecluse2 + " OR  (a.RetailPrice>=500)  ";
                 }
                 bPriceCheck = true;
+            }
+            
+            if (bPriceCheck)
+            {
+                wherecluse = wherecluse + ")";
+                wherecluse2 = wherecluse2 + ")";
             }
 
             if (!string.IsNullOrEmpty(strBrandCheck))
@@ -762,12 +854,13 @@ public partial class home : System.Web.UI.Page
             dr2.Close();
 
             SqlDataReader dr = db.ExecuteReader(fullQuery);
-
+var desc="";
             if (dr.HasRows)
             {
                 while (dr.Read())
                 {
-                    DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                    //DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                    DateTime dbDate = Convert.ToDateTime(dr["Dated"].ToString());
 
                     var objitem = new Items
                     {
@@ -787,8 +880,22 @@ public partial class home : System.Web.UI.Page
                         Description = dr["Description"].ToString(),
                         FeatureImg = dr["FeatureImg"].ToString()
                     };
+                    string selectDBTime = string.Format("Select DatePosted from Tbl_Items Where ItemID={0}", objitem.ItemId);
+                    DatabaseManagement db1 = new DatabaseManagement();
+                    SqlDataReader dr1 = db1.ExecuteReader(selectDBTime);
+                    if (dr1.HasRows)
+                    {
+                        dr1.Read();
+                        dbDate = Convert.ToDateTime(dr1[0]);
+                        objitem.Dated = Common.GetRelativeTime(dbDate);
+                    }
+                    var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                     if (tempCount >= startItems && tempCount <= endItems)
                     {
+                          
                         itemList.Add(objitem);
                     }
                     tempCount++;
@@ -1462,7 +1569,20 @@ public partial class home : System.Web.UI.Page
         {
             if (e.CommandName == "1")
             {
-                if ((Session["DiscoverPageSearch"] as DiscoverPageSearch).selectedTagsIds == null)
+                NameValueCollection nvc1 = Request.QueryString;
+            if (nvc1.HasKeys())
+            {
+                if (nvc1["t"] != null)
+                {
+                    if (Session["DiscoverPageSearch"] as DiscoverPageSearch != null)
+                        (Session["DiscoverPageSearch"] as DiscoverPageSearch).seasonsCheck = null;
+                    PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+                    // make collection editable
+                    isreadonly.SetValue(this.Request.QueryString, false, null);
+                    nvc1.Remove("t");
+                }
+            }
+                //if ((Session["DiscoverPageSearch"] as DiscoverPageSearch).selectedTagsIds == null)
                 {
                     (Session["DiscoverPageSearch"] as DiscoverPageSearch).selectedTagsIds = new List<int>();
                 }

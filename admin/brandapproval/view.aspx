@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="view.aspx.cs" Inherits="admin_home_Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" ValidateRequest="false" CodeFile="view.aspx.cs" Inherits="admin_home_Default" %>
+<%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
 <!DOCTYPE html>
 <html>
@@ -99,10 +100,48 @@
                                             
 
                                         </div>
-                                        <div class="form-group"><label>Description</label> 
-                                            <textarea type="text" runat="server" id="txtBio" style="height:150px;"  placeholder="Brand Biography" class="form-control" /> </div>
-                                         <div class="form-group"><label>Brand History</label> <textarea type="text" runat="server" id="txtBrandHistory" style="height: 150px;" placeholder="Brand History" class="form-control" /></div>
+                                           <div class="form-group"><label>Description</label> 
+                                  <style>
+                                      #txtBio_toolbarArea{
+                                          display:none;
+                                      }
+                                      #txtBio_TabRow{
+                                          display:none
+                                      }
+                                      .txtBio_DesignBox {
+                                          background-color: #eeeeee !important;
+                                          border: 0 !important;
+                                      }
+                                  </style>
+                                                 <FTB:FreeTextbox  runat="server" ID="txtBio" ButtonSet="OfficeMac" ReadOnly="true"
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>
+          </div> 
+                                         
+                                         
+                                         
+                                         
+                                         
                                         
+                                        <div class="form-group"><label>Brand History</label> 
+                                  <style>
+                                      #txtBrandHistory_toolbarArea{
+                                          display:none;
+                                      }
+                                      #txtBrandHistory_TabRow{
+                                          display:none
+                                      }
+                                      .txtBrandHistory_DesignBox {
+                                          background-color: #eeeeee !important;
+                                          border: 0 !important;
+                                      }
+                                  </style>
+                                                 <FTB:FreeTextbox  runat="server" ID="txtBrandHistory" ButtonSet="OfficeMac" ReadOnly="true"
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>
+          </div>    
                                                                                                              
                                                 
                                         </div>                                  

@@ -25,7 +25,26 @@ public class Featured : IHttpHandler {
                 var rootpath = HttpContext.Current.Server.MapPath("../tempstorage/");
                 var imagepath = rootpath + fname;
                 file.SaveAs(imagepath);
-                var resizeimg = Utility.GenerateThumbNail(fname, imagepath, "photobank/", 900);
+                var photoPathPhotoBank = HttpContext.Current.Server.MapPath("../photobank/");
+                var photoPathPhotoBankFile = photoPathPhotoBank + fname;
+                var photoPathImageLarge = HttpContext.Current.Server.MapPath("../imgLarge/");
+                var photoPathImageLargeFile = photoPathPhotoBank + fname;
+                var photoPathImageMedium = HttpContext.Current.Server.MapPath("../imgMedium/");
+                var photoPathImageMediumFile = photoPathPhotoBank + fname;
+                //file.SaveAs(photoPathPhotoBankFile);
+                //file.SaveAs(photoPathImageLargeFile);
+                //file.SaveAs(photoPathImageMediumFile);
+                #region Compression
+                ImageCompress imgCompress = ImageCompress.GetImageCompressObject;
+                imgCompress.GetImage = new System.Drawing.Bitmap(imagepath);
+                imgCompress.Height = imgCompress.GetImage.Height;
+                imgCompress.Width = imgCompress.GetImage.Width;
+                imgCompress.Save(fname, photoPathPhotoBank);
+                imgCompress.Save(fname, photoPathImageLarge);
+                imgCompress.Save(fname, photoPathImageMedium);
+                imgCompress.GetImage.Dispose();
+                #endregion
+                //var resizeimg = Utility.GenerateThumbNail(fname, imagepath, "photobank/", 900);
                 
                 File.Delete(imagepath);
                 var httpCookie = HttpContext.Current.Request.Cookies["CurrentLookId"];

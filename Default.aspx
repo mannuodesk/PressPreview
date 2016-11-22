@@ -15,11 +15,19 @@
 		<script type="text/javascript" src="js/surprise/supersized.3.2.7.min.js"></script>
 		<script type="text/javascript" src="js/surprise/supersized.shutter.min.js"></script>
 
-
+    <style>
+ body {
+    background: url(../images/landingimage.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+</style>
 </head>
 
 <body>
-
+<!--
 		<script type="text/javascript">
 
 		    jQuery(function ($) {
@@ -66,7 +74,7 @@
 		        });
 		    });
 
-		</script>
+		</script>-->
         
         
         

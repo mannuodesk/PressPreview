@@ -109,7 +109,7 @@
                    console.log(index);
                    console.log(val.ItemId);
                    pageCount = val.PageCount;
-                   fragment += "<div class='box'  id='b" + val.ItemId + "'> " +
+                   fragment += " <div class='box'  id='b" + val.ItemId + "'> " +
                                     " <div class='disblock'> " +
                                         "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
                                                 "<div class='dbl'> " +
@@ -117,8 +117,8 @@
                                                         "<img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
                                            "                  <h2 class='titlet'>" + val.Title + "</h2> " +
                                                "              <h2 class='linenew'></h2> " +
-                                                   "          <h2> " +
-                                                       "          <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
+                                                   "          <h2  Id='lblDate'> " +
+                                                       val.DatePosted + "</h2> " +
                                                     "</div> " +
                                                                "              <!--overlay--> " +
                                                  "</div> " +
@@ -149,7 +149,7 @@
                                                                                                                                                                        "                  <div class='vlike'> " +
                                                                                                                                                                            "                      <img src='../images/liked.png' /> " + val.Likes + "  </div> " +
                                                                                                                                                                                        "                  <div class='mdaysd' > " +
-                                                                                                                                                                                           "                      <span ID='lblDate2'>" + val.DatePosted + "</span> " +
+                                                                                                                                                                                           "                      <span ID='lblDate2'>" + val.Dated + "</span> " +
                                                                                                                                                                                                "                  </div> " +
                                                                                                                                                                                                    "              </div> " +
                                                                                                                                                                                                        "          </div> " +
@@ -158,7 +158,7 @@
                                                                                                                                                                                                                    "      <!--mseb--> " +
                                                                                                                                                                                                                        "  </div> " +
                                                                                                                                                                                                                            " </div> " +
-                                                                                                                                                                                                                               " </div>";
+                                                                                                                                                                                                                               " <div class='lineclook'></div></div></div>";
 
                });
            }
@@ -179,7 +179,7 @@
            $grid.append($items);
            $grid.masonry('layout');
            $items.imagesLoaded(function () {
-               $grid.masonry('appended', $items);
+               $grid.masonry('appended', $items,true);
                $grid.masonry('layout');
                $items.show();
                $('#LoaderItem').hide();
@@ -401,7 +401,7 @@
     </div>
 </div>
                         <div class="l">
-    <button class="menudlist" id="btnSeason" tabindex="13">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+  <asp:Label class="menudlist"  runat="server"  ID="btnSeason" Text="Seasons" tabindex="13">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px; margin-left:6px; margin-top:-5px;"></i></asp:Label>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
               <asp:Repeater ID="rptSeasons" runat="server" DataSourceID="sdsSeasons" 
@@ -421,7 +421,7 @@
     </div>
 </div> 
                         <div class="l">
-    <button class="menudlist" id="btnHoiday" tabindex="14">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+           <asp:Label class="menudlist"  runat="server"  ID="btnHoiday" Text="Holidays" tabindex="13">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px; margin-left:6px; margin-top:-5px;"></i></asp:Label>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
             <asp:Repeater ID="rptHoliday" runat="server" DataSourceID="sdsHoliday" 
@@ -728,6 +728,22 @@
 
     });
 </script>
+<style>
+    .menudlist{
+            margin: 12px 0 0;
+    }
+    @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait)
+    {
+        .addlineblock1, .colrow {
+    display: block !important;
+    
+}
+    
+}
+ #contentbox{
+          height: inherit  !important;
+        }
+    </style>
 <script type="text/javascript">
     
     $("#colbtn").click(function (e) {
@@ -762,7 +778,7 @@
                  dataType: "json",
                  async: true,
                  error: function (jqXhr, textStatus, errorThrown) {
-                     alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                     //alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                  },
                  success: function (msg) {
                      //                    if (msg.d == true) {
@@ -786,7 +802,7 @@
                  dataType: "json",
                  async: true,
                  error: function (jqXhr, textStatus, errorThrown) {
-                     alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                  },
                  success: function (msg) {
                      //                    if (msg.d == true) {

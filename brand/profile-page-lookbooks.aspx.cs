@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using HtmlAgilityPack;
 
 public partial class home : System.Web.UI.Page
     {
@@ -511,6 +512,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -518,7 +520,8 @@ public partial class home : System.Web.UI.Page
                     {
                     while (dr.Read())
                         {
-                        DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                        //DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                        DateTime dbDate = Convert.ToDateTime(dr["Dated"].ToString());
                         var objLb = new Lookbook
                         {
                             PageCount = pageCount,
@@ -537,6 +540,19 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
+                        string selectDBTime = string.Format("Select DatePosted from Tbl_Lookbooks Where LookId={0}", objLb.LookId);
+                        DatabaseManagement db1 = new DatabaseManagement();
+                        SqlDataReader dr1 = db1.ExecuteReader(selectDBTime);
+                        if (dr1.HasRows)
+                        {
+                            dr1.Read();
+                            dbDate = Convert.ToDateTime(dr1[0]);
+                            objLb.Dated = Common.GetRelativeTime(dbDate);
+                        }
+                         var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);

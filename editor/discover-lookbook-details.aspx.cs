@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
 using System.Collections.Generic;
+using HtmlAgilityPack;
 
 public partial class editor_discover_lookbook_details : Page
 {
@@ -271,7 +272,7 @@ public partial class editor_discover_lookbook_details : Page
             int pageCount = (int)Math.Ceiling(Convert.ToDecimal(recordCount / pagesize));
             dr2.Close();
             SqlDataReader dr = db.ExecuteReader(fullQuery);
-
+            var desc = "";
             if (dr.HasRows)
             {
                 while (dr.Read())
@@ -296,7 +297,10 @@ public partial class editor_discover_lookbook_details : Page
                         Description = dr["Description"].ToString(),
                         FeatureImg = dr["FeatureImg"].ToString()
                     };
-
+                    var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                     //itemList.Add(objitem);
                     if (tempCount >= startItems && tempCount <= endItems)
                     {
@@ -334,6 +338,9 @@ public partial class editor_discover_lookbook_details : Page
             lblLbTitle.Text =
                 db.GetExecuteScalar(string.Format("SELECT Title FROM Tbl_Lookbooks Where LookKey={0}",
                                                   IEUtils.SafeSQLString(Request.QueryString["v"])));
+            lbDescription.Text =
+                db.GetExecuteScalar(string.Format("SELECT Description FROM Tbl_Lookbooks Where LookKey={0}",
+                                                  IEUtils.SafeSQLString(Request.QueryString["v"])));                                      
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }

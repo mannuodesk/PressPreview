@@ -1,0 +1,59 @@
+﻿<div class="logob"><a href="../Brand/profile-page-items.aspx"><img src="../images/logo.png" alt="thePRESSPreview" style=" width: 200px;
+    margin-top: 10px;"/></a></div>
+  <%--<div class="logos"><a href="../Default.aspx">Logo Branding</a></div>--%>
+  
+  
+  <style>
+  .label-warning {
+    background-color: #f43535;
+        border-radius: 10px;
+}
+  </style>
+  <script>
+       $("#lbViewMessageCount").hover(function () {
+
+               $.ajax({
+                   type: "POST",
+                   url: $(location).attr('pathname') + "\\UpdateMessageStatus",
+                   contentType: "application/json; charset=utf-8",
+                   data: "{'userID':'" + userId + "'}",
+                   dataType: "json",
+                   async: true,
+                   error: function (jqXhr, textStatus, errorThrown) {
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                   },
+                   success: function (msg) {
+                       //                    if (msg.d == true) {
+
+                       $('#<%=lblTotalMessages.ClientID%>').hide("slow");
+                       $('#<%=lblTotalMessages.ClientID%>').val = "";
+                       return false;
+                   }
+               });
+
+           });
+
+
+           $("#lbViewAlerts").hover(function () {
+
+               $.ajax({
+                   type: "POST",
+                   url: $(location).attr('pathname') + "\\UpdateNotifications",
+                   contentType: "application/json; charset=utf-8",
+                   data: "{'userID':'" + userId + "'}",
+                   dataType: "json",
+                   async: true,
+                   error: function (jqXhr, textStatus, errorThrown) {
+                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                   },
+                   success: function (msg) {
+                       //                    if (msg.d == true) {
+
+                       $('#<%=lblTotalNotifications.ClientID%>').hide("slow");
+                       $('#<%=lblTotalNotifications.ClientID%>').val = "";
+                       return false;
+                   }
+               });
+
+           });
+  </script>

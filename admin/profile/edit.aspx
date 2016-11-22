@@ -15,7 +15,11 @@
 
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
-
+<style>
+    .hideElement{
+        display: none
+    }
+    </style>
 </head>
 
 <body>
@@ -80,7 +84,7 @@
                                                             <div class="col-sm-2"></div>
                                                             <div class="col-xs-12 col-sm-2">
                                                                 <div style="margin-bottom:15px;">
-                                                                    <asp:Image ID="imgProfile" runat="server" ImageUrl="#" Width="180" CssClass="img-circle"  />
+                                                                    <asp:Image ID="imgProfile" runat="server" ImageUrl="#" style="border-width: 0px;width: 100px;height: 100px;object-fit: cover;" CssClass="img-circle"  />
                                                                     <asp:Label ID="imgPath" runat="server" Visible="False"></asp:Label>
                                                                 </div>
                                                                 <asp:FileUpload ID="fupProfile" runat="server" />
@@ -112,9 +116,9 @@
                                                                 <div class="form-group">
                                                                     <asp:RequiredFieldValidator ID="rfvPhone" runat="server" ControlToValidate="txtEmail" Display="None" ErrorMessage="Email" Text="*" ValidationGroup="gpBasic"></asp:RequiredFieldValidator>
                                                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Enter a valid email !" Display="None" Text="*" ControlToValidate="txtEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
-                                                                    <label class="col-sm-4 control-label no-padding-right" for="form-field-username">
+                                                                    <label class="col-sm-4 control-label no-padding-right hideElement" for="form-field-username">
                                                                     Email: <span class="red">*</span></label>                                                                   
-                                                                    <asp:TextBox ID="txtEmail" runat="server" class="col-xs-12 col-sm-4" placeholder="Email" ValidationGroup="gpBasic" style="padding:5px;"/>
+                                                                    <asp:TextBox ID="txtEmail" runat="server" class="col-xs-12 col-sm-4 hideElement" placeholder="Email" ValidationGroup="gpBasic" style="padding:5px;"/>
                                                                     
                                                                 </div>
                                                                 <div class="space-4">

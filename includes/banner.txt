@@ -1,1 +1,1 @@
-﻿<div class=""><asp:Image runat="server" ID="imgBanner"  CssClass="img-responsive" ImageUrl="../images/banner.jpg" alt="homeimage" width="100%" /></div>
+﻿<div class=""><img id="imgBanner" src="../branddefaultimage.jpg" class="img-responsive" style="width:100%;margin-top: 5%;"/><asp:Image runat="server" Visible=false ID="imgBanner"  CssClass="img-responsive" ImageUrl="../images/banner.jpg" alt="homeimage" width="100%" /></div>

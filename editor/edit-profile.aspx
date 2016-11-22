@@ -9,7 +9,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Influencer Edit Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<style>
+        #txtAbout_toolbarArea{
+            display: none
+        }
+        #txtAbout_TabRow{
+            display: none
+        }
+        #txtTop_toolbarArea{
+          display: none
+        }
+        #txtTop_TabRow{
+          display: none;
+        }
+        #txtECalendar_toolbarArea{
+          display: none
+        }
+         #txtECalendar_TabRow{
+          display: none;
+        }
+  
+</style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -113,8 +133,10 @@ select option {
            <div class="replaytext">
              <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
           </div><div class="lines"><hr /></div>
+          <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></div>
-          <div class="replaimg"><a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" ><img  src="../images/replaceimage1.png" /></a></div>
+          <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+          </a>
           <div class="lines"><hr /></div>
            <asp:updatepanel runat="server">
              <ContentTemplate>
@@ -402,8 +424,8 @@ select option {
           
       </div>
       
-      <div class="relinw"></div>
       
+      <div class="relinw" style="display:none;"></div>
       <div class="reblockadd1">
             <div class="col-md-12">
                 <button type="button" runat="server" name="signup" ID="btnSignup" class="hvr-sweep-to-rightup2" style="float:right" ValidationGroup="gpProfile" OnServerClick="btnSignup_ServerClick">Submit</button>                     

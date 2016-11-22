@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 public partial class home : System.Web.UI.Page
 {
@@ -22,9 +24,10 @@ public partial class home : System.Web.UI.Page
         {
             try
             {
+                
                 LoadBrandData();
                 SetTotalViews();
-
+                LikesColor();
                 BrandLikes();
                 if (Common.Getunread_Messages() > 0)
                 {
@@ -71,6 +74,30 @@ public partial class home : System.Web.UI.Page
 
     }
 
+
+    protected void LikesColor()
+    {
+        try
+        {
+            DatabaseManagement db = new DatabaseManagement();
+             var httpCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+            string followers = string.Format("SELECT * From Tbl_BrandsLikes Where UserID=(SELECT UserID From Tbl_Users Where UserKey={0}) AND LikeID={1}", IEUtils.SafeSQLString(Request.QueryString["v"]),IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(followers);
+            int result = 0;
+            if (dr.HasRows)
+            {
+                LikeItem.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6");
+                LikeIcon.Style.Add("color", "#4c92c6");
+            }
+            dr.Close();
+            lblTotolLikes.Text = result.ToString();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+
+    }
     [System.Web.Script.Services.ScriptMethod()]
     [System.Web.Services.WebMethod]
     public static List<string> GetItemTitle(string lbName)
@@ -273,23 +300,23 @@ public partial class home : System.Web.UI.Page
 
     }
     private static List<Items> sortListBySortOrder(List<Items> itemsList)
-        {
+    {
 
         for (int iCounter = 0; iCounter < itemsList.Count; iCounter++)
-            {
+        {
             for (int jCounter = 0; jCounter < itemsList.Count; jCounter++)
-                {
+            {
                 if (itemsList[iCounter].ItemId > itemsList[jCounter].ItemId)
-                    {
+                {
                     Items temp = new Items();
                     temp = itemsList[iCounter];
                     itemsList[iCounter] = itemsList[jCounter];
                     itemsList[jCounter] = temp;
-                    }
                 }
             }
-        return itemsList;
         }
+        return itemsList;
+    }
     [WebMethod, ScriptMethod]
     public static List<Items> GetData(int pageIndex, string v)
     {
@@ -314,6 +341,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -321,7 +349,8 @@ public partial class home : System.Web.UI.Page
                 {
                     while (dr.Read())
                     {
-                        DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                        //DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                    DateTime dbDate = Convert.ToDateTime(dr["Dated"].ToString());
 
                         var objitem = new Items
                         {
@@ -341,8 +370,22 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
+                        string selectDBTime = string.Format("Select DatePosted from Tbl_Items Where ItemID={0}", objitem.ItemId);
+                        DatabaseManagement db1 = new DatabaseManagement();
+                        SqlDataReader dr1 = db1.ExecuteReader(selectDBTime);
+                        if (dr1.HasRows)
+                        {
+                            dr1.Read();
+                            dbDate = Convert.ToDateTime(dr1[0]);
+                            objitem.Dated = Common.GetRelativeTime(dbDate);
+                        }
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                         {
+
                             itemList.Add(objitem);
                         }
                         tempCount++;
@@ -352,7 +395,7 @@ public partial class home : System.Web.UI.Page
                 }
 
             }
-sortListBySortOrder(itemList);
+            sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -382,14 +425,15 @@ sortListBySortOrder(itemList);
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserKey", v);
                 cmd.Parameters.AddWithValue("@CategoryID", categoryid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -417,9 +461,13 @@ sortListBySortOrder(itemList);
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                         {
+
                             itemList.Add(objitem);
                         }
                         tempCount++;
@@ -428,7 +476,7 @@ sortListBySortOrder(itemList);
                 }
 
             }
-sortListBySortOrder(itemList);
+            sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -457,14 +505,15 @@ sortListBySortOrder(itemList);
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserKey", v);
                 cmd.Parameters.AddWithValue("@SeasonID", seasonid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -492,9 +541,13 @@ sortListBySortOrder(itemList);
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                         {
+
                             itemList.Add(objitem);
                         }
                         tempCount++;
@@ -503,7 +556,7 @@ sortListBySortOrder(itemList);
                 }
 
             }
-sortListBySortOrder(itemList);
+            sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -534,14 +587,15 @@ sortListBySortOrder(itemList);
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserKey", v);
                 cmd.Parameters.AddWithValue("@HolidayID", holidayid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -569,9 +623,13 @@ sortListBySortOrder(itemList);
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                         {
+
                             itemList.Add(objitem);
                         }
                         tempCount++;
@@ -580,7 +638,7 @@ sortListBySortOrder(itemList);
                 }
 
             }
-sortListBySortOrder(itemList);
+            sortListBySortOrder(itemList);
             return itemList;
 
 
@@ -610,14 +668,15 @@ sortListBySortOrder(itemList);
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserKey", v);
                 cmd.Parameters.AddWithValue("@Title", title);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -645,9 +704,13 @@ sortListBySortOrder(itemList);
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                         {
+
                             itemList.Add(objitem);
                         }
                         tempCount++;
@@ -656,7 +719,7 @@ sortListBySortOrder(itemList);
                 }
 
             }
-sortListBySortOrder(itemList);
+            sortListBySortOrder(itemList);
             return itemList;
 
 

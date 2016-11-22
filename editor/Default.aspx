@@ -34,6 +34,21 @@
         #featured2{
                 font-size: 0px;
         }
+  @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+.starter-template {
+    padding: 10px 0 0px;
+}
+
+.sline{
+    margin-top: 0px !important;
+}
+}
+.starter-template2{
+        padding: 8px 0px 0px !important;
+}
+     .starter-template {
+         padding: 8px 0 20px;
+     }
     </style>
 
 <script type="text/javascript">
@@ -109,7 +124,8 @@
                 fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                     " <div class='hover ehover13'> " +
                         "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-                            "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
+                                                   "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; ' alt=''> " +
+                            // "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                                 "     <div class='overlay'> " +
                                     "         <h2>" + val.Name + " </h2> " +
                                         "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
@@ -291,6 +307,8 @@
 
 <!--Banner-->
     <!--Banner-->
+    <div class="topspace"></div>
+    <div>
     <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1300px; height: 300px; overflow: hidden; visibility:visible;">
         <!-- Loading Screen -->
         <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
@@ -316,6 +334,7 @@
         <span data-u="arrowleft" class="jssora22l" style="top:0px;left:12px;width:40px;height:58px;" data-autocenter="2"></span>
         <span data-u="arrowright" class="jssora22r" style="top:0px;right:12px;width:40px;height:58px;" data-autocenter="2"></span>
     </div>
+    </div>
     <script>
         jssor_1_slider_init();
     </script>
@@ -336,7 +355,7 @@
        <div class="starter-template">
         <h6><br />BRANDS</h6>
         <h1> This Week's Brands</h1>
-        <div class="sline"><img src="../images/line.png" /></div>
+        <div class="sline" style="margin-top: 19px;"><img src="../images/line.png" /></div>
       </div>
 </div><!--col-md-10-->
 </div><!--wrapperblock-->
@@ -349,10 +368,11 @@
            <div class="row featurette">
                <asp:Repeater ID="rptFeatured1" runat="server" DataSourceID="sdsFeatured1">
                    <ItemTemplate>
-                       <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:0px;    margin-top: 21px;">
+                       <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:0px;    margin-top: 0px;">
                  <div class="hover ehover13">
                      <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
-                    <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">
+                    <!--<img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">-->
+                                        <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%;" alt="">
 						<div class="overlay">
 							<h2><%# Eval("Name","{0}") %> </h2>
 							<h4><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h4>
@@ -379,10 +399,10 @@
      <!--text-->
 <div class="wrapper">
 <div class="col-md-12">
-      <div class="starter-template">
+      <div class="starter-template starter-template2">
         <h6><br />INFLUENCER'S PICKS</h6>
         <h1> This Week's Picks </h1>
-        <div class="sline"><img src="../images/line.png" /></div>
+        <div class="sline" style="margin-top: 19px;"><img src="../images/line.png" /></div>
       </div>
 </div><!--col-md-10-->
 </div><!--wrapperblock-->
@@ -395,7 +415,8 @@
                        <div class="col-md-4 col-sm-6 col-xs-12 homelist" style="padding-bottom:0px">
                            <div class="hover ehover13">
                                <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
-                               <img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:333px;" alt="">
+                               <!--<img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:333px;" alt="">-->
+                                                             <img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%;" alt="">
                                <div class="overlay">
                                    <h2><%# Eval("Name","{0}") %> </h2>
                                    <h3><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h3>

@@ -14,8 +14,17 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
     private string[] _loggedInUser;
     private int itemIDFront;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["IsItemSaved"] != null)
+        {
+            if ((bool)Session["IsItemSaved"] == true)
+            {
+                Session["IsItemSaved"] = false;
+                Response.Redirect("profile-page-lookbooks.aspx", false);
+            }
+        }
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         //txtItemTitle.Focus();
@@ -25,9 +34,57 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             chkCategories.DataBind();
             chkDefaultSeasons.DataBind();
             chkDefaultHoliday.DataBind();
+            #region To check for View More and less Buttons
+            if (Session["EditItemDetails"] == null)
+            {
+                EditItemDetails editItemDetails = new EditItemDetails();
+                Session["EditItemDetails"] = editItemDetails;
+            }
+            DisplayMoreCats();
+            DisplayMoreHolidays();
+            DisplayMoreSeasons();
+            DisplayMoreTags();
+            if (chkCategories.Items.Count < 10)
+            {
+                btn_ViewLess.Visible = btn_ViewMore.Visible = false;
+                (Session["EditItemDetails"] as EditItemDetails).Category_MoreThanTenCounter = false;
+            }
+            else
+            {
+                (Session["EditItemDetails"] as EditItemDetails).Category_MoreThanTenCounter = true;
+            }
+            if (chkDefaultSeasons.Items.Count < 10)
+            {
+                btn_LessSeasons.Visible = btn_MoreSeasons.Visible = false;
+                (Session["EditItemDetails"] as EditItemDetails).Season_MoreThanTenCounter = false;
+            }
+            else
+            {
+                (Session["EditItemDetails"] as EditItemDetails).Season_MoreThanTenCounter = true;
+            }
+            if (chkDefaultHoliday.Items.Count < 10)
+            {
+                btn_LessHolidays.Visible = btn_MoreHolidays.Visible = false;
+                (Session["EditItemDetails"] as EditItemDetails).Holiday_MoreThanTenCounter = false;
+            }
+            else
+            {
+                (Session["EditItemDetails"] as EditItemDetails).Holiday_MoreThanTenCounter = true;
+            }
+            /*if(rptTags.Items.Count<10)
+            {
+                btn_LessTags.Visible = btn_MoreTags.Visible = false;
+                (Session["EditItemDetails"] as EditItemDetails).Tags_MoreThanTenCounter = false;
+            }
+            else
+            {
+                (Session["EditItemDetails"] as EditItemDetails).Tags_MoreThanTenCounter = true;
+            }*/
+            #endregion
             DisplayDefaultCats();
             DisplayDefaultSeasons();
             DisplayDefaultHolidays();
+            DisplayDefaultTags();
             LoadItem();
             GetCommentsCount();
             ItemLikes();
@@ -49,6 +106,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         else
         {
             itemIDFront = Convert.ToInt32(hidField.Value);
+
         }
         rptTags.DataBind();
         dvTagToggles.Visible = rptTags.Items.Count > 0;
@@ -62,6 +120,18 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         try
         {
             var db = new DatabaseManagement();
+            if (Session["EditItemDetails"] == null)
+            {
+                EditItemDetails editItemDetails = new EditItemDetails();
+                editItemDetails.Description = "";
+                editItemDetails.Color = "";
+                Session["EditItemDetails"] = editItemDetails;
+            }
+            else
+            {
+                (Session["EditItemDetails"] as EditItemDetails).Description = "";
+                (Session["EditItemDetails"] as EditItemDetails).Color = "";
+            }
             string selectRec =
                 string.Format(
                     "SELECT ItemID,ItemKey,Title,Description,RetailPrice,WholesalePrice,FeatureImg,StyleNumber,StyleName,Color, Category,Season,Holiday,Views,Likes From Tbl_Items Where ItemID={0}",
@@ -72,7 +142,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 dr.Read();
                 txtItemTitle.Value = dr[2].ToString();
                 txtDescription.Text = dr[3].ToString();
-                Session["Description"] = dr[3].ToString();
+                //Session["Description"] = dr[3].ToString();
+                (Session["EditItemDetails"] as EditItemDetails).Description = dr[3].ToString();
                 txtRetail.Value = dr[4].ToString();
                 txtWholesale.Value = dr[5].ToString();
                 imgFeatured.ImageUrl = "../photobank/" + dr[6];
@@ -80,6 +151,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 txtStyleNumber.Value = dr[7].ToString();
                 txtStyleName.Value = dr[8].ToString();
                 colbtn.Style["Background-Color"] = dr[9].ToString();
+                (Session["EditItemDetails"] as EditItemDetails).Color = dr[9].ToString();
                 //colbtn.Style.Add("background", dr[9].ToString());
                 lblViews.Text = dr[13].ToString();
                 lblTotalLikes.Text = dr.IsDBNull(14) ? "0" : rptHoliday.Items.Count.ToString();
@@ -91,9 +163,9 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             dr.Close();
             dr.Dispose();
 
-            LoadCategories(db);
-            LoadSeason(db);
-            LoadHolidays(db);
+            //LoadCategories(db);
+            //LoadSeason(db);
+            //LoadHolidays(db);
             Repeater2.DataBind();
             rptTags.DataBind();
             rptModTags.DataBind();
@@ -117,7 +189,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         {
             while (dr2.Read())
             {
-                catlst.Add(IEUtils.ToInt(dr2[0]));
+                //catlst.Add(IEUtils.ToInt(dr2[0]));
+                if (Session["EditItemDetails"] == null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    Session["EditItemDetails"] = editItemDetails;
+                }
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories == null)
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedCategories = new List<int>();
+                }
+                if (!(Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(IEUtils.ToInt(dr2[0])))
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Add(IEUtils.ToInt(dr2[0]));
+                }
             }
         }
         dr2.Close();
@@ -125,8 +210,17 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
         foreach (ListItem itm in chkCategories.Items)
         {
-            if (catlst.Contains(IEUtils.ToInt(itm.Value)))
-                itm.Selected = true;
+            //if (catlst.Contains(IEUtils.ToInt(itm.Value)))
+            if (Session["EditItemDetails"] as EditItemDetails != null)
+            {
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)
+                {
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(int.Parse(itm.Value)))
+                    {
+                        itm.Selected = true;
+                    }
+                }
+            }
         }
     }
 
@@ -140,7 +234,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         {
             while (dr2.Read())
             {
-                lst.Add(IEUtils.ToInt(dr2[0]));
+                if (Session["EditItemDetails"] == null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    Session["EditItemDetails"] = editItemDetails;
+                }
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedSeasons == null)
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedSeasons = new List<int>();
+                }
+                if (!(Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Contains(IEUtils.ToInt(dr2[0])))
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Add(IEUtils.ToInt(dr2[0]));
+                }
+                //lst.Add(IEUtils.ToInt(dr2[0]));
             }
         }
         dr2.Close();
@@ -148,8 +255,17 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
         foreach (ListItem itm in chkDefaultSeasons.Items)
         {
-            if (lst.Contains(IEUtils.ToInt(itm.Value)))
-                itm.Selected = true;
+            //if (lst.Contains(IEUtils.ToInt(itm.Value)))
+            if (Session["EditItemDetails"] != null)
+            {
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedSeasons != null)
+                {
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Contains(int.Parse(itm.Value)))
+                    {
+                        itm.Selected = true;
+                    }
+                }
+            }
         }
     }
 
@@ -163,7 +279,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         {
             while (dr2.Read())
             {
-                lst.Add(IEUtils.ToInt(dr2[0]));
+                if (Session["EditItemDetails"] == null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    Session["EditItemDetails"] = editItemDetails;
+                }
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedHolidays == null)
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedHolidays = new List<int>();
+                }
+                if (!(Session["EditItemDetails"] as EditItemDetails).SelectedHolidays.Contains(IEUtils.ToInt(dr2[0])))
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedHolidays.Add(IEUtils.ToInt(dr2[0]));
+                }
+                //lst.Add(IEUtils.ToInt(dr2[0]));
             }
         }
         dr2.Close();
@@ -171,8 +300,17 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
         foreach (ListItem itm in chkDefaultHoliday.Items)
         {
-            if (lst.Contains(IEUtils.ToInt(itm.Value)))
-                itm.Selected = true;
+            //if (lst.Contains(IEUtils.ToInt(itm.Value)))
+            if (Session["EditItemDetails"] != null)
+            {
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedHolidays != null)
+                {
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedHolidays.Contains(int.Parse(itm.Value)))
+                    {
+                        itm.Selected = true;
+                    }
+                }
+            }
         }
     }
 
@@ -294,12 +432,13 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static void SaveItem(string TitleText, string RetailText, string WholesaleText, string StyleNumberText, string StyleNameText, string v)
+    public static void SaveItem(string DescriptionText, string TitleText, string RetailText, string WholesaleText, string StyleNumberText, string StyleNameText, string v)
     {
 
         try
         {
             int x = Convert.ToInt32(v);
+            (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Description = DescriptionText;
             var db = new DatabaseManagement();
 
 
@@ -323,18 +462,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     // string itemKey = Encryption64.Encrypt(httpCookie.Value).Replace('+', '=');
                     /*if (Colorcookie != null)
                     {*/
+                    string description = (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Description;
+                    string color = (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Color;
                     string updateQuery = string.Format("UPDATE Tbl_Items Set  " +
                                                        "Title={0},Description={1},RetailPrice={2}," +
                                                        "WholesalePrice={3}," +
                                                        "StyleNumber={4},StyleName={5},Color={6}," +
                                                        "IsPublished={7}, UserID={8},DatePosted={9}  WHERE ItemID={10} ",
                                                        IEUtils.SafeSQLString(TitleText),
-                                                         IEUtils.SafeSQLString(HttpContext.Current.Session["Description"].ToString()),
+                                                         IEUtils.SafeSQLString(description),
                                                        IEUtils.ToDouble(RetailText),
                                                        IEUtils.ToDouble(WholesaleText),
                                                        IEUtils.SafeSQLString(StyleNumberText),
                                                        IEUtils.SafeSQLString(StyleNameText),
-                                                        IEUtils.SafeSQLString(Colorcookie.Value),
+                                                        IEUtils.SafeSQLString(color),
                                                        1,
                                                        IEUtils.ToInt(userCookie.Value),
                                                        "'" + DateTime.UtcNow + "'",
@@ -476,51 +617,86 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     /*}*/
                 }
             }
-            if (selectedCategories != null)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
-                if (selectedCategories.Count != 0)
+                //if (selectedCategories != null)
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)
                 {
-                    DeleteCSH(db, x, 0);
+                    //if (selectedCategories.Count != 0)
+                    if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Count > 0)
+                    {
+                        DeleteCSH(db, x, 0);
+                    }
                 }
             }
-            if (selectedHolidays != null)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
-                if (selectedHolidays.Count != 0)
+                //if (selectedHolidays != null)
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedHolidays != null)
                 {
-                    DeleteCSH(db, x, 1);
+                    //if (selectedHolidays.Count != 0)
+                    if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Count > 0)
+                    {
+                        DeleteCSH(db, x, 1);
+                    }
                 }
             }
-            if (selectedSeasons != null)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
-                if (selectedSeasons.Count != 0)
+                //if (selectedSeasons != null)
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedSeasons != null)
                 {
-                    DeleteCSH(db, x, 2);
+                    //if (selectedSeasons.Count != 0)
+                    if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Count > 0)
+                    {
+                        DeleteCSH(db, x, 2);
+                    }
                 }
             }
-            foreach (int lstCategory in selectedCategories)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
-                string addItemCategory = string.Format("INSERT INTO Tbl_ItemsCategory(CategoryID,ItemID) VALUES({0},{1})", IEUtils.ToInt(lstCategory), x);
-                db.ExecuteSQL(addItemCategory);
+                //if (selectedCategories != null)
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)
+                {
+                    //foreach (int lstCategory in selectedCategories)
+                    foreach (int lstCategory in (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedCategories)
+                    {
+                        string addItemCategory = string.Format("INSERT INTO Tbl_ItemsCategory(CategoryID,ItemID) VALUES({0},{1})", IEUtils.ToInt(lstCategory), x);
+                        db.ExecuteSQL(addItemCategory);
+                    }
+                }
             }
 
             // Add Seasons
-
-            foreach (int lstSeason in selectedSeasons)
+            //if (selectedSeasons != null)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedSeasons != null)
+                {
+                    //foreach (int lstSeason in selectedSeasons)
+                    foreach (int lstSeason in (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedSeasons)
+                    {
 
-                string addItemSeason = string.Format("INSERT INTO Tbl_ItemSeasons(SeasonID,ItemID) VALUES({0},{1})", IEUtils.ToInt(lstSeason), x);
-                db.ExecuteSQL(addItemSeason);
+                        string addItemSeason = string.Format("INSERT INTO Tbl_ItemSeasons(SeasonID,ItemID) VALUES({0},{1})", IEUtils.ToInt(lstSeason), x);
+                        db.ExecuteSQL(addItemSeason);
+                    }
+                }
             }
 
             // Add Holidays
-
-            foreach (int lstholiday in selectedHolidays)
+            //if (selectedHolidays != null)
+            if (HttpContext.Current.Session["EditItemDetails"] != null)
             {
+                if ((HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedHolidays != null)
+                {
+                    //foreach (int lstholiday in selectedHolidays)
+                    foreach (int lstholiday in (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).SelectedHolidays)
+                    {
 
-                string additemoreholidays = string.Format("insert into tbl_itemholidays(holidayid,itemid) values({0},{1})", IEUtils.ToInt(lstholiday), x);
-                db.ExecuteSQL(additemoreholidays);
-
-
+                        string additemoreholidays = string.Format("insert into tbl_itemholidays(holidayid,itemid) values({0},{1})", IEUtils.ToInt(lstholiday), x);
+                        db.ExecuteSQL(additemoreholidays);
+                    }
+                }
             }
             //txtDescription.Text = "";
 
@@ -534,9 +710,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             //        }
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
-
-            HttpContext.Current.Response.Redirect("profile-page-items.aspx", false);
-
+            HttpContext.Current.Session["EditItemDetails"] = null;
+            HttpContext.Current.Session["IsItemSaved"] = true;
         }
         catch (Exception ex)
         {
@@ -651,11 +826,13 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
     }
 
-     private void DisplayMoreCats()
+    private void DisplayMoreCats()
     {
         chkCategories.DataSourceID = "";
         chkCategories.DataSource = sdsMoreCats;
         chkCategories.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadCategories(db);
         /*for (int i = 40; i > 19; i--)
         {
             if (chkCategories.Items.Count > i) chkCategories.Items[i].Attributes.Add("style", "display:block;");
@@ -671,16 +848,57 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         chkCategories.DataSourceID = "";
         chkCategories.DataSource = sdsDefaultCats;
         chkCategories.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadCategories(db);
         /*for (int i = 40; i > 19; i--)
         {
             if (chkCategories.Items.Count > i) chkCategories.Items[i].Attributes.Add("style", "display:none;");
         }*/
-
-        btn_ViewMore.Visible = true;
-        btn_ViewLess.Visible = false;
+        if ((Session["EditItemDetails"] as EditItemDetails).Category_MoreThanTenCounter)
+        {
+            btn_ViewMore.Visible = true;
+            btn_ViewLess.Visible = false;
+        }
     }
 
     protected void btn_MoreTags_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            DisplayMoreTags();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    protected void btn_LessTags_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            DisplayDefaultTags();
+        }
+        catch(Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+
+    private void DisplayDefaultTags()
+    {
+        rptTags.DataSourceID = "";
+        rptTags.DataSource = sdsTags;
+        rptTags.DataBind();
+        btn_MoreTags.Visible = true;
+        btn_LessTags.Visible = false;
+        /*if((Session["EditItemDetails"] as EditItemDetails).Tags_MoreThanTenCounter)
+        {
+            btn_MoreTags.Visible = true;
+            btn_LessTags.Visible = false;
+        }*/
+    }
+
+    private void DisplayMoreTags()
     {
         rptTags.DataSourceID = "";
         rptTags.DataSource = sdsMoreTags;
@@ -688,20 +906,18 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         btn_MoreTags.Visible = false;
         btn_LessTags.Visible = true;
     }
-    protected void btn_LessTags_Click(object sender, EventArgs e)
-    {
-        rptTags.DataSourceID = "";
-        rptTags.DataSource = sdsTags;
-        rptTags.DataBind();
-        btn_MoreTags.Visible = true;
-        btn_LessTags.Visible = false;
-    }
+
     private void DisplayMoreSeasons()
     {
-        for (int i = 8; i > 5; i--)
+        chkDefaultSeasons.DataSourceID = "";
+        chkDefaultSeasons.DataSource = sdsMoreSeasons;
+        chkDefaultSeasons.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadSeason(db);
+        /*for (int i = 8; i > 5; i--)
         {
             if (chkDefaultSeasons.Items.Count > i) chkDefaultSeasons.Items[i].Attributes.Add("style", "display:block;");
-        }
+        }*/
         btn_MoreSeasons.Visible = false;
         btn_LessSeasons.Visible = true;
     }
@@ -711,12 +927,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     }
     private void DisplayDefaultSeasons()
     {
-        for (int i = 8; i > 5; i--)
+        chkDefaultSeasons.DataSourceID = "";
+        chkDefaultSeasons.DataSource = sdsDefaultSeasons;
+        chkDefaultSeasons.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadSeason(db);
+        /*for (int i = 8; i > 5; i--)
         {
             if (chkDefaultSeasons.Items.Count > i) chkDefaultSeasons.Items[i].Attributes.Add("style", "display:none;");
+        }*/
+        if ((Session["EditItemDetails"] as EditItemDetails).Season_MoreThanTenCounter)
+        {
+            btn_MoreSeasons.Visible = true;
+            btn_LessSeasons.Visible = false;
         }
-        btn_MoreSeasons.Visible = true;
-        btn_LessSeasons.Visible = false;
     }
     protected void btn_LessSeasons_Click(object sender, EventArgs e)
     {
@@ -724,11 +948,16 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     }
     private void DisplayMoreHolidays()
     {
-        for (int i = 8; i > 5; i--)
+        chkDefaultHoliday.DataSourceID = "";
+        chkDefaultHoliday.DataSource = sdsMoreHoliday;
+        chkDefaultHoliday.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadHolidays(db);
+        /*for (int i = 8; i > 5; i--)
         {
             if (chkDefaultHoliday.Items != null)
                 if (chkDefaultHoliday.Items.Count > i) chkDefaultHoliday.Items[i].Attributes.Add("style", "display:block;");
-        }
+        }*/
         btn_MoreHolidays.Visible = false;
         btn_LessHolidays.Visible = true;
     }
@@ -739,12 +968,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
     private void DisplayDefaultHolidays()
     {
-        for (int i = 8; i > 5; i--)
+        chkDefaultHoliday.DataSourceID = "";
+        chkDefaultHoliday.DataSource = sdsDefaultHoliday;
+        chkDefaultHoliday.DataBind();
+        DatabaseManagement db = new DatabaseManagement();
+        LoadHolidays(db);
+        /*for (int i = 8; i > 5; i--)
         {
             if (chkDefaultHoliday.Items.Count > i) chkDefaultHoliday.Items[i].Attributes.Add("style", "display:none;");
+        }*/
+        if ((Session["EditItemDetails"] as EditItemDetails).Holiday_MoreThanTenCounter)
+        {
+            btn_MoreHolidays.Visible = true;
+            btn_LessHolidays.Visible = false;
         }
-        btn_MoreHolidays.Visible = true;
-        btn_LessHolidays.Visible = false;
     }
     protected void btn_LessHolidays_Click(object sender, EventArgs e)
     {
@@ -783,7 +1020,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
                 var db = new DatabaseManagement();
                 //db.ExecuteSQL("Delete from Tbl_ItemTags Where TagID=" + IEUtils.ToInt(e.CommandArgument));
-                int itemId=0;
+                int itemId = 0;
                 itemId = IEUtils.ToInt(Request.QueryString["v"]);
                 string deleteQuery = string.Format("Delete from Tbl_ItemTagsMapping Where TagID={0} AND ItemID={1}", IEUtils.ToInt(e.CommandArgument), IEUtils.ToInt(itemId));
                 db.ExecuteSQL(deleteQuery);
@@ -802,8 +1039,14 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             if (e.CommandName == "1")
             {
                 string color = e.CommandArgument.ToString();
-                var currItem = new HttpCookie("ColorVal") { Value = color };
-                HttpContext.Current.Response.Cookies.Add(currItem);
+                /*var currItem = new HttpCookie("ColorVal") { Value = color };
+                HttpContext.Current.Response.Cookies.Add(currItem);*/
+                if (Session["EditItemDetails"] == null)
+                {
+                    EditItemDetails editItemDetails = new EditItemDetails();
+                    (Session["EditItemDetails"]) = editItemDetails;
+                }
+                (Session["EditItemDetails"] as EditItemDetails).Color = color;
                 string stylevalue = "background:#" + color;
                 colbtn.Attributes.Add("style", stylevalue);
             }
@@ -939,18 +1182,22 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
     }
 
-
-
-
-    static List<int> selectedCategories;
+    //static List<int> selectedCategories;
     protected void chkCategories_SelectedIndexChanged(object sender, EventArgs e)
     {
-        selectedCategories = new List<int>();
+        if (Session["EditItemDetails"] == null)
+        {
+            EditItemDetails editItemDetails = new EditItemDetails();
+            Session["EditItemDetails"] = editItemDetails;
+        }
+        //selectedCategories = new List<int>();
+        (Session["EditItemDetails"] as EditItemDetails).SelectedCategories = new List<int>();
         for (int i = 0; i < chkCategories.Items.Count; i++)
         {
             if (chkCategories.Items[i].Selected)
             {
-                selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                //selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                (Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
             }
 
         }
@@ -959,37 +1206,75 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     string itemDescription;
     protected void txtDescription_TextChanged(object sender, EventArgs e)
     {
-        Session["Description"] = txtDescription.Text;
+        if (Session["EditItemDetails"] == null)
+        {
+            EditItemDetails editItemDetails = new EditItemDetails();
+            (Session["EditItemDetails"]) = editItemDetails;
+        }
+        (Session["EditItemDetails"] as EditItemDetails).Description = txtDescription.Text;
         itemDescription = txtDescription.Text;
     }
 
 
-    static List<int> selectedSeasons;
+    //static List<int> selectedSeasons;
     protected void chkDefaultSeasons_SelectedIndexChanged(object sender, EventArgs e)
     {
-        selectedSeasons = new List<int>();
+        if (Session["EditItemDetails"] == null)
+        {
+            EditItemDetails editItemDetails = new EditItemDetails();
+            (Session["EditItemDetails"]) = editItemDetails;
+        }
+        (Session["EditItemDetails"] as EditItemDetails).SelectedSeasons = new List<int>();
+        //selectedSeasons = new List<int>();
         for (int i = 0; i < chkDefaultSeasons.Items.Count; i++)
         {
             if (chkDefaultSeasons.Items[i].Selected)
             {
-                selectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
+                //selectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
+                (Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
             }
 
         }
     }
 
 
-    static List<int> selectedHolidays;
+    //static List<int> selectedHolidays;
     protected void chkDefaultHoliday_SelectedIndexChanged(object sender, EventArgs e)
     {
-        selectedHolidays = new List<int>();
+        if (Session["EditItemDetails"] == null)
+        {
+            EditItemDetails editItemDetails = new EditItemDetails();
+            (Session["EditItemDetails"]) = editItemDetails;
+        }
+        //selectedHolidays = new List<int>();
+        (Session["EditItemDetails"] as EditItemDetails).SelectedHolidays = new List<int>();
         for (int i = 0; i < chkDefaultHoliday.Items.Count; i++)
         {
             if (chkDefaultHoliday.Items[i].Selected)
             {
-                selectedHolidays.Add(Convert.ToInt32(chkDefaultHoliday.Items[i].Value));
+                //selectedHolidays.Add(Convert.ToInt32(chkDefaultHoliday.Items[i].Value));
+                (Session["EditItemDetails"] as EditItemDetails).SelectedHolidays.Add(Convert.ToInt32(chkDefaultHoliday.Items[i].Value));
             }
 
+        }
+    }
+
+    private void setSelectedCategories()
+    {
+        foreach (ListItem itm in chkCategories.Items)
+        {
+            //if (catlst.Contains(IEUtils.ToInt(itm.Value)))
+            //itm.Selected = true;
+            if (Session["EditItemDetails"] as EditItemDetails != null)
+            {
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)
+                {
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(int.Parse(itm.Value)))
+                    {
+                        itm.Selected = true;
+                    }
+                }
+            }
         }
     }
 

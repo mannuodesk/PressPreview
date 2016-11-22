@@ -76,7 +76,7 @@
             </button>
             <div style="margin-top:15px;">
               <div class="logob"><a href="../Default.aspx"><img src="../images/logo.png" alt="thePRESSPreview"/></a></div>
-                <!--#INCLUDE FILE="../includes/logo.txt" -->
+                <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">

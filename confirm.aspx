@@ -47,11 +47,11 @@
           </div>  
     </div>
    <%-- <div class="col-md-3"></div>--%>
-    <div runat="server" id="dvSuccess" class="col-md-12 wrapperforget;" style="text-align:center; margin-top:10%;">
-          <div class="textforget" style="margin-left:25px;">Congratulations!</div>
+    <div runat="server" id="dvSuccess" class="col-md-12 wrapperforget;" style="text-align:center; margin-top:120px;">
+          <div class="textforget" style="text-align: center">Congratulations!</div>
           <div class="textforgett">Your account has been created. An email will be sent to you after your account is <br />approved by the admin. <br/> <br/><br/> Please check your inbox.</div>          
           <div class="forgetform">                                 
-                 <button type="submit" runat="server" name="forbut" id="btnGoTo" class="hvr-sweep-to-right"   style="float:none; text-align:center; margin-left:35px;" onserverclick="btnGoTo_ServerClick">Back to Home Page</button>
+                 <button type="submit" runat="server" name="forbut" id="btnGoTo" class="hvr-sweep-to-right"   style="float:none; text-align:center;" onserverclick="btnGoTo_ServerClick">Back to Home Page</button>
           </div><!--forgetform-->          
          
     </div> 

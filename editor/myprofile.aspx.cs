@@ -210,11 +210,12 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                             IEUtils.SafeSQLString(Server.HtmlEncode(txtTop.Text)),
                             IEUtils.SafeSQLString(Server.HtmlEncode(txtECalendar.Text)),
                             IEUtils.SafeSQLString(Server.HtmlEncode(txtCountry.Value)),
-                            IEUtils.SafeSQLString(txtInstagram.Value),
-                        IEUtils.SafeSQLString(txtTwitter.Value),
-                        IEUtils.SafeSQLString(txtFacebook.Value),
-                        IEUtils.SafeSQLString(txtYoutube.Value),
-                        IEUtils.SafeSQLString(txtPinterest.Value)
+                    
+                               IEUtils.SafeSQLString("www.instagram.com/" + txtInstagram.Value),
+                        IEUtils.SafeSQLString("twitter.com/" + txtTwitter.Value),
+                        IEUtils.SafeSQLString("www.facebook.com/" + txtFacebook.Value),
+                        IEUtils.SafeSQLString("www.youtube.com/user/" + txtYoutube.Value),
+                        IEUtils.SafeSQLString("www.pinterest.com/" + txtPinterest.Value)
                             );
                 db.ExecuteSQL(insertQuery);
                 db._sqlConnection.Close();

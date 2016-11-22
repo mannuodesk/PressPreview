@@ -43,7 +43,7 @@
                             "  <label id='lblTime'>" + array[i].StartTime + "<label>" +
                         "</div>" +
                         "<div class='elisttitle'>" +
-                            "<a href='eventdetails.aspx?e='" + array[i].EventID + "'>" + array[i].EventTitle + "</a>" +
+                            "<a href='eventdetails.aspx?e=" + array[i].EventID + "'>" + array[i].EventTitle + "</a>" +
                         "</div>" +
                         "<div class='elistdate'>" +
                      array[i].EventLocation
@@ -149,7 +149,7 @@ select option {
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-             <!--#INCLUDE FILE="../includes/logo.txt" -->
+             <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -208,7 +208,7 @@ select option {
                     SelectCommand="SELECT DISTINCT [ECategoryID],[ECategory] FROM [Tbl_EventCategory] ORDER BY [ECategory]">
                 </asp:SqlDataSource>
             </div>
-            <div class="seventinputb1"><button type="button" name="login" id="buteventl" onclick="SearchEvent()" class="hvr-sweep-to-righta1">Search</button></div>
+            <div class="seventinputb1"><button type="button" name="login" style="height: 44px;" id="buteventl" onclick="SearchEvent()" class="hvr-sweep-to-righta1">Search</button></div>
      
     </div>   
     <div style="margin-top:60px;">
@@ -222,7 +222,7 @@ select option {
 
 <!--text-->
 
-<div class="wrappereventlist">
+<div class="wrappereventlist" style="margin-bottom:5%">
       <div class="col-md-12 col-xs-12 etitle">
         Upcoming Events
       </div><!--col-md-12-->

@@ -15,6 +15,20 @@
  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="../js/jquery.autocomplete.js" type="text/javascript"></script>
+<style>
+  .wrapParagraph{
+        display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 8.6em;
+  }
+  @-moz-document url-prefix() {
+    .blockme {
+        margin-top:5%;
+    }
+}
+</style>
 <script type="text/javascript">
     $(function () {
         initializer();
@@ -112,7 +126,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-              <!--#INCLUDE FILE="../includes/logo.txt" -->
+              <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -468,7 +482,7 @@
                                           <div class="repimg">
                                               <a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox"><img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" style="height: 150px; width: 150px;" alt="<%# Eval("Title","{0}") %>" /> </a>
                                           </div>
-                                          <div class="retext">
+                                          <div class="retext wrapParagraph">
                                               <b><%# Eval("Title")%>" </b><br />
                                               By <%# Eval("Name")%>" <br />
                                               <br />

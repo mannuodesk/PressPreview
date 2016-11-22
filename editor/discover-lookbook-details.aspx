@@ -11,6 +11,19 @@
             font-size:0px;
         }
     </style>
+    <style>
+    .menudlist{
+            margin: 12px 0 0 !important;
+    }
+            @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait)
+    {
+        .addlineblock1, .colrow {
+    display: block !important ;
+    
+}
+    
+}
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
@@ -35,10 +48,11 @@
     <style>
         #contentbox .box {
     width: 20%;
-    padding: 0 10px 16px!important;
+    padding: 0 10px 0px!important;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    margin-bottom: 0px !important
 }
     </style>
 </head>
@@ -180,6 +194,7 @@
       <div class="starter-template1">
         <h6><br />LOOKBOOK</h6>
         <h1> <asp:Label runat="server" ID="lblLbTitle"></asp:Label> </h1>
+        <p><asp:Label runat="server" ID="lbDescription"></asp:Label></p>
         <div class="sline"><img src="../images/line.png" /></div>
       </div>
 </div><!--col-md-10-->
@@ -316,8 +331,8 @@
                                       "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
                                           "                  <h2 class='titlet'>" + val.Title + "</h2> " +
                                               "                  <h2 class='linenew'></h2> " +
-                                                  "                  <h2> " +
-                                                      "                      <span Id='lblDate' Text='" + val.DatePosted + "'></span></h2> " +
+                                                  "          <h2  Id='lblDate'> " +
+                                                       val.DatePosted + "</h2> " +
                                                           "              </div> " +
                                                               "              <!--overlay--> " +
                                                                   "          </div> " +
@@ -356,7 +371,7 @@
                                                                                                                                                                                                               "      </div> " +
                                                                                                                                                                                                                   "      <!--mseb--> " +
                                                                                                                                                                                                                       "  </div> " +
-                                                                                                                                                                                                                          " </div> " +
+                                                                                                                                                                                                                          "<div class='lineclook'></div> </div> " +
                                                                                                                                                                                                                               " </div>";
 
               });

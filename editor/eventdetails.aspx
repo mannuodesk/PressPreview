@@ -46,7 +46,14 @@
         });
     });
 	</script>
-     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <style>
+        .fancybox-inner{
+            width:auto !important;
+            height:auto !important;
+        }
+        </style>
+     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDqfn0oWwSMR8xsTXBKQR61WPC454_0Hw&callback=initMap"
+  type="text/javascript"></script>
     
 <script language="javascript" type="text/javascript">
 

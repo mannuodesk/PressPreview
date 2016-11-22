@@ -13,11 +13,13 @@
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+
 <script src="../js/sample.js"></script>
 <script type="text/javascript">
-		jQuery(document).ready(function() {
-			jQuery('.fancybox').fancybox();
-		});
+    var $ = jQuery.NoConflict();
+    jQuery(document).ready(function () {
+        jQuery('.fancybox').fancybox();
+    });
 	</script>   
 
      
@@ -29,6 +31,13 @@
         .alphbets:active
         {
            font-weight:bold;
+        }
+            .wrapper-setting {
+                margin: 0 auto !IMPORTANT;
+    background-color: #ffffff !IMPORTANT;
+    width: 85% !important;
+    float: none;
+    overflow: hidden;
         }
     </style>
 </head>
@@ -55,7 +64,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
                       
-         <div class="col-md-2" style="color:white;">   
+         <div class="col-md-2"  style="color:white;">   
             <!--#INCLUDE FILE="../includes/messgTopInfluencer.txt" --> 
          </div>   
                        
@@ -80,7 +89,7 @@
 
 
 <!--text-->
-<div class="wrapper">
+<div class="wrapper wrapper-setting">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:UpdateProgress ID="UpdateProgress1" runat="server">
@@ -107,15 +116,35 @@
                 </div>
             </div>
             <div class="col-md-12 col-xs-12">
-                <div style="width: 100%; text-align: center;">
-                    <asp:Repeater ID="rptAlphabets" runat="server">
-                        <ItemTemplate>
-                            <asp:LinkButton ID="lnkAlphabet" runat="server" CssClass="alphbets" Text='<%#Eval("Value")%>' OnClick="Alphabet_Click"
-                                Enabled='<%# Eval("isNotSelected")%>' />
-
-                        </ItemTemplate>
-                    </asp:Repeater>
-
+           <div style="width: 100%; text-align: center;">
+                    
+               <a onclick="Alphabet_Click('ALL');" id="alpha_ALL" style="text-decoration:underline;pointer-events:none" class="alphbets">ALL</a>
+               <a onclick="Alphabet_Click('A');" id="alpha_A"  class="alphbets">A</a>
+               <a onclick="Alphabet_Click('B');" id="alpha_B"  class="alphbets">B</a>
+               <a onclick="Alphabet_Click('C');" id="alpha_C"  class="alphbets">C</a>
+               <a onclick="Alphabet_Click('D');" id="alpha_D"  class="alphbets">D</a>
+               <a onclick="Alphabet_Click('E');" id="alpha_E"  class="alphbets">E</a>
+               <a onclick="Alphabet_Click('F');" id="alpha_F"  class="alphbets">F</a>
+               <a onclick="Alphabet_Click('G');" id="alpha_G"  class="alphbets">G</a>
+               <a onclick="Alphabet_Click('H');" id="alpha_H"  class="alphbets">H</a>
+               <a onclick="Alphabet_Click('I');" id="alpha_I"  class="alphbets">I</a>
+               <a onclick="Alphabet_Click('J');" id="alpha_J"  class="alphbets">J</a>
+               <a onclick="Alphabet_Click('K');" id="alpha_K"  class="alphbets">K</a>
+               <a onclick="Alphabet_Click('L');" id="alpha_L"  class="alphbets">L</a>
+               <a onclick="Alphabet_Click('M');" id="alpha_M"  class="alphbets">M</a>
+               <a onclick="Alphabet_Click('N');" id="alpha_N"  class="alphbets">N</a>
+               <a onclick="Alphabet_Click('O');" id="alpha_O"  class="alphbets">O</a>
+               <a onclick="Alphabet_Click('P');" id="alpha_P"  class="alphbets">P</a>
+               <a onclick="Alphabet_Click('Q');" id="alpha_Q"  class="alphbets">Q</a>
+               <a onclick="Alphabet_Click('R');" id="alpha_R"  class="alphbets">R</a>
+               <a onclick="Alphabet_Click('S');" id="alpha_S"  class="alphbets">S</a>
+               <a onclick="Alphabet_Click('T');" id="alpha_T"  class="alphbets">T</a>
+               <a onclick="Alphabet_Click('U');" id="alpha_U"  class="alphbets">U</a>
+               <a onclick="Alphabet_Click('V');" id="alpha_V"  class="alphbets">V</a>
+               <a onclick="Alphabet_Click('W');" id="alpha_W"  class="alphbets">W</a>
+               <a onclick="Alphabet_Click('X');" id="alpha_X"  class="alphbets">X</a>
+               <a onclick="Alphabet_Click('Y');" id="alpha_Y"  class="alphbets">Y</a>
+               <a onclick="Alphabet_Click('Z');" id="alpha_Z"  class="alphbets">Z</a>
                 </div>
                
             </div>
@@ -124,20 +153,117 @@
             <!--text-->
             <!-- START THE BRANDS LIST -->
             <div class="col-md-12" id="letter2">
+                <script>
+                    var pageIndex = 0;
+                    var tempcount = 0;
+                    var selectedAlphabet;
+                    function Alphabet_Click(alphabet) {
+                        pageIndex = 0;
+                       tempcount = 0;
+                        selectedAlphabet = alphabet;
+                        $("#dlBrands").html("");
+                        $(".alphbets").css("pointer-events", "all");
+                        $(".alphbets").css("text-decoration", "none");
+                        $("#alpha_" + alphabet).css("pointer-events", "none");
+                        $("#alpha_" + alphabet).css("text-decoration", "underline");
+                        GetRecords(alphabet);
+                       
+                    }
+                 
+                    $(window).load(function () {
+                        selectedAlphabet = "ALL";
+                        GetRecords("ALL");
+                    });
+
+                    function GetRecords(alphabet) {
+                        pageIndex++;
+                        if (alphabet == "ALL") {
+                            $("#lblView").html("All Brands.");
+                        }
+                        else {
+                            $("#lblView").html("Brands whose name starts with " + alphabet);
+                        }
+                        //send a query to server side to present new content
+                        $.ajax({
+                            type: "POST",
+                            url: "brands.aspx\\GetData",
+                            //data: '{pageIndex: ' + pageIndex + '}',
+                            data: '{pageIndex: ' + pageIndex + ', alphabet:"' + alphabet + '"}',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: OnSuccess
+                        });
+
+
+                    }
+
+                    function OnSuccess(data, cb) {
+                        console.log(data);
+                        var items = data.d;
+                        var fragment = "";
+                        if (items.length != 0) {
+                          
+                            $.each(items, function (index, val) {
+                                fragment = "<div class='col-md-4' style='margin-bottom: 10px;'><a class='fancybox stylingAhref' href='brand-items.aspx?v=" + val.userKey + "'>" + val.name + "</a></div>";
+
+                                $("#dlBrands").append(fragment);
+
+                            });
+                        }
+
+                    }
+                    $(window).scroll(function () {
+                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                            GetRecords(selectedAlphabet);
+                        }
+                    });
+                    //$(".alphbets").click(function () {
+                    //    //window.location.reload();
+                    //});
+                </script>
                 <div style="width: 80%; margin: 0 auto;">
                      <div class="starter-template">
                     <h6><asp:Label ID="lblView" runat="server" Text=""></asp:Label></h6>
                    <div class="sline">
                         <img src="../images/line.png" /></div>
                 </div>
+                    <style>
+                     .stylingAhref{
+                            line-height: 30px;
+    color: #000;
+    font-size: 16px;
+    letter-spacing: 2px;
+             font-family: Raleway-Bold;
+             text-transform: capitalize;
+                        }
+                     .stylingAhref:hover{
+                             font-family: Raleway-Medium;
+    text-decoration: none;
+    color: #000;
+}
+
+                    </style>
+
+                    <div id="dlBrands" class="col-md-12" style="margin-bottom: 50px;text-align: center;">
+                    </div>
+
+                    <%--<table id="dlBrands" class="brandlist" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+		<tbody>
+	</tbody></table>--%>
+
+
+
+
+
+
                   
-                    <asp:DataList ID="dlBrands" runat="server" CssClass="brandlist" RepeatColumns="3" Width="100%">
+         <%--           <asp:DataList ID="dlBrands" runat="server" CssClass="brandlist" RepeatColumns="3" Width="100%">
                         <ItemTemplate>
                             <ul>
                                 <li><a class="fancybox" href="brand-items.aspx?v=<%# Eval("UserKey") %>"><%# Eval("Name","{0}") %></a></li>
                             </ul>
                         </ItemTemplate>
-                    </asp:DataList>
+                    </asp:DataList>--%>
                 </div>
                 <!--col-md-6-->
                 <!--col-md-6-->

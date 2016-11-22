@@ -10,6 +10,8 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
+using HtmlAgilityPack;
+using System.Data;
 
 public partial class editor_discover_lookbook : System.Web.UI.Page
 {
@@ -27,14 +29,19 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
-        txtsearch.Attributes.Add("onKeyPress",
-               "doClick('" + btnSearch.ClientID + "',event)");
+        txtsearch2.Attributes.Add("onKeyPress",
+              "doClick('" + btnSearch.ClientID + "',event)");
         if (!IsPostBack)
         {
-            DiscoverLookbookPageSearch discoverLookbookPageSearch = new DiscoverLookbookPageSearch();
-            Session["DiscoverLookbookPageSearch"] = discoverLookbookPageSearch;
             try
             {
+                DiscoverLookbookPageSearch discoverLookbookPageSearch = (DiscoverLookbookPageSearch)Session["DiscoverLookbookPageSearch"];
+                if (discoverLookbookPageSearch == null)
+                {
+                    discoverLookbookPageSearch = new DiscoverLookbookPageSearch();
+                    Session["DiscoverLookbookPageSearch"] = discoverLookbookPageSearch;
+                }
+                
                 DisplayDefaultBrands();
                 if (Common.Getunread_Messages() > 0)
                 {
@@ -58,6 +65,21 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
             GetSelectedTags();
             rptTags.DataBind();
             dvTagToggles.Visible = rptTags.Items.Count > 0;
+            NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                string brandid = nvc.Get("b");
+                if (brandid != null)
+                {
+                    brandid = brandid.TrimEnd(',');
+                    string[] ids = brandid.Split(',');
+                    for (int i = 0; i < chkBrands.Items.Count; i++ )
+                    {
+                        if (ids.Contains(chkBrands.Items[i].Value))
+                            chkBrands.Items[i].Selected = true;
+                    }
+                }
+            }
         }
 
         else
@@ -85,6 +107,118 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                 string brandid = nvc.Get("b");
                 if (brandid != null)
                 {
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandCheck = brandid;
+                    brandCheck = brandid;
+                }
+                else
+                {
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandCheck = null;
+                    brandCheck = null;
+                }
+                string category = nvc.Get("c");
+                if (category != null)
+                {
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).categoryCheck = category;
+                    categoryCheck = category;
+
+                    var CategoryText = "";
+                    var db = new DatabaseManagement();
+                    using (var con = new SqlConnection(db.ConnectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            cmd.CommandText = "select Title from Tbl_Categories where CategoryID=" + category;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                            {
+                                CategoryText = dr["Title"].ToString();
+                            }
+                            con.Close();
+
+                        }
+                    }
+                    lbCategory.Text = CategoryText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+                }
+                else
+                {
+                    lbCategory.Text = "Categories" + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).categoryCheck = null;
+                    categoryCheck = null;
+                }
+                string season = nvc.Get("s");
+                if (season != null)
+                {
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).seasonsCheck = season;
+                    seasonsCheck = season;
+
+
+                    var SeasonText = "";
+                    var db = new DatabaseManagement();
+                    using (var con = new SqlConnection(db.ConnectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            cmd.CommandText = "select Season from Tbl_Seasons where SeasonID=" + season;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                            {
+                                SeasonText = dr["Season"].ToString();
+                            }
+                            con.Close();
+
+                        }
+                    }
+                    btnSeason.Text = SeasonText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+
+
+                }
+                else
+                {
+                    btnSeason.Text = "Seasons" + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).seasonsCheck = null;
+                    seasonsCheck = null;
+                }
+                string holiday = nvc.Get("h");
+                if (holiday != null)
+                {
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).holidayCheck = holiday;
+                    holidayCheck = holiday;
+
+
+
+                    var HolidayText = "";
+                    var db = new DatabaseManagement();
+                    using (var con = new SqlConnection(db.ConnectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            cmd.CommandText = "select Title from Tbl_Holidays where HolidayID=" + holiday;
+                            cmd.Connection = con;
+                            con.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            while (dr.Read())
+                            {
+                                HolidayText = dr["Title"].ToString();
+                            }
+                            con.Close();
+
+                        }
+                    }
+                    btnHoiday.Text = HolidayText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+
+                }
+                else
+                {
+                    btnHoiday.Text = "Holidays" + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
+                    (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).holidayCheck = null;
+                    holidayCheck = null;
+                }
+                if (brandid != null)
+                {
                     brandid = brandid.TrimEnd(',');
                     string[] ids = brandid.Split(',');
                     foreach (ListItem itm in chkBrands.Items)
@@ -93,6 +227,8 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                             itm.Selected = true;
                     }
                 }
+                //chkBrands.Items[1].Text = "Hania";
+                
             }
         }
         catch (Exception ex)
@@ -128,20 +264,46 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
 
     private void DisplayMoreBrands()
     {
-        for (int i = 9; i > 5; i--)
-        {
-            if (chkBrands.Items.Count > i) chkBrands.Items[i].Attributes.Add("style", "display:block;");
-        }
+        chkBrands.DataSourceID = "sdsMoreBrands";
+        chkBrands.DataBind();
+        NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                string brandid = nvc.Get("b");
+                if (brandid != null)
+                {
+                    brandid = brandid.TrimEnd(',');
+                    string[] ids = brandid.Split(',');
+                    for (int i = 0; i < chkBrands.Items.Count; i++ )
+                    {
+                        if (ids.Contains(chkBrands.Items[i].Value))
+                            chkBrands.Items[i].Selected = true;
+                    }
+                }
+            }
         btn_ViewMore.Visible = false;
         btn_ViewLess.Visible = true;
     }
 
     private void DisplayDefaultBrands()
     {
-        for (int i = 9; i > 5; i--)
-        {
-            if (chkBrands.Items.Count > i) chkBrands.Items[i].Attributes.Add("style", "display:none;");
-        }
+        chkBrands.DataSourceID = "sdsbrandsSearch";
+        chkBrands.DataBind();
+        NameValueCollection nvc = Request.QueryString;
+            if (nvc.HasKeys())
+            {
+                string brandid = nvc.Get("b");
+                if (brandid != null)
+                {
+                    brandid = brandid.TrimEnd(',');
+                    string[] ids = brandid.Split(',');
+                    for (int i = 0; i < chkBrands.Items.Count; i++ )
+                    {
+                        if (ids.Contains(chkBrands.Items[i].Value))
+                            chkBrands.Items[i].Selected = true;
+                    }
+                }
+            }
         btn_ViewMore.Visible = true;
         btn_ViewLess.Visible = false;
     }
@@ -340,8 +502,8 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(strBrandSearchCheck))
             {
-                wherecluse = wherecluse + " AND dbo.Tbl_Brands.Name LIKE '" + strBrandSearchCheck + "%' ";
-                wherecluse2 = wherecluse2 + " AND dbo.Tbl_Brands.Name LIKE '" + strBrandSearchCheck + "%' ";
+                wherecluse = wherecluse + " AND a.Title LIKE '%" + strBrandSearchCheck + "%' ";
+                wherecluse2 = wherecluse2 + " AND a.Title LIKE '%" + strBrandSearchCheck + "%' ";
             }
 
             fullQuery = fullQuery + select + wherecluse + orderBy;
@@ -359,7 +521,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
             int pageCount = (int)Math.Ceiling(Convert.ToDecimal(recordCount / pagesize));
             dr2.Close();
             SqlDataReader dr = db.ExecuteReader(fullQuery);
-
+            var desc = "";
             if (dr.HasRows)
             {
                 while (dr.Read())
@@ -384,7 +546,10 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                         Description = dr["Description"].ToString(),
                         FeatureImg = dr["MainImg"].ToString()
                     };
-
+                    var pageDoc = new HtmlDocument();
+                    pageDoc.LoadHtml(objLb.Description);
+                    desc = pageDoc.DocumentNode.InnerText;
+                    objLb.Description = desc;
                     //lookbookList.Add(objLb);
                     if (tempCount >= startItems && tempCount <= endItems)
                     {
@@ -414,6 +579,94 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         }
     }
 
+    [WebMethod, ScriptMethod]
+    public static List<Lookbook> GetDataByTitle(int pageIndex, string title)
+    {
+        try
+        {
+            //StringBuilder getPostsText = new StringBuilder();
+            var lookbookList = new List<Lookbook>();
+            var db = new DatabaseManagement();
+
+            var httpCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+            if (httpCookie != null)
+            {
+                var cmd = new SqlCommand("GetLookBooksByTitle");
+                db._sqlConnection.Open();
+                cmd.Connection = db._sqlConnection;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
+                cmd.Parameters.AddWithValue("@Title", title);
+                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+                int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+
+                        var objLb = new Lookbook
+                        {
+                            PageCount = pageCount,
+                            LookBookKey = dr["LookKey"].ToString(),
+                                                 Name = dr["Name"].ToString(),
+                                                 ProfilePic = dr["U_ProfilePic"].ToString(),
+                                                 RowNum = IEUtils.ToInt(dr["row"]),
+                                                 Title = dr["Title"].ToString(),
+                                                 Likes = LbLikes(IEUtils.ToInt(dr["LookID"])),
+                                                 Views = IEUtils.ToInt(dr["Views"]),
+                                                 BrandId = IEUtils.ToInt(dr["BrandID"]),
+                                                 BrandKey = dr["BrandKey"].ToString(),
+                                                DatePosted = dr["DatePosted"].ToString(),
+                                                 Dated = Common.GetRelativeTime(dbDate),
+                                                 Description = dr["Description"].ToString(),
+                                                 FeatureImg = dr["MainImg"].ToString()
+                        };
+                                                
+                            lookbookList.Add(objLb);
+
+                    }
+                }
+
+            }
+
+            return lookbookList;
+
+
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+
+    }
+     protected static int LbLikes(int lookId)
+    {
+        try
+        {
+            var db = new DatabaseManagement();
+            string followers = string.Format("SELECT COUNT(ID) as TotalLikes From Tbl_LookBook_Likes  Where LookID={0}", lookId);
+            SqlDataReader dr = db.ExecuteReader(followers);
+            int result = 0;
+            if (dr.HasRows)
+            {
+                dr.Read();
+                if (!dr.IsDBNull(0))
+                    result = Convert.ToInt32(dr[0]);
+            }
+            dr.Close();
+            return result;
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+    }
     protected void ByCategory(string categry)
     {
         try
@@ -468,14 +721,13 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                 if (Request.QueryString[key] != null)
                 {
                     Request.QueryString[key] = value;
-                    Response.Redirect(Pagename + "?" + Request.QueryString);
                 }
                 else
                 {
                     nvc.Add(key, value);
-                    Response.Redirect(Pagename + "?" + Request.QueryString);
                 }
             }
+            Response.Redirect(Pagename + "?" + Request.QueryString);
         }
         catch (Exception ex)
         {
@@ -600,7 +852,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         {
             if (e.CommandName == "1")
             {
-                txtsearch.Text = string.Empty;
+                txtsearch2.Text = string.Empty;
                 string category = e.CommandArgument.ToString();
                 ByCategory(category);
             }
@@ -617,7 +869,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         {
             if (e.CommandName == "1")
             {
-                txtsearch.Text = string.Empty;
+                txtsearch2.Text = string.Empty;
                 string season = e.CommandArgument.ToString();
                 BySeason(season);
             }
@@ -634,7 +886,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         {
             if (e.CommandName == "1")
             {
-                txtsearch.Text = string.Empty;
+                txtsearch2.Text = string.Empty;
                 string holiday = e.CommandArgument.ToString();
                 ByHoliday(holiday);
             }
@@ -654,12 +906,13 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
 
             if (!string.IsNullOrEmpty(brandlist))
             {
+                (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandCheck = brandlist;
+                brandCheck = brandlist;
                 if (QuerystringExist())
                     CheckQuerystringKey("b", brandlist);
                 else
                     _pageUrl = Pagename + "?b=" + brandlist;
-                (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandCheck = brandlist;
-                brandCheck = brandlist;
+               
                 Response.Redirect(_pageUrl);
 
             }
@@ -691,41 +944,20 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
     {
         try
         {
-            brandSearchCheck = txtsearch.Text;
-            (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandSearchCheck = txtsearch.Text;
+            brandSearchCheck = txtsearch2.Text;
+            (Session["DiscoverLookbookPageSearch"] as DiscoverLookbookPageSearch).brandSearchCheck = txtsearch2.Text;
             PropertyInfo isreadonly = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);
             // make collection editable
             isreadonly.SetValue(this.Request.QueryString, false, null);
             Request.QueryString.Clear();
-            Response.Redirect(Pagename + "?br=" + txtsearch.Text);
-            var db = new DatabaseManagement();
-            using (var con = new SqlConnection(db.ConnectionString))
-            {
-                using (var cmd = new SqlCommand())
-                {
-                    string qrySearch = "SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, dbo.Tbl_Brands.Logo, Tbl_Items.ItemID," +
-                                            " Tbl_Items.Title, Tbl_Items.ItemKey, Tbl_Items.Description, Tbl_Items.FeatureImg, Tbl_Items.Views," +
-                                            " CAST(Tbl_Items.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Items.DatePosted as [dated] FROM dbo.Tbl_Brands " +
-                                            " INNER JOIN Tbl_Items ON dbo.Tbl_Brands.UserID = Tbl_Items.UserID " +
-                                            " Where  (Tbl_Brands.Name LIKE '" + txtsearch.Text + "%')  AND Tbl_Items.IsDeleted IS NULL AND Tbl_Items.IsPublished = 1 " +
-                                            " ORDER BY Tbl_Items.DatePosted DESC";
-                    cmd.CommandText = qrySearch;
-                    cmd.Connection = con;
-                    con.Open();
-                    //rptLookbook.DataSourceID = "";
-                    //rptLookbook.DataSource = cmd.ExecuteReader();
-                    //rptLookbook.DataBind();
-                    con.Close();
-
-                }
-            }
+            Response.Redirect(Pagename + "?br=" + txtsearch2.Text,false);
+            
         }
         catch (Exception ex)
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-    }
-
+    } 
     // Top menu message list binding
     protected void rptMessageList_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {

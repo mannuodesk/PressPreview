@@ -22,6 +22,26 @@ public partial class home : System.Web.UI.Page
         loading_progress.InnerHtml = "<img src='../images/ajax-loader.gif'>Loading photo...";
         path = Session["ImagePath"].ToString();
         imgCrop.ImageUrl = path + Session["WorkingImage"];
+        if(Session["BrandCoverPicUpload"]!=null)
+        {
+            if((Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width>800)
+            {
+                double widthAspect =  ((double)800/(Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width);
+                imgCrop.Width = (int)(widthAspect * (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width);
+                imgCrop.Height = (int)(widthAspect * (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height);
+            }
+            else if((Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height>600)
+            {
+                double heightAspect =  ((double)600/(Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height);
+                imgCrop.Width = (int)(heightAspect * (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width);
+                imgCrop.Height = (int)(heightAspect * (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height);
+            }
+            else
+            {
+                imgCrop.Width = (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width;
+                imgCrop.Height = (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height;
+            }
+        }
         Page.LoadComplete += new EventHandler(Page_LoadComplete);
     }
 
@@ -68,6 +88,19 @@ public partial class home : System.Web.UI.Page
         string[] intY = Y.Value.Split('.');
         int x = Convert.ToInt32(intX[0]);
         int y = Convert.ToInt32(intY[0]);
+        
+        #region Crop Logic
+        int originalImageWidth = (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).width;
+        int originalImageHeight = (Session["BrandCoverPicUpload"] as BrandCoverPicUpload).height;
+        int containerHeight = Convert.ToInt32(imgCrop.Height.Value);
+        int containerWidth = Convert.ToInt32(imgCrop.Width.Value);
+        double aspectRatioWidth = ((double)originalImageWidth / containerWidth);
+        double aspectRatioHeight = ((double)originalImageHeight / containerHeight);
+        x = (int)((double)x * aspectRatioWidth);
+        y = (int)((double)y * aspectRatioHeight);
+        w = (int)((double)w * aspectRatioWidth);
+        h = (int)((double)h * aspectRatioHeight);
+        #endregion
 
         byte[] cropImage = Crop(Server.MapPath(path) + imageName, w, h, x, y);
         using (MemoryStream ms = new MemoryStream(cropImage, 0, cropImage.Length))
@@ -78,6 +111,7 @@ public partial class home : System.Web.UI.Page
                 // string newimgname = "crop" + ImageName;
                 string SaveTo = Server.MapPath("../brandslogoThumb/") + imageName;
                 CroppedImage.Save(SaveTo, CroppedImage.RawFormat);
+                imgCrop.Width = imgCrop.Height = 0;
                 imgCrop.ImageUrl = "../brandslogoThumb/" + imageName;
                 btnCrop.Visible = false;
                 btnSave.Visible = true;

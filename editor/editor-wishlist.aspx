@@ -18,7 +18,16 @@
    <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
   
 <!--custom scroller-->
-    
+        <style>
+  /*.wrapParagraph{
+        display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 5.6em;
+  }*/
+</style>
+
    
 <script type="text/javascript">
     function HideLabel() {
@@ -180,8 +189,8 @@
                              </div> <!--serinput-->
                        </div><!--searchpro-->
                        <div class="lineclook"></div>
-           <div class="lines"><hr /></div>
-            <div id="contentbox" style="padding-top:20px;">
+           
+            <div id="contentbox" style="padding-top:20px;background-color:#e5e4e4">
                             <div class="grid">
                 
                 </div>
@@ -236,7 +245,7 @@
                               <a href="" style="width:36px;"><img src='../brandslogoThumb/<%# Eval("Logo") %>'  class="img-circle" style="width:36px; height:36px;"/></a>
                            </div>
                           </div><!--mimageb-->
-                          <div class="mtextb">
+                          <div class="mtextb ">
                              <div class="m1">
                               <div class="muserd">
                                    <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a>
@@ -249,7 +258,7 @@
                                                             
                              </div>
                              <div class="m1">
-                               <div class="mtextd"><%# Eval("Description","{0}") %></div>
+                               <div class="mtextd "><%# Eval("Description","{0}") %></div>
                              </div>
                              <div class="m1">
                                 <div class="vlike"><img src="../images/views.png" /> &nbsp;<%# Eval("Views") %></div>
@@ -307,6 +316,27 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
     <script src="../js/bootstrap.js"></script>
     <script type="application/javascript" src="../js/custom.js"></script>
     <script type="text/javascript">
+        function DeleteItem(id) {
+            //Code to delete the item from the database here
+            if (confirm('Are you sure, you want to delete ?')) {
+                $.ajax({
+                    type: "POST",
+                    url: "editor-wishlist.aspx\\DeleteItemFromWishList",
+                    data: "{'id':'" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+                        var box = '#b' + id;
+                        $(box).remove();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+        }
         var pageIndex = 0;
         $(document).ready(function () {
             $('#norecord').hide();
@@ -326,7 +356,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                     else {
                         GetRecords();
                     }
-          
+
                 }
             });
 
@@ -362,9 +392,9 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
             });
 
 
-           
+
             function GetRecords() {
-                selectedSorting="default"
+                selectedSorting = "default"
                 pageIndex++;
                 //send a query to server side to present new content
                 var v = '<%= Request.Cookies["FRUserId"].Value %>';
@@ -384,7 +414,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
             function GetRecordsByTitle(title) {
                 titlee = title;
                 selectedSorting = "title";
-        
+
                 //pageIndex_title = 1;
                 pageIndex_title++;
                 //if (pageIndex_title == 1 || pageIndex_title <= pageCount_title) {
@@ -438,7 +468,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                     success: OnSuccess
 
                 });
-             
+
             }
 
             var hasItem = false;
@@ -479,11 +509,13 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                                                                         "<div class='m1'>" +
                                                                                             "<div class='muserd'>" +
                                                                                                 "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
-
+                                                                                                "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.ItemId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                     "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
+                                                                                                         "</a>" +
                                                                                                                             "</div> <!-- muserd -->" +
                                                                                                                                 "<div class='muserdb'>By " + val.Name + "</div>" +
                                                                                                                                     "</div> <!-- m1 -->" +
-                                                                                                                                        "<div class='m1' style='word-wrap:break-word;'>" +
+                                                                                                                                        "<div class='m1 wrapParagraph' style='word-wrap:break-word;'>" +
                                                                                                                                             "<div class='mtextd'> " + val.Description + " </div>" +
                                                                                                                                                 "</div> <!-- m1 -->" +
                                                                                                                                                     "<div class='m1'>" +
@@ -531,7 +563,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
 
 
 
-      
+
         //function doClick(buttonName, e) {
         //    //the purpose of this function is to allow the enter key to 
         //    //point to the correct button to click.
@@ -576,7 +608,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                 });
 
             });
-          
+
             $("#lbViewAlerts").mouseover(function () {
 
                 $.ajax({

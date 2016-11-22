@@ -10,7 +10,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Complete Your Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <style>
+        #txtAbout_toolbarArea{
+            display: none
+        }
+        #txtAbout_TabRow{
+            display: none
+        }
+        #txtTop_toolbarArea{
+          display: none
+        }
+        #txtTop_TabRow{
+          display: none;
+        }
+        #txtECalendar_toolbarArea{
+          display: none
+        }
+         #txtECalendar_TabRow{
+          display: none;
+        }
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -61,34 +80,16 @@ select option {
 </asp:scriptmanager>
 <div class="wrapper">
 <!--Header-->
-
-    <div class="headerbgm">
-           <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div style="margin-top:15px;">
-              <!--#INCLUDE FILE="../includes/logo.txt" -->
-            </div>  
+    <div class="headerbg">
+       <div class="wrapperblockmh">
+          <div class="col-md-9 col-xs-12">
+              <div class="logob"><a href="../Default.aspx"><img src="../images/logo.png" alt="thePRESSPreview" style="width: 200px; margin-top: 10px;"/></a></div>
+              <%--<div class="logos"><a href="../Default.aspx">Logo Branding</a></div>--%>
           </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            
-            
-         <div class="col-md-4">   
-            <!--#INCLUDE FILE="../includes/messgTop.txt" --> 
-         </div>    
-            
-            
-          <!--#INCLUDE FILE="../includes/influencer_settings.txt" -->  
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
-
+          <div class="col-md-3 col-xs-12 alre">
+             Already have an account? <span><a href="../login.aspx">Log In</a></span>
+          </div>
+       </div>
     </div><!--header bg-->
 <!--Headerend-->
 
@@ -108,8 +109,10 @@ select option {
           <div class="replaytext">
              <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
           </div><div class="lines"><hr /></div>
+          <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg"><a href="#"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></a></div>
-           <div class="replaimg"><a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" ><img  src="../images/replaceimage1.png" /></a></div>
+           <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+           </a>
           <div class="lines"><hr /></div>
          <asp:updatepanel runat="server">
              <ContentTemplate>

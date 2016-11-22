@@ -97,20 +97,21 @@ public partial class brand_massenger : System.Web.UI.Page
 
     protected string[] GetRecipientID(DatabaseManagement db)
     {
-        var userinfo = new string[2];
+        var userinfo = new string[3];
         var httpCookie = Request.Cookies["ParentId"];
         if (httpCookie != null)
         {
             string parentID = httpCookie.Value;
             SqlDataReader dr =
-            db.ExecuteReader(string.Format("Select SenderID, U_Firstname + ' ' + U_Lastname As [SenderName]  From Tbl_MailboxMaster INNER JOIN Tbl_Users ON Tbl_Users.UserID=Tbl_MailboxMaster.ReceiverID  Where ParentID={0}",
+            db.ExecuteReader(string.Format("Select SenderID, U_Firstname + ' ' + U_Lastname As [SenderName],  U_Email  From Tbl_MailboxMaster INNER JOIN Tbl_Users ON Tbl_Users.UserID=Tbl_MailboxMaster.ReceiverID  Where ParentID={0}",
                                            IEUtils.ToInt(parentID)));
             if (dr.HasRows)
             {
                 dr.Read();
                 userinfo[0] = dr[0].ToString();
-                userinfo[1] = dr[1].ToString();
                 
+                userinfo[1] = dr[1].ToString();
+                userinfo[2] = dr[2].ToString();
             }
             dr.Close();
             dr.Dispose();
@@ -169,7 +170,7 @@ public partial class brand_massenger : System.Web.UI.Page
                     db.ExecuteSQL(updateMessageKey);
 
                     /**************************************************  Send Message Email Code ***********************************************************/
-                    string receiveremail = userinfo[3];
+                    string receiveremail = userinfo[2];
                     string subject = lblUsername.Text + " Sent You a Message";
                     string message = txtComposeMessage.Value;
                     const string replylink = "http://presspreview.azurewebsites.net/editor/massenger.aspx";
@@ -178,7 +179,7 @@ public partial class brand_massenger : System.Web.UI.Page
                     messageDetails[1] = subject;
                     messageDetails[2] = message;
                     messageDetails[3] = replylink;
-                    messageDetails[4] = userinfo[4];
+                    //messageDetails[4] = userinfo[4];
                     Auto_Mail.SendMessageEmail(messageDetails);
                     /**************************************************  End Message Email Code ***********************************************************/
                     string addQuery =
@@ -210,6 +211,7 @@ public partial class brand_massenger : System.Web.UI.Page
                 grdMessageList.DataSource = sdsMessageList;
                 grdMessageList.DataBind();
                 rptMessageList.DataBind();
+                sdsMessageList.DataBind();
                 ToggleLayout();
                 lblBrandName.Text = userinfo[1];
                 txtMessage.Focus();

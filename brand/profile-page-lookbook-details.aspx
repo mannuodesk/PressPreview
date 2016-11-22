@@ -413,7 +413,7 @@
                                                                                                                                              "</div> <!-- m1 -->" +
                                                                                                                                                  "<div class='m1' style='font-size:12px'>" +
                                                                                                                                                      "<div class='vlike'><img src='../images/views.png' />" + val.Views + "</div> <!-- vlike -->" +
-                                                                                                                                                         "<!-- <div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div> --> <!-- vlike -->" +
+                                                                                                                                                         " <div class='vlike'><img src='../images/liked.png' />" + val.Likes + "</div>  <!-- vlike -->" +
                                                                                                                                                              "<div class='mdaysd'><span id='lblDate2' >" + val.Dated + "</span></div> <!-- mdaysd -->" +
                                                                                                                                                                  "</div> <!-- m1-->" +
                                                                                                                                                                      "</div> <!-- mtextb -->" +
@@ -779,7 +779,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-             <!--#INCLUDE FILE="../includes/logo.txt" -->
+             <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">

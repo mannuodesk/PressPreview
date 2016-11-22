@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="myprofile.aspx.cs" Inherits="brandProfile" %>
+﻿<%@ Page Language="C#" validateRequest="false" AutoEventWireup="true" CodeFile="myprofile.aspx.cs" Inherits="brandProfile" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
@@ -9,7 +9,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Complete Your Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <style>
+        #txtAbout_toolbarArea{
+            display: none
+        }
+        #txtAbout_TabRow{
+            display: none
+        }
+        #txtHistory_toolbarArea{
+          display: none
+        }
+        #txtHistory_TabRow{
+          display: none;
+        }
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -69,47 +82,29 @@ select option {
 
 <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+      function go()
+      {
+        window.location.href = "../lightbox/CoverPic.aspx?v=c";
+      }
+    </script>
 <form runat="server" ID="frm_Profile">
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
 </asp:ToolkitScriptManager>
 <div class="wrapper">
 <!--Header-->
 
-    <div class="headerbgm">
-           <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div style="margin-top:15px;">
-               <!--#INCLUDE FILE="../includes/logo.txt" -->
-            </div>  
+<!--Header-->
+    <div class="headerbg">
+       <div class="wrapperblockmh">
+          <div class="col-md-9 col-xs-12">
+              <div class="logob"><a href="../Default.aspx"><img src="../images/logo.png" alt="thePRESSPreview" style="width: 200px; margin-top: 10px;"/></a></div>
+              <%--<div class="logos"><a href="../Default.aspx">Logo Branding</a></div>--%>
           </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <div class="col-md-3">   
-            <!--#INCLUDE FILE="../includes/messgTop.txt" --> 
-            </div> 
-           
-            
-            
-            <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <img src="../images/menuright.png" /></a>
-                <ul class="dropdown-menu"><li><a href="#"><img src="../images/profile.png" /><span class="sp"> My Profile</span></a></li>
-                  <li><a href="#"><img src="../images/help.png" /><span class="sp"> Help</span></a></li>
-                  <li><a href="#"><img src="../images/logout.png" /><span class="sp"> Log Out</span></a></li>
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
-
+          <div class="col-md-3 col-xs-12 alre">
+             Already have an account? <span><a href="../login.aspx">Log In</a></span>
+          </div>
+       </div>
     </div><!--header bg-->
 <!--Headerend-->
 
@@ -132,8 +127,10 @@ select option {
            <div class="replaytext">
              <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
           </div><div class="lines"><hr /></div>
+          <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg"><a href="#"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></a></div>
-           <div class="replaimg"><a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" ><img  src="../images/replaceimage1.png" /></a></div>
+           <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+           </a>
           <div class="lines"><hr /></div>
           <asp:updatepanel ID="Updatepanel1" runat="server">
              <ContentTemplate>

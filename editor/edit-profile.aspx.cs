@@ -127,6 +127,52 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
+    protected void btnChange_ServerClick(object sender, EventArgs e)
+    {
+        try
+        {
+            if (isPasswordCorrect(oldPassword.Value))
+            {
+                var httpCookie = Request.Cookies["FrUserID"];
+                var db = new DatabaseManagement();
+                if (httpCookie != null)
+                {
+                    string updateUserPassword = string.Format("Update Tbl_Users set U_Password={0} Where UserID={1}",
+                                                       IEUtils.SafeSQLString(newPassword.Value), IEUtils.ToInt(httpCookie.Value));
+                    db.ExecuteSQL(updateUserPassword);
+                }
+            }
+        }
+        catch (Exception exc)
+        {
+
+        }
+    }
+    private bool isPasswordCorrect(string password)
+    {
+        var httpCookie = Request.Cookies["FrUserID"];
+
+        var db = new DatabaseManagement();
+        if (httpCookie != null)
+        {
+            string getUserPassword = string.Format("SELECT U_Password From Tbl_Users Where UserID={0}",
+                                               IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(getUserPassword);
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    string passwordFromDB = dr["U_Password"].ToString();
+                    if (passwordFromDB == password)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     protected void LoadEditorData()
     {
         try
@@ -302,11 +348,11 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                         "Update Tbl_Editors Set InstagramURL={0}, TwitterURL={1},FbURL={2}," +
                         "YoutubeURL={3},PinterestURL={4} " +
                         "Where UserID={5}",
-                        IEUtils.SafeSQLString(txtInstagram.Value),
-                        IEUtils.SafeSQLString(txtTwitter.Value),
-                        IEUtils.SafeSQLString(txtFacebook.Value),
-                        IEUtils.SafeSQLString(txtYoutube.Value),
-                        IEUtils.SafeSQLString(txtPinterest.Value),
+                IEUtils.SafeSQLString("www.instagram.com/" + txtInstagram.Value),
+                        IEUtils.SafeSQLString("twitter.com/" + txtTwitter.Value),
+                        IEUtils.SafeSQLString("www.facebook.com/" + txtFacebook.Value),
+                        IEUtils.SafeSQLString("www.youtube.com/user/" + txtYoutube.Value),
+                        IEUtils.SafeSQLString("www.pinterest.com/" + txtPinterest.Value),
                         IEUtils.ToInt(httpCookie.Value)
 
                         );

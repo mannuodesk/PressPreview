@@ -14,13 +14,13 @@ public partial class home : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         NameValueCollection n = Request.QueryString;
-        if(n.HasKeys())
+        if (n.HasKeys())
         {
             LoadUserDataFromKey();
         }
         else
         {
-           LoadUserData();
+            LoadUserData();
         }
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
@@ -41,7 +41,7 @@ public partial class home : System.Web.UI.Page
         }
         txtbname.Focus();
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
-        
+
     }
 
     protected void LoadUserDataFromKey()
@@ -83,9 +83,9 @@ public partial class home : System.Web.UI.Page
                     imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
                     Session["profilePicURL"] = imgProfile.ImageUrl;
                 }
-                
-                
-                
+
+
+
             }
         }
         catch (Exception ex)
@@ -98,7 +98,7 @@ public partial class home : System.Web.UI.Page
         try
         {
             var httpCookie = Request.Cookies["FrUserID"];
-            
+
             var db = new DatabaseManagement();
             if (httpCookie != null)
             {
@@ -152,7 +152,15 @@ public partial class home : System.Web.UI.Page
                 {
                     dr.Read();
                     txtbname.Value = dr[2].ToString();
-                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[24];
+                    if (Session["profilePicURL"] != "" && Session["profilePicURL"] != null)
+                    {
+                        imgProfile.ImageUrl = "../brandslogoThumb/" + Session["profilePicURL"].ToString();
+                    }
+                    else
+                    {
+                        imgProfile.ImageUrl = "../brandslogoThumb/" + dr[24].ToString();
+                        Session["profilePicURL"] = imgProfile.ImageUrl;
+                    }
                     txtAbout.Text = dr[4].ToString();
                     txtCountry.Value = dr[5].ToString();
                     ddStates.SelectedValue = dr[6].ToString();
@@ -188,6 +196,53 @@ public partial class home : System.Web.UI.Page
         var step2 = Regex.Replace(step1, @"\s{2,}", " ");
         return step2;
     }
+
+    protected void btnChange_ServerClick(object sender, EventArgs e)
+    {
+        try
+        {
+            if (isPasswordCorrect(oldPassword.Value))
+            {
+                var httpCookie = Request.Cookies["FrUserID"];
+                var db = new DatabaseManagement();
+                if (httpCookie != null)
+                {
+                    string updateUserPassword = string.Format("Update Tbl_Users set U_Password={0} Where UserID={1}",
+                                                       IEUtils.SafeSQLString(newPassword.Value), IEUtils.ToInt(httpCookie.Value));
+                    db.ExecuteSQL(updateUserPassword);
+                }
+            }
+        }
+        catch (Exception exc)
+        {
+
+        }
+    }
+    private bool isPasswordCorrect(string password)
+    {
+        var httpCookie = Request.Cookies["FrUserID"];
+
+        var db = new DatabaseManagement();
+        if (httpCookie != null)
+        {
+            string getUserPassword = string.Format("SELECT U_Password From Tbl_Users Where UserID={0}",
+                                               IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(getUserPassword);
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    string passwordFromDB = dr["U_Password"].ToString();
+                    if (passwordFromDB == password)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     protected void btnSignup_ServerClick(object sender, EventArgs e)
     {
         try
@@ -205,39 +260,39 @@ public partial class home : System.Web.UI.Page
             //        fupCover.PostedFile.SaveAs(imagepath);
             //        string coverpic = fname;
 
-                    // validate profile picture
-                    //if (fupProfile.HasFile)
-                    //{
-                    //    string profilefileExtension = Path.GetExtension(fupProfile.PostedFile.FileName);
-                    //    if (profilefileExtension == ".jpg" || profilefileExtension == ".png" || profilefileExtension == ".gif" || profilefileExtension == ".pdf")
-                    //    {
-                    //        var profilefname = Common.RandomPinCode() + profilefileExtension;
-                    //        var profilerootpath = HttpContext.Current.Server.MapPath("../profileimages/");
-                    //        var profileimagepath = profilerootpath + profilefname;
-                    //        fupProfile.PostedFile.SaveAs(profileimagepath);
-                    //        var thumbnail567 = Utility.GenerateThumbNail(fname, imagepath, "../brandslogoThumb/", 93);
-                    //        profilepic = profilefname;
-                    //    }
-                    //    else
-                    //    {
-                    //        ErrorMessage.ShowErrorAlert(lblStatus, "Please select a valid image file for profile photo.", divAlerts);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    ErrorMessage.ShowErrorAlert(lblStatus, "Please select profile photo", divAlerts);
-                    //}
+            // validate profile picture
+            //if (fupProfile.HasFile)
+            //{
+            //    string profilefileExtension = Path.GetExtension(fupProfile.PostedFile.FileName);
+            //    if (profilefileExtension == ".jpg" || profilefileExtension == ".png" || profilefileExtension == ".gif" || profilefileExtension == ".pdf")
+            //    {
+            //        var profilefname = Common.RandomPinCode() + profilefileExtension;
+            //        var profilerootpath = HttpContext.Current.Server.MapPath("../profileimages/");
+            //        var profileimagepath = profilerootpath + profilefname;
+            //        fupProfile.PostedFile.SaveAs(profileimagepath);
+            //        var thumbnail567 = Utility.GenerateThumbNail(fname, imagepath, "../brandslogoThumb/", 93);
+            //        profilepic = profilefname;
+            //    }
+            //    else
+            //    {
+            //        ErrorMessage.ShowErrorAlert(lblStatus, "Please select a valid image file for profile photo.", divAlerts);
+            //    }
+            //}
+            //else
+            //{
+            //    ErrorMessage.ShowErrorAlert(lblStatus, "Please select profile photo", divAlerts);
+            //}
 
-                    // if both the images are selected
-                    // update user profile
-                    //string updateUserProfile =
-                    //  string.Format("UPDATE Tbl_Users Set U_ProfilePic={0},U_CoverPic={1} Where UserID={2}",
-                    //                IEUtils.SafeSQLString(profilepic), IEUtils.SafeSQLString(coverpic),
-                    //                IEUtils.ToInt(Session["UserID"].ToString()));
-                    //db.ExecuteSQL(updateUserProfile);
+            // if both the images are selected
+            // update user profile
+            //string updateUserProfile =
+            //  string.Format("UPDATE Tbl_Users Set U_ProfilePic={0},U_CoverPic={1} Where UserID={2}",
+            //                IEUtils.SafeSQLString(profilepic), IEUtils.SafeSQLString(coverpic),
+            //                IEUtils.ToInt(Session["UserID"].ToString()));
+            //db.ExecuteSQL(updateUserProfile);
 
-                    // update brand profile
-                    // string updateBrandProfile=string.Format("UPDATE Tbl_Brands set ")
+            // update brand profile
+            // string updateBrandProfile=string.Format("UPDATE Tbl_Brands set ")
             var httpCookie = Request.Cookies["FrUserID"];
             if (httpCookie != null)
             {
@@ -279,9 +334,9 @@ public partial class home : System.Web.UI.Page
 
                            );
                 db.ExecuteSQL(updateUserInfo);
-                Response.Redirect("profile-page-items.aspx");
+                Response.Redirect("profile-page-items.aspx", false);
             }
-           
+
 
             //    }
             //    else
@@ -314,11 +369,11 @@ public partial class home : System.Web.UI.Page
                         "Update Tbl_Brands Set InstagramURL={0}, TwitterURL={1},FbURL={2}," +
                         "YoutubeURL={3},PinterestURL={4} " +
                         "Where UserID={5}",
-                        IEUtils.SafeSQLString(txtInstagram.Value),
-                        IEUtils.SafeSQLString(txtTwitter.Value),
-                        IEUtils.SafeSQLString(txtFacebook.Value),
-                        IEUtils.SafeSQLString(txtYoutube.Value),
-                        IEUtils.SafeSQLString(txtPinterest.Value),
+                        IEUtils.SafeSQLString("www.instagram.com/" + txtInstagram.Value),
+                        IEUtils.SafeSQLString("twitter.com/" + txtTwitter.Value),
+                        IEUtils.SafeSQLString("www.facebook.com/" + txtFacebook.Value),
+                        IEUtils.SafeSQLString("www.youtube.com/user/" + txtYoutube.Value),
+                        IEUtils.SafeSQLString("www.pinterest.com/" + txtPinterest.Value),
                         IEUtils.ToInt(httpCookie.Value)
 
                         );
@@ -425,7 +480,7 @@ public partial class home : System.Web.UI.Page
     //        if (photo.HasFile)
     //        {
     //            //  var db = new DatabaseManagement();
-                
+
     //            string fileExtension = Path.GetExtension(photo.PostedFile.FileName);
     //            if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png" || fileExtension == ".gif" || fileExtension == ".pdf")
     //            {
@@ -451,7 +506,7 @@ public partial class home : System.Web.UI.Page
     //                //                IEUtils.ToInt(Session["UserID"].ToString()));
     //                //db.ExecuteSQL(updateUserProfile);
 
-                     
+
 
 
     //            }
@@ -470,5 +525,5 @@ public partial class home : System.Web.UI.Page
     //        ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
     //    }
     //}
-   
+
 }

@@ -14,7 +14,16 @@ public class EditItemDetails
     public List<string> ImagesToRemove { get; set; }
     public List<string> TagsToAdd { get; set; }
     public List<string> TagsToRemove { get; set; }
-	public EditItemDetails()
-	{
-	}
+    public string Description { get; set; }
+    public string Color { get; set; }
+    public List<int> SelectedCategories { get; set; }
+    public List<int> SelectedSeasons { get; set; }
+    public List<int> SelectedHolidays { get; set; }
+    public bool Category_MoreThanTenCounter{get;set;}
+    public bool Season_MoreThanTenCounter{get;set;}
+    public bool Holiday_MoreThanTenCounter { get; set; }
+    public bool Tags_MoreThanTenCounter { get; set; }
+    public EditItemDetails()
+    {
+    }
 }

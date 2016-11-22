@@ -15,6 +15,7 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
    <script src="../js/jquery-ui.min.js"></script>
    <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+   <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
   
     <style>
         .grid{font-size:0px;}
@@ -954,6 +955,7 @@
 <!--Headerend-->
 
 <!--Banner-->
+    <div class="topspace"></div>
       <div class="">
       
        <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
@@ -1045,7 +1047,8 @@
 
 
                           <div class="col-md-10 col-xs-8 ptext">
-         <img src="../images/likes.png" alt="image" style="margin-right: 6px "/> 
+                              <i class="fa fa-heart" runat="server" ID="LikeIcon" aria-hidden="true" style="    margin-right: 6px;margin-left: 2px;"></i>
+         <!--<img src="../images/likes.png" alt="image" style="margin-right: 6px "/> -->
           <asp:Button runat="server" ID="LikeItem" OnClick="LikeItem_Click"  CssClass="btn btn-link customLink" Text="Likes" />          
 
           </div><!--col-md-12-->
@@ -1180,7 +1183,7 @@ WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                                   <asp:Button runat="server" ID="btnSearch" style="position: absolute; width: 0px; height: 0px;z-index: -1;" >
                                 </asp:Button>
                                  <span class="fa fa-search"></span>
-                                 <asp:TextBox  ID="txtsearch" placeholder="     Search" CssClass="seins1" style="margin-top:15px;"  runat="server"></asp:TextBox>
+                                 <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1" style="padding-left: 30px;" runat="server"></asp:TextBox>
                                  <%-- <asp:DropDownList  ID="lstSearch" runat="server" CssClass="seins1" 
                                      style="margin-top: 15px;" AppendDataBoundItems="True" Height="35px"   >
                                     <asp:ListItem></asp:ListItem>
@@ -1264,7 +1267,7 @@ WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                  //  alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -1288,7 +1291,7 @@ WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                //    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {

@@ -6,7 +6,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Press Preview - Add Item</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<style>
+    #txtDescription_toolbarArea{
+        display: none;
+    }
+    #txtDescription_TabRow{
+        display: none
+    }
+          .dropzone .dz-preview.dz-image-preview {
+        display: block;
+        }
+</style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -367,7 +377,7 @@
 
                     // this.options.thumbnail.call(this, file, file_image);
                     // Create the remove button
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -450px;margin-left: 100px; z-index: 1000; background:#ccc; border:0; color:#fff;'>X</button>");
+                    var removeButton = Dropzone.createElement("<button style='position: absolute;top: 3%;right: 3%;float: right; z-index: 1000; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
 
                     var _this = this;
@@ -417,7 +427,7 @@
     </script>
     <script type="text/javascript">
         var itemId = '<%= Session["CurrentItemId"] %>';
-
+var crossTop = 0;
         // Dropzone for featured image
         Dropzone.options.dzItemFeatured = {
             // Validate the file type. only accept images
@@ -425,8 +435,8 @@
             dictDefaultMessage: "Click or Drag Image here to upload",
             maxFiles: 1,
             url: "featured.ashx?v=" + itemId,
-            thumbnailWidth: 340,
-            thumbnailHeight: 300,
+              thumbnailWidth: null,
+            thumbnailHeight: null,
             init: function () {
 
                 this.on("maxfilesexceeded", function (data) {
@@ -434,30 +444,72 @@
                 });
 
 
-                // Get response on Success
+ 
+          // Get response on Success
                 this.on('success', function (file, resp) {
-
+                    var crossHeight = 0;
                     var imgName = resp;
                     file.previewElement.classList.add("dz-success");
                     console.log("Successfully uploaded :" + imgName);
+                    $("#dzItemFeatured .dz-image img").each(function () {
+                        console.log("FH : " + $(this).height());
+                        console.log("fW : " + $(this).width());
+                        var imgHeight = $(this).height();
+                        var imgWidth = $(this).width();
+                        if (imgHeight > 300) {
+                            var aspectRatio = 318 / imgHeight;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin","0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else if (imgWidth>315) {
+                            var aspectRatio = 318 / imgWidth;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else {
+                            var ratioHeight = $(this).height();
+                            var ratioWidth = $(this).width();
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+
+                        }
+                    });
+ 
                     console.log(file);
                     console.log(resp);
                 });
                 // Validate the dimensions of the image....
                 this.on('thumbnail', function (file) {
-                    if (file.width < 800 || file.height < 800) {
-                        file.rejectDimensions();
-                    }
-                    else {
+                    // if (file.width < 800 || file.height < 800) {
+                    //     file.rejectDimensions();
+                    // }
+                    // else {
                         file.acceptDimensions();
-                    }
+                    // }
                 });
 
                 this.on("addedfile", function (file) {
 
                     // Create the remove button
 
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -88%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+                     var removeButton = Dropzone.createElement("<button style='position:absolute; top: 0; margin-left: 0; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+
                     // Capture the Dropzone instance as closure.
                     var _this = this;
                     //$("#dzItemFeatured").attr("disabled", true);
@@ -540,7 +592,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-               <!--#INCLUDE FILE="../includes/logo.txt" -->
+               <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -615,6 +667,7 @@
        CKEDITOR.replace('editor1');
        CKEDITOR.add();            
    </script>--%>
+         <div class="textadd" id="title_add">DESCRIPTION<span class="text-danger">*</span></div>
    <FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
           Height="200px" 
           ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
@@ -675,10 +728,19 @@
                          <div class="searchb">
                              <div class="serheading">Publish</div>
                               <div class="pubbutt">
-                               <div class="del"><asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
+       
+                                       
+                                          <div class="del"> <asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
                                        onclick="lbtnDelete_Click" 
-                                       onclientclick="return confirm('Are you sure, you want to delete ?')" 
+                                       onclientclick="redirectToItems()" 
                                        TabIndex="22" ></asp:LinkButton></div>
+                                  <script>
+                                      function redirectToItems() {
+                                          location.href = '../brand/profile-page-items.aspx';
+                                      }
+                                  </script>
+                                  
+                                  
                               <a id="hidden_link" runat="server" style="visible:false"  width="60%" height="60%"></a>
                                 <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                 
@@ -854,18 +916,18 @@
                                     <div id="seeDefaultSessions" tabindex="12">
                                  <div class="dblock">
                                      <asp:CheckBoxList runat="server" ID="chkDefaultSeasons" OnSelectedIndexChanged="chkDefaultSeasons_SelectedIndexChanged"
-                                         DataSourceID="sdsMoreSeasons" DataTextField="Season" 
+                                         DataSourceID="sdsDefaultSeasons" DataTextField="Season" 
                                          DataValueField="SeasonID" AutoPostBack="True" >
                                      </asp:CheckBoxList>
                                      <asp:SqlDataSource ID="sdsDefaultSeasons" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (6) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
+                                         SelectCommand="SELECT TOP (10) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
                                      </asp:SqlDataSource>
                                       <asp:SqlDataSource ID="sdsMoreSeasons" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (9) SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
+                                         SelectCommand="SELECT SeasonID, Season FROM Tbl_Seasons ORDER BY Season">
                                      </asp:SqlDataSource>
                                  </div>
                             
@@ -899,14 +961,19 @@
                              <div id="seeDefaultHoliday" tabindex="14">
                                  <div class="dblock">
                                      <asp:CheckBoxList  runat="server" ID="chkDefaultHoliday" OnSelectedIndexChanged="chkDefaultHoliday_SelectedIndexChanged"
-                                         DataSourceID="sdsMoreHoliday" DataTextField="Title" 
+                                         DataSourceID="sdsDefaultHoliday" DataTextField="Title" 
                                          DataValueField="HolidayID" AutoPostBack="True"  >
                                      </asp:CheckBoxList>
                                     
+                                    <asp:SqlDataSource ID="sdsDefaultHoliday" runat="server" 
+                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                         SelectCommand="SELECT TOP (10) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                     </asp:SqlDataSource>
                                       <asp:SqlDataSource ID="sdsMoreHoliday" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (9) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                         SelectCommand="SELECT HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
                                      </asp:SqlDataSource>
                                  </div>
                             

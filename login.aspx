@@ -63,7 +63,7 @@
                <div class="col-md-12 logint">Hello. Welcome to your account.</div>
               
                <div class="col-md-12" style="text-align: left;">
-                   <asp:TextBox runat="server" ID="txtLoginEmail" placeholder="Username or Email Address" EnableViewState="false" class="logininput" ValidationGroup="gpLogin" TabIndex="0"/>
+                   <asp:TextBox runat="server" ID="txtLoginEmail" placeholder="Username or Email Address" EnableViewState="false" class="logininput" ValidationGroup="gpLogin" TabIndex="1"/>
                    <asp:CustomValidator ID="cvLoginEmail" ValidationGroup="gpLogin" runat="server" SetFocusOnError="true" Display="Dynamic"
                        ValidateEmptyText="true" ControlToValidate="txtLoginEmail" ClientValidationFunction="changeColor" align="left" CssClass="validationSummary">This field is required</asp:CustomValidator>
 
@@ -76,13 +76,14 @@
                        ValidateEmptyText="true" ControlToValidate="txtLoginPassword" ClientValidationFunction="changeColor" align="left" CssClass="validationSummary">This field is required</asp:CustomValidator>
                </div>
                    <div class="col-md-12 col-xs-12 rem" style="text-align:left;">
-                      <asp:CheckBox  runat="server" ID="chkRemember" TabIndex="2"/><label for="test1"><div style="margin-top:5px">&nbsp; Remember me!</div></label>
+                      <asp:CheckBox  runat="server" ID="chkRemember" TabIndex="2" style="margin-left: -3%;"/><label for="chkRemember"><div style="margin-top:5px">&nbsp; Remember me!</div></label>
+                      <span class="col-sm-12 col-xs-12 forget"><a href="forgetpassword.aspx"  style="margin-top: -5%;float: right;" tabindex="9">Forgot Your Password?</a></span>
                    </div>
                    <div class="col-md-12 col-xs-12" style="text-align:left;">
                        <button type="submit"  runat="server"   id="login" class="hvr-sweep-to-right" 
                            enableviewstate="false"  validationgroup="gpLogin" 
                            onserverclick="login_ServerClick" tabindex="3">Login</button>
-                       <span class="col-sm-12 col-xs-12 forget"><a href="forgetpassword.aspx"  tabindex="9">Forgot Your Password?</a></span>
+                       
                    </div>  
                     
            </div><!--.col-md-5 -->

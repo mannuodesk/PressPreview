@@ -15,10 +15,24 @@
  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="../js/jquery.autocomplete.js" type="text/javascript"></script>
+<style>
+  .wrapParagraph{
+        display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 8.6em;
+  }
+  @-moz-document url-prefix() {
+    .blockme {
+        margin-top:5%;
+    }
+</style>
 <script type="text/javascript">
 $(document).ready(function () {
     // Handler for .ready() called.
-    $("#scroll").animate({ scrollTop: $("#scroll")[0].scrollHeight }, 1000);
+    console.log($('#scroll'));
+    //$("#scroll").animate({ scrollTop: $("#scroll")[0].scrollHeight }, 1000);
 });
     $(function () {
         initializer();
@@ -183,7 +197,7 @@ $(document).ready(function () {
             </ul> 
            </div>
            <div class="col-md-4 bcompose" >
-               <button type="button"   id="btnCompose"   class="hvr-sweep-to-rightup2" style=" margin-top: 13px;
+               <button type="button"   id="btnCompose" onclick="openCompose()"  class="hvr-sweep-to-rightup2" style=" margin-top: 13px;
     margin-left: 13px;" >Compose</button>
            </div>                     
            <div class="col-md-3 col-xs-3 bcomposeimg" id="cmes" >
@@ -474,7 +488,7 @@ $(document).ready(function () {
                                           <div class="repimg">
                                               <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" style="height: 150px; width: 150px;" alt="<%# Eval("Title","{0}") %>" /> </a>
                                           </div>
-                                          <div class="retext">
+                                          <div class="retext wrapParagraph">
                                               <b><%# Eval("Title")%>" </b><br />
                                               By <%# Eval("Name")%>" <br />
                                               <br />
@@ -673,7 +687,7 @@ $(document).ready(function () {
                });
 
            });
-
+           
            $('#btnCompose').live("click", (function (e) {
 
                $('#pnlCompose11').show();
@@ -703,6 +717,12 @@ $(document).ready(function () {
     
     <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
        <script type="text/javascript">
+       function openCompose()
+           {
+             $('#pnlCompose11').show();
+               $('#pnlMessage').hide();
+               window.PageMethods.SetSession('2');
+           }
            $(document).ready(function () {
 
                $(".fancybox").fancybox({

@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" EnableEventValidation="false" AutoEventWireup="true" CodeFile="view.aspx.cs" Inherits="admin_home_Default" %>
+﻿<%@ Page Language="C#" ValidateRequest="false" EnableEventValidation="false" AutoEventWireup="true" CodeFile="view.aspx.cs" Inherits="admin_home_Default" %>
+<%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
 <!DOCTYPE html>
 <html>
@@ -107,7 +108,23 @@
 
                                          </div>
                                         <div class="form-group"><label>Address</label> <input type="text" readonly="readonly" runat="server" id="txtAddress" placeholder="Address" class="form-control"></div>
-                                         <div class="form-group"><label>Editorial Calender</label> <textarea type="text" readonly="readonly" runat="server" id="txtEcalender" style="height: 150px;" placeholder="Editorial Calender" class="form-control" /></div>                                                                     
+                                       <div class="form-group"><label>Editorial Calender</label> <%--<textarea type="text" readonly="readonly" runat="server" id="txtEcalender" style="height: 150px;" placeholder="Editorial Calender" class="form-control" />--%>   
+                                  <style>
+                                      #txtEcalender_toolbarArea{
+                                          display:none;
+                                      }
+                                      #txtEcalender_TabRow{
+                                          display:none
+                                      }
+                                      .txtEcalender_DesignBox {
+                                          background-color: #eeeeee !important;
+                                          border: 0 !important;
+                                      }
+                                  </style>
+                                                 <FTB:FreeTextbox  runat="server" ID="txtEcalender" ButtonSet="OfficeMac" ReadOnly="true"
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox></div>                                 
                                                 
                                         </div>                                  
                                     <div class="col-lg-6">                          
@@ -124,9 +141,46 @@
                                         <div class="form-group"><label>Facebook</label> <input type="text" readonly="readonly" runat="server" id="txtFbURL" placeholder="Facebook Link" class="form-control"></div>
                                         <div class="form-group"><label>Youtube</label> <input type="text" readonly="readonly" runat="server" id="txtYoutube" placeholder="Youtube Link" class="form-control"></div>
                                         <div class="form-group"><label>Pinterest</label> <input type="text" readonly="readonly" runat="server" id="txtPinterest" placeholder="Pinterest Link" class="form-control"></div>
-                                        <div class="form-group"><label>Description</label> <textarea type="text" readonly="readonly" runat="server" id="txtDescription" style="height: 150px;" placeholder="Breif Description" class="form-control" /></div>
-                                         <div class="form-group"><label>Timeline of Projects</label> <textarea type="text" readonly="readonly" runat="server" id="txtTop" style="height: 150px;" placeholder="Projects Timeline" class="form-control" /></div>
-                                         
+                                           <%-- <div class="form-group"><label>Description</label> <textarea type="text" readonly="readonly" runat="server" id="txtDescription" style="height: 150px;" placeholder="Breif Description" class="form-control" /></div>--%>
+                                          <div class="form-group"><label>Description</label> 
+                                  <style>
+                                      #txtDescription_toolbarArea{
+                                          display:none;
+                                      }
+                                      #txtDescription_TabRow{
+                                          display:none
+                                      }
+                                      .txtDescription_DesignBox {
+                                          background-color: #eeeeee !important;
+                                          border: 0 !important;
+                                      }
+                                  </style>
+                                                 <FTB:FreeTextbox  runat="server" ID="txtDescription" ButtonSet="OfficeMac" ReadOnly="true"
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>
+          </div>    
+                                        
+                                        
+                                        
+                                        <%-- <div class="form-group"><label>Timeline of Projects</label> <textarea type="text" readonly="readonly" runat="server" id="txtTop" style="height: 150px;" placeholder="Projects Timeline" class="form-control" /></div>--%>
+                                          <div class="form-group"><label>Timeline of Projects</label> 
+                                  <style>
+                                      #txtTop_toolbarArea{
+                                          display:none;
+                                      }
+                                      #txtTop_TabRow{
+                                          display:none
+                                      }
+                                      .txtTop_DesignBox {
+                                          background-color: #eeeeee !important;
+                                          border: 0 !important;
+                                      }
+                                  </style>
+                                                 <FTB:FreeTextbox  runat="server" ID="txtTop" ButtonSet="OfficeMac" ReadOnly="true"
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox></div> 
 
                                                                                                              
                                                 

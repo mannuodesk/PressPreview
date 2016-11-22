@@ -6,7 +6,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Press Preview - Add Item</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <style>
+        #txtDescription_TabRow{
+            display: none
+        }
+        #txtDescription_toolbarArea{
+            display: none
+        }
+           .dropzone .dz-preview.dz-image-preview {
+        display: block;
+        }
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -111,7 +121,7 @@
                  $("#errorTitle").remove();
              }
 
-
+             var DescriptionTextDetails = $("#txtDescription").val();
              var RetailText = $("#txtRetail").val();
              if ($("#txtRetail").val() == "") {
                  $("#errorRetail").remove();
@@ -233,7 +243,8 @@
                      type: "POST",
                      contentType: "application/json; charset=utf-8",
                      url: '<%= ResolveUrl("edit-item.aspx/SaveItem") %>',
-                     data: '{TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
+                     data: '{DescriptionText: "' + DescriptionTextDetails + '",TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
+                     //data: '{TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
                      //data: { "TitleText": TitleText, "RetailText": RetailText, "WholesaleText": WholesaleText, "StyleNumberText": StyleNumberText, "StyleNameText": StyleNameText },
                      dataType: "json",
                      success: function (data) {
@@ -424,7 +435,7 @@
     </script>
     <script type="text/javascript">
         var itemId = '<%= Request.QueryString["v"] %>';
-
+        var crossTop = 0;
         // Dropzone for featured image
         Dropzone.options.dzItemFeatured = {
             // Validate the file type. only accept images
@@ -432,8 +443,8 @@
             dictDefaultMessage: "Click or Drag Image here to upload",
             maxFiles: 1,
             url: "Editfeatured.ashx?v=" + itemId,
-            thumbnailWidth: 340,
-            thumbnailHeight: 300,
+            thumbnailWidth: null,
+            thumbnailHeight: null,
             init: function () {
 
                 this.on("maxfilesexceeded", function (data) {
@@ -442,29 +453,70 @@
 
 
                 // Get response on Success
+                // Get response on Success
                 this.on('success', function (file, resp) {
-
+                    var crossHeight = 0;
                     var imgName = resp;
                     file.previewElement.classList.add("dz-success");
                     console.log("Successfully uploaded :" + imgName);
+                    $("#dzItemFeatured .dz-image img").each(function () {
+                        console.log("FH : " + $(this).height());
+                        console.log("fW : " + $(this).width());
+                        var imgHeight = $(this).height();
+                        var imgWidth = $(this).width();
+                        if (imgHeight > 300) {
+                            var aspectRatio = 318 / imgHeight;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else if (imgWidth > 315) {
+                            var aspectRatio = 318 / imgWidth;
+                            var ratioHeight = $(this).height() * aspectRatio;
+                            var ratioWidth = $(this).width() * aspectRatio;
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+                        }
+                        else {
+                            var ratioHeight = $(this).height();
+                            var ratioWidth = $(this).width();
+                            $(this).height(ratioHeight);
+                            $(this).width(ratioWidth);
+                            $(this).css("margin", "0 auto");
+                            console.log("New FH : " + ratioHeight);
+                            console.log("New fW : " + ratioWidth);
+                            crossTop = ratioHeight;
+
+                        }
+                    });
+
                     console.log(file);
                     console.log(resp);
                 });
                 // Validate the dimensions of the image....
                 this.on('thumbnail', function (file) {
-                    if (file.width < 800 || file.height < 800) {
-                        file.rejectDimensions();
-                    }
-                    else {
-                        file.acceptDimensions();
-                    }
+                    // if (file.width < 800 || file.height < 800) {
+                    //     file.rejectDimensions();
+                    // }
+                    // else {
+                    file.acceptDimensions();
+                    // }
                 });
 
                 this.on("addedfile", function (file) {
 
                     // Create the remove button
 
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -88%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+                    var removeButton = Dropzone.createElement("<button style='position:absolute; top: 0; margin-left: 0; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
                     var _this = this;
                     //$("#dzItemFeatured").attr("disabled", true);
@@ -546,7 +598,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-               <!--#INCLUDE FILE="../includes/logo.txt" -->
+               <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -621,6 +673,8 @@
        CKEDITOR.replace('editor1');
        CKEDITOR.add();            
    </script>--%>
+   
+            <div class="textadd" id="title_add">DESCRIPTION<span class="text-danger">*</span></div>
    <FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
           Height="200px" 
           ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
@@ -667,26 +721,55 @@
   <div class="blockadd1">
       <asp:updatepanel ID="Updatepanel1" runat="server">
         <ContentTemplate>
-       <div class="form-group">
+       <div id="contentbox" class="form-group">
                                             <div class="col-sm-12"><label for="existingImg">Uploaded Images</label></div>
-                                            <asp:DataList ID="dlImages" runat="server" DataKeyField="ImgID" 
-                                                            DataSourceID="sdsImages" RepeatColumns="2" OnItemCommand="dlImages_ItemCommand" 
-                                                            RepeatDirection="Horizontal" Width="100%">
+                                            <asp:Repeater ID="dlImages" runat="server" 
+                                                            DataSourceID="sdsImages">
+                                                            
                                                             <ItemTemplate>
-                                                                <div ID="imgContainer">
-                                                                    <div style=" padding:2px; border:2px solid #fff;">
-                                                                        <asp:Image ID="imgCertification" runat="server" 
-                                                                            ImageUrl='<%# Eval("ItemImg", "../photobank/{0}") %>' Width="310px"  Height="232px"/>
-                                                                    </div>
-                                                                    <div style="position: relative; top: -230px; float:right; right:52px;">
-                                                                        <asp:Button ID="btnRemove" runat="server" 
+                                                                <div class="box1">
+                   <div class="loobblock">
+                      <div class="dbllook">
+                                              <div class="dbl">
+                                        <div>
+                                            <img class="img-responsive" src="<%# Eval("ItemImg", "../photobank/{0}") %>" />
+                                            <!--overlay-->
+                                        </div>
+                                        <!--hover ehover13-->
+                                    </div>
+                                           </div>
+                      <div class="smalcress">
+                           <asp:Button ID="btnRemove" runat="server" 
                                                                             CommandArgument='<%# Eval("ImgID", "{0}") %>' CommandName="1" 
                                                                             CssClass="btn btn-default btn-xs" 
                                                                             onclientclick="return confirm('Are you sure,you want to delete ?')" Text="X" />
+                          
+                          <%-- <input type="checkbox" id="test30" class="booktick"/><label for="test30" class="chkmeslook"></label> --%>
+                      </div>
+                      
+                     
+                      
+                   </div><!--lookblock-->
+                    
+                   <div class="lineclook"></div>
+               </div>
+                      
+                        <!--box-->
+                                                                <!--<div class="col-md-4">
+                                                                    <div style=" padding:2px; border:2px solid #fff;">
+                                                                        <asp:Image ID="imgCertification" runat="server" 
+                                                                            ImageUrl='<%# Eval("ItemImg", "../photobank/{0}") %>'/>
                                                                     </div>
-                                                                </div>
+                                                                    <div style="position: absolute;top: 3%;float: right;right: 3%;">
+                                                                        
+                                                                    </div>
+                                                                
+                                                            </div>
+                                                                <!--<div ID="imgContainer" style="position:relative">
+                                                                    
+                                                                </div>-->
                                                             </ItemTemplate>
-                                                        </asp:DataList>
+                                                        </asp:Repeater>
                                            <asp:SqlDataSource ID="sdsImages" runat="server" 
                                                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>"
@@ -719,10 +802,15 @@
                          <div class="searchb">
                              <div class="serheading">Publish</div>
                               <div class="pubbutt">
-                               <div class="del"><asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
+           <div class="del"> <asp:LinkButton runat="server" ID="lbtnDelete" Text="Delete" 
                                        onclick="lbtnDelete_Click" 
-                                       onclientclick="return confirm('Are you sure, you want to delete ?')" 
+                                       onclientclick="redirectToItems()" 
                                        TabIndex="22" ></asp:LinkButton></div>
+                                  <script>
+                                      function redirectToItems() {
+                                          location.href = '../brand/profile-page-items.aspx';
+                                      }
+                                  </script>
                               <a id="hidden_link" runat="server" style="visible:false"  width="60%" height="60%"></a>
                                 <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                 
@@ -963,14 +1051,20 @@
                              <div id="seeDefaultHoliday" tabindex="14">
                                  <div class="dblock">
                                      <asp:CheckBoxList  runat="server" ID="chkDefaultHoliday" OnSelectedIndexChanged="chkDefaultHoliday_SelectedIndexChanged"
-                                         DataSourceID="sdsMoreHoliday" DataTextField="Title" 
+                                         DataSourceID="sdsDefaultHoliday" DataTextField="Title" 
                                          DataValueField="HolidayID" AutoPostBack="True"  >
                                      </asp:CheckBoxList>
+                                    
+                                    <asp:SqlDataSource ID="sdsDefaultHoliday" runat="server" 
+                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
+                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
+                                         SelectCommand="SELECT TOP(10) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                     </asp:SqlDataSource>
                                     
                                       <asp:SqlDataSource ID="sdsMoreHoliday" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                         SelectCommand="SELECT TOP (9) HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
+                                         SelectCommand="SELECT HolidayID, Title FROM Tbl_Holidays ORDER BY Title">
                                      </asp:SqlDataSource>
                                  </div>
                             
@@ -1024,7 +1118,7 @@
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
                                       
-                                      SelectCommand="SELECT Top 5 [TagID], [Title] FROM [Tbl_ItemTags]  Where ItemID=?  ORDER BY [TagID]">
+                                      SelectCommand="SELECT Top 10 [TagID], [Title] FROM [Tbl_ItemTags]  Where ItemID=?  ORDER BY [TagID]">
                                       <SelectParameters>
                                           <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />
                                       </SelectParameters>
@@ -1032,8 +1126,8 @@
                                    <asp:SqlDataSource ID="sdsMoreTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      
-                                      SelectCommand="SELECT Top 10 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">
+                                      SelectCommand="SELECT [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
+                                      <!--SelectCommand="SELECT [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">-->
                                       <SelectParameters>
                                           <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />
                                       </SelectParameters>
@@ -1086,7 +1180,7 @@
                                                              <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                      SelectCommand="SELECT Top 20 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
+                                      SelectCommand="SELECT TOP 10 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
                                       <%--SelectCommand="SELECT Top 20 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">--%>
                                       <SelectParameters>
                                           <asp:ControlParameter ControlID="hidField" Name="itemID" PropertyName="Value" 
@@ -1099,10 +1193,12 @@
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
                                       
-                                      SelectCommand="SELECT Top 10 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
+                                      SelectCommand="SELECT [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">
                                       <%--SelectCommand="SELECT Top 10 [TagID], [Title] FROM [Tbl_ItemTags] Where ItemID=?  ORDER BY [TagID]">--%>
                                       <SelectParameters>
-                                          <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />
+                                          <asp:ControlParameter ControlID="hidField" Name="itemID" PropertyName="Value" 
+                                              Type="Int32" />
+                                             <%--  <asp:CookieParameter CookieName="CurrentItemId" Name="ItemID" Type="Int32" />--%>
                                       </SelectParameters>
                                   </asp:SqlDataSource>
                          </div>

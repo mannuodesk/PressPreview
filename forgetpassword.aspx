@@ -34,8 +34,8 @@
 
 
 <!--text-->
-    <div class="wrapperforget" style="padding-top:10%" runat="server" ID="divEmailSection">
-          <div class="textforget">Password Reset</div>
+    <div class="wrapperforget" style="padding-top:15%" runat="server" ID="divEmailSection">
+          <div class="textforget" style="text-align: center;">Password Reset</div>
           <div class="textforgett">Enter email address that you used to register. An email will be sent to you with a link to reset you password</div>
           
           <div class="forgetform">
@@ -60,15 +60,14 @@
           
           <div class="textfor">If you still need help, contact <a href="mailto:presspreview@gmail.com">Press Perview.</a></div>
     </div>  
-    <div class="wrapperforget"  ID="divMessage" >
+    <div class="wrapperforget"  ID="divMessage" style="margin-top: 10%;">
          <div class="forgetform">
              
                  <div id="divAlerts2" runat="server" class="alert" visible="False">
-                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                      <asp:Label runat="server" ID="lblMessage" for="PageMessage"
                          Text="" Visible="True"></asp:Label>
                  </div>
-                  <a href="Default.aspx" class="hvr-sweep-to-right" runat="server" ID="lbGotoHome" Visible="False" style="float:none; text-align:center; margin-left:35px;">Back to Home Page</a>                          
+                  <a href="Default.aspx" class="hvr-sweep-to-right" runat="server" ID="lbGotoHome" Visible="False" style="float:none; text-align:center;">Back to Home Page</a>                          
                 <%-- <button type="submit" runat="server" name="forbut" id="btnGoTo" class="hvr-sweep-to-right"    style="float:none; text-align:center; margin-left:35px;" Visible="False" OnServerClick="btnGoTo_OnServerClick">Back to Home Page</button>--%>
            
           </div><!--forgetform-->

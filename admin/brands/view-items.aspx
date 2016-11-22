@@ -12,7 +12,7 @@
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
-
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
    <!-- Fency box Resources -->

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="addnew.aspx.cs" Inherits="admin_home_Default" %>
+﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true" CodeFile="addnew.aspx.cs" Inherits="admin_home_Default" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
@@ -12,7 +12,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PP :: Dashboard</title>
-
+<style>
+    #CropedImage{
+        display: none
+    }
+    #txtPara1_toolbarArea,#txtPara2_toolbarArea{
+        display: none
+    }
+    #txtPara1_TabRow,#txtPara2_TabRow{
+        display: none
+    }
+</style>
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="../css/animate.css" rel="stylesheet" />
@@ -22,7 +32,8 @@
         <script src="../../DropzoneJs_scripts/dropzone.js" type="text/javascript"></script>
     <link href="../css/ajaxtabs.css" rel="stylesheet" type="text/css" />
      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDqfn0oWwSMR8xsTXBKQR61WPC454_0Hw&callback=initMap"
+  type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
     var map;
@@ -637,7 +648,7 @@ div.ribbon {
 
                                              
                                              
-                                                            <asp:Image ID="CropedImage" ImageUrl="" runat="server"/>
+                                                          <asp:Image ID="CropedImage"  ImageUrl="" runat="server"/>
                                              
                                               <div  class="dropzone" id="dzFeatured">
                                                   <div style="display:none" class="dz-message" data-dz-message>

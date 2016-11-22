@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-
+using HtmlAgilityPack;
 public partial class lookbookDetails : System.Web.UI.Page
 {
     static string _lbDescription = string.Empty;
@@ -17,7 +17,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         var al = new ArrayList { lblUsername, imgUserIcon };
-        
+
         Common.UserSettings(al);
         if (!IsPostBack)
         {
@@ -27,7 +27,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 LoadLookBook();
 
                 SetTotalViews();
-               // BrandLikes();
+                // BrandLikes();
                 if (Common.Getunread_Messages() > 0)
                 {
                     lblTotalMessages.Visible = true;
@@ -147,13 +147,13 @@ public partial class lookbookDetails : System.Web.UI.Page
         string LbData = string.Format("SELECT LookID, Description, Views From Tbl_Lookbooks Where LookKey={0}",
                                       IEUtils.SafeSQLString(Request.QueryString["v"]));
         SqlDataReader dr = db.ExecuteReader(LbData);
-        if(dr.HasRows)
+        if (dr.HasRows)
         {
             dr.Read();
             lblDescription.Text = Server.HtmlDecode(dr[1].ToString());
             LookId = IEUtils.ToInt(dr[0]);
             lblTotolViews.Text = dr.IsDBNull(2) ? "0" : dr[2].ToString();
-            
+
 
         }
         dr.Close();
@@ -203,7 +203,7 @@ public partial class lookbookDetails : System.Web.UI.Page
         try
         {
             DatabaseManagement db = new DatabaseManagement();
-            string followers = string.Format("SELECT COUNT(ID) as TotalLikes From Tbl_LookBook_Likes  Where LookID={0}", lookId);
+            string followers = string.Format("SELECT COUNT(Id) as TotalLikes From Tbl_Item_Likes  Where ItemID={0}", lookId);
             SqlDataReader dr = db.ExecuteReader(followers);
             int result = 0;
             if (dr.HasRows)
@@ -218,9 +218,8 @@ public partial class lookbookDetails : System.Web.UI.Page
         catch (Exception ex)
         {
             //ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-            return 0;
         }
-       
+        return 0;
     }
     protected void rptLookbook_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
@@ -465,7 +464,7 @@ public partial class lookbookDetails : System.Web.UI.Page
     //            db._sqlConnection.Close();
     //            db._sqlConnection.Dispose();
     //        }
-            
+
     //    }
     //    catch (Exception ex)
     //    {
@@ -557,11 +556,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetData(int pageIndex ,string lookId)
+    public static List<Items> GetData(int pageIndex, string lookId)
     {
         try
         {
-        int pagesize = 10;
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -573,14 +572,15 @@ public partial class lookbookDetails : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 10000000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -603,17 +603,21 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         _lbDescription = objitem.Description;
 
                         if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        {
                             itemList.Add(objitem);
-                            }
+                        }
                         tempCount++;
                         // itemList.Add(objitem);
 
@@ -635,11 +639,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByCategory(int pageIndex, int categoryid ,string lookId)
+    public static List<Items> GetDataByCategory(int pageIndex, int categoryid, string lookId)
     {
         try
         {
-        int pagesize = 10;
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -651,15 +655,16 @@ public partial class lookbookDetails : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
+                cmd.Parameters.AddWithValue("@PageSize", 10000000);
                 cmd.Parameters.AddWithValue("@CategoryID", categoryid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -682,16 +687,20 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
+                        _lbDescription = objitem.Description;
                         if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        {
                             itemList.Add(objitem);
-                            }
+                        }
                         tempCount++;
 
                     }
@@ -712,11 +721,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataBySeason(int pageIndex, int seasonid,string lookId)
+    public static List<Items> GetDataBySeason(int pageIndex, int seasonid, string lookId)
     {
         try
         {
-        int pagesize = 10;
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -728,15 +737,16 @@ public partial class lookbookDetails : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
+                cmd.Parameters.AddWithValue("@PageSize", 10000000);
                 cmd.Parameters.AddWithValue("@SeasonID", seasonid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -759,16 +769,20 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
+                        _lbDescription = objitem.Description;
                         if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        {
                             itemList.Add(objitem);
-                            }
+                        }
                         tempCount++;
 
                     }
@@ -789,11 +803,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid,string lookId)
+    public static List<Items> GetDataByHoliday(int pageIndex, int holidayid, string lookId)
     {
         try
         {
-        int pagesize = 10;
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -805,15 +819,16 @@ public partial class lookbookDetails : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
+                cmd.Parameters.AddWithValue("@PageIndex", 1);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
                 cmd.Parameters.AddWithValue("@LookKey", lookId);
+                cmd.Parameters.AddWithValue("@PageSize", 10000000);
                 cmd.Parameters.AddWithValue("@HolidayID", holidayid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -836,16 +851,20 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
+                        _lbDescription = objitem.Description;
                         if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        {
                             itemList.Add(objitem);
-                            }
+                        }
                         tempCount++;
 
                     }
@@ -866,11 +885,11 @@ public partial class lookbookDetails : System.Web.UI.Page
     }
 
     [WebMethod, ScriptMethod]
-    public static List<Items> GetDataByTitle(int pageIndex, string title,string lookId)
+    public static List<Items> GetDataByTitle(int pageIndex, string title, string lookId)
     {
         try
         {
-        int pagesize = 10;
+            int pagesize = 10;
             //StringBuilder getPostsText = new StringBuilder();
             var itemList = new List<Items>();
             var db = new DatabaseManagement();
@@ -891,6 +910,7 @@ public partial class lookbookDetails : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -913,16 +933,20 @@ public partial class lookbookDetails : System.Web.UI.Page
                             Views = IEUtils.ToInt(dr["Views"]),
                             BrandId = IEUtils.ToInt(dr["BrandID"]),
                             BrandKey = dr["BrandKey"].ToString(),
-                           DatePosted = dr["DatePosted"].ToString(),
+                            DatePosted = dr["DatePosted"].ToString(),
                             Dated = Common.GetRelativeTime(dbDate),
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
+                        _lbDescription = objitem.Description;
                         if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        {
                             itemList.Add(objitem);
-                            }
+                        }
                         tempCount++;
 
                     }
@@ -953,5 +977,5 @@ public partial class lookbookDetails : System.Web.UI.Page
 
     }
 
-    
+
 }

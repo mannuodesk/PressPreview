@@ -231,6 +231,20 @@
      
      
      <div class="lines"><hr /></div>
+     
+     <div class="row" style="display:none;">
+          <div class="col-md-4">
+            <input type="password" runat="server" name="oldPass" ID="oldPassword" placeholder="Old Password" class="logineb" />
+          </div>
+          <div class="col-md-4">
+            <input type="password" runat="server" name="newPass" ID="newPassword" placeholder="New Password" class="logineb" />
+          </div>
+          <div class="col-md-4">
+            <button ID="btnChange" runat="server" class="hvr-sweep-to-rightup2" OnServerClick="btnChange_ServerClick">
+            Change
+        </button>
+          </div>
+     
      </div><!--list-->
      
      

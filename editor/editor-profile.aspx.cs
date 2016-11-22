@@ -176,7 +176,52 @@ public partial class editor_editor_profile : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
+    protected void btnChange_ServerClick(object sender, EventArgs e)
+    {
+        try
+        {
+            if (isPasswordCorrect(oldPassword.Value))
+            {
+                var httpCookie = Request.Cookies["FrUserID"];
+                var db = new DatabaseManagement();
+                if (httpCookie != null)
+                {
+                    string updateUserPassword = string.Format("Update Tbl_Users set U_Password={0} Where UserID={1}",
+                                                       IEUtils.SafeSQLString(newPassword.Value), IEUtils.ToInt(httpCookie.Value));
+                    db.ExecuteSQL(updateUserPassword);
+                }
+            }
+        }
+        catch (Exception exc)
+        {
 
+        }
+    }
+    private bool isPasswordCorrect(string password)
+    {
+        var httpCookie = Request.Cookies["FrUserID"];
+
+        var db = new DatabaseManagement();
+        if (httpCookie != null)
+        {
+            string getUserPassword = string.Format("SELECT U_Password From Tbl_Users Where UserID={0}",
+                                               IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(getUserPassword);
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    string passwordFromDB = dr["U_Password"].ToString();
+                    if (passwordFromDB == password)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
     protected void rptMessageList_ItemCommand(object sender, RepeaterCommandEventArgs e)
     {
         try

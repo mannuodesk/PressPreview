@@ -56,7 +56,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                 Session["CurrentBrand"] = dr[0].ToString();
                 lblImageName.Text = dr[3].ToString();
                 imgLogo.ImageUrl = "../../brandslogoThumb/" + dr[3];
-                txtBio.Value = dr[4].ToString();
+                txtBio.Text = Server.HtmlDecode(dr[4].ToString());
                 txtCountry.Value = dr[5].ToString();
                 txtState.Value = dr[6].ToString();
                 txtCity.Value = dr[7].ToString();
@@ -70,7 +70,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                 txtFbURL.Value = dr[15].ToString();
                 txtYoutube.Value = dr[16].ToString();
                 txtPinterest.Value = dr[17].ToString();
-                txtBrandHistory.Value = dr[18].ToString();
+                txtBrandHistory.Text = Server.HtmlDecode(dr[18].ToString());
                 txtOrg.Value = dr[19].ToString();
                 txtDesignation.Value = dr[20].ToString();
 

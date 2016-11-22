@@ -73,7 +73,7 @@ public partial class lightbox_item_view : Page
             {
                 dr.Read();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[0];
-
+                
             }
         }
         catch (Exception ex)
@@ -129,7 +129,7 @@ public partial class lightbox_item_view : Page
         {
             String selectQuery =
                 string.Format(
-                    "SELECT UserKey, U_Firstname + ' ' + U_Lastname as Name from Tbl_Users Where UserID={0}",
+                    "SELECT UserKey, U_Firstname + ' ' + U_Lastname as Name, U_ProfilePic from Tbl_Users Where UserID={0}",
                     IEUtils.ToInt(userCookie.Value));
             SqlDataReader dr = db.ExecuteReader(selectQuery);
             if (dr.HasRows)
@@ -137,6 +137,7 @@ public partial class lightbox_item_view : Page
                 dr.Read();
                 _loggedInUser[0] = dr[0].ToString();
                 _loggedInUser[1] = dr[1].ToString();
+                imgProfile2.ImageUrl = "../brandslogoThumb/" + dr[2];
             }
         }
     }
@@ -182,13 +183,25 @@ public partial class lightbox_item_view : Page
                                        IEUtils.ToInt(Session["UserID"]),
                                        IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(isAlreadyLiked);
-            if (dr != null && dr.HasRows)
+            if(dr != null && dr.HasRows)
             {
-                LikesLabel.Text = "UnLike";
-            }
+                LikesLabel.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6");
+                round.Style.Add("color", "#4c92c6");
+                round.Style.Add("border", "#4c92c6 solid 2px");
+                bracket1.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6");
+                bracket2.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6");
+                lblTotalLikes.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6"); 
+                
+            }   
             else
             {
-                LikesLabel.Text = "Like";
+                LikesLabel.ForeColor = Color.Black;
+                round.Style.Add("color", "#000");
+                round.Style.Add("border", "#000 solid 2px");
+
+                bracket1.ForeColor = Color.Black;
+                bracket2.ForeColor = Color.Black;
+                lblTotalLikes.ForeColor = Color.Black;
             }
             //lbtnLike.Enabled = !dr.HasRows;
 
@@ -212,8 +225,16 @@ public partial class lightbox_item_view : Page
             if (dr != null && dr.HasRows)
             {
                 Color color = new Color();
-                LikesLabel.Text = "Like";
-                //lbtnLike.ForeColor = color;
+                LikesLabel.ForeColor = Color.Black;
+                round.Style.Add("color", "#000");
+                round.Style.Add("border", "#000 solid 2px");
+
+                bracket1.ForeColor = Color.Black;
+                bracket2.ForeColor = Color.Black;
+                lblTotalLikes.ForeColor = Color.Black;
+                //lbtnLike.Style.Remove("color");
+                //lbtnLike.Style.Add("color", "#000");
+                //lbtnLike.CssClass = "mnLikes unliked";
                 string deleteQuery = string.Format("DELETE from Tbl_Item_Likes Where ItemID={0} AND UserID={1} AND BrandID={2}", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
                 db._sqlConnection.Close();
                 db._sqlConnection.Dispose();
@@ -234,8 +255,16 @@ public partial class lightbox_item_view : Page
             }
             else
             {
-                LikesLabel.Text = "UnLike";
-                Color color = new Color();
+                LikesLabel.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6"); 
+                round.Style.Add("color", "#4c92c6");
+                round.Style.Add("border", "#4c92c6 solid 2px");
+                bracket1.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6"); 
+                bracket2.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6"); 
+                lblTotalLikes.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6"); 
+                //lbtnLike.Style.Remove("color");
+                //lbtnLike.Style.Add("color", "#FFF");
+                
+                //lbtnLike.CssClass = "mnLikes liked";
                 //lbtnLike.ForeColor = color;
                 string qryAddLike = string.Format("INSERT INTO Tbl_Item_Likes(ItemID,UserID,BrandID) VALUES({0},{1},{2})", IEUtils.ToInt(Request.QueryString["v"]), IEUtils.ToInt(Session["UserID"]), IEUtils.ToInt(lblUserID.Text));
                 db._sqlConnection.Close();

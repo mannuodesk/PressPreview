@@ -397,7 +397,7 @@
                                                                                                  "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.LookId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                      "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                          "</a>" +
-                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
+                                                                                                            "<a href='edit-lookbook.aspx?v=" + val.LookId + "'  style='margin-right:3px; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                                  "<i class='fa fa-pencil' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                                      "</a>" +
                                                                                                                          "</div> <!-- muserd -->" +
@@ -781,7 +781,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-             <!--#INCLUDE FILE="../includes/logo.txt" -->
+             <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">

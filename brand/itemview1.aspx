@@ -282,11 +282,13 @@
     
     
     <div class="lightboxmaintext" >
-       <div id="divAlerts" runat="server" class="alert" visible="False">
+      <div style="display:none">
+       <div id="divAlerts" runat="server"  class="alert" visible="False">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <asp:Label runat="server" ID="lblStatus" for="PageMessage"
                 Text="" Visible="True"></asp:Label>
         </div>
+      </div>
          <div class="col-md-7 col-xs-12 prolightimg" >
              <asp:Repeater runat="server" ID="rptImages" DataSourceID="sdsItemImages">
                   <ItemTemplate>
@@ -454,7 +456,7 @@
                      
                  <div class="col-md-12">
                      <asp:Panel runat="server" DefaultButton="btnAddPost">
-                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" style="width:40px; height:40px;" /></div>
+                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" style="width:40px;" /></div>
                     <div class="col-md-10">
                         <textarea runat="server" placeholder="Leave A Comments" class="textanew" name="texta" ID="txtComment" style="margin-bottom:-5px; line-height:1.3;"></textarea>
                         <asp:RequiredFieldValidator runat="server" ErrorMessage="Please enter some text"  style="float: right; padding: 5px;" Display="Static" ControlToValidate="txtComment" ValidationGroup="gpComment"></asp:RequiredFieldValidator>

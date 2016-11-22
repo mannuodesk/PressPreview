@@ -36,7 +36,7 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-               <!--#INCLUDE FILE="../includes/logo.txt" -->
+               <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="edit-profile.aspx.cs" ValidateRequest="false" Inherits="home" %>
+﻿<%@ Page Language="C#" validateRequest="false" AutoEventWireup="true" CodeFile="edit-profile.aspx.cs" Inherits="home" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
 <!DOCTYPE>
@@ -8,7 +8,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Edit Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <style>
+        #txtAbout_toolbarArea{
+            display: none
+        }
+        #txtAbout_TabRow{
+            display: none
+        }
+        #txtHistory_toolbarArea{
+          display: none
+        }
+        #txtHistory_TabRow{
+          display: none;
+        }
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -79,7 +92,7 @@ select option {
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-              <!--#INCLUDE FILE="../includes/logo.txt" -->
+              <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -127,7 +140,7 @@ select option {
           <div class="replaytext">
              <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
           </div><div class="lines"><hr /></div>
-         
+         <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg">
               <asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/>
           </div>
@@ -135,7 +148,8 @@ select option {
           <%-- <div class="avatar-view" title="Change the avatar">
               <asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/>
           </div>--%>
-          <div class="replaimg"><a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" ><img  src="../images/replaceimage1.png" /></a></div>
+          <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+          </a>
           <div class="lines"><hr /></div>
           <asp:updatepanel runat="server">
              <ContentTemplate>
@@ -410,8 +424,28 @@ select option {
           
       </div>
       
-      <div class="relinw"></div>
       
+      
+      <div class="reblockadd" style="display:none;">
+        <div class="textforget">Change Password</div>     
+      </div> 
+      <div class="reblockadd1">
+        <div class="row" style="display:none;">
+          <div class="col-md-4">
+            <input type="password" runat="server" name="oldPass" ID="oldPassword" placeholder="Old Password" class="logineb" />
+          </div>
+          <div class="col-md-4">
+            <input type="password" runat="server" name="newPass" ID="newPassword" placeholder="New Password" class="logineb" />
+          </div>
+          <div class="col-md-4">
+            <button ID="btnChange" runat="server" class="hvr-sweep-to-rightup2" OnServerClick="btnChange_ServerClick">
+            Change
+        </button>
+          </div>
+        </div>
+        
+      <div>
+      <div class="relinw"></div>
       <div class="reblockadd1">
             <div class="col-md-12">
                 <button type="button" runat="server" name="signup" ID="btnSignup" class="hvr-sweep-to-rightup2" style="float:right" ValidationGroup="gpProfile" OnServerClick="btnSignup_ServerClick">Submit</button>                     
@@ -529,7 +563,7 @@ select option {
                       dataType: "json",
                       async: true,
                       error: function (jqXhr, textStatus, errorThrown) {
-//                          alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                          //                          alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                       },
                       success: function (msg) {
                           //                    if (msg.d == true) {
@@ -553,7 +587,7 @@ select option {
                       dataType: "json",
                       async: true,
                       error: function (jqXhr, textStatus, errorThrown) {
-//                          alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                          //                          alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                       },
                       success: function (msg) {
                           //                    if (msg.d == true) {
@@ -565,33 +599,33 @@ select option {
                   });
 
               });
-              
+
           });
     </script>   
     <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
       <script type="text/javascript">
           $(document).ready(function () {
               $(".fancybox").fancybox({
-                 fitToView   : true,
-                 frameWidth: '100%',
-                 frameHeight: '100%',
-                 width: '100%',
-                 height: '100%',
-                 autoSize: false,
-                  modal:true,
-                 helpers: {
-                     overlay: { closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
-                 },
-    closeClick  : true,
-    openEffect  : 'fade',
-    closeEffect : 'fade',
-    type: "iframe",
-    opacity:0.7,
-    afterClose: function () {
-        location.reload();
-        return;
-    }
-   
+                  fitToView: true,
+                  frameWidth: '100%',
+                  frameHeight: '100%',
+                  width: '100%',
+                  height: '100%',
+                  autoSize: false,
+                  modal: true,
+                  helpers: {
+                      overlay: { closeClick: false } // prevents closing when clicking OUTSIDE fancybox 
+                  },
+                  closeClick: true,
+                  openEffect: 'fade',
+                  closeEffect: 'fade',
+                  type: "iframe",
+                  opacity: 0.7,
+                  afterClose: function () {
+                      location.reload();
+                      return;
+                  }
+
               });
           });
 </script>

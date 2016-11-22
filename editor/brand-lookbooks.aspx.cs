@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using HtmlAgilityPack;
 
 public partial class home : System.Web.UI.Page
     {
@@ -294,6 +295,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -319,6 +321,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);
@@ -366,6 +372,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -391,7 +398,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);
@@ -439,6 +449,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -465,7 +476,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);
@@ -514,6 +528,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -540,7 +555,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);
@@ -590,6 +608,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -616,7 +635,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objLb.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objLb.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             lookbookList.Add(objLb);

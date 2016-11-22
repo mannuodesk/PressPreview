@@ -12,6 +12,7 @@
     <link href="../css/custom.css" rel="stylesheet" />
     <script src="../js/bootstrap.js"></script>
     <script src="../js/custom.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
      <script type="text/javascript">
          function HideLabel() {
              setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
@@ -59,10 +60,8 @@
 
     </div><!--header bg-->
 <!--Headerend-->
+<div class="topspace"></div>
 
-<!--Banner-->
-     <!--#INCLUDE FILE="../includes/banner.txt" --> 
-<!--bannerend-->
 
 <!--signup-->
     <div class="signup">
@@ -76,7 +75,7 @@
 <!--signup-->
 
 <!--text-->
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-bottom: 10%;">
           
            <div class="col-md-3 col-xs-12 mar"></div><!--.col-md-3 -->
          
@@ -133,18 +132,18 @@
 </div><!--wrapper-->
     <script language="javascript" type="text/javascript">
         function changeColor(source, args) {
-    var txtuser = document.getElementById('txtLoginEmail');
-    var strimg = new Array();
-    strimg = [txtuser];
-if (args.Value == "") {
-args.IsValid = false;
-document.getElementById(source.id.replace('cv','txt')).style.border = '1px solid red';
-}
-else {
-args.IsValid = true;
-document.getElementById(source.id.replace('cv', 'txt')).style.border = '1px solid #7d7d7d';
-}
-}
+            var txtuser = document.getElementById('txtLoginEmail');
+            var strimg = new Array();
+            strimg = [txtuser];
+            if (args.Value == "") {
+                args.IsValid = false;
+                document.getElementById(source.id.replace('cv', 'txt')).style.border = '1px solid red';
+            }
+            else {
+                args.IsValid = true;
+                document.getElementById(source.id.replace('cv', 'txt')).style.border = '1px solid #7d7d7d';
+            }
+        }
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>

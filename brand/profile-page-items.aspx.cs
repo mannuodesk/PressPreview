@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
+using HtmlAgilityPack;
 
 public partial class home : System.Web.UI.Page
     {
@@ -667,6 +668,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                    int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -675,7 +677,8 @@ public partial class home : System.Web.UI.Page
                     while (dr.Read())
                         {
                   
-                        DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                        //DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                        DateTime dbDate = Convert.ToDateTime(dr["Dated"].ToString());
 
                         var objitem = new Items
                         {
@@ -695,7 +698,19 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
+                        string selectDBTime = string.Format("Select DatePosted from Tbl_Items Where ItemID={0}", objitem.ItemId);
+                        DatabaseManagement db1 = new DatabaseManagement();
+                        SqlDataReader dr1 = db1.ExecuteReader(selectDBTime);
+                        if (dr1.HasRows)
+                        {
+                            dr1.Read();
+                            dbDate = Convert.ToDateTime(dr1[0]);
+                            objitem.Dated = Common.GetRelativeTime(dbDate);
+                        }
                         if (tempCount >= startItems && tempCount <= endItems)
                           {
                         itemList.Add(objitem);
@@ -745,6 +760,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -772,7 +788,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             itemList.Add(objitem);
@@ -821,6 +840,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -848,7 +868,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             itemList.Add(objitem);
@@ -897,6 +920,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -924,7 +948,10 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             itemList.Add(objitem);
@@ -973,6 +1000,7 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
+                var desc = "";
                 int startItems = ((pageIndex - 1) * pagesize) + 1;
                 int endItems = (startItems + pagesize) - 1;
                 int tempCount = 1;
@@ -1001,7 +1029,10 @@ public partial class home : System.Web.UI.Page
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-
+                        var pageDoc = new HtmlDocument();
+                        pageDoc.LoadHtml(objitem.Description);
+                        desc = pageDoc.DocumentNode.InnerText;
+                        objitem.Description = desc;
                         if (tempCount >= startItems && tempCount <= endItems)
                             {
                             itemList.Add(objitem);
