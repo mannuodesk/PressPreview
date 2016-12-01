@@ -73,6 +73,7 @@ public partial class admin_home_Default : System.Web.UI.Page
         try
         {
             var db=new DatabaseManagement();
+            
             string getEvent = string.Format("SELECT * From Tbl_Events Where EventID={0}",
                                             IEUtils.ToInt(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(getEvent);
@@ -86,8 +87,12 @@ public partial class admin_home_Default : System.Web.UI.Page
                 txtEndTime.Text = dr[5].ToString();
                 txtPara1.Text = dr[6].ToString();
                 txtPara2.Text = dr[7].ToString();
-                if (dr[9].ToString() == "Image")
+                if (dr[9].ToString() == "image")
+                {
                     tbCenterMedia.ActiveTab = tbImage;
+                    imgCenterFeature.ImageUrl = "../../eventpics/" + dr[10].ToString();
+                    
+                }
                 else if (dr[9].ToString() == "embed")
                 {
                     tbCenterMedia.ActiveTab = tbVideo;

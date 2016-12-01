@@ -34,6 +34,17 @@
        .grid{
            font-size:0px;
        }
+            @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 20px!important;
+    width: 98%!important;
+}}
    </style>
      <script type="text/javascript">
          $(document).ready(function () {
@@ -808,11 +819,11 @@
 
     </div><!--header bg-->
 <!--Headerend-->
-
+<div class="topspace"></div>
 <!--Banner-->
       <div class="banner">
       
-       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
+       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%;" />
       
     </div>
 <!--bannerend-->
@@ -946,7 +957,7 @@ WHERE Tbl_Lookbooks.UserID=?">
           <div class="col-md-8 col-xs-12 cheading">
              Basic Info
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
               <asp:Label ID="lblTitle" CssClass="TitleLabel" runat="server" Text="Label"></asp:Label>
           </div>
           <div class="col-md-12 col-xs-12 ptext2" runat="server" ID="dvAbout" style="word-wrap: break-word;">

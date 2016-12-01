@@ -17,6 +17,14 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="../ckeditor/ckeditor.js"></script>
 <script src="../js/sample.js"></script>
+<style>
+   @media only screen and (max-width: 540px) {
+     
+         .img-circle-hid{
+                   display: none
+               }
+   }
+  </style>
   <script language="JavaScript" type="text/javascript">
       function ToggleDisplay(id) {
           var elem = document.getElementById('d' + id);
@@ -478,7 +486,7 @@
                    
                       <div class="col-md-12" id='ph<%# Eval("PostId","{0}") %>'  onmouseover='showdeletebutton(<%# Eval("PostId") %>);' onmouseout="hidedeletebutton(<%# Eval("PostId") %>)">
                        <asp:Label runat="server" Visible="False" ID="lblPostID" Text='<%# Eval("PostId","{0}") %>'></asp:Label>
-                      <div class="col-md-2" ><a href="#"><img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/></a></div>
+                      <div class="col-md-2" ><a href="#"><img class="img-circle img-circle-hid" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/></a></div>
                       <div class="col-md-10" style="margin-left: -20px;" >
                           
                           <span class="commh"><a href="#"><%# Eval("Username") %></a> <br /></span>
@@ -499,7 +507,7 @@
                               <asp:Repeater runat="server" ID="rptComments"   OnItemCommand="rptComments_OnItemCommand">
                                   <ItemTemplate>
                                        <div class="col-md-12" id='ch<%# Eval("CommentId","{0}") %>'  style="padding: 10px; background: #f0efef; opacity:0.7;" onmouseover="showreplyDelete(<%# Eval("CommentId","{0}") %>)" onmouseout="hidereplyDelete(<%# Eval("CommentId","{0}") %>)">
-                                         <div class="col-md-2" ><a href="#"><img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px; max-width:none;"/></a></div>
+                                         <div class="col-md-2" ><a href="#"><img class="img-circle img-circle-hid" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px; max-width:none;"/></a></div>
                                           <div class="col-md-10">
                                               
                                                <span class="commh"><a href="#"><%# Eval("Username") %></a> <br /></span>

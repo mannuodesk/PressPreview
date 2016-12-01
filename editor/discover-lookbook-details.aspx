@@ -15,11 +15,80 @@
     .menudlist{
             margin: 12px 0 0 !important;
     }
-            @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait)
-    {
-        .addlineblock1, .colrow {
-    display: block !important ;
+ @media only screen and (max-width:767px){
     
+        .addlineblock1, .colrow {
+    display: block !important;
+    
+}
+    
+}
+ @media only screen and (max-width:766px){
+    
+       #lbCategory{
+     padding-bottom: 13%
+       }
+ 
+        #seasonDiv{
+          margin-left: 24% 
+      }
+      
+}
+  @media only screen and (max-width:557px){
+    
+       #lbCategory{
+           font-size: 13px;
+    padding-bottom : 24%;
+    margin: 22px 0px 0px 0px;
+       }
+        #btnSeason{
+           font-size: 13px;
+       }
+       #btnHoiday{
+           font-size: 13px;
+       }
+       
+      #seasonDiv{
+          margin-left: 24% 
+      }
+      
+}
+ @media only screen and (max-width:416px){
+    
+       #lbCategory{
+           font-size: 11px;
+    padding : 0px;
+        padding-bottom: 26px;
+    margin: 26px 0px 0px 0px;
+       }
+        #btnSeason{
+           font-size: 11px;
+       }
+       #btnHoiday{
+           font-size: 11px;
+       }
+       
+      #seasonDiv{
+          margin-left: 18% 
+      }
+}
+ @media only screen and (max-width:354px){
+    
+       #lbCategory{
+           font-size: initial;
+    padding : 0px;
+    margin: 12px 0px 0px 0px;
+       }
+        #btnSeason{
+           font-size: initial;
+       }
+       #btnHoiday{
+           font-size: initial;
+       }
+       
+      #seasonDiv{
+          margin-left: 0% 
+      }
 }
     
 }
@@ -38,6 +107,7 @@
     <script src="../masonry/js/libs/jquery.masonry.3.2.1.min.js"></script>
     <script src="../masonry/js/base.js" type="text/javascript"></script>
      <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+     <script src="../js/bootstrap.js"></script>
       <script type="text/javascript">
           function HideLabel() {
               setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
@@ -137,7 +207,7 @@
             <div class="mespace"></div>
     </div>
 </div>
-<div class="l">
+<div class="l" id="seasonDiv">
     <button class="menudlist" id="a">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
@@ -205,7 +275,7 @@
 <div class="col-md-12 col-xs-12  discoverb">     
           
          <div id="contentbox">
-                       <div class="grid" id="mygrid" style="height:auto !important;">
+                       <div class="grid" id="mygrid" style="">
 
                        </div>
 
@@ -641,7 +711,7 @@
 
                         // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                         var id = url[1];
-                        var pageUrl = 'http://presspreview.azurewebsites.net/itemview2/' + id;
+                        var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
                         //window.location = pageUrl;
                         window.history.pushState('d', 't', pageUrl);
                     }

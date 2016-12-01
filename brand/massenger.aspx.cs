@@ -10,7 +10,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
-
+using System.Web.UI;
 public partial class brand_massenger : System.Web.UI.Page
 {
     static readonly string MailSenderAddress = System.Configuration.ConfigurationManager.AppSettings["SenderEmail"];
@@ -448,7 +448,7 @@ public partial class brand_massenger : System.Web.UI.Page
             {
                 txtMessage.Focus();
             }
-
+     ScriptManager.RegisterStartupScript(this, Page.GetType(), "key", "MyFunc()", true);
           //  if (httpCookie != null) Response.Redirect("massenger.aspx?v=" + httpCookie.Value);
         }
         catch (Exception ex)

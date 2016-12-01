@@ -194,7 +194,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                 //    imgLogo.ImageUrl = "../../brandslogoThumb/" + dr[4].ToString(); 
                 //}
                 
-                txtBio.Value = dr[5].ToString();
+                txtBio.Text = dr[5].ToString();
                 txtCountry.Value = dr[6].ToString();
                 txtState.Value = dr[7].ToString();
                 txtCity.Value = dr[8].ToString();
@@ -258,7 +258,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                                   "Province={4},City={5},PostalCode={6},Address={7},Phone={8},Email={9},Url={10}, FbURL={11},TwitterURL={12},InstagramURL={13},History={14},DateModified={15}  Where BrandID={16}",
                                   IEUtils.SafeSQLString(txtBrandName.Value),
                                   IEUtils.SafeSQLString(pic),
-                                  IEUtils.SafeSQLString(txtBio.Value),
+                                  IEUtils.SafeSQLString(txtBio.Text),
                                   IEUtils.SafeSQLString(txtCountry.Value),
                                   IEUtils.SafeSQLString(txtState.Value),
                                   IEUtils.SafeSQLString(txtCity.Value),
@@ -284,7 +284,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                                  "Province={4},City={5},PostalCode={6},Address={7},Phone={8},Email={9},Url={10}, FbURL={11},TwitterURL={12},InstagramURL={13},History={14},DateModified={15}  Where BrandID={16}",
                                  IEUtils.SafeSQLString(txtBrandName.Value),
                                  IEUtils.SafeSQLString(pic),
-                                 IEUtils.SafeSQLString(txtBio.Value),
+                                 IEUtils.SafeSQLString(txtBio.Text),
                                  IEUtils.SafeSQLString(txtCountry.Value),
                                  IEUtils.SafeSQLString(txtState.Value),
                                  IEUtils.SafeSQLString(txtCity.Value),

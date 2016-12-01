@@ -29,6 +29,17 @@
        .vlike{
            font-size:12px;
        }
+     @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 20px!important;
+    width: 98%!important;
+}}
    </style>
      <script type="text/javascript">
          var selectedSorting = "default";
@@ -404,7 +415,7 @@
                                                                                  "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
                                                                                      "<div class='m1'>" +
                                                                                          "<div class='muserd'>" +
-                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
+                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox' style='width:100%'>" + val.Title + "</a>" +
                                                                                                  "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.ItemId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                      "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                          "</a>" +
@@ -425,7 +436,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div></div>";
+                                                                                                                                                                                 "</div><div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -493,7 +504,7 @@
                                                                                  "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
                                                                                      "<div class='m1'>" +
                                                                                          "<div class='muserd'>" +
-                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
+                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox' style='width:100%'>" + val.Title + "</a>" +
                                                                                                  "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.ItemId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                      "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                          "</a>" +
@@ -514,7 +525,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div></div>";
+                                                                                                                                                                                 "</div><div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -582,7 +593,7 @@
                                                                                  "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
                                                                                      "<div class='m1'>" +
                                                                                          "<div class='muserd'>" +
-                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
+                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox' style='width:100%'>" + val.Title + "</a>" +
                                                                                                  "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.ItemId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                      "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                          "</a>" +
@@ -603,7 +614,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div></div>";
+                                                                                                                                                                                 "</div><div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -671,7 +682,7 @@
                                                                                  "<div class='mtextb' style='width:75%; margin-left:15px;'>" +
                                                                                      "<div class='m1'>" +
                                                                                          "<div class='muserd'>" +
-                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a>" +
+                                                                                             "<a href='itemview1?v=" + val.ItemId + "' class='fancybox' style='width:100%'>" + val.Title + "</a>" +
                                                                                                  "<a ToolTip='Delete Item' OnClick='DeleteItem(" + val.ItemId + ")' OnClientClick='return confirm('Are you sure, you want to delete ?')'  style='margin:auto; float:right; background:#CCC; padding:6px 8px; border-radius:50%;'>" +
                                                                                                      "<i class='fa fa-times' aria-hidden='true' style='font-size:16px;'></i>" +
                                                                                                          "</a>" +
@@ -692,7 +703,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div></div>";
+                                                                                                                                                                                 "</div><div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -828,11 +839,11 @@
 
     </div><!--header bg-->
 <!--Headerend-->
-
+<div class="topspace"></div>
 <!--Banner-->
     <div class="banner" style="margin-top:50px;">
       
-       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
+       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%;" />
       
     </div>
    
@@ -1033,7 +1044,7 @@ WHERE Tbl_Items.UserID=?">
                         Text="" Visible="True"></asp:Label>
                 </div>
                     </div>
-                <div class="grid" id="mygrid" style="height:auto !important;">
+                <div class="grid" id="mygrid" style="">
   
                </div>
                             <div id="LoaderItem"  style="display:none;">

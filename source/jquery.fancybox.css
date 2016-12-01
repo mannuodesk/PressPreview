@@ -276,3 +276,13 @@
 		background-size: 24px 24px; /*The size of the normal image, half the size of the hi-res image*/
 	}
 }
+ @media only screen and (max-width: 540px) {
+         .fancybox-opened {
+     width: 100% !important;
+    left: 0 !important;
+}
+               .fancybox-inner{
+                   width: auto !important;
+               }
+ 
+ }

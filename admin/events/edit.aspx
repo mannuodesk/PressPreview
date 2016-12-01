@@ -586,13 +586,19 @@ div.ribbon {
                                             <asp:TabPanel ID="tbImage" runat="server" HeaderText="Image">
                                                 <ContentTemplate>
                                                      <div class="form-group">
+                                                         <div class="col-sm-6" style="padding-left: 0px;">
                                                       <label>Center Image</label><span class="text-danger">*</span>
                                                           <div  class="dropzone" id="dzCenter">
                                                             <div class="fallback">
                                                                 <input name="file" type="file" multiple />
                                                                 <input type="submit" value="Upload" />
                                                             </div>  
-                                                        </div>  
+                                                        </div> 
+                                                        </div>
+                                                        <div class="col-sm-6" style="padding-left: 0px;">
+                                                            <label>Current Center Image</label>
+                                                <asp:Image ID="imgCenterFeature" runat="server" style="width:300px; margin-bottom:20px;"/>
+                                                        </div> 
                                                     </div>
                                                 </ContentTemplate>
                                             </asp:TabPanel>

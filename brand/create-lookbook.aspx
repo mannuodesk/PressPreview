@@ -9,10 +9,24 @@
 <style>
     #txtDescription_toolbarArea{
         display: none;
+        
     }
     #txtDescription_TabRow{
         display: none
     }
+    #txtDescription{
+        width:100%;
+    }
+       @media only screen and (max-width:767px){
+   #txtDescription{
+      margin: 2 0 0 1 !important;
+    width: 99% !important;
+    }
+    #txtItemTitle{
+              margin: 0 0 0 1 !important;
+    width: 99% !important;
+    }
+}
 </style>
 <style>
   /*.wrapParagraph{
@@ -29,6 +43,7 @@
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
 <script  type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src="../js/bootstrap.js"></script>
 <!--lightbox-->
 	<script type="text/javascript" src="../source/jquery.fancybox.js?v=2.1.5"></script>
 	<link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css?v=2.1.5" media="screen" />
@@ -347,6 +362,7 @@
          </div>
      
   <!--editor-->
+   <div class="textadd">DESCRIPTION<span class="text-danger">*</span></div>
   <div class="editorblock">
       <%--<textarea name="editor1" class="ckeditor" runat="server" ID="txtDescription" 
           tabindex="2" Height="200px" Width="100%">
@@ -378,7 +394,7 @@
                        <div class="box1">
                    <div class="loobblock">
                       <div class="dbllook"><a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox">
-                                              <div class="dbl">
+                                              <div>
                                         <div class="hover ehover13">
                                             <img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" alt="<%# Eval("Title","{0}") %>" /><div class="overlay">
                                                 <h2 class="titlet"><%# Eval("Title","{0}") %></h2>

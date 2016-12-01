@@ -22,6 +22,24 @@
         #txtHistory_TabRow{
           display: none;
         }
+ 
+        #txtAbout{
+          width:100%;
+               margin: 0 0 0 1 !important;
+        }
+        #txtHistory{
+          width: 100%;
+             margin: 1 0 0 1 !important;
+        } 
+       @media only screen and (max-width:767px){
+            .reb1{
+              width: auto !important
+            }
+            .reb2{
+              width: 70% !important
+            }
+          }
+
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -124,12 +142,15 @@ select option {
 
 
      <div class="remainblock">
+          <center>
            <div class="replaytext">
-             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
-          </div><div class="lines"><hr /></div>
+             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/uploadimage.png" /></a>
+          </div>
+          </center>
+          <div class="lines"><hr /></div>
           <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
-          <div class="replaimg"><a href="#"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></a></div>
-           <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+          <div class="replaimg"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></div>
+           <div class="replaimg"><img  src="../images/uploadimage1.png" /></div>
            </a>
           <div class="lines"><hr /></div>
           <asp:updatepanel ID="Updatepanel1" runat="server">
@@ -242,16 +263,7 @@ select option {
           <input type="text" runat="server" name="lname" ID="txtlname" placeholder="Last Name" class="logineb" />
                     
       </div> 
-      <div class="col-md-6 col-xs-12 " style="" >
-          <input type="text" runat="server" name="org" ID="txtorg" placeholder="Organization" class="logineb" />
-          <%-- <asp:RequiredFieldValidator ID="rfvtxtorg" EnableViewState="false" runat="server" ErrorMessage="Organization is required" Display="Dynamic"
-                       ControlToValidate="txtorg"  ValidationGroup="gpProfile"  CssClass="col-md-6 col-xs-12"></asp:RequiredFieldValidator>--%>
-      </div> 
-      <div class="col-md-6 col-xs-12 " style="" >
-          <input type="text" runat="server" name="desig" ID="txtdesig" placeholder="Designation" class="logineb" />
-          <%-- <asp:RequiredFieldValidator ID="rfvdesignation" EnableViewState="false" runat="server" ErrorMessage="Designation is required" Display="Dynamic"
-                       ControlToValidate="txtdesig"  ValidationGroup="gpProfile"  CssClass="col-md-6 col-xs-12"></asp:RequiredFieldValidator>--%>
-      </div>
+      
       
       <div class="relinw"></div>  
       

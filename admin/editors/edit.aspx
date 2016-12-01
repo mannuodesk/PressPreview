@@ -1,11 +1,30 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="edit.aspx.cs" Inherits="admin_home_Default" %>
+﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true" CodeFile="edit.aspx.cs" Inherits="admin_home_Default" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-
+<style>
+        #txtTop_toolbarArea{
+        display: none;
+    }
+    #txtTop_TabRow{
+        display: none
+    }
+            #txtEcalender_toolbarArea{
+        display: none;
+    }
+    #txtEcalender_TabRow{
+        display: none
+    }
+            #txtDescription_toolbarArea{
+        display: none;
+    }
+    #txtDescription_TabRow{
+        display: none
+    }
+</style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

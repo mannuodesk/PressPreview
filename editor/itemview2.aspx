@@ -32,6 +32,24 @@
                .lightboxblockmain1m{
                        margin: 0px 20px 0 0 !important;
                }
+                .lightboxblockmain2m{
+                       width: 70% !important
+               }
+               .button-dropdownreq{
+                      padding-bottom: 0px !important;
+               }
+               .lightboxblockmain2{
+                   float: right !important;
+               }
+               #btnAddPost{
+                   width: auto !important;
+          
+               }
+               .img-circle-hid{
+                   display: none
+               }
+            
+      
            }
     </style>
 <script type="text/javascript">
@@ -289,7 +307,7 @@
         </div><!--lightboxblockmain--> 
          
 
-<div class="lightboxblockmain1m"  style="width:30%; margin: 60px 20px 0 0; display:block;">
+<div class="lightboxblockmain1m lightboxblockmain2m"  style="width:30%; margin: 60px 20px 0 0; display:block;">
     <ul class="navreq">
   <li class="button-dropdownreq">
     <a href="javascript:void(0)" class="dropdownreq-toggle" data-toggle="dropdownreq" role="button" aria-haspopup="true" aria-expanded="false">
@@ -544,7 +562,7 @@ Where ItemID=?
                      
                  <div class="col-md-12">
                      <asp:Panel runat="server" DefaultButton="btnAddPost">
-                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" /></div>
+                    <div class="col-md-2"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile2" ImageUrl="../images/follo.png" style="width:40px;" /></div>
                     <div class="col-md-10">
                         <textarea runat="server" placeholder="Leave A Comments" class="textanew" name="texta" ID="txtComment" style="margin-bottom:-5px; line-height:1.3;"></textarea>
                         <asp:RequiredFieldValidator runat="server" ErrorMessage="Please enter some text"  style="float: right; padding: 5px;" Display="Static" ControlToValidate="txtComment" ValidationGroup="gpComment"></asp:RequiredFieldValidator>
@@ -566,7 +584,7 @@ Where ItemID=?
                       <div class="col-md-12" id='ph<%# Eval("PostId","{0}") %>'  onmouseover='showdeletebutton(<%# Eval("PostId") %>);' onmouseout="hidedeletebutton(<%# Eval("PostId") %>)">
                        <asp:Label runat="server" Visible="False" ID="lblPostID" Text='<%# Eval("PostId","{0}") %>'></asp:Label>
                        <asp:Label runat="server" Visible="False" ID="lblUserID" Text='<%# Eval("UserID","{0}") %>'></asp:Label>
-                      <div class="col-md-2" ><a href="#"><img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/></a></div>
+                      <div class="col-md-2" ><a href="#"><img class="img-circle img-circle-hid" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px;"/></a></div>
                       <div class="col-md-10" style="margin-left: -20px;" >
                           
                           <span class="commh"><asp:Label runat="server" Visible="False" ID="lblUsername" Text='<%# Eval("Username") %>'></asp:Label><a href="#"><%# Eval("Username") %></a> <br /></span>
@@ -588,7 +606,7 @@ Where ItemID=?
                               <asp:Repeater runat="server" ID="rptComments"   OnItemCommand="rptComments_OnItemCommand"  OnItemDataBound="rptComments_OnItemDataBound">
                                   <ItemTemplate>
                                        <div class="col-md-12" id='ch<%# Eval("CommentId","{0}") %>' onmouseover="showreplyDelete(<%# Eval("CommentId","{0}") %>)" onmouseout="hidereplyDelete(<%# Eval("CommentId","{0}") %>)"  style="padding: 10px; background: #f0efef; opacity:0.7;">
-                                         <div class="col-md-2" ><a href="#"><img class="img-circle" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px; max-width:none;"/></a></div>
+                                         <div class="col-md-2" ><a href="#"><img class="img-circle img-circle-hid" src='<%# Eval("U_ProfilePic","../brandslogoThumb/{0}") %>'   alt="image" style=" width:24px; height:24px; max-width:none;"/></a></div>
                                           <div class="col-md-10">
                                               <asp:Label runat="server" Visible="False" ID="lblUserID" Text='<%# Eval("UserID","{0}") %>'></asp:Label>
                                                <span class="commh"><a href="#"><%# Eval("Username") %></a> <br /></span>

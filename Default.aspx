@@ -17,11 +17,12 @@
 
     <style>
  body {
-    background: url(../images/landingimage.jpg) no-repeat center center fixed;
+    background: url(../images/landingimage.jpg) no-repeat top center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+  
 }
 </style>
 </head>

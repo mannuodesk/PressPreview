@@ -494,7 +494,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -598,7 +598,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
 
@@ -703,7 +703,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
 
@@ -808,7 +808,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
 
@@ -958,7 +958,7 @@
     <div class="topspace"></div>
       <div class="">
       
-       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
+       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%" />
     
          
     </div>
@@ -1015,6 +1015,18 @@
                         position: relative;
     float: left;
                     }*/
+                    
+                        @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 20px!important;
+    width: 98%!important;
+}}
                 </style>
 <%--               <asp:updatepanel runat="server" ID="up_Like">
                    <ContentTemplate>        
@@ -1337,7 +1349,7 @@ WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
 
                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                          var id = url[1];
-                         var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2/' + id;
+                         var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
                          //window.location = pageUrl;
                          window.history.pushState('d', 't', pageUrl);
                      }

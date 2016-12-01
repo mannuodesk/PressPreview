@@ -21,6 +21,20 @@
         #txtHistory_TabRow{
           display: none;
         }
+        #txtAbout{
+          width: 100%
+        }
+        #txtHistory{
+          width: 100%
+        }
+             @media only screen and (max-width:767px){
+            .reb1{
+              width: auto !important
+            }
+            .reb2{
+              width: 70% !important
+            }
+          }
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -128,19 +142,24 @@ select option {
 
 <!--Banner-->
     <div class="" >
-      <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
+      <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; " />
          
     </div>
-   
+    <style>
+      #imgCover{
+        cursor: pointer;
+      }
+    </style>
+  
 <!--bannerend-->
 
 
      <div class="remainblock">
          
           <div class="replaytext">
-             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
+             <center><a id="coverPicChange" class="fancybox"   href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a></center>
           </div><div class="lines"><hr /></div>
-         <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
+         <a class="fancybox"   href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg">
               <asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/>
           </div>
@@ -438,7 +457,7 @@ select option {
             <input type="password" runat="server" name="newPass" ID="newPassword" placeholder="New Password" class="logineb" />
           </div>
           <div class="col-md-4">
-            <button ID="btnChange" runat="server" class="hvr-sweep-to-rightup2" OnServerClick="btnChange_ServerClick">
+            <button ID="btnChange" runat="server" class="hvr-sweep-to-rightup2" >
             Change
         </button>
           </div>
@@ -550,7 +569,11 @@ select option {
    <script src="../cropper/js/cropper.min.js"></script>
   <script src="../cropper/js/main.js"></script>
  <script type="application/javascript" src="../js/custom.js"></script>
+
       <script type="text/javascript">
+      $("#imgCover").click(function(){
+      $("#coverPicChange").click(); 
+     });
           $(document).ready(function () {
               var userId = '<%= Request.Cookies["FRUserId"].Value %>';
               $("#lbViewMessageCount").click(function () {

@@ -74,7 +74,7 @@ public partial class editor_wishlist : System.Web.UI.Page
             if (httpCookie != null)
             {
                 string BrandData = string.Format("Select Firstname + ' ' + Lastname as Name, City," +
-                                                 "Country, ,ToProject,ECalendar, TotalViews,WebURL,U_ProfilePic,U_CoverPic From Tbl_Editors INNER JOIN Tbl_Users ON Tbl_Editors.UserID=Tbl_Users.UserID  Where Tbl_Editors.UserID={0}", IEUtils.ToInt(httpCookie.Value));
+                                                 "Country, ToProject,ECalendar, TotalViews,WebURL,U_ProfilePic,U_CoverPic From Tbl_Editors INNER JOIN Tbl_Users ON Tbl_Editors.UserID=Tbl_Users.UserID  Where Tbl_Editors.UserID={0}", IEUtils.ToInt(httpCookie.Value));
                 SqlDataReader dr = db.ExecuteReader(BrandData);
                 if (dr.HasRows)
                 {
@@ -83,11 +83,12 @@ public partial class editor_wishlist : System.Web.UI.Page
 
                     lblCity.Text = dr[1].ToString();
                     lblCountry.Text = dr[2].ToString();
-                    lblTotolViews.Text = dr.IsDBNull(6) ? "0" : dr[6].ToString();
-                    lbWebURL.InnerText = dr[7].ToString();
-                    lbWebURL.HRef = "http://" + dr[7];
-                    imgCover.ImageUrl = "../profileimages/" + dr[9];
-                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[8];
+                    lblTotolViews.Text = dr.IsDBNull(5) ? "0" : dr[5].ToString();
+                    lbWebURL.InnerText = dr[6].ToString();
+                    lbWebURL.HRef = "http://" + dr[6];
+                    imgCover.ImageUrl = "../profileimages/" + dr[8];
+                    imgProfile.ImageUrl = "../brandslogoThumb/" + dr[7];
+                    
                 }
                 dr.Close();
             }
@@ -146,6 +147,10 @@ public partial class editor_wishlist : System.Web.UI.Page
     protected void btnEditProfile_OnServerClick(object sender, EventArgs e)
     {
         Response.Redirect("edit-profile.aspx");
+    }
+  protected void lbtnMassenger_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("massenger.aspx");
     }
 
 

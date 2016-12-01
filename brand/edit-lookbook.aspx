@@ -14,6 +14,9 @@
     #txtDescription_TabRow{
         display: none
     }
+    #txtDescription{
+        width:100%;
+    }
 </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -33,7 +36,7 @@
     <script src="../js/JSession.js" type="text/javascript"></script>
     <link href="../css/colorPicker.css" rel="stylesheet" type="text/css" />
     <style>
-  
+ 
 </style>
 
    <script type="text/javascript">
@@ -330,7 +333,7 @@
                        <div class="box1">
                    <div class="loobblock">
                       <div class="dbllook"><a href="itemview1?v=<%# Eval("ItemID") %>" class="fancybox">
-                                              <div class="dbl">
+                                              <div>
                                         <div class="hover ehover13">
                                             <img class="img-responsive" src="../photobank/<%# Eval("FeatureImg") %>" alt="<%# Eval("Title","{0}") %>" /><div class="overlay">
                                                 <h2 class="titlet"><%# Eval("Title","{0}") %></h2>

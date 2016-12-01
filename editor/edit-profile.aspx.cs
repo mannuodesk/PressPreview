@@ -127,7 +127,7 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
-    protected void btnChange_ServerClick(object sender, EventArgs e)
+    /*protected void btnChange_ServerClick(object sender, EventArgs e)
     {
         try
         {
@@ -172,7 +172,7 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
             }
         }
         return false;
-    }
+    }*/
     protected void LoadEditorData()
     {
         try
@@ -203,7 +203,7 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                     txtFacebook.Value = dr[12].ToString();
                     txtTwitter.Value = dr[13].ToString();
                     txtInstagram.Value = dr[14].ToString();
-                    txtAbout.Text = dr[15].ToString();
+                    txtAbout.Text =Server.HtmlDecode(dr[15].ToString());
                     txtorg.Value = dr[16].ToString();
                     txtdesig.Value = dr[17].ToString();
                     txtAddress2.Value = dr[18].ToString();

@@ -33,9 +33,9 @@
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
+
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
 <script type="text/javascript" src="../js/modernizr.custom.79639.js"></script> 
 <script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="../js/sample.js"></script>
@@ -45,6 +45,9 @@
 <script type="text/javascript" src="../jcrop/js/jquery.min.js"></script>
 <script src="../jcrop/js/jquery.Jcrop.min.js"></script>
 <script type="text/javascript" src="../jcrop/js/script.js"></script>
+   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
    <style>
 select {
 	    width:100%;
@@ -71,6 +74,14 @@ select {
 select option {
 	color:#000;
 }
+     @media only screen and (max-width:767px){
+            .reb1{
+              width: auto !important
+            }
+            .reb2{
+              width: 70% !important
+            }
+          }
 </style> 
 </head>
 
@@ -126,12 +137,16 @@ select option {
        
     </div>
 <!--bannerend-->
-
+  <style>
+      #imgCover{
+        cursor: pointer;
+      }
+    </style>
 
      <div class="remainblock">
          
            <div class="replaytext">
-             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
+             <a class="fancybox" id="coverPicChange"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
           </div><div class="lines"><hr /></div>
           <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
           <div class="replaimg"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></div>
@@ -460,7 +475,7 @@ select option {
     <!-- Javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/bootstrap.js"></script>
+
     <script src="../masonry/js/libs/imagesloaded.3.1.8.min.js"></script>
     <script src="../masonry/js/libs/jquery.masonry.3.2.1.min.js"></script>
     <script src="../masonry/js/base.js" type="text/javascript"></script>
@@ -534,6 +549,9 @@ select option {
             });
         </script>
        <script type="text/javascript">
+          $("#imgCover").click(function(){
+      $("#coverPicChange").click(); 
+     });
            $(document).ready(function () {
                var userId = '<%= Request.Cookies["FRUserId"].Value %>';
                $("#lbViewMessageCount").click(function () {

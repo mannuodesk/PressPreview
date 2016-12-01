@@ -49,6 +49,10 @@
      .starter-template {
          padding: 8px 0 20px;
      }
+     .overlay{
+             height: auto !important;
+
+     }
     </style>
 
 <script type="text/javascript">
@@ -265,7 +269,7 @@
      </script>
 </head>
 
-<body>
+<body >
 <form runat="server" id="form1">
 <asp:scriptmanager runat="server" ID="scriptmanager1" EnablePageMethods="True"></asp:scriptmanager>
 
@@ -373,7 +377,9 @@
                      <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                     <!--<img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">-->
                                         <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%;" alt="">
-						<div class="overlay">
+                     </a>
+                         <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
+                        <div class=" overlay">
 							<h2><%# Eval("Name","{0}") %> </h2>
 							<h4><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h4>
                             <h2 class="linenew"></h2>
@@ -533,7 +539,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                   //    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {
@@ -557,7 +563,7 @@
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                      // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {

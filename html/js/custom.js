@@ -178,12 +178,14 @@ function showbfewer()
   jQuery('.bfewer').hide();
   jQuery('.bmore').show();
 }// JavaScript Document		
-	
+	//When button not clicked
 function showformmess()
 {
+           
   jQuery('#showformmes').show();
   jQuery('#cmes').hide();
   jQuery('#acmes').show();
+     
 }// JavaScript Document		
 	
 function showformmessa()
@@ -191,6 +193,7 @@ function showformmessa()
   jQuery('#showformmes').hide();
   jQuery('#acmes').hide();
   jQuery('#cmes').show();
+ 
 }// JavaScript Document		
 
 

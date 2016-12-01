@@ -15,7 +15,14 @@
 
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
-
+<style>
+    #GridView1_ctl02_Image1{
+        width: 50px;
+    height: 50px;
+    border-width: 0px;
+    object-fit: cover;
+    }
+</style>
 </head>
 
 <body>
@@ -72,7 +79,7 @@
                                                         <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("U_ProfilePic") %>'></asp:TextBox>
                                                     </EditItemTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("U_ProfilePic", "../../brandslogoThumb/{0}") %>' Width="50px"  CssClass="img-circle"/>
+                                                        <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("U_ProfilePic", "../../brandslogoThumb/{0}") %>'   CssClass="img-circle"/>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:BoundField DataField="FName" HeaderText="First Name" SortExpression="FName" />

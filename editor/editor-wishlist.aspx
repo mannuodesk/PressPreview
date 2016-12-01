@@ -26,6 +26,19 @@
     overflow: hidden;
     max-height: 5.6em;
   }*/
+  
+       @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 0px!important;
+     padding-bottom: 0px!important;
+    width: 98%!important;
+}}
 </style>
 
    
@@ -526,7 +539,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                                                                                                                                                         "</div> <!-- mtextb -->" +
                                                                                                                                                                             "</div><!-- mesbd -->" +
                                                                                                                                                                                 "</div> <!-- disname -->" +
-                                                                                                                                                                                    "</div></div>";
+                                                                                                                                                                                    "<div class='lineclook'></div></div></div>";
 
                     });
                     var $items = $(fragment);
@@ -664,14 +677,14 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
 
                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
                          var id = url[1];
-                         var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2/' + id;
+                         var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2?v=' + id;
                          //window.location = pageUrl;
                          window.history.pushState('d', 't', pageUrl);
                      }
 
                  },
                  beforeClose: function () {
-                     var currentpageurl = 'http://presspreview.azurewebsites.net/editor/brand-items?v=' + userkey;
+                     var currentpageurl = 'http://presspreview.azurewebsites.net/editor/editor-wishlist.aspx' + userkey;
                      window.history.pushState('d', 't', currentpageurl);
 
                  }
@@ -683,42 +696,42 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
    <script type="text/javascript">
        $(document).ready(function () {
            //  var content = $('#myMessage').html();
-           $(".mesblockinf").fancybox({
-
-               fitToView: true,
-               frameWidth: '600px',
-               frameHeight: '270px',
-               width: '600px',
-               height: '270px',
-               autoSize: false,
-               closeBtn: true,
-               closeClick: false,
-               openEffect: 'fade',
-               closeEffect: 'fade',
-               type: "iframe",
-               opacity: 0.7,
-               onStart: function () {
-                   $("#fancybox-overlay").css({ "position": "fixed" });
-               }
-               //               beforeShow: function () {
-
-               //                    var url = $(this).attr('href');
-               //                                      url = (url == null) ? '' : url.split('?');
-               //                                      if (url.length > 1) {
-               //                                          url = url[1].split('=');
-
-               //                   // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
-               //                     var id = url[1];
-               //                   var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2.aspx?v=' + id;
-               //                   //  window.location = pageUrl;
-               //                   window.history.pushState('d', 't', pageUrl);
-               //                    }
-
-               //               },
-               //               beforeClose: function () {
-               //                   window.location = 'http://presspreview.azurewebsites.net/editor/brand-items';
-               //               }
-           });
+//            $(".mesblockinf").fancybox({
+// 
+//                fitToView: true,
+//                frameWidth: '600px',
+//                frameHeight: '270px',
+//                width: '600px',
+//                height: '270px',
+//                autoSize: false,
+//                closeBtn: true,
+//                closeClick: false,
+//                openEffect: 'fade',
+//                closeEffect: 'fade',
+//                type: "iframe",
+//                opacity: 0.7,
+//                onStart: function () {
+//                    $("#fancybox-overlay").css({ "position": "fixed" });
+//                }
+//                //               beforeShow: function () {
+// 
+//                //                    var url = $(this).attr('href');
+//                //                                      url = (url == null) ? '' : url.split('?');
+//                //                                      if (url.length > 1) {
+//                //                                          url = url[1].split('=');
+// 
+//                //                   // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+//                //                     var id = url[1];
+//                //                   var pageUrl = 'http://presspreview.azurewebsites.net/editor/itemview2.aspx?v=' + id;
+//                //                   //  window.location = pageUrl;
+//                //                   window.history.pushState('d', 't', pageUrl);
+//                //                    }
+// 
+//                //               },
+//                //               beforeClose: function () {
+//                //                   window.location = 'http://presspreview.azurewebsites.net/editor/brand-items';
+//                //               }
+//            });
 
        });
 </script>

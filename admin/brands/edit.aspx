@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="edit.aspx.cs" Inherits="admin_home_Default" %>
+﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true" CodeFile="edit.aspx.cs" Inherits="admin_home_Default" %>
 <%@ Register TagPrefix="FTB" Namespace="FreeTextBoxControls" Assembly="FreeTextBox, Version=3.3.1.12354, Culture=neutral, PublicKeyToken=5962a4e684a48b87" %>
 
 <!DOCTYPE html>
@@ -13,7 +13,20 @@
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
-
+<style>
+        #txtBrandHistory_toolbarArea{
+        display: none;
+    }
+    #txtBrandHistory_TabRow{
+        display: none
+    }
+            #txtBio_toolbarArea{
+            display: none
+        }
+        #txtBio_TabRow{
+            display: none
+        }
+</style>
 </head>
 
 <body>
@@ -87,7 +100,14 @@
 
                                         </div>
                                         <div class="form-group"><label>About</label> 
-                                            <textarea type="text" runat="server" id="txtBio" style="height:150px;"  placeholder="About Brand" class="form-control" /> </div>
+                     
+                                                                   <FTB:FreeTextBox runat="server" ID="txtBio" ButtonSet="OfficeMac" 
+          Height="150px" 
+          ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextBox>
+                                            </div>
+                                   
+                                       
                                         <div class="form-group"><label>Country</label><span class="text-danger">*</span>
                                              <input type="text" runat="server" id="txtCountry" placeholder="State/Province" class="form-control">
                                         </div>
@@ -147,7 +167,7 @@
             
             <div class="wrapper wrapper-content animated fadeInRight" style="display:block; ">                 
                 <div class="row">
-                     <div class="col-lg-12">
+                     <div class="col-lg-12" style="display:none">
                         <div class="ibox float-e-margins">
                            <div class="ibox-content">
                                <div class="row">

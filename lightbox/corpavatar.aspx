@@ -34,6 +34,12 @@
     .jcrop-hline,.jcrop-vline right,.jcrop-hline bottom,.jcrop-vline{
          opacity: 1 !important;
      }
+            @media only screen and (max-width:767px){
+          
+                  .form_upload{
+          width: 100%
+        }
+        }
  </style>
 </head>
 

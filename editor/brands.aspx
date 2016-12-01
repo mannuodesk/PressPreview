@@ -82,7 +82,7 @@
 
     </div><!--header bg-->
 <!--Headerend-->
-
+<div class="topspace"></div>
 <!--Banner-->
      <!--#INCLUDE FILE="../includes/banner.txt" --> 
 <!--bannerend-->
@@ -152,7 +152,7 @@
 
             <!--text-->
             <!-- START THE BRANDS LIST -->
-            <div class="col-md-12" id="letter2">
+            <div class="col-md-12 col-sm-12 col-xs-12" id="letter2">
                 <script>
                     var pageIndex = 0;
                     var tempcount = 0;

@@ -86,7 +86,7 @@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                  <div class="row">
-                    <div class="col-lg-2" style="width:20%;">
+                    <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <span class="label label-success pull-right">Total</span>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2" style="width:20%;">
+                    <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <span class="label label-info pull-right">Total</span>
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2" style="width:20%;">
+                    <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <span class="label label-primary pull-right">Total</span>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col-lg-2" style="width:20%;">
+                     <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <span class="label label-primary pull-right">Total</span>
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2" style="width:20%;">
+                    <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <span class="label label-danger pull-right">Total</span>
@@ -148,7 +148,7 @@
             </div>
                  </div>
                 <div class="row">
-                     <div class="col-lg-12">
+                     <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>Brands</h5>

@@ -79,7 +79,7 @@
 								  <div class="m1">
 									<a href='../lightbox/brand-item-view?v=<%# Eval("ItemID") %>' class="fancybox">
 									<div class="mtext"><%# Eval("Title") %></div>
-									<div class="mdays" style="width: 30%; position: relative; text-align: right;"><asp:Label runat="server" ID="lblDatePosted" Text='<%# Eval("DatePosted") %>'></asp:Label></div>
+									<div class="mdays" style="width: auto; position: relative; text-align: right;"><asp:Label runat="server" ID="lblDatePosted" Text='<%# Eval("DatePosted") %>'></asp:Label></div>
 									</a>
 								 </div>
                              

@@ -14,11 +14,17 @@
         #txtAbout_toolbarArea{
             display: none
         }
+        #txtAbout{
+          width: 100%
+        }
         #txtAbout_TabRow{
             display: none
         }
         #txtTop_toolbarArea{
           display: none
+        }
+          #txtTop{
+          width: 100%
         }
         #txtTop_TabRow{
           display: none;
@@ -29,6 +35,17 @@
          #txtECalendar_TabRow{
           display: none;
         }
+        #txtECalendar{
+          width: 100%
+        }
+          @media only screen and (max-width:767px){
+            .reb1{
+              width: auto !important
+            }
+            .reb2{
+              width: 70% !important
+            }
+          }
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -70,6 +87,7 @@ select {
 select option {
 	color:#000;
 }
+
 </style> 
 
 </head>
@@ -106,12 +124,15 @@ select option {
 
 
      <div class="remainblock">
+          <center>
           <div class="replaytext">
-             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/replaceimage.png" /></a>
-          </div><div class="lines"><hr /></div>
+             <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=c" ><img src="../images/uploadimage.png" /></a>
+          </div>
+          </center>
+          <div class="lines"><hr /></div>
           <a class="fancybox"  href="../lightbox/CoverPic.aspx?v=p" >
-          <div class="replaimg"><a href="#"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></a></div>
-           <div class="replaimg"><img  src="../images/replaceimage1.png" /></div>
+          <div class="replaimg"><asp:Image ID="imgProfile"  ImageUrl="../images/follo.png" runat="server" CssClass="img-circle" style="border-width:0px;width: 93px;height: 93px;"/></div>
+           <div class="replaimg"><img  src="../images/uploadimage1.png" /></div>
            </a>
           <div class="lines"><hr /></div>
          <asp:updatepanel runat="server">

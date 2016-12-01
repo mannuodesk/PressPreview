@@ -28,6 +28,17 @@
        .grid{
            font-size:0px;
        }
+       @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 20px!important;
+    width: 98%!important;
+}}
    </style>
      <script type="text/javascript">
          var selectedSorting = "default";
@@ -414,7 +425,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -503,7 +514,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -591,7 +602,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -679,7 +690,7 @@
                                                                                                                                                                      "</div> <!-- mtextb -->" +
                                                                                                                                                                          "</div><!-- mesbd -->" +
                                                                                                                                                                              "</div> <!-- disname -->" +
-                                                                                                                                                                                 "</div></div>";
+                                                                                                                                                                                 "<div class='lineclook'></div></div></div>";
 
                  });
                  var $items = $(fragment);
@@ -810,11 +821,11 @@
 
     </div><!--header bg-->
 <!--Headerend-->
-
+<div class="topspace"></div>
 <!--Banner-->
       <div class="banner">
       
-       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%; height:252px;" />
+       <asp:Image runat="server" Id="imgCover" class="img-responsive" ImageUrl="../images/bggreyi.jpg"  alt="profileimage" style="width:100%;" />
    
          
     </div>

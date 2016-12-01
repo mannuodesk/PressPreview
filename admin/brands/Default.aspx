@@ -122,7 +122,7 @@
                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                             <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
                                             <PagerSettings FirstPageText="First" Mode="NumericFirstLast" />
-                                            <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                                            <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right"   CssClass="GridPager"  />
                                             <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
                                             <SortedAscendingCellStyle BackColor="#F7F7F7" />
                                             <SortedAscendingHeaderStyle BackColor="#4B4B4B" />

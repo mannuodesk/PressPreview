@@ -672,7 +672,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         try
         {
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["s"] != null)
                 {
@@ -692,7 +692,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
             if (QuerystringExist())
                 CheckQuerystringKey("c", categry);
             else
@@ -747,7 +747,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         try
         {
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["c"] != null)
                 {
@@ -767,7 +767,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
             if (QuerystringExist())
                 CheckQuerystringKey("s", season);
             else
@@ -810,7 +810,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         try
         {
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["c"] != null)
                 {
@@ -830,7 +830,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("s");
                 }
-            }
+            }*/
             if (QuerystringExist())
                 CheckQuerystringKey("h", holiday);
             else

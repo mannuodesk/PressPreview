@@ -10,6 +10,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 using DLS.DatabaseServices;
+using System.Web.UI;
 
 public partial class brand_massenger : System.Web.UI.Page
 {
@@ -448,7 +449,8 @@ public partial class brand_massenger : System.Web.UI.Page
             {
                 txtMessage.Focus();
             }
-           
+            ScriptManager.RegisterStartupScript(this, Page.GetType(), "key", "MyFunc()", true);
+    
         }
         catch (Exception ex)
         {

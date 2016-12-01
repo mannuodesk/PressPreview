@@ -14,6 +14,7 @@
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
       <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="../js/bootstrap.js"></script>
 <script type="application/javascript" src="../js/custom.js"></script>
 
 <script type="text/javascript">
@@ -26,7 +27,7 @@
             dataType: "json",
             async: true,
             error: function (jqXhr, textStatus, errorThrown) {
-                alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                //alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
             },
             success: function (msg) {
                 var array = [];
@@ -70,7 +71,7 @@
             dataType: "json",
             async: true,
             error: function (jqXhr, textStatus, errorThrown) {
-                alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+               // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
             },
             success: function (msg) {
                 $('#elements').empty();
@@ -307,7 +308,7 @@ select option {
                  dataType: "json",
                  async: true,
                  error: function (jqXhr, textStatus, errorThrown) {
-                     alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                     //alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                  },
                  success: function (msg) {
                      //                    if (msg.d == true) {
@@ -331,7 +332,7 @@ select option {
                  dataType: "json",
                  async: true,
                  error: function (jqXhr, textStatus, errorThrown) {
-                     alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                     //alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                  },
                  success: function (msg) {
                      //                    if (msg.d == true) {

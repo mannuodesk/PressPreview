@@ -45,6 +45,9 @@
             font-size: 14px;
             color: #f92617;
         }
+          #txtDescription{
+        width:100%;
+    }
     </style>
      <script>
          $(document).ready(function () {
@@ -79,7 +82,7 @@
              var thumbnailImages = [];
              var CategoriesSelected = [];
              var SeasonsSelected = [];
-             var HolidaySelected = [];
+             //var HolidaySelected = [];
 
 
 
@@ -90,7 +93,7 @@
              var SeasonsSelectedlength = $("#chkDefaultSeasons input:checked").length;
 
              //  SeasonsSelected=("#chkDefaultSeasons input:checked");
-             var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
+             //var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
 
              //   HolidaySelected = $("#chkDefaultHoliday input:checked");
 
@@ -202,16 +205,16 @@
              else {
                  $("#errorSeason").remove();
              }
-             if (HolidaySelectedlength < 1) {
-                 $("#errorHoliday").remove();
-                 errorMessage = "Please Select Holiday";
-                 var errorDiv = "<p class='errorMessage' id='errorHoliday'>" + errorMessage + "</p>"
-                 $("#holiday_add").append(errorDiv);
-                 errorFlag = true;
-             }
-             else {
-                 $("#errorHoliday").remove();
-             }
+             //if (HolidaySelectedlength < 1) {
+             //    $("#errorHoliday").remove();
+             //    errorMessage = "Please Select Holiday";
+             //    var errorDiv = "<p class='errorMessage' id='errorHoliday'>" + errorMessage + "</p>"
+             //    $("#holiday_add").append(errorDiv);
+             //    errorFlag = true;
+             //}
+             //else {
+             //    $("#errorHoliday").remove();
+             //}
              //             if (thumbnailImages.length < 1) {
              //                 $("#errorthumbnail").remove();
              //                 errorMessage = "Please add thumbnail Image";
@@ -730,7 +733,7 @@
                                                                 <div class="box1">
                    <div class="loobblock">
                       <div class="dbllook">
-                                              <div class="dbl">
+                                              <div class="">
                                         <div>
                                             <img class="img-responsive" src="<%# Eval("ItemImg", "../photobank/{0}") %>" />
                                             <!--overlay-->
@@ -1044,7 +1047,7 @@
             <!--Holidays-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday <span class="text-danger">*</span></div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday </div> 
                 
                           <asp:updatepanel runat="server" ID="up_Holidays" >
                                  <ContentTemplate>

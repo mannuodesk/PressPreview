@@ -107,7 +107,7 @@
 </script>
 
 </head>
-<body style="overflow:hidden;">
+<body style="overflow:visible;">
 <form runat="server" ID="frmMassener">
 
 <asp:scriptmanager runat="server" EnablePageMethods="True" EnablePartialRendering="True">
@@ -173,8 +173,8 @@
                 }
             </script>
 <%--<div class="wrapperblockwhite" style="width: 85%;margin-top: 110px;">--%>
-    <div class="wrapperblockwhite" style="height:100%; width: 85%;margin-top: 110px; overflow:hidden;">
-            <div class="col-md-4 col-sm-12 col-xs-12 mesblock" style="background:#fff;">
+    <div class="wrapperblockwhite wrapperblockwhite1" style="height:100%; width: 85%;margin-top: 110px; overflow:hidden;">
+                <div class="col-md-4 col-sm-12 col-xs-12 mesblock" id="UserBlock" style="background:#fff;">
       <div class="mesbl1" style="margin-top:-20px;">
            <div class="col-md-8 col-xs-9  mesheading" style="padding-bottom:8px;">
           <ul class="nav navbar-nav navbar-left">
@@ -262,7 +262,7 @@
 </div><!--demo-->
  </div>
 </div><!--selall-->
-       <div class="selallm">        
+       <div class="selallm" style="display:none">        
            <div class="col-md-8 col-xs-9">
                  <input type="checkbox" id="tests2323"/><label for="tests2323"> Select all</label>
            </div>
@@ -285,14 +285,14 @@
 
       </div><!--selall-->
   <!--- mobile form-->
-    <div id="showformmes" style="display:none;">
+    <div id="showformmes" class="blockmes1" style="display:none;">
        <div class="col-md-12">
            <div class="mesbl2">
              <div class="col-md-11 col-xs-12  mesheading">Message with <span style="color:#5092c9"></span></div>
             
            </div><!--mesbl1-->
        
-                    <div class="blockmes" >
+                    <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -308,7 +308,7 @@
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -324,7 +324,7 @@
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -340,7 +340,7 @@
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -357,7 +357,7 @@
                    </div><!--blockme--> 
                    
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mtextcom">
@@ -426,9 +426,9 @@
        </asp:SqlDataSource>
      </div>
   </div><!--col-md-6-->
-     
   
-  <div class="col-md-8" id="formmess" style="background:#fff; padding-left:0px; padding-right:0px; overflow:hidden">
+  
+  <div class="col-md-8 col-sm-12 col-xs-12" id="formmess1" style="background:#fff; padding-left:0px; padding-right:0px; overflow:visible;">
         <div id="divAlerts" runat="server" class="alert" Visible="false" >
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <asp:Label runat="server" ID="lblStatus" for="PageMessage"
@@ -436,9 +436,9 @@
         </div>
       <%--<asp:Panel runat="server" ID="pnlMessage11" Visible="True">--%>
       <div id="pnlMessage">
-       <div class="col-md-12" runat="server" ID="dvMessageDetailBox" style="overflow:hidden; padding-left:0px; padding-right:0px;">
+       <div class="col-md-12 col-sm-12 col-xs-12" runat="server" ID="dvMessageDetailBox" style="overflow:hidden; padding-left:0px; padding-right:0px;">
            <div class="mesbl2" style="box-shadow: 3px 3px 3px #eee;">
-             <div class="col-md-9 mesheading" style="margin-left:20px">Message with <span style="color:#5092c9"><asp:Label runat="server" ID="lblBrandName"></asp:Label></span></div>
+             <div class="col-md-9 col-sm-9 col-xs-9 mesheading" style="margin-left:20px">Message with <span style="color:#5092c9"><asp:Label runat="server" ID="lblBrandName"></asp:Label></span></div>
              <div class="col-md-2 mesheading" style="margin-top:10px; margin-left:20px">
                  <ul class="nav navbar-nav navbar-right">
 		     <li> <i class="fa fa-cog fa-fw" aria-hidden="true" style="font-size:14px;  margin-top:-5px; margin-right:5px;"></i></li>
@@ -686,6 +686,7 @@
 
                $('#pnlCompose11').show();
                $('#pnlMessage').hide();
+               
                window.PageMethods.SetSession('2');
                
            }));
@@ -694,6 +695,17 @@
 
                $('#pnlCompose11').hide();
                $('#pnlMessage').show();
+                   var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+                     jQuery('#UserBlock').show();
+                                      jQuery('#formmess1').hide();
+                                      jQuery('#dvMessageDetailBoxEmpty').show();
+                                        jQuery('#pnlCompose11').hide();
+               $('#dvActionbar').show();
+                 $('.selallm').hide();
+               
+              $('#demodmenu1').hide();
+               }
                window.PageMethods.SetSession('1');
 
            }));
@@ -702,6 +714,14 @@
 
                $('#dvMessageDetailBox').hide();
                $('#dvMessageDetailBoxEmpty').show();
+                    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+                  $("#UserBlock").show();
+                 
+                   $("#showformmes").hide();
+                  $('#dvActionbar').show();
+              $('#demodmenu1').hide();
+               }
                window.PageMethods.SetSession('1');
 
            }));
@@ -712,6 +732,12 @@
     <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
        <script type="text/javascript">
            $(document).ready(function () {
+               var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;		
+    if(width<767){
+      $("#dvActionbar").show();
+$("#demodmenu1").hide();
+    }
+
 
                $(".fancybox").fancybox({
                    href: $(this).attr('href'),
@@ -756,6 +782,14 @@
        </script>
 
 <script type="text/javascript">
+$(document).ready(function () {
+   var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if(width<767){
+           $("#UserBlock").css("display","block");
+      $("#formmess1").css("display","none");
+    }
+});
+
     jQuery(".menudli1st1").live("click", (function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -774,6 +808,45 @@
 
 
 </script>
+     <script type="text/javascript">
+         function MyFunc() {
+            
+             var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+         
+             if (width < 767) {
+                 $("#UserBlock").hide();
+                 $('#pnlMessage').show();
+                 window.PageMethods.SetSession('2');
+             }
+
+         };
+</script>
+<style>
+   .navbar-nav>li>.dropdown-menu {
+      margin-left: -97px !important 
+    }
+      @media only screen and (max-width:767px){
+        
+        .navbar-nav>li>.dropdown-menu {
+      margin-left: -5px !important 
+    }
+    .blockmes1{
+      display: none
+    }
+#scroll{
+      padding: 0 0 0 2%;
+}
+.mcom{
+      margin-left: 5%;
+}
+.newmesbl button{
+  margin-bottom: 5%;
+}
+#cmes{
+      margin-top: 22px;
+}
+      }
+</style>
   </body>
 </html>
 

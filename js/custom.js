@@ -248,6 +248,18 @@ function showformmess()
   jQuery('#showformmes').show();
   jQuery('#cmes').hide();
   jQuery('#acmes').show();
+       var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+              
+                                      jQuery('#UserBlock').hide();
+                                      jQuery('#formmess1').show();
+                                       jQuery('#formmess').show();
+                                      jQuery('#dvMessageDetailBoxEmpty').hide();
+                                      jQuery('#pnlMessage').hide();
+                                        jQuery('#pnlCompose11').show();
+                jQuery('#cmes').show();
+  jQuery('#acmes').hide();
+               }
 }// JavaScript Document		
 	
 function showformmessa()
@@ -255,6 +267,10 @@ function showformmessa()
   jQuery('#showformmes').hide();
   jQuery('#acmes').hide();
   jQuery('#cmes').show();
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+                 $("#UserBlock").show();
+               }
 }// JavaScript Document	
 
 function actionma()

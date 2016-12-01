@@ -20,4 +20,18 @@
     text-decoration: underline;
     font-weight: bolder;
 			}
+            @media only screen and (max-width:767px){
+               #navbar   {
+                overflow-y: scroll;
+    max-height: 500px;
+    }
+    #notifyblock {
+    width: auto;
+}
+#emailblock{
+    margin-left: 0px !important;
+}
+
+            }
+      
 			</style>

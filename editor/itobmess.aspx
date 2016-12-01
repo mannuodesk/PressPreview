@@ -62,7 +62,7 @@
         </div>
       
         <div class="col-sm-12">
-            <asp:TextBox runat="server" ID="txtMessage" TextMode="MultiLine" Height="150" Width="560" style="margin-bottom:15px;"></asp:TextBox>
+            <asp:TextBox runat="server" ID="txtMessage" TextMode="MultiLine" Height="150" Width="100%" style="margin-bottom:15px;"></asp:TextBox>
              <asp:RequiredFieldValidator ID="RfvTags" runat="server" 
                                      ErrorMessage="This field is required" ControlToValidate="txtMessage" 
                                      ValidationGroup="gpMain"></asp:RequiredFieldValidator>

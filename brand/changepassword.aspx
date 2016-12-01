@@ -7,13 +7,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Change Password</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link href="../css/bootstrap.css" rel="stylesheet" />
     <link href="../css/custom.css" rel="stylesheet" />
+    <link href="../css/bootstrap.css" rel="stylesheet" />
+
+        <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+          <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    
     <script src="../js/bootstrap.js"></script>
     <script src="../js/custom.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
-     <script type="text/javascript">
+     <script type="text/javascript">  <script type="text/javascript">
          function HideLabel() {
              setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
 
@@ -38,22 +41,29 @@
               <span class="icon-bar"></span>
             </button>
             <div style="margin-top:15px;">
-              <!--#INCLUDE FILE="../includes/logo.txt" -->
+               <!--#INCLUDE FILE="../includes/logo2.txt" -->
             </div>  
           </div>
           <div id="navbar" class="navbar-collapse collapse">
-            <div class="col-md-2">   
-            <!--#INCLUDE FILE="../includes/messgTopInfluencer.txt" --> 
-         </div>   
-                       
+            <div class="col-md-3">   
+            <!--#INCLUDE FILE="../includes/messgTop.txt" --> 
+            </div> 
             <ul class="nav navbar-nav" id="firstbb">
-              <li><a href="Default.aspx">Activity</a></li>
-              <li><a href="discover.aspx">Discover</a></li>
-              <li><a href="brands.aspx">Brands</a></li>
-               <li><a href="events.aspx">Events</a></li>
-            </ul>            
-             
-           <!--#INCLUDE FILE="../includes/influencer_settings.txt" -->  
+              <li><div class="gab1"></div></li>
+              <li class="dropdown">
+                <a href="events.aspx">Events</a>
+              </li>
+              
+              <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Create</a>
+                 <ul class="dropdown-menu">
+                  <li><a href="add-item.aspx"><img src="" /><span class="sp"> Item</span></a></li>
+                  <li><a href="create-lookbook.aspx"><img src="" /><span class="sp"> Lookbook</span></a></li>
+                </ul>
+              </li>
+            </ul>
+            
+              <!--#INCLUDE FILE="../includes/settings.txt" --> 
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
@@ -75,7 +85,7 @@
 <!--signup-->
 
 <!--text-->
-      <div class="col-md-12" style="padding-bottom: 10%;">
+      <div class="col-md-12" style="padding-bottom: 14%;">
           
            <div class="col-md-3 col-xs-12 mar"></div><!--.col-md-3 -->
          
@@ -91,7 +101,7 @@
                <div class="col-md-12 logintn">Please enter your old & new password.</div>
                
                <div class="col-md-12" style="text-align: left;">
-                   <input type="password" runat="server" id="txtOldPassword" EnableViewState="false"  placeholder="Your Old Password *" class="logininput" tabindex="0"  validationgroup="gpSignUp" />
+                   <input type="password" runat="server" id="txtOldPassword" EnableViewState="false"  placeholder="Your Old Password *" class="logininput" tabindex="1"  validationgroup="gpSignUp" />
                    <asp:RequiredFieldValidator ID="cvOldPassword" EnableViewState="false" runat="server" ErrorMessage="This field is required" Display="Dynamic"
                        ControlToValidate="txtOldPassword" ValidationGroup="gpSignUp" ClientValidationFunction="changeSignUpColor" CssClass="validationSummary">
 
@@ -99,7 +109,7 @@
                    
                </div>
                <div class="col-md-12" style="text-align: left;">
-                   <input type="password" runat="server" id="txtSignUpPassword" EnableViewState="false" placeholder="New Password *" class="logininput" tabindex="1" validationgroup="gpSignUp" />
+                   <input type="password" runat="server" id="txtSignUpPassword" EnableViewState="false" placeholder="New Password *" class="logininput" tabindex="2" validationgroup="gpSignUp" />
                    <asp:RequiredFieldValidator ID="cvSignUpPassword" EnableViewState="false" runat="server" ErrorMessage="This field is required" Display="Dynamic"
                        ControlToValidate="txtSignUpPassword" ClientValidationFunction="changeSignUpColor" ValidationGroup="gpSignUp" CssClass="validationSummary">
 
@@ -108,11 +118,11 @@
                    </asp:regularexpressionvalidator>
                </div>
                <div class="col-md-12" style="text-align: left;">
-                   <input type="password" runat="server" id="txtRpassword" EnableViewState="false" placeholder="Confirm New Password *" class="logininput" tabindex="2" validationgroup="gpSignUp" />
+                   <input type="password" runat="server" id="txtRpassword" EnableViewState="false" placeholder="Confirm New Password *" class="logininput" tabindex="3" validationgroup="gpSignUp" />
                    <asp:CompareValidator ID="cvRpassword" runat="server" EnableViewState="false" ClientValidationFunction="changeSignUpColor" ErrorMessage="Confirm password does not match with new password" ValidationGroup="gpSignUp" CssClass="validationSummary" Display="Dynamic" ControlToValidate="txtRpassword" ControlToCompare="txtSignUpPassword"></asp:CompareValidator>
                </div>
                <div class="col-md-12" style="text-align: left;">
-                   <button runat="server" id="btnChangePass"  EnableViewState="false"  OnServerClick="btnChangePass_OnServerClick" tabindex="3" class="hvr-sweep-to-right" validationgroup="gpSignUp">Submit</button>
+                   <button runat="server" id="btnChangePass"  EnableViewState="false"  OnServerClick="btnChangePass_OnServerClick" tabindex="4" class="hvr-sweep-to-right" validationgroup="gpSignUp">Submit</button>
                   
                </div>  
             </div>

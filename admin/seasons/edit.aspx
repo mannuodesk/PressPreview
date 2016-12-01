@@ -17,7 +17,11 @@
 
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
-
+<style>
+    #RadEditor1{
+     display: none   
+    }
+</style>
 </head>
 
 <body>

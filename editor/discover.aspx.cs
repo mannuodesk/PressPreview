@@ -931,7 +931,7 @@ var desc="";
             (Session["DiscoverPageSearch"] as DiscoverPageSearch).categoryCheck = categry;
             categoryCheck = categry;
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["s"] != null)
                 {
@@ -951,7 +951,7 @@ var desc="";
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
 
             if (QuerystringExist())
                 CheckQuerystringKey("c", categry);
@@ -981,11 +981,19 @@ var desc="";
                 if (Request.QueryString[key] != null)
                 {
                     Request.QueryString[key] = value;
+                    
+                    //TA 29-Nov-16. To overcome wrong url
+                    _pageUrl = _pagename + "?" + Request.QueryString;
+                    
                     Response.Redirect(_pagename + "?" + Request.QueryString);
                 }
                 else
                 {
                     nvc.Add(key, value);
+                    
+                    //TA 29-Nov-16. To overcome wrong url
+                    _pageUrl = _pagename + "?" + Request.QueryString;
+                    
                     Response.Redirect(_pagename + "?" + Request.QueryString);
                 }
             }
@@ -1009,7 +1017,7 @@ var desc="";
         {
             seasonsCheck = season;
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["c"] != null)
                 {
@@ -1029,7 +1037,7 @@ var desc="";
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
             (Session["DiscoverPageSearch"] as DiscoverPageSearch).seasonsCheck = season;
             if (QuerystringExist())
                 CheckQuerystringKey("s", season);
@@ -1075,7 +1083,7 @@ var desc="";
         try
         {
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["s"] != null)
                 {
@@ -1095,7 +1103,7 @@ var desc="";
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("c");
                 }
-            }
+            }*/
             holidayCheck = holiday;
             (Session["DiscoverPageSearch"] as DiscoverPageSearch).holidayCheck = holiday;
             if (QuerystringExist())

@@ -411,7 +411,7 @@ public partial class editor_discover_lookbook_details : Page
             //"ORDER BY dbo.Tbl_Items.DatePosted DESC",
             // categryId);
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["s"] != null)
                 {
@@ -431,7 +431,7 @@ public partial class editor_discover_lookbook_details : Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
 
             if (QuerystringExist())
                 CheckQuerystringKey("c", categry);
@@ -504,7 +504,7 @@ public partial class editor_discover_lookbook_details : Page
             // rptLookbook.DataSource = db.ExecuteReader(qrySeason);
             // rptLookbook.DataBind();
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["c"] != null)
                 {
@@ -524,7 +524,7 @@ public partial class editor_discover_lookbook_details : Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("h");
                 }
-            }
+            }*/
             if (QuerystringExist())
                 CheckQuerystringKey("s", season);
             else
@@ -561,7 +561,7 @@ public partial class editor_discover_lookbook_details : Page
             // rptLookbook.DataSource = db.ExecuteReader(qryHoliday);
             // rptLookbook.DataBind();
             NameValueCollection nvc = Request.QueryString;
-            if (nvc.HasKeys())
+            /*if (nvc.HasKeys())
             {
                 if (nvc["c"] != null)
                 {
@@ -581,7 +581,7 @@ public partial class editor_discover_lookbook_details : Page
                     isreadonly.SetValue(this.Request.QueryString, false, null);
                     nvc.Remove("s");
                 }
-            }
+            }*/
             if (QuerystringExist())
                 CheckQuerystringKey("h", holiday);
             else

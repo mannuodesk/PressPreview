@@ -197,7 +197,7 @@ public partial class home : System.Web.UI.Page
         return step2;
     }
 
-    protected void btnChange_ServerClick(object sender, EventArgs e)
+    /*protected void btnChange_ServerClick(object sender, EventArgs e)
     {
         try
         {
@@ -242,7 +242,7 @@ public partial class home : System.Web.UI.Page
             }
         }
         return false;
-    }
+    }*/
     protected void btnSignup_ServerClick(object sender, EventArgs e)
     {
         try

@@ -27,6 +27,7 @@
     .blockme {
         margin-top:5%;
     }
+   }
 </style>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -179,8 +180,8 @@ $(document).ready(function () {
                 }
             </script>
 <%--<div class="wrapperblockwhite" style="width: 85%;margin-top: 110px;">--%>
-    <div class="wrapperblockwhite" style="height:100%; width: 85%;margin-top: 110px; overflow:hidden;">
-            <div class="col-md-4 col-sm-12 col-xs-12 mesblock" style="background:#fff;">
+    <div class="wrapperblockwhite wrapperblockwhite1" style="height:100%; width: 85%;margin-top: 110px; overflow:hidden;">
+            <div class="col-md-4 col-sm-12 col-xs-12 mesblock" id="UserBlock" style="background:#fff;">
       <div class="mesbl1" style="margin-top:-20px;">
            <div class="col-md-8 col-xs-9  mesheading" style="padding-bottom:8px;">
           <ul class="nav navbar-nav navbar-left">
@@ -188,7 +189,7 @@ $(document).ready(function () {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-left: -15px; padding-top: 0px; padding-bottom: 0px; margin-top: 10px;" role="button" aria-haspopup="true" aria-expanded="false">
                  <span> <img src="../images/triangle.png" /></span></a>
-                <ul class="dropdown-menu" style="margin-top: -2px; min-width: 130px;margin-left: -97px;">
+                <ul class="dropdown-menu" style="margin-top: -2px; min-width: 130px;">
                   <li> <asp:LinkButton runat="server" ID="menuItemInbox" OnClick="menuItemInbox_OnClick"><img src="../images/msg.png"/><span class="sp"> Inbox</span></asp:LinkButton></li>
                   <li><asp:LinkButton runat="server" ID="menuItemArchive" OnClick="menuItemArchive_OnClick"><img src="../images/archm.png"/><span class="sp"> Archive</span></asp:LinkButton></li>
                   <li><asp:LinkButton runat="server" ID="menuItemSpam" OnClick="menuItemSpam_OnClick"><img src="../images/markm.png"/><span class="sp"> Spam</span></asp:LinkButton></li>
@@ -268,7 +269,7 @@ $(document).ready(function () {
 </div><!--demo-->
  </div>
 </div><!--selall-->
-       <div class="selallm">        
+       <div class="selallm" style="display:none">        
            <div class="col-md-8 col-xs-9">
                  <input type="checkbox" id="tests2323"/><label for="tests2323"> Select all</label>
            </div>
@@ -291,14 +292,14 @@ $(document).ready(function () {
 
       </div><!--selall-->
   <!--- mobile form-->
-    <div id="showformmes" style="display:none;">
-       <div class="col-md-12">
+    <div id="showformmes" class="blockmes1" style="display:none;">
+       <div class="col-md-12 blockmes1">
            <div class="mesbl2">
              <div class="col-md-11 col-xs-12  mesheading">Message with <span style="color:#5092c9"></span></div>
             
            </div><!--mesbl1-->
        
-                    <div class="blockmes" >
+                    <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -314,7 +315,7 @@ $(document).ready(function () {
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -330,7 +331,7 @@ $(document).ready(function () {
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -346,7 +347,7 @@ $(document).ready(function () {
                       </div><!--mseb-->
                    </div><!--blockme--> 
                    
-                   <div class="blockmes" >
+                   <div class="blockmes blockmes1" >
                        <div class="mesbm">
                           <div class="mimg"><img src="../images/comimg.png" /></div><!--mimageb-->
                           <div class="mcom">
@@ -434,7 +435,7 @@ $(document).ready(function () {
   </div><!--col-md-6-->
      
   
-  <div class="col-md-8" id="formmess" style="background:#fff; padding-left:0px; padding-right:0px; overflow:hidden">
+  <div class="col-md-8 col-sm-12 col-xs-12" id="formmess" style="background:#fff; padding-left:0px; padding-right:0px; overflow:visible">
         <div id="divAlerts" runat="server" class="alert" Visible="false" >
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <asp:Label runat="server" ID="lblStatus" for="PageMessage"
@@ -442,9 +443,9 @@ $(document).ready(function () {
         </div>
       <%--<asp:Panel runat="server" ID="pnlMessage11" Visible="True">--%>
       <div id="pnlMessage">
-       <div class="col-md-12" runat="server" ID="dvMessageDetailBox" style="overflow:hidden; padding-left:0px; padding-right:0px;">
+       <div class="col-md-12 col-sm-12 col-xs-12" runat="server" ID="dvMessageDetailBox" style="overflow:hidden; padding-left:0px; padding-right:0px;">
            <div class="mesbl2" style="box-shadow: 3px 3px 3px #eee;">
-             <div class="col-md-9 mesheading" style="margin-left:20px">Message with <span style="color:#5092c9"><asp:Label runat="server" ID="lblBrandName"></asp:Label></span></div>
+             <div class="col-md-9 col-sm-9 col-xs-9 mesheading" style="margin-left:20px">Message with <span style="color:#5092c9"><asp:Label runat="server" ID="lblBrandName"></asp:Label></span></div>
              <div class="col-md-2 mesheading" style="margin-top:10px; margin-left:20px">
                  <ul class="nav navbar-nav navbar-right">
 		     <li> <i class="fa fa-cog fa-fw" aria-hidden="true" style="font-size:14px;  margin-top:-5px; margin-right:5px;"></i></li>
@@ -651,7 +652,7 @@ $(document).ready(function () {
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                      // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {
@@ -675,7 +676,7 @@ $(document).ready(function () {
                    dataType: "json",
                    async: true,
                    error: function (jqXhr, textStatus, errorThrown) {
-                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                      // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                    },
                    success: function (msg) {
                        //                    if (msg.d == true) {
@@ -700,6 +701,16 @@ $(document).ready(function () {
 
                $('#pnlCompose11').hide();
                $('#pnlMessage').show();
+                                  var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+                     jQuery('#UserBlock').show();
+                                      jQuery('#formmess').hide();
+                                      jQuery('#dvMessageDetailBoxEmpty').show();
+                                        jQuery('#pnlCompose11').hide();
+              $('#dvActionbar').show();
+                               $('.selallm').hide();
+              $('#demodmenu1').hide();
+               }
                window.PageMethods.SetSession('1');
 
            }));
@@ -708,6 +719,14 @@ $(document).ready(function () {
 
                $('#dvMessageDetailBox').hide();
                $('#dvMessageDetailBoxEmpty').show();
+                         var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width < 767) {
+                  $("#UserBlock").show();
+                 
+                   $("#showformmes").hide();
+                        $('#dvActionbar').show();
+              $('#demodmenu1').hide();
+               }
                window.PageMethods.SetSession('1');
 
            }));
@@ -724,7 +743,11 @@ $(document).ready(function () {
                window.PageMethods.SetSession('2');
            }
            $(document).ready(function () {
-
+           var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;		
+    if(width<767){
+      $("#dvActionbar").show();
+$("#demodmenu1").hide();
+    }
                $(".fancybox").fancybox({
                    href: $(this).attr('href'),
                    fitToView: true,
@@ -770,6 +793,13 @@ $(document).ready(function () {
        </script>
 
 <script type="text/javascript">
+	$(document).ready(function () {		
+   var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;		
+    if(width<767){		
+           $("#UserBlock").css("display","block");		
+      $("#formmess").css("display","none");		
+    }		
+});
     jQuery(".menudli1st1").live("click", (function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -788,6 +818,45 @@ $(document).ready(function () {
 
 
 </script>
+     <script type="text/javascript">		
+         function MyFunc() {		
+            		
+             var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;		
+         		
+             if (width < 767) {		
+                  $('#formmess').show();	
+                 $("#UserBlock").hide();		
+                 $('#pnlMessage').show();		
+                 window.PageMethods.SetSession('2');		
+             }		
+         };		
+</script>
+<style>
+   .navbar-nav>li>.dropdown-menu {
+      margin-left: -97px !important 
+    }
+      @media only screen and (max-width:767px){
+        
+        .navbar-nav>li>.dropdown-menu {
+      margin-left: -5px !important 
+    }
+        .blockmes1{
+      display: none
+    }
+    #scroll{
+      padding: 0 0 0 2%;
+}
+.mcom{
+      margin-left: 5%;
+}
+.newmesbl button{
+  margin-bottom: 5%;
+}
+#cmes{
+      margin-top: 22px;
+}
+      }
+</style>
   </body>
 </html>
 

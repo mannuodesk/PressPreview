@@ -21,6 +21,14 @@
 <script src="../jcrop/js/jquery.Jcrop.min.js"></script>
 <script type="text/javascript" src="../jcrop/js/script.js"></script>
     <link href="../css/plugins/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" /> 
+<style>
+           @media only screen and (max-width:767px){
+          
+                  .form_upload{
+          width: 100%
+        }
+        }
+</style>
 </head>
 
 <body>

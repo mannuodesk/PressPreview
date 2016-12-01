@@ -19,7 +19,26 @@
            setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
         };
 </script>
-
+<style>
+     @media only screen and (min-width:2000px){
+     input[type="text"],input[type="password"] {
+      width: 450px !important   
+     }
+     .col-md-12 input{
+         width: auto;
+     }
+     .mar1{
+         width: 500px !important
+     }
+     /*.signupWraper{
+             width: 73% !important;
+    margin-left: 15% !important;
+     }*/
+     .signupWraper{
+         margin-left: 21% !important
+     }
+ }
+</style>
 </head>
 
 <body>
@@ -52,13 +71,13 @@
 <!--signup-->
 
 <!--text-->
-      <div class="col-md-12">
+      <div class="col-md-12 signupWraper">
           <div id="divAlerts" runat="server" class="alert" visible="False">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               <asp:Label runat="server" ID="lblStatus" for="PageMessage"
                   Text="" Visible="True"></asp:Label>
           </div>
-           <div class="col-md-5 col-xs-12 mar">
+           <div class="col-md-5 col-xs-12 mar mar1">
                <div class="col-md-12 loginh">Sign In</div>
                <div class="col-md-12 logint">Hello. Welcome to your account.</div>
               
@@ -89,7 +108,7 @@
            </div><!--.col-md-5 -->
            <div class="col-md-1 col-xs-12" id="signupor" style="margin-top:10%; text-align:center;"><img src="images/or.png" /></div><!--.col-md-4 -->
            <div class="col-md-1 col-xs-12" id="signuporn" style="text-align:center;"><img src="images/orn.png" /></div><!--.col-md-4 -->
-           <div class="col-md-5 col-xs-12" style="margin-bottom: 50px;">
+           <div class="col-md-5 col-xs-12 mar1" style="margin-bottom: 50px;">
                <div class="col-md-12 loginhn" style="margin-top: 10px;">Create A new Account</div>
                <div class="col-md-12 logintn">Create your own Press Preview account.</div>
                  
