@@ -20,7 +20,7 @@
         };
 </script>
 <style>
-     @media only screen and (min-width:2000px){
+     @media only screen and (min-width:1500px){
      input[type="text"],input[type="password"] {
       width: 450px !important   
      }
