@@ -35,7 +35,7 @@
     margin-left: 15% !important;
      }*/
      .signupWraper{
-         margin-left: 21% !important
+         margin-left: 15% !important
      }
  }
 </style>
