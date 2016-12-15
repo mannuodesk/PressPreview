@@ -107,7 +107,7 @@ ORDER BY Tbl_Notifications.DatePosted DESC">
 						  <% } else
                                    { %>	
                                 <li>
-									<p class="text-center" style="padding:10px; margin: 0 0 0px !important;">You have no notification </p>
+									<p class="text-center" style="padding:10px; margin: 0 0 0px !important;color:white">You have no notification </p>
 								</li>
                                 <% } %>	
                     </ul>

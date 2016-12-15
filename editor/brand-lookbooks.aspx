@@ -480,7 +480,7 @@
                   "<div class='disblock'>" +
                       "<a href='brand-lookbook-details.aspx?v=" + v + "&k=" + val.LookBookKey + "&b=" + val.BrandKey + "'>" +
                           "<div class='dbl'> <div class='hover ehover13'>" +
-                              "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                              "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                   "<div class='overlay'>" +
                                       "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                           "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -585,7 +585,7 @@
                   "<div class='disblock'>" +
                       "<a href='brand-lookbook-details.aspx?v=" + v + "&k=" + val.LookBookKey + "&b=" + val.BrandKey + "'>" +
                           "<div class='dbl'> <div class='hover ehover13'>" +
-                              "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                              "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                   "<div class='overlay'>" +
                                       "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                           "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -691,7 +691,7 @@
                   "<div class='disblock'>" +
                       "<a href='brand-lookbook-details.aspx?v=" + v + "&k=" + val.LookBookKey + "&b=" + val.BrandKey + "'>" +
                           "<div class='dbl'> <div class='hover ehover13'>" +
-                              "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                              "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                   "<div class='overlay'>" +
                                       "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                           "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -797,7 +797,7 @@
                   "<div class='disblock'>" +
                       "<a href='brand-lookbook-details.aspx?v=" + v + "&k=" + val.LookBookKey + "&b=" + val.BrandKey + "'>" +
                           "<div class='dbl'> <div class='hover ehover13'>" +
-                              "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                              "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                   "<div class='overlay'>" +
                                       "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                           "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -1045,7 +1045,7 @@
                   SelectCommand="SELECT Distinct dbo.Tbl_Categories.CategoryID, dbo.Tbl_Categories.Title FROM dbo.Tbl_Lookbooks
                   INNER JOIN dbo.Tbl_LbCategory ON dbo.Tbl_Lookbooks.LookID = dbo.Tbl_LbCategory.LookID
                   INNER JOIN dbo.Tbl_Categories ON dbo.Tbl_Categories.CategoryID=Tbl_LbCategory.CategoryID
-                    WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+                    WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tbl_Lookbooks.IsDeleted is NULL">
                       <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?"/>
                       </SelectParameters>
@@ -1069,7 +1069,7 @@
                   SelectCommand="SELECT Distinct Tbl_Seasons.SeasonID,Tbl_Seasons.Season FROM Tbl_Seasons 
                   INNER JOIN dbo.Tbl_LbSeasons ON dbo.Tbl_Seasons.SeasonID = Tbl_LbSeasons.SeasonID
                   INNER JOIN dbo.Tbl_Lookbooks ON dbo.Tbl_Lookbooks.LookID=Tbl_LbSeasons.LookID
-WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tbl_Lookbooks.IsDeleted is NULL">
                      <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?"/>
                       </SelectParameters>
@@ -1092,7 +1092,7 @@ WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                   SelectCommand="SELECT Distinct Tbl_Holidays.HolidayID,Tbl_Holidays.Title FROM Tbl_Holidays 
                   INNER JOIN dbo.Tbl_LbHolidays ON dbo.Tbl_Holidays.HolidayID = Tbl_LbHolidays.HolidayID
                   INNER JOIN dbo.Tbl_Lookbooks ON dbo.Tbl_Lookbooks.LookID=Tbl_LbHolidays.LookID
-WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tbl_Lookbooks.IsDeleted is NULL">
                       <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?"/>
                       </SelectParameters>

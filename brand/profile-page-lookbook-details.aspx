@@ -395,7 +395,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -482,7 +482,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -568,7 +568,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -654,7 +654,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview1?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +

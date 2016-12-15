@@ -808,6 +808,7 @@ public partial class home : System.Web.UI.Page
         var db = new DatabaseManagement();
         string deleteQuery = string.Format("Delete From Tbl_Lookbooks Where LookID={0}",
                                                IEUtils.ToInt(id));
+                                               
         db.ExecuteSQL(deleteQuery);
         db._sqlConnection.Close();
         db._sqlConnection.Dispose();

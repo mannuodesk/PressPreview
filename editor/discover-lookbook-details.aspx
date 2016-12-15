@@ -89,6 +89,7 @@
       #seasonDiv{
           margin-left: 0% 
       }
+      .l{float: none !important}
 }
     
 }
@@ -398,7 +399,7 @@
                           "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
                               "      <div class='dbl'> " +
                                   "          <div class='hover ehover13'> " +
-                                      "              <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
+                                      "              <img style='width: 100%;' class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
                                           "                  <h2 class='titlet'>" + val.Title + "</h2> " +
                                               "                  <h2 class='linenew'></h2> " +
                                                   "          <h2  Id='lblDate'> " +

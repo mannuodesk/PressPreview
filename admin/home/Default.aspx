@@ -4,7 +4,17 @@
 <html>
 
 <head>
+<style>
+    @media (min-width: 992px){
+      .col-lg-2 {
+    width: 20% !important;
+}  
+      .col-md-2 {
+    width: 20% !important;
+} 
+    }
 
+</style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -148,7 +158,7 @@
             </div>
                  </div>
                 <div class="row">
-                     <div class="col-lg-2 col-xs-12 col-sm-12 col-md-2">
+                     <div class="col-lg-12 ">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>Brands</h5>

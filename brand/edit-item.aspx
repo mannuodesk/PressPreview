@@ -16,6 +16,9 @@
            .dropzone .dz-preview.dz-image-preview {
         display: block;
         }
+        #dzItemPics .dz-image img{
+            width: 320px
+        }
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -45,9 +48,6 @@
             font-size: 14px;
             color: #f92617;
         }
-          #txtDescription{
-        width:100%;
-    }
     </style>
      <script>
          $(document).ready(function () {
@@ -82,7 +82,7 @@
              var thumbnailImages = [];
              var CategoriesSelected = [];
              var SeasonsSelected = [];
-             //var HolidaySelected = [];
+             var HolidaySelected = [];
 
 
 
@@ -93,7 +93,7 @@
              var SeasonsSelectedlength = $("#chkDefaultSeasons input:checked").length;
 
              //  SeasonsSelected=("#chkDefaultSeasons input:checked");
-             //var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
+             var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
 
              //   HolidaySelected = $("#chkDefaultHoliday input:checked");
 
@@ -205,16 +205,16 @@
              else {
                  $("#errorSeason").remove();
              }
-             //if (HolidaySelectedlength < 1) {
-             //    $("#errorHoliday").remove();
-             //    errorMessage = "Please Select Holiday";
-             //    var errorDiv = "<p class='errorMessage' id='errorHoliday'>" + errorMessage + "</p>"
-             //    $("#holiday_add").append(errorDiv);
-             //    errorFlag = true;
-             //}
-             //else {
-             //    $("#errorHoliday").remove();
-             //}
+            //  if (HolidaySelectedlength < 1) {
+            //      $("#errorHoliday").remove();
+            //      errorMessage = "Please Select Holiday";
+            //      var errorDiv = "<p class='errorMessage' id='errorHoliday'>" + errorMessage + "</p>"
+            //      $("#holiday_add").append(errorDiv);
+            //      errorFlag = true;
+            //  }
+            //  else {
+            //      $("#errorHoliday").remove();
+            //  }
              //             if (thumbnailImages.length < 1) {
              //                 $("#errorthumbnail").remove();
              //                 errorMessage = "Please add thumbnail Image";
@@ -358,8 +358,8 @@
             dictDefaultMessage: "Click or Drag Images here to upload",
             maxFiles: 100,
             url: "EditItempics.ashx?v=" + itemId,
-            thumbnailWidth: 310,
-            thumbnailHeight: 232,
+            thumbnailWidth: null,
+            thumbnailHeight: null,
             init: function () {
 
                 this.on("maxfilesexceeded", function (data) {
@@ -371,6 +371,45 @@
                     var imgName = resp;
                     file.previewElement.classList.add("dz-success");
                     console.log("Successfully uploaded :" + imgName);
+//                            $("#dzItemPics .dz-image img").each(function () {
+//                      console.log("FH : " + $(this).height());
+//                         console.log("fW : " + $(this).width());
+//                         var imgHeight = $(this).height();
+//                         var imgWidth = $(this).width();
+//                         if (imgHeight > 300) {
+//                             var aspectRatio = 318 / imgHeight;
+//                             var ratioHeight = $(this).height() * aspectRatio;
+//                             var ratioWidth = $(this).width() * aspectRatio;
+//                             $(this).height(ratioHeight);
+//                             $(this).width(ratioWidth);
+//                             $(this).css("margin", "0 auto");
+//                             console.log("New FH : " + ratioHeight);
+//                             console.log("New fW : " + ratioWidth);
+//                             crossTop = ratioHeight;
+//                         }
+//                         else if (imgWidth > 315) {
+//                             var aspectRatio = 318 / imgWidth;
+//                             var ratioHeight = $(this).height() * aspectRatio;
+//                             var ratioWidth = $(this).width() * aspectRatio;
+//                             $(this).height(ratioHeight);
+//                             $(this).width(ratioWidth);
+//                             $(this).css("margin", "0 auto");
+//                             console.log("New FH : " + ratioHeight);
+//                             console.log("New fW : " + ratioWidth);
+//                             crossTop = ratioHeight;
+//                         }
+//                         else {
+//                             var ratioHeight = $(this).height();
+//                             var ratioWidth = $(this).width();
+//                             $(this).height(ratioHeight);
+//                             $(this).width(ratioWidth);
+//                             $(this).css("margin", "0 auto");
+//                             console.log("New FH : " + ratioHeight);
+//                             console.log("New fW : " + ratioWidth);
+//                             crossTop = ratioHeight;
+// 
+//                         }
+//                         });
                     console.log(file);
                     console.log(resp);
 
@@ -724,55 +763,26 @@
   <div class="blockadd1">
       <asp:updatepanel ID="Updatepanel1" runat="server">
         <ContentTemplate>
-       <div id="contentbox" class="form-group">
+       <div class="form-group">
                                             <div class="col-sm-12"><label for="existingImg">Uploaded Images</label></div>
-                                            <asp:Repeater ID="dlImages" runat="server" 
-                                                            DataSourceID="sdsImages">
-                                                            
+                                            <asp:DataList ID="dlImages" runat="server" DataKeyField="ImgID" 
+                                                            DataSourceID="sdsImages" RepeatColumns="2" OnItemCommand="dlImages_ItemCommand" 
+                                                            RepeatDirection="Horizontal" Width="100%">
                                                             <ItemTemplate>
-                                                                <div class="box1">
-                   <div class="loobblock">
-                      <div class="dbllook">
-                                              <div class="">
-                                        <div>
-                                            <img class="img-responsive" src="<%# Eval("ItemImg", "../photobank/{0}") %>" />
-                                            <!--overlay-->
-                                        </div>
-                                        <!--hover ehover13-->
-                                    </div>
-                                           </div>
-                      <div class="smalcress">
-                           <asp:Button ID="btnRemove" runat="server" 
-                                                                            CommandArgument='<%# Eval("ImgID", "{0}") %>' CommandName="1" 
-                                                                            CssClass="btn btn-default btn-xs" 
-                                                                            onclientclick="return confirm('Are you sure,you want to delete ?')" Text="X" />
-                          
-                          <%-- <input type="checkbox" id="test30" class="booktick"/><label for="test30" class="chkmeslook"></label> --%>
-                      </div>
-                      
-                     
-                      
-                   </div><!--lookblock-->
-                    
-                   <div class="lineclook"></div>
-               </div>
-                      
-                        <!--box-->
-                                                                <!--<div class="col-md-4">
+                                                                <div ID="imgContainer" style="position:relative">
                                                                     <div style=" padding:2px; border:2px solid #fff;">
                                                                         <asp:Image ID="imgCertification" runat="server" 
                                                                             ImageUrl='<%# Eval("ItemImg", "../photobank/{0}") %>'/>
                                                                     </div>
                                                                     <div style="position: absolute;top: 3%;float: right;right: 3%;">
-                                                                        
+                                                                        <asp:Button ID="btnRemove" runat="server" 
+                                                                            CommandArgument='<%# Eval("ImgID", "{0}") %>' CommandName="1" 
+                                                                            CssClass="btn btn-default btn-xs" 
+                                                                            onclientclick="return confirm('Are you sure,you want to delete ?')" Text="X" />
                                                                     </div>
-                                                                
-                                                            </div>
-                                                                <!--<div ID="imgContainer" style="position:relative">
-                                                                    
-                                                                </div>-->
+                                                                </div>
                                                             </ItemTemplate>
-                                                        </asp:Repeater>
+                                                        </asp:DataList>
                                            <asp:SqlDataSource ID="sdsImages" runat="server" 
                                                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>"
@@ -1047,7 +1057,7 @@
             <!--Holidays-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday </div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday <span class="text-danger">*</span></div> 
                 
                           <asp:updatepanel runat="server" ID="up_Holidays" >
                                  <ContentTemplate>
@@ -1174,13 +1184,13 @@
                                 <asp:HiddenField ID="hidField" runat="server" />
                              </asp:Panel>
                              <div class="smalltext">Separate tags with commas</div>
-                             <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsTags" 
+                             <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsMoreTags" 
                                       onitemcommand="rptTags_ItemCommand">
                                  <ItemTemplate>
                                      <div class="tagblock"><asp:LinkButton runat="server" ID="lbtnRemoveTag" CommandName="1" CommandArgument='<%# Eval("TagID","{0}")%>'><i id="I1" runat="server" class="fa fa-times-circle-o" style="padding-right:10px;" ></i><%# Eval("TagName") %></asp:LinkButton> </div>
                                  </ItemTemplate>
                              </asp:Repeater>
-                                                             <asp:SqlDataSource ID="sdsTags" runat="server" 
+                             <asp:SqlDataSource ID="sdsTags" runat="server" 
                                       ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                       ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
                                       SelectCommand="SELECT TOP 10 [TagID], [TagName] FROM [Tbl_Tags] Where [TagID] IN (Select [TagID] from [Tbl_ItemTagsMapping] where ItemID=?)  ORDER BY [TagID]">

@@ -31,10 +31,15 @@ public class Featured : IHttpHandler {
                 var photoPathImageLargeFile = photoPathPhotoBank + fname;
                 var photoPathImageMedium = HttpContext.Current.Server.MapPath("../imgMedium/");
                 var photoPathImageMediumFile = photoPathPhotoBank + fname;
+                ImageCompressionWithDimensionsFormula imageCompressionWithDimensionsFormula = new ImageCompressionWithDimensionsFormula();
+                System.Drawing.Image image = imageCompressionWithDimensionsFormula.CompessImage(file.InputStream);
+                image.Save(photoPathPhotoBankFile);
+                image.Save(photoPathImageLargeFile);
+                image.Save(photoPathImageMediumFile);
                 //file.SaveAs(photoPathPhotoBankFile);
                 //file.SaveAs(photoPathImageLargeFile);
                 //file.SaveAs(photoPathImageMediumFile);
-                #region Compression
+                /*#region Compression
                 ImageCompress imgCompress = ImageCompress.GetImageCompressObject;
                 imgCompress.GetImage = new System.Drawing.Bitmap(imagepath);
                 imgCompress.Height = imgCompress.GetImage.Height;
@@ -43,7 +48,7 @@ public class Featured : IHttpHandler {
                 imgCompress.Save(fname, photoPathImageLarge);
                 imgCompress.Save(fname, photoPathImageMedium);
                 imgCompress.GetImage.Dispose();
-                #endregion
+                #endregion*/
                 //var resizeimg = Utility.GenerateThumbNail(fname, imagepath, "photobank/", 900);
                 
                 File.Delete(imagepath);

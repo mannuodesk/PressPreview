@@ -1061,6 +1061,9 @@ public partial class home : System.Web.UI.Page
         var db = new DatabaseManagement();
         string deleteQuery = string.Format("Delete From Tbl_Items Where ItemID={0}",
                                                IEUtils.ToInt(id));
+        string deleteTagQuery = string.Format("Delete from Tbl_ItemTagsMapping where ItemId={0}",
+                                               IEUtils.ToInt(id));
+        db.ExecuteSQL(deleteTagQuery);
         db.ExecuteSQL(deleteQuery);
         db._sqlConnection.Close();
         db._sqlConnection.Dispose();

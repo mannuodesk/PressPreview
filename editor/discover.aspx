@@ -114,7 +114,7 @@
                                         "  <a href='itemview2.aspx?v=" + val.ItemId + "' class='fancybox'> " +
                                                 "<div class='dbl'> " +
                                         "          <div class='hover ehover13'> " +
-                                                        "<img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' /><div class='overlay'> " +
+                                                        "<img class='img-responsive' src='../photobank/" + val.FeatureImg + "' alt='" + val.Title + "' style='width: 100%;' /><div class='overlay'> " +
                                            "                  <h2 class='titlet'>" + val.Title + "</h2> " +
                                                "              <h2 class='linenew'></h2> " +
                                                    "          <h2  Id='lblDate'> " +
@@ -610,13 +610,15 @@
                                      </asp:checkboxlist>
                               <asp:SqlDataSource runat="server" ID="sdsbrandsSearch" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
-                             ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
-                             SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
+                             ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>'
+                             SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> 
+                             <!--SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>-->
                              
                              <asp:SqlDataSource runat="server" ID="sdsMoreBrands" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
-                             ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
-                             SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
+                             ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>'
+                             SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> 
+                             <!--SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>-->
                             
                              <%--<asp:Button runat="server"  ID="btnSearchBrands"  class="hvr-sweep-to-right3" Text="Apply" OnClick="btnSearchBrands_OnClick"></asp:Button>--%>
                              </div>
@@ -806,6 +808,7 @@
       #seasonDiv{
           margin-left: 0% 
       }
+      .l{float: none !important}
 }
  #contentbox{
           height: inherit  !important;

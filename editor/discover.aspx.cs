@@ -914,6 +914,8 @@ var desc="";
             //rptLookbook.DataSourceID = "";
             //rptLookbook.DataSource = sdsLookbooks;
             //rptLookbook.DataBind();
+                    db._sqlConnection.Close();
+                                db._sqlConnection.Dispose();
             return itemList;
         }
         catch (Exception ex)

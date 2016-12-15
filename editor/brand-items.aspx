@@ -464,7 +464,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -568,7 +568,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -673,7 +673,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -778,7 +778,7 @@
                          "<div class='disblock'>" +
                              "<a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" +
                                  "<div class='dbl'> <div class='hover ehover13'>" +
-                                     "<img class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
+                                     "<img style='width: 100%;' class='img-responsive img-responsive2' src='../photobank/" + val.FeatureImg + "' alt='' /> " +
                                          "<div class='overlay'>" +
                                              "<h2 class='titlet'>" + val.Title + "</h2> <h2 class='linenew'></h2> <h2>" + val.DatePosted + "</h2></div> <!-- overlay -->" +
                                                  "</div><!-- hover ehover13--></div> <!-- dbl -->" +
@@ -1090,7 +1090,7 @@
                   SelectCommand="SELECT Distinct dbo.Tbl_Categories.CategoryID, dbo.Tbl_Categories.Title FROM dbo.Tbl_Items 
                   INNER JOIN dbo.Tbl_ItemsCategory ON dbo.Tbl_Items.ItemID = dbo.Tbl_ItemsCategory.ItemID
                   INNER JOIN dbo.Tbl_Categories ON dbo.Tbl_Categories.CategoryID=Tbl_ItemsCategory.CategoryID
-                    WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+                    WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tbl_Items.IsDeleted is NULL">
                        <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?" runat="server"></asp:QueryStringParameter>
                       </SelectParameters>
@@ -1115,7 +1115,7 @@
                   SelectCommand="SELECT Distinct Tbl_Seasons.SeasonID,Tbl_Seasons.Season FROM Tbl_Seasons 
                   INNER JOIN dbo.Tbl_ItemSeasons ON dbo.Tbl_Seasons.SeasonID = Tbl_ItemSeasons.SeasonID
                   INNER JOIN dbo.Tbl_Items ON dbo.Tbl_Items.ItemID=Tbl_ItemSeasons.ItemID
-WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)  AND Tbl_Items.IsDeleted is NULL">
                       <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?" runat="server"></asp:QueryStringParameter>
                       </SelectParameters>
@@ -1138,7 +1138,7 @@ WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                   SelectCommand="SELECT Distinct Tbl_Holidays.HolidayID,Tbl_Holidays.Title FROM Tbl_Holidays 
                   INNER JOIN dbo.Tbl_ItemHolidays ON dbo.Tbl_Holidays.HolidayID = Tbl_ItemHolidays.HolidayID
                   INNER JOIN dbo.Tbl_Items ON dbo.Tbl_Items.ItemID=Tbl_ItemHolidays.ItemID
-WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
+WHERE Tbl_Items.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)  AND Tbl_Items.IsDeleted is NULL">
                       <SelectParameters>
                           <asp:QueryStringParameter QueryStringField="v" Name="?" runat="server"></asp:QueryStringParameter>
                       </SelectParameters>

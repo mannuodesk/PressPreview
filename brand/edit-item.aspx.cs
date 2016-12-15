@@ -167,7 +167,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             //LoadSeason(db);
             //LoadHolidays(db);
             Repeater2.DataBind();
-            rptTags.DataBind();
+            //rptTags.DataBind();
             rptModTags.DataBind();
 
             db._sqlConnection.Close();
@@ -878,7 +878,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         {
             DisplayDefaultTags();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }

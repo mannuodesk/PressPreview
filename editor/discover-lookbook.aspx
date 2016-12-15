@@ -88,7 +88,9 @@
       #seasonDiv{
           margin-left: 0% 
       }
+      .l{float: none !important}
 }
+
  #contentbox{
           height: inherit  !important;
         }
@@ -607,12 +609,12 @@
                               <asp:SqlDataSource runat="server" ID="sdsbrandsSearch" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
                              ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
-                             SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
+                             SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands],[Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
                              
                              <asp:SqlDataSource runat="server" ID="sdsMoreBrands" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
                              ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
-                             SelectCommand="SELECT [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
+                             SelectCommand="SELECT [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands],[Tbl_Users]Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource>
                             
                              <%--<asp:Button runat="server"  ID="btnSearchBrands"  class="hvr-sweep-to-right3" Text="Apply" OnClick="btnSearchBrands_OnClick"></asp:Button>--%>
                              </div>

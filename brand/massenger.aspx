@@ -822,9 +822,9 @@ $(document).ready(function () {
          };
 </script>
 <style>
-   .navbar-nav>li>.dropdown-menu {
+   /*.navbar-nav>li>.dropdown-menu {
       margin-left: -97px !important 
-    }
+    }*/
       @media only screen and (max-width:767px){
         
         .navbar-nav>li>.dropdown-menu {
