@@ -50,7 +50,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
 
         }
     protected void BrandLikes()
@@ -73,6 +73,7 @@ public partial class home : System.Web.UI.Page
                 dr.Close();
                 lblTotolLikes.Text = result.ToString();
                 }
+                db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -99,7 +100,8 @@ public partial class home : System.Web.UI.Page
                     {
                     empResult.Add(dr["Title"].ToString());
                     }
-                con.Close();
+                dr.Close();
+                db.CloseConnection();
                 return empResult;
                 }
             }
@@ -136,7 +138,7 @@ public partial class home : System.Web.UI.Page
                     }
                 dr.Close();
                 }
-            db._sqlConnection.Close();
+            db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -158,6 +160,7 @@ public partial class home : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
                 }
             dr.Close();
+            db.CloseConnection();
             return result;
             }
         catch (Exception)
@@ -210,6 +213,7 @@ public partial class home : System.Web.UI.Page
                 //rptLookbook.DataSourceID = "";
                 //rptLookbook.DataSource = db.ExecuteReader(qryCategory);
                 }
+                db.CloseConnection();
             //rptLookbook.DataBind();
             }
         catch (Exception ex)
@@ -240,6 +244,7 @@ public partial class home : System.Web.UI.Page
                 //rptLookbook.DataSourceID = "";
                 //rptLookbook.DataSource = db.ExecuteReader(qrySeason);
                 }
+                db.CloseConnection();
             //rptLookbook.DataBind();
             }
         catch (Exception ex)
@@ -271,6 +276,7 @@ public partial class home : System.Web.UI.Page
                 //rptLookbook.DataSourceID = "";
                 //rptLookbook.DataSource = db.ExecuteReader(qryHoliday);
                 }
+                db.CloseConnection();
             //rptLookbook.DataBind();
             }
         catch (Exception ex)
@@ -389,8 +395,8 @@ public partial class home : System.Web.UI.Page
                 //rptLookbook.DataSourceID = "";
                 //rptLookbook.DataSource = cmd.ExecuteReader();
                 //rptLookbook.DataBind();
-                con.Close();
-
+                db.CloseConnection();
+                
                 }
             }
         }
@@ -453,6 +459,7 @@ public partial class home : System.Web.UI.Page
                 // update the status of the message to read
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
+                db.CloseConnection();
                 Response.Redirect("massenger.aspx");
                 }
             }
@@ -485,7 +492,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
         }
 
 
@@ -507,15 +514,15 @@ public partial class home : System.Web.UI.Page
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 15);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
                 var desc = "";
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
                 if (dr.HasRows)
                     {
                     while (dr.Read())
@@ -553,18 +560,18 @@ public partial class home : System.Web.UI.Page
                         pageDoc.LoadHtml(objLb.Description);
                         desc = pageDoc.DocumentNode.InnerText;
                         objLb.Description = desc;
-                        if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        //if (tempCount >= startItems && tempCount <= endItems)
+                           // {
                             lookbookList.Add(objLb);
-                            }
-                        tempCount++;
+                         //   }
+                       // tempCount++;
                         //lookbookList.Add(objLb);
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -595,14 +602,14 @@ public partial class home : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
                 cmd.Parameters.AddWithValue("@CategoryID", categoryid);
-                cmd.Parameters.AddWithValue("@PageSize", 10);
+                cmd.Parameters.AddWithValue("@PageSize", 1);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
                 if (dr.HasRows)
                     {
                     while (dr.Read())
@@ -627,11 +634,11 @@ public partial class home : System.Web.UI.Page
                             FeatureImg = dr["MainImg"].ToString()
                         };
 
-                        if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                       // if (tempCount >= startItems && tempCount <= endItems)
+                         //   {
                             lookbookList.Add(objLb);
-                            }
-                        tempCount++;
+                           // }
+                        //tempCount++;
                         //lookbookList.Add(objLb);
 
                         }
@@ -674,9 +681,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
                 if (dr.HasRows)
                     {
                     while (dr.Read())
@@ -702,18 +709,18 @@ public partial class home : System.Web.UI.Page
                             FeatureImg = dr["MainImg"].ToString()
                         };
 
-                        if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                  //      if (tempCount >= startItems && tempCount <= endItems)
+                    //        {
                             lookbookList.Add(objLb);
-                            }
-                        tempCount++;
+                      //      }
+                       // tempCount++;
                         //lookbookList.Add(objLb);
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -750,9 +757,9 @@ public partial class home : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //  int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //  int endItems = (startItems + pagesize) - 1;
+                //  int tempCount = 1;
                 if (dr.HasRows)
                     {
                     while (dr.Read())
@@ -778,17 +785,17 @@ public partial class home : System.Web.UI.Page
                             FeatureImg = dr["MainImg"].ToString()
                         };
 
-                        if (tempCount >= startItems && tempCount <= endItems)
-                            {
-                            lookbookList.Add(objLb);
-                            }
-                        tempCount++;
+                        //  if (tempCount >= startItems && tempCount <= endItems)
+                        //      {
+                              lookbookList.Add(objLb);
+                        //      }
+                        //  tempCount++;
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 

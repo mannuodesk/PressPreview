@@ -18,12 +18,12 @@ public partial class lightbox_message : System.Web.UI.Page
         try
         {
             var db = new DatabaseManagement();
-            string BrandData = string.Format("Select UserID, U_Firstname + ' ' + U_Lastname as Name From Tbl_Users Where UserID=(SELECT UserID From Tbl_Users Where UserKey={0})", IEUtils.SafeSQLString(Request.QueryString["v"]));
+            string BrandData = string.Format("Select Tbl_Users.UserID, Tbl_Users.U_Firstname + ' ' + Tbl_Users.U_Lastname as Name, Tbl_Brands.Name from Tbl_Users INNER JOIN Tbl_Brands ON Tbl_Brands.UserID=Tbl_Users.UserID Where Tbl_Brands.UserID=(SELECT UserID From Tbl_Users Where UserKey={0})", IEUtils.SafeSQLString(Request.QueryString["v"]));
             SqlDataReader dr = db.ExecuteReader(BrandData);
-            if (dr.HasRows)
+            if (dr.HasRows) 
             {
                 dr.Read();
-                lblBrandName.Text = dr[1].ToString();
+                lblBrandName.Text = dr[2].ToString();
                 _receiverID = Convert.ToInt32(dr[0]);
             }
             dr.Close();

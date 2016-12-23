@@ -38,6 +38,27 @@
          margin-left: 15% !important
      }
  }
+     ::-webkit-input-placeholder {
+   color:black;
+   opacity: 1;
+}
+
+:-moz-placeholder { 
+   color: #333333;
+}
+
+::-moz-placeholder {  
+   color: #333333;
+}
+
+:-ms-input-placeholder {  
+   color: #333333;  
+}
+
+input[type=text]{
+    color: #000000 !important;
+        font-weight: bold;
+}
 </style>
 </head>
 

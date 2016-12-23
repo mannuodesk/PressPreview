@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" CodeFile="brand-lookbook-details.aspx.cs" Inherits="lookbookDetails" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="brand-lookbook-details.aspx.cs" Inherits="lookbookDetails" %>
 
 <!DOCTYPE html>
 
@@ -14,6 +14,8 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
    <script src="../js/jquery-ui.min.js"></script>
   <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+ <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
+  
 <!--custom scroller-->
     <link rel="stylesheet" type="text/css" href="../customscroller/jquery.mCustomScrollbar.css" media="screen" />
 	<script>window.jQuery || document.write('<script src="customscroller/jquery-1.11.0.min.js"><\/script>')</script>
@@ -982,8 +984,8 @@ WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?)">
                          <div class="inwhtext"><b><a href="brand-lookbooks.aspx?v=<% Response.Write(Request.QueryString["v"]); %>" style="color:#000;">Lookbooks</a></b></div>
                              <div class="serinputp">
                                 <asp:Button runat="server" ID="btnSearch" style="position: absolute; width: 0px; height: 0px;z-index: -1;"  >
-                                </asp:Button> <%--<span class="fa fa-search"></span>--%>
-                                 <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1" style="margin-top: 15px;"  runat="server"></asp:TextBox>
+                                </asp:Button> <span class="fa fa-search"></span>
+                                 <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1" style="padding-left:30px;"  runat="server"></asp:TextBox>
                              </div> <!--serinput-->
                        </div><!--searchpro-->
                        <div class="lineclook"></div>

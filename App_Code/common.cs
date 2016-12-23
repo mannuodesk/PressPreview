@@ -241,7 +241,7 @@ public static class Common
             lstLabels[4].Text = " (" + db.GetExecuteScalar("SELECT COUNT(Tbl_Users.UserID) FROM Tbl_Users INNER JOIN Tbl_Editors ON Tbl_Users.UserID = Tbl_Editors.UserID WHERE (Tbl_Users.U_Type = 'Editor') AND (Tbl_Users.IsApproved IS NULL) AND Tbl_Editors.Firstname IS NOT NULL AND Tbl_Editors.Description IS NOT NULL") + ")";
             lstLabels[5].Text = db.GetExecuteScalar("SELECT COUNT(EventID) FROM Tbl_Events Where EventTitle IS NOT NULL");
             lstLabels[6].Text =
-                db.GetExecuteScalar("SELECT COUNT(LookID) From Tbl_Lookbooks Where IsDeleted IS NULL AND IsPublished=1");
+                db.GetExecuteScalar("SELECT COUNT(LookID) From Tbl_Lookbooks Where IsDeleted!=1 AND IsPublished=1");
         }
         catch (Exception)
         {

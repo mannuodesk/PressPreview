@@ -200,15 +200,31 @@ public partial class pr_brand_myprofile : System.Web.UI.Page
                     txtPhone.Value = dr[9].ToString();
                     txtEmail.Value = dr[10].ToString();
                     txtWeb.Value = dr[11].ToString();
-                    txtFacebook.Value = dr[12].ToString();
-                    txtTwitter.Value = dr[13].ToString();
-                    txtInstagram.Value = dr[14].ToString();
+                    //  txtFacebook.Value = dr[12].ToString();
+                        string FacebookUrl= dr[12].ToString();
+                    txtFacebook.Value=FacebookUrl.Split('/')[1];
+                    
+                    //  txtTwitter.Value = dr[13].ToString();
+                    string TwitterUrl= dr[13].ToString();
+                    txtTwitter.Value=TwitterUrl.Split('/')[1];
+                    
+                    
+                   string InstagramUrl= dr[14].ToString();
+                    txtInstagram.Value=InstagramUrl.Split('/')[1];
+                   
                     txtAbout.Text =Server.HtmlDecode(dr[15].ToString());
                     txtorg.Value = dr[16].ToString();
                     txtdesig.Value = dr[17].ToString();
                     txtAddress2.Value = dr[18].ToString();
-                    txtYoutube.Value = dr[19].ToString();
-                    txtPinterest.Value = dr[20].ToString();
+
+                    //  txtYoutube.Value = dr[19].ToString();
+                    string YoutubeUrl= dr[19].ToString();
+                    txtYoutube.Value=YoutubeUrl.Split('/')[2];
+                   
+                    //  txtPinterest.Value = dr[20].ToString();
+                        string PinterestUrl= dr[20].ToString();
+                    txtPinterest.Value=PinterestUrl.Split('/')[1];
+                    
                     txtTop.Text = Server.HtmlDecode(dr[21].ToString());
                     txtECalendar.Text = Server.HtmlDecode(dr[22].ToString());
 

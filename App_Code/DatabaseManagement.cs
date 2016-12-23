@@ -120,6 +120,16 @@ namespace DLS.DatabaseServices
 
         }
 
+
+        public void CloseConnection()
+        {
+            if(_sqlConnection.State==ConnectionState.Open)
+            {
+                _sqlConnection.Dispose();
+                _sqlConnection.Close();
+            }
+        }
+
         /// <summary>
         /// Query the database and returns a DataSet. Set the DatabaseManagement.SqlCommandText property before
         /// calling this method. Use this method for long SQL queries.

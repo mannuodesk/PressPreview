@@ -16,7 +16,7 @@ public partial class home : System.Web.UI.Page
     {
     protected void Page_Load(object sender, EventArgs e)
         {
-
+ Session["IsItemSaved"] = false;
         NameValueCollection n = Request.QueryString;
         if (n.HasKeys())
             {
@@ -75,6 +75,8 @@ public partial class home : System.Web.UI.Page
                 imgCover.ImageUrl = "../profileimages/" + dr[3].ToString();
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4].ToString();
                 }
+                dr.Close();
+                db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -99,7 +101,9 @@ public partial class home : System.Web.UI.Page
                     imgCover.ImageUrl = "../profileimages/" + dr[3];
                     imgProfile.ImageUrl = "../brandslogoThumb/" + dr[4];
                     }
+                    dr.Close();
                 }
+                db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -136,6 +140,7 @@ public partial class home : System.Web.UI.Page
                         result = Convert.ToInt32(dr[0]);
                     }
                 dr.Close();
+                db.CloseConnection();
                 lblTotolLikes.Text = result.ToString();
                 }
             }
@@ -163,6 +168,7 @@ public partial class home : System.Web.UI.Page
                         result = Convert.ToInt32(dr[0]);
                     }
                 dr.Close();
+                db.CloseConnection();
                 }
             //  lblTotalFollowers.Text = result.ToString();
             }
@@ -192,8 +198,8 @@ public partial class home : System.Web.UI.Page
                     {
                     empResult.Add(dr["Title"].ToString());
                     }
-                con.Close();
-                db._sqlConnection.Close();
+                dr.Close();
+                db.CloseConnection();
                 return empResult;
                 }
 
@@ -212,6 +218,7 @@ public partial class home : System.Web.UI.Page
                 string qryViews = string.Format("UPDATE Tbl_Brands Set TotalViews={0}  Where UserID={1}", TotalViews, IEUtils.ToInt(httpCookie.Value));
                 db.ExecuteSQL(qryViews);
                 }
+                db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -247,8 +254,9 @@ public partial class home : System.Web.UI.Page
                     lblHistory.Text = Server.HtmlDecode(dr[9].ToString());
                     }
                 dr.Close();
+                
                 }
-            db._sqlConnection.Close();
+            db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -270,6 +278,7 @@ public partial class home : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
                 }
             dr.Close();
+            db.CloseConnection();
             return result;
             }
         catch (Exception ex)
@@ -511,7 +520,7 @@ public partial class home : System.Web.UI.Page
                 ////rptLookbook.DataSource = cmd.ExecuteReader();
                 ////rptLookbook.DataBind();
                 con.Close();
-
+                db.CloseConnection();
                 }
             }
         }
@@ -529,8 +538,7 @@ public partial class home : System.Web.UI.Page
                 db.ExecuteSQL("Update Tbl_Items Set IsDeleted=1 Where ItemID=" + itemID);
                 ErrorMessage.ShowSuccessAlert(lblStatus, "Item deleted....", divAlerts);
                 //  rptLookbook.DataBind();
-                db._sqlConnection.Close();
-                db._sqlConnection.Dispose();
+                db.CloseConnection();
                 }
             }
         catch (Exception ex)
@@ -598,6 +606,7 @@ public partial class home : System.Web.UI.Page
                 // update the status of the message to read
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
+                db.CloseConnection();
                 Response.Redirect("massenger.aspx");
                 }
             }
@@ -614,7 +623,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
 
         }
 
@@ -641,7 +650,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
         }
 
     [WebMethod, ScriptMethod]
@@ -661,17 +670,17 @@ public partial class home : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", 1);
+                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                 cmd.Parameters.AddWithValue("@UserId", IEUtils.ToInt(httpCookie.Value));
-                cmd.Parameters.AddWithValue("@PageSize", 10000);
+                cmd.Parameters.AddWithValue("@PageSize", 1);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
                 var desc = "";
-                   int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //   int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
                 if (dr.HasRows)
                     {
                     while (dr.Read())
@@ -711,17 +720,19 @@ public partial class home : System.Web.UI.Page
                             dbDate = Convert.ToDateTime(dr1[0]);
                             objitem.Dated = Common.GetRelativeTime(dbDate);
                         }
-                        if (tempCount >= startItems && tempCount <= endItems)
-                          {
+                        dr1.Close();
+                        db1.CloseConnection();
+                       // if (tempCount >= startItems && tempCount <= endItems)
+                         // {
                         itemList.Add(objitem);
-                          }
-                        tempCount++;
+                         // }
+                        //tempCount++;
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return itemList;
 
 
@@ -800,9 +811,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return itemList;
 
 
@@ -880,9 +891,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return itemList;
 
 
@@ -960,9 +971,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+            db.CloseConnection();
             return itemList;
 
 
@@ -1041,9 +1052,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return itemList;
 
 
@@ -1065,8 +1076,7 @@ public partial class home : System.Web.UI.Page
                                                IEUtils.ToInt(id));
         db.ExecuteSQL(deleteTagQuery);
         db.ExecuteSQL(deleteQuery);
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        db.CloseConnection();
 
         }
 

@@ -170,15 +170,32 @@ public partial class home : System.Web.UI.Page
                     txtPhone.Value = dr[10].ToString();
                     txtEmail.Value = dr[11].ToString();
                     txtWeb.Value = dr[12].ToString();
-                    txtFacebook.Value = dr[13].ToString();
-                    txtTwitter.Value = dr[14].ToString();
-                    txtInstagram.Value = dr[15].ToString();
+                    //txtFacebook.Value = dr[13].ToString();
+                    string FacebookUrl= dr[13].ToString();
+                    txtFacebook.Value=FacebookUrl.Split('/')[1];
+                   
+                   // txtTwitter.Value = dr[14].ToString();
+                         string TwitterUrl= dr[14].ToString();
+                    txtTwitter.Value=TwitterUrl.Split('/')[1];
+                    
+                    
+                    //txtInstagram.Value = dr[15].ToString();
+                    string InstagramUrl= dr[15].ToString();
+                    txtInstagram.Value=InstagramUrl.Split('/')[1];
+                   
+                    
                     txtHistory.Text = dr[16].ToString();
                     txtorg.Value = dr[17].ToString();
                     txtdesig.Value = dr[18].ToString();
                     txtAddress2.Value = dr[19].ToString();
-                    txtYoutube.Value = dr[20].ToString();
-                    txtPinterest.Value = dr[21].ToString();
+                    //txtYoutube.Value = dr[20].ToString();
+                    string YoutubeUrl= dr[20].ToString();
+                    txtYoutube.Value=YoutubeUrl.Split('/')[2];
+                    
+                   //txtPinterest.Value = dr[21].ToString();
+                   string PinterestUrl= dr[21].ToString();
+                    txtPinterest.Value=PinterestUrl.Split('/')[1];
+                    
                     txtfname.Value = dr[22].ToString();
                     txtlname.Value = dr[23].ToString();
 

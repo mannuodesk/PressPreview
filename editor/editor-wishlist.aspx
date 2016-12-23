@@ -16,6 +16,7 @@
         <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
    <script src="../js/jquery-ui.min.js"></script>
    <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+   <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
   
 <!--custom scroller-->
         <style>
@@ -196,8 +197,8 @@
                              <div class="serinputp">
                                  <asp:Button runat="server" ID="btnSearch" style="position: absolute; width: 0px; height: 0px;z-index: -1;"  OnClick="btnSearch_OnClick">
                                 </asp:Button>
-                              <%--  <span class="fa fa-search"></span>--%>
-                                 <asp:TextBox  ID="txtsearch" placeholder="     Search" CssClass="seins1" style="margin-top:15px;"  runat="server"></asp:TextBox>
+                               <span class="fa fa-search"></span>
+                                 <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1" style="padding-left:30px"  runat="server"></asp:TextBox>
                                
                              </div> <!--serinput-->
                        </div><!--searchpro-->

@@ -173,7 +173,9 @@
 
 <!--text-->
 
-<div class="wrapperwhite">
+<div class="wrapperwhite" style="
+    background: white;"
+>
           
       <div class="colrow"> 
       
@@ -209,7 +211,7 @@
     </div>
 </div>
 <div class="l" id="seasonDiv">
-    <button class="menudlist" id="a">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+    <button class="menudlist" style="color: #a6a6a4 !important;" id="a">Seasons <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
               <asp:Repeater ID="rptSeasons" runat="server" DataSourceID="sdsSeasons" 
@@ -217,7 +219,7 @@
                                 <ItemTemplate>
                                     
                                     <li class="menudli">
-                                        <asp:LinkButton runat="server" ID="lbtnSeason" CommandName="1" CommandArgument='<%# Eval("SeasonID") %>'>
+                                        <asp:LinkButton  runat="server" ID="lbtnSeason" CommandName="1" CommandArgument='<%# Eval("SeasonID") %>'>
                                               <i class="fa fa-long-arrow-right" style="font-size:10px; font-weight:bold; margin-right:5px;"></i>
                                               <%#Eval("Season")%>
                                         </asp:LinkButton>
@@ -230,7 +232,7 @@
 </div>    
 
 <div class="l">
-    <button class="menudlist" id="a">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
+    <button class="menudlist" style="color: #a6a6a4 !important;" id="a">Holidays <i class="fa fa-caret-down" aria-hidden="true" style="font-size:14px;margin-left:6px; margin-top:-5px;"></i></button>
     <div class="menudlist_list" id="list2">
             <div class="mespace"></div>
             <asp:Repeater ID="rptHoliday" runat="server" DataSourceID="sdsHoliday" 

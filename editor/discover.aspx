@@ -22,6 +22,17 @@
         .showresetbutton{
             display:block;
         }
+        
+        /*.discovewrapsn1 {
+            float: left !important;
+                width: 18% !important;
+        }*/
+        /*.discoverb{
+            
+        }
+        .discovewrapn1 {
+                width: 80% !important;
+        }*/
     </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
@@ -129,7 +140,7 @@
                                                                                        "      <div class='mesbd'> " +
                                                                                            "          <div class='mimageb'> " +
                                                                                                "              <div class='mimgd'> " +
-                                                                                                   "                  <a href=''> " +
+                                                                                                   "                  <a href='../editor/brand-items.aspx?v="+val.brandUserKey+"'> " +
                                                                                                        "                      <img src='../brandslogoThumb/" + val.ProfilePic + "' style='width:36px; height:36px;' class='img-circle' /></a> " +
                                                                                                            "              </div> " +
                                                                                                                "          </div> " +
@@ -137,7 +148,7 @@
                                                                                                                        "          <div class='mtextb' style='width: 75%; margin-left: 15px;'> " +
                                                                                                                            "              <div class='m1'> " +
                                                                                                                                "                  <div class='muserd'><a href='itemview2.aspx?v=" + val.ItemId + "'class='fancybox'>" + val.Title + "</a></div> " +
-                                                                                                                                   "                  <div class='muserdb'>By " + val.Name + "</div> " +
+                                                                                                                                   "                  <div class='muserdb'>By <a href='../editor/brand-items.aspx?v="+val.brandUserKey+"'> " + val.Name + " </a></div> " +
                                                                                                                                        "              </div> " +
                                                                                                                                            "              <div class='m1'> " +
                                                                                                                                                "                  <div class='mtextd'>" + val.Description + "</div> " +
@@ -368,7 +379,7 @@
 
 
 <!--text-->
-  <div class="wrapperwhite">
+  <div class="wrapperwhite" style="background: white;">
 
                 <div class="colrow">
                     <div class="dropfirst">  
@@ -611,13 +622,15 @@
                               <asp:SqlDataSource runat="server" ID="sdsbrandsSearch" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
                              ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>'
-                             SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> 
+                             SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [Name] ASC"></asp:SqlDataSource>
+                             <!--SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> -->
                              <!--SelectCommand="SELECT Top 6 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>-->
                              
                              <asp:SqlDataSource runat="server" ID="sdsMoreBrands" 
                              ConnectionString='<%$ ConnectionStrings:GvConnection %>' 
                              ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>'
-                             SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> 
+                             SelectCommand="SELECT  [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [Name] ASC"></asp:SqlDataSource>
+                             <!--SelectCommand="SELECT  [BrandID], [BrandKey], [Name],Tbl_Brands.UserID FROM [Tbl_Brands] , [Tbl_Users] Where (Tbl_Users.UserID = Tbl_Brands.UserID AND Tbl_Users.IsApproved=1) ORDER BY [TotalViews] DESC"></asp:SqlDataSource> -->
                              <!--SelectCommand="SELECT Top 10 [BrandID], [BrandKey], [Name],[UserID] FROM [Tbl_Brands] ORDER BY [TotalViews] DESC"></asp:SqlDataSource>-->
                             
                              <%--<asp:Button runat="server"  ID="btnSearchBrands"  class="hvr-sweep-to-right3" Text="Apply" OnClick="btnSearchBrands_OnClick"></asp:Button>--%>

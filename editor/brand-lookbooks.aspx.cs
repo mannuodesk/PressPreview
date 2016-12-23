@@ -57,6 +57,7 @@ public partial class home : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
                 }
             dr.Close();
+            db.CloseConnection();
             lblTotolLikes.Text = result.ToString();
             }
         catch (Exception ex)
@@ -85,6 +86,7 @@ public partial class home : System.Web.UI.Page
                     empResult.Add(dr["Title"].ToString());
                     }
                 con.Close();
+                db.CloseConnection();
                 return empResult;
                 }
             }
@@ -119,7 +121,7 @@ public partial class home : System.Web.UI.Page
                 }
             dr.Close();
 
-            db._sqlConnection.Close();
+            db.CloseConnection();
             }
         catch (Exception ex)
             {
@@ -212,6 +214,7 @@ public partial class home : System.Web.UI.Page
                 // update the status of the message to read
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
+                db.CloseConnection();
                 Response.Redirect("massenger.aspx");
                 }
             }
@@ -227,7 +230,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
 
         }
 
@@ -254,7 +257,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
         }
 
     protected static int GetUserID(string v)
@@ -265,6 +268,7 @@ public partial class home : System.Web.UI.Page
             string selectQuery = string.Format("SELECT UserID From Tbl_Users Where UserKey={0}", IEUtils.SafeSQLString(v));
             int userID = 0;
             userID = Convert.ToInt32(db.GetExecuteScalar(selectQuery));
+            db.CloseConnection();
             return userID;
             }
         catch (Exception exc)
@@ -303,10 +307,11 @@ public partial class home : System.Web.UI.Page
                     {
                     while (dr.Read())
                         {
-                        DateTime dbDate = Convert.ToDateTime(dr["DatePosted"].ToString());
+                                            DateTime dbDate = Convert.ToDateTime(dr["Dated"].ToString());
                         var objLb = new Lookbook
                         {
                             PageCount = pageCount,
+                            LookId = Convert.ToInt32(dr["LookID"]),
                             LookBookKey = dr["LookKey"].ToString(),
                             Name = dr["Name"].ToString(),
                             ProfilePic = dr["U_ProfilePic"].ToString(),
@@ -321,6 +326,15 @@ public partial class home : System.Web.UI.Page
                             Description = dr["Description"].ToString(),
                             FeatureImg = dr["MainImg"].ToString()
                         };
+                              string selectDBTime = string.Format("Select DatePosted from Tbl_Lookbooks Where LookId={0}", objLb.LookId);
+                        DatabaseManagement db1 = new DatabaseManagement();
+                        SqlDataReader dr1 = db1.ExecuteReader(selectDBTime);
+                        if (dr1.HasRows)
+                            {
+                            dr1.Read();
+                            dbDate = Convert.ToDateTime(dr1[0]);
+                            objLb.Dated = Common.GetRelativeTime(dbDate);
+                            }
                         var pageDoc = new HtmlDocument();
                         pageDoc.LoadHtml(objLb.Description);
                         desc = pageDoc.DocumentNode.InnerText;
@@ -334,9 +348,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -411,9 +425,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -489,9 +503,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -568,9 +582,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 
@@ -648,9 +662,9 @@ public partial class home : System.Web.UI.Page
 
                         }
                     }
-
+                    dr.Close();
                 }
-
+                db.CloseConnection();
             return lookbookList;
 
 

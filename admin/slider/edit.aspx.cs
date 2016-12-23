@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System.Data;
+using System.Net;
+using System.Text;
+using System.Web;
+using System.IO;
 using DLS.DatabaseServices;
 using System;
 using System.Collections;
@@ -14,8 +18,10 @@ public partial class admin_home_Default : System.Web.UI.Page
     {
         try
         {
+            
             if (!IsPostBack)
             {
+                HttpContext.Current.Session["ImageSrc"]="";
                 if (Common.Getunread_Alerts() > 0)
                 {
                     lblTotalNotifications.Visible = true;
@@ -70,19 +76,35 @@ public partial class admin_home_Default : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
+      [WebMethod, ScriptMethod]
+    public static void GetItemTitle(string ImageSrc)
+    {
+        HttpContext.Current.Session["ImageSrc"] = ImageSrc;
+
+    }
+
     private void UpdateQuery(DatabaseManagement db)
     {
-        if (fup1.HasFile)
+        //if (fup1.HasFile)
+        if (HttpContext.Current.Session["ImageSrc"] != null && HttpContext.Current.Session["ImageSrc"] != "")
         {
-            string ext = Path.GetExtension(fup1.PostedFile.FileName);
-            if (ext == ".jpg" || ext == ".jpeg" || ext == ".gif" || ext == ".png" || ext == ".bmp")
+            //string ext = Path.GetExtension(fup1.PostedFile.FileName);
+            string imageDataForExtension = HttpContext.Current.Session["ImageSrc"].ToString().Substring(0, 100);
+            imageDataForExtension = imageDataForExtension.Split(';')[0];
+            string ext = imageDataForExtension.Split('/')[1];
+            if (ext == "jpg" || ext == "jpeg" || ext == "gif" || ext == "png" || ext == "bmp")
             {
-                if (fup1.PostedFile.ContentLength > 0 && fup1.PostedFile.ContentLength <= 3145728)
+                //if (fup1.PostedFile.ContentLength > 0 && fup1.PostedFile.ContentLength <= 3145728)
                 {
-                    var fname = Common.RandomPinCode() + ext;
+                    var ImageSrc = HttpContext.Current.Session["ImageSrc"].ToString();
+                    string[] converted = ImageSrc.Split(',');
+                    Byte[] bytes = Convert.FromBase64String(converted[1]);
+                    //var fname = Common.RandomPinCode() + ext;
+                    var fname = Common.RandomPinCode() +"."+ ext;
                     var rootpath = Server.MapPath("../../photobank/");
                     var imagepath = rootpath + fname;
-                    fup1.SaveAs(imagepath);
+                    //fup1.SaveAs(imagepath);
+                    File.WriteAllBytes(imagepath, bytes);
                     var thumbnail820 = Utility.GenerateThumbNail(fname, imagepath, "../imgSmall/", 200);
                     string insertQuery = string.Format("Update Tbl_ActivityBanners set BannerImg={0},BannerLink={1} WHERE BannerID={2}",
                IEUtils.SafeSQLString(fname),
@@ -91,13 +113,13 @@ public partial class admin_home_Default : System.Web.UI.Page
                     db.ExecuteSQL(insertQuery);
                     db._sqlConnection.Close();
                     db._sqlConnection.Dispose();
-                    File.Delete(lblimagename.Text);
+                    //File.Delete(lblimagename.Text);
 
                 }
-                else
-                {
-                    ErrorMessage.ShowErrorAlert(lblStatus, "Maximum size exceeded. Please ensure your image is less than 3MB", divAlerts);
-                }
+               // else
+                //{
+                  //  ErrorMessage.ShowErrorAlert(lblStatus, "Maximum size exceeded. Please ensure your image is less than 3MB", divAlerts);
+               // }
             }
             else
             {
@@ -125,7 +147,8 @@ public partial class admin_home_Default : System.Web.UI.Page
         try
         {
             var db = new DatabaseManagement();
-             UpdateQuery(db);            
+             UpdateQuery(db);     
+               Response.Redirect("Default.aspx",false);       
         }
         catch (Exception ex)
         {

@@ -188,11 +188,13 @@
            
     <!-- START THE FEATURETTES -->
          <div class="col-md-12">
+           <div style="display:none">
              <div id="divAlerts" runat="server" class="alert" visible="False">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <asp:Label runat="server" ID="lblStatus" for="PageMessage"
                         Text="" Visible="True"></asp:Label>
                 </div>
+           </div>
            <div class="col-md-11 col-xs-12 cheading">
              About
           </div>

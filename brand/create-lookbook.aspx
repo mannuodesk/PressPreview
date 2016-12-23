@@ -37,6 +37,13 @@
     max-height: 8.6em;
   }*/
 </style>
+  <style>
+        .errorMessage{
+            display:none;
+            font-size: 14px;
+            color: #f92617;
+        }
+    </style>
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
@@ -354,7 +361,7 @@
           </asp:validationsummary>
    </div> 
          <div class="textforget">Lookbook Details</div>
-         <div class="textadd">TITLE<span class="text-danger">*</span></div>
+         <div class="textadd" id="title_add">TITLE<span class="text-danger">*</span></div>
          <div class="textadd">
              <input type="text" runat="server" ID="txtItemTitle" class="addin" 
                  placeholder=""  tabindex="1"/>
@@ -362,7 +369,7 @@
          </div>
      
   <!--editor-->
-   <div class="textadd">DESCRIPTION<span class="text-danger">*</span></div>
+   <div class="textadd" id="title_Description">DESCRIPTION<span class="text-danger">*</span></div>
   <div class="editorblock">
       <%--<textarea name="editor1" class="ckeditor" runat="server" ID="txtDescription" 
           tabindex="2" Height="200px" Width="100%">
@@ -372,10 +379,12 @@
        CKEDITOR.replace('editor1');
        CKEDITOR.add            
    </script>--%>
-   <FTB:FreeTextBox runat="server" ID="txtDescription" ButtonSet="OfficeMac" 
+ <asp:TextBox id="txtDescription" class="addin"  style="resize: none !important;  width: 100% !important;"  TextMode="multiline" Columns="50" Rows="10" runat="server" />
+
+ <%--  <FTB:FreeTextBox runat="server" ID="txtDescription" ButtonSet="OfficeMac" 
           Height="200px" 
           ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
-          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextBox>
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextBox>--%>
           
    
       <asp:RequiredFieldValidator ID="RfvDescription" runat="server" 
@@ -389,7 +398,10 @@
   </div>
   <div class="createlookblock">
       <div id="contentbox">
-           <asp:Repeater runat="server" ID="rptLookbook"  DataSourceID="sdsLookbooks" OnItemDataBound="rptLookbook_ItemDataBound" >
+          <asp:updatepanel runat="server" ID="upItems" >
+              <ContentTemplate>
+
+           <asp:Repeater runat="server" ID="rptLookbook"  DataSourceID="sdsLookbooks" OnItemDataBound="rptLookbook_ItemDataBound">
                     <ItemTemplate>
                        <div class="box1">
                    <div class="loobblock">
@@ -407,7 +419,7 @@
                                     </div>
                                            </a></div>
                       <div class="smalcress">
-                          <asp:CheckBox runat="server" CssClass="booktick chkmeslook" Text="&nbsp" ID="chkItemID"  ></asp:CheckBox>
+                          <asp:CheckBox runat="server" CssClass="booktick chkmeslook" Text="&nbsp" ID="chkItemID" OnCheckedChanged="chkItemID_CheckedChanged" AutoPostBack="true"  ></asp:CheckBox>
                           <asp:Label runat="server" Text='<%# Eval("ItemID") %>' ID="SelectedItem" Visible="false"></asp:Label>
                           <%-- <input type="checkbox" id="test30" class="booktick"/><label for="test30" class="chkmeslook"></label> --%>
                       </div>
@@ -427,10 +439,8 @@
                      </div><!--lookbooktext--> 
                       <script>
                           var elements = document.getElementsByClassName('mtextd');
-                          for(var i = 0; i< elements.length ; i++)
-                          {
-                              if(elements[i].innerText.length > 50)
-                              {
+                          for (var i = 0; i < elements.length ; i++) {
+                              if (elements[i].innerText.length > 50) {
                                   var desc = "";
                                   desc = elements[i].innerText;
                                   desc = desc.substring(0, 50);
@@ -450,6 +460,8 @@
                          <asp:Label ID="lblEmptyData" style="margin-left: 40%;" runat="server" Visible='<%# ((Repeater)Container.NamingContainer).Items.Count == 0 %>' Text="No items found" />
                      </FooterTemplate>
                 </asp:Repeater>
+                  </ContentTemplate>
+              </asp:updatepanel>
                 <asp:SqlDataSource runat="server" ID="sdsLookbooks" ConnectionString='<%$ ConnectionStrings:GvConnection %>' ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
                 SelectCommand="SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, 
                 dbo.Tbl_Brands.Logo, dbo.Tbl_Items.ItemID, dbo.Tbl_Items.Title, 
@@ -495,8 +507,8 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                                <button type="button" runat="server"  name="login" ID="btnPreview" 
                                       style="width:100px;" tabindex="17"  class="hvr-sweep-to-rightup2" 
                                       OnServerClick="btnPreview_OnServerClick" visible="False"   >Preview</button>
-                               <button type="button" runat="server" name="login" ID="btnPublish" style="width:100px;" tabindex="18"  ValidationGroup="gpMain" 
-                                      class="hvr-sweep-to-rightup2" Text="" OnServerClick="btnPublish_OnServerClick"  >Publish</button>
+                               <button type="button"  onclick="submitValidation()" name="login" id="btnPublish" style="width:100px;" tabindex="18"  ValidationGroup="gpMain" 
+                                      class="hvr-sweep-to-rightup2" Text=""  >Publish</button>
                               </div> 
                          </div><!--search-->
                   </div><!--colmd12-->
@@ -505,7 +517,7 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
             <!--featured-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading">Featured Image <span class="text-danger">*</span></div>
+                             <div class="serheading" id="feature_add">Featured Image <span class="text-danger">*</span></div>
                              <div class="imgb">
                                  <div  class="dropzone" id="dzItemFeatured" tabindex="3">
                                    <div class="fallback">
@@ -524,16 +536,17 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                   <!--categories-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;">Categories <span class="text-danger">*</span></div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="categories_add">Categories <span class="text-danger">*</span></div> 
                              <asp:Label ID="lblSelectedCat" runat="server" Visible="False"></asp:Label>
                              <asp:updatepanel runat="server" ID="up_Categories" >
                                  <ContentTemplate>
                                       <div id="seedefaultCats" tabindex="4">
                                  <div class="dblock">
+                                       <asp:HiddenField ID="CategorySelected" runat="server"  Value="false" />
                                      <asp:CheckBoxList runat="server" ID="chkCategories"  OnSelectedIndexChanged="chkCategories_SelectedIndexChanged"
                                          DataSourceID="sdsDefaultCats" DataTextField="Title" 
                                          DataValueField="CategoryID" CellPadding="4" CellSpacing="4" 
-                                         RepeatColumns="2" Width="100%">
+                                         RepeatColumns="2" Width="100%" AutoPostBack="true">
                                      </asp:CheckBoxList>
                                      <asp:SqlDataSource ID="sdsDefaultCats" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
@@ -566,13 +579,14 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                   <!--Season-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;">Seasons <span class="text-danger">*</span></div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="seasons_add">Seasons <span class="text-danger">*</span></div> 
                            <asp:updatepanel runat="server" ID="up_Seasons" >
                                  <ContentTemplate>
                                     <div id="seeDefaultSessions" tabindex="7">
                                  <div class="dblock">
+                                        <asp:HiddenField ID="SeasonSelected" runat="server"  Value="false" />
                                      <asp:CheckBoxList runat="server" ID="chkDefaultSeasons" OnSelectedIndexChanged="chkDefaultSeasons_SelectedIndexChanged"
-                                         DataSourceID="sdsMoreSeasons" DataTextField="Season" DataValueField="SeasonID">
+                                         DataSourceID="sdsMoreSeasons" DataTextField="Season" DataValueField="SeasonID" AutoPostBack="true">
                                      </asp:CheckBoxList>
                                      <asp:SqlDataSource ID="sdsDefaultSeasons" runat="server" 
                                          ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
@@ -606,13 +620,13 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
             <!--Holidays-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;">Holiday <span class="text-danger">*</span></div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holidays </div> 
                           <asp:updatepanel runat="server" ID="up_Holidays" >
                                  <ContentTemplate>
                              <div id="seeDefaultHoliday" tabindex="10">
                                  <div class="dblock">
                                      <asp:CheckBoxList runat="server" ID="chkDefaultHoliday" OnSelectedIndexChanged="chkDefaultHoliday_SelectedIndexChanged" 
-                                         DataSourceID="sdsDefaultHoliday" DataTextField="Title" DataValueField="HolidayID">
+                                         DataSourceID="sdsDefaultHoliday" DataTextField="Title" DataValueField="HolidayID" AutoPostBack="true">
                                      </asp:CheckBoxList>
                                     
                                     <asp:SqlDataSource ID="sdsDefaultHoliday" runat="server" 
@@ -769,6 +783,144 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
         });
 
     });
+
+
+
+
+
+    function submitValidation() {
+        var errorMessage;
+        var thumbnailImagecheck;
+        var featureImage = [];
+        var CategoriesSelected = [];
+        var SeasonsSelected = [];
+        //var HolidaySelected = [];
+
+
+
+        var itemcolor;
+        var errorFlag = false;
+        var CategoriesSelectedlength = $("#chkCategories input:checked").length;
+
+        var SeasonsSelectedlength = $("#chkDefaultSeasons input:checked").length;
+
+        //  SeasonsSelected=("#chkDefaultSeasons input:checked");
+        //var HolidaySelectedlength = $("#chkDefaultHoliday input:checked").length;
+
+        //   HolidaySelected = $("#chkDefaultHoliday input:checked");
+
+
+
+        var itemDetail = $("txtDescription_designEditor").val();
+
+        $("#dzItemFeatured .dz-image img").each(function () {
+            featureImage.push($(this).attr('src'));
+        });
+
+        var TitleText = $("#txtItemTitle").val();
+        if ($("#txtItemTitle").val() == "") {
+            $("#errorTitle").remove();
+            errorMessage = "Please enter TITLE";
+            var errorDiv = "<p class='errorMessage' id='errorTitle'>" + errorMessage + "</p>"
+            $("#title_add").append(errorDiv);
+            errorFlag = true;
+        }
+        else {
+            $("#errorTitle").remove();
+        }
+
+        var DescriptionTextDetails = $("#txtDescription").val();
+        if ($("#txtDescription").val() == "") {
+            $("#errorDescription").remove();
+            errorMessage = "Please enter DESCRIPTION";
+            var errorDiv = "<p class='errorMessage' id='errorDescription'>" + errorMessage + "</p>"
+            $("#title_Description").append(errorDiv);
+            errorFlag = true;
+        }
+        else {
+            $("#errorDescription").remove();
+        }
+
+
+
+
+        var categorySelected = $("#CategorySelected").val();
+        if (categorySelected == 'false') {
+            $("#errorCategory").remove();
+            errorMessage = "Please Select Category";
+            var errorDiv = "<p class='errorMessage' id='errorCategory'>" + errorMessage + "</p>"
+            $("#categories_add").append(errorDiv);
+            errorFlag = true;
+        }
+        else {
+            $("#errorCategory").remove();
+        }
+
+
+
+
+        var seasonSelected = $("#SeasonSelected").val();
+        if (seasonSelected == 'false') {
+            $("#errorSeason").remove();
+            errorMessage = "Please Select Season";
+            var errorDiv = "<p class='errorMessage' id='errorSeason'>" + errorMessage + "</p>"
+            $("#seasons_add").append(errorDiv);
+            errorFlag = true;
+        }
+        else {
+            $("#errorSeason").remove();
+        }
+        //if (HolidaySelectedlength < 1) {
+        //    $("#errorHoliday").remove();
+        //    errorMessage = "Please Select Holiday";
+        //    var errorDiv = "<p class='errorMessage' id='errorHoliday'>" + errorMessage + "</p>"
+        //    $("#holiday_add").append(errorDiv);
+        //    errorFlag = true;
+        //}
+        //else {
+        //    $("#errorHoliday").remove();
+        //}
+
+        if (featureImage.length < 1) {
+            $("#errorfeature").remove();
+            errorMessage = "Please add feature Image";
+            var errorDiv = "<p class='errorMessage' id='errorfeature'>" + errorMessage + "</p>"
+            $("#feature_add").append(errorDiv);
+            errorFlag = true;
+        }
+        else {
+            $("#errorfeature").remove();
+        }
+
+        if (errorFlag == true) {
+            $(".errorMessage").css("display", "block");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "create-lookbook.aspx\\SaveItem",
+                data: '{TitleText: "' + TitleText + '",DescriptionTextDetails: "' + DescriptionTextDetails + '"}',
+                //data: { "TitleText": TitleText, "RetailText": RetailText, "WholesaleText": WholesaleText, "StyleNumberText": StyleNumberText, "StyleNameText": StyleNameText },
+                dataType: "json",
+                success: function (data) {
+
+                    localStorage.setItem("Result", "Done");
+                    window.location.reload();
+                },
+                error: function (result) {
+                    localStorage.setItem("Result", "ErrorMessageAlert");
+                    //alert("No Match"); 
+                    //  response("No Match Found");
+                }
+            });
+        }
+    }
+
+
+
+
+
     </script>   
 </form>
 </body>

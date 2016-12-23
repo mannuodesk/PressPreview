@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" CodeFile="brand-lookbooks.aspx.cs" Inherits="home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="brand-lookbooks.aspx.cs" Inherits="home" %>
 
 <!DOCTYPE html>
 
@@ -15,6 +15,7 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
    <script src="../js/jquery-ui.min.js"></script>
    <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+   <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
   
     <style>
         .grid{font-size:0px;}
@@ -1008,7 +1009,7 @@
           </div><!--col-md-12-->
           <div class="col-md-7 col-xs-12 phtext">
                <img src="../images/location.png" alt="location" style="margin-right:6px;"  /> <asp:Label runat="server" ID="lblCity"></asp:Label>, <span><asp:Label runat="server" ID="lblCountry"></asp:Label></span><br />
-               <a runat="server" id="lbWebURL" href="#" target="_blank" style="word-wrap: break-word;"></a>               
+               <a runat="server" id="lbWebURL"  href="#" target="_blank" style="word-wrap: break-word;"></a>               
           </div><!--col-md-12-->
           <div class="lines"><hr /></div>
             <a href='itobmess.aspx?v=<% Response.Write(Request.QueryString["v"]); %>'  class="mesblockinf">
@@ -1147,8 +1148,9 @@ WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tb
                          <div class="inwhtext"><b><a href="brand-lookbooks.aspx?v=<% Response.Write(Request.QueryString["v"]); %>" style="color:#000;">Lookbooks</a></b></div>
                              <div class="serinputp">
                                 <asp:Button runat="server" ID="btnSearch" style="position: absolute; width: 0px; height: 0px;z-index: -1;" >
-                                </asp:Button> <span class="fa fa-search"></span>
-                                 <asp:TextBox  ID="txtsearch" placeholder="     Search" CssClass="seins1" style="margin-top: 15px;"   runat="server"></asp:TextBox>
+                                </asp:Button>
+                                 <span class="fa fa-search"></span>
+                                 <asp:TextBox  ID="txtsearch" placeholder="Search" CssClass="seins1" style="padding-left: 30px;"   runat="server"></asp:TextBox>
                              </div> <!--serinput-->
                        </div><!--searchpro-->
                        <div class="lineclook"></div>
@@ -1183,7 +1185,7 @@ WHERE Tbl_Lookbooks.UserID=(SELECT UserID From Tbl_Users Where UserKey=?) AND Tb
                        
                        
                        
-                       <div id="norecord" style="display:none;    margin-bottom: 63px;">
+                       <div id="norecord" style="display:none;    margin-top: 23px;    margin-bottom: 63px;">
                            No Record Found
                        </div>
                 

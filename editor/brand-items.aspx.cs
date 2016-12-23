@@ -24,9 +24,8 @@ public partial class home : System.Web.UI.Page
         {
             try
             {
-                
-                LoadBrandData();
                 SetTotalViews();
+                LoadBrandData();
                 LikesColor();
                 BrandLikes();
                 if (Common.Getunread_Messages() > 0)
@@ -65,6 +64,7 @@ public partial class home : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
+            db.CloseConnection();
             lblTotolLikes.Text = result.ToString();
         }
         catch (Exception ex)
@@ -90,6 +90,7 @@ public partial class home : System.Web.UI.Page
                 LikeIcon.Style.Add("color", "#4c92c6");
             }
             dr.Close();
+            db.CloseConnection();
             lblTotolLikes.Text = result.ToString();
         }
         catch (Exception ex)
@@ -119,6 +120,8 @@ public partial class home : System.Web.UI.Page
                 }
                 con.Close();
                 db._sqlConnection.Close();
+                dr.Close();
+                db.CloseConnection();
                 return empResult;
             }
 
@@ -126,38 +129,64 @@ public partial class home : System.Web.UI.Page
 
     }
     protected void SetTotalViews()
-    {
+      {
         try
-        {
+            {
+            lblTotolViews.Text = "0";
             var db = new DatabaseManagement();
+            var userKey = IEUtils.SafeSQLString(Request.QueryString["v"]);
+            var userid = Session["UserID"].ToString();
+            string brandid = "0";
+            using (var con = new SqlConnection(db.ConnectionString))
+                {
+                using (SqlCommand cmd = new SqlCommand())
+                    {
+                    cmd.CommandText = "Select BrandId,TotalViews from Tbl_Users INNER JOIN Tbl_Brands ON Tbl_Brands.UserID=Tbl_Users.UserID  Where Tbl_Brands.UserID=(SELECT UserID From Tbl_Users Where UserKey=" + userKey + ")";
+                    cmd.Connection = con;
+                    con.Open();
+                    SqlDataReader dr1 = cmd.ExecuteReader();
+                    while (dr1.Read())
+                        {
+                        brandid = dr1["BrandId"].ToString();
+                        lblTotolViews.Text = dr1["TotalViews"].ToString();
+                        if (lblTotolViews.Text == "")
+                            {
+                            lblTotolViews.Text = "0";
+                            }
+                        }
+                    con.Close();
+
+                    }
+                }
             string isAlreadyViewd = string.Format("SELECT ID From Tbl_Brand_Views Where BrandID={0} AND UserID={1}",
-                                                 _brandID,
-                                                   IEUtils.ToInt(Session["UserID"]));
+                                                 brandid,
+                                                   IEUtils.ToInt(userid));
             SqlDataReader dr = db.ExecuteReader(isAlreadyViewd);
             if (!dr.HasRows)
-            {
+                {
                 dr.Close();
                 dr.Dispose();
                 string addview = string.Format("INSERT INTO Tbl_Brand_Views(BrandID,UserID,ViewDate) VALUES({0},{1},{2})",
-                    _brandID,
-                    IEUtils.ToInt(Session["UserID"]),
+                    brandid,
+                    IEUtils.ToInt(userid),
                     IEUtils.SafeSQLDate(DateTime.UtcNow));
                 db.ExecuteSQL(addview);
                 int totalViews = Convert.ToInt32(lblTotolViews.Text) + 1;
                 string qryViews = string.Format("UPDATE Tbl_Brands Set TotalViews" +
-                                                "={0}  Where BrandID={1}", totalViews, _brandID);
+                                                "={0}  Where BrandID={1}", totalViews, brandid);
                 db.ExecuteSQL(qryViews);
 
-            }
+                }
+            db.CloseConnection();
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
-        }
+            }
         catch (Exception ex)
-        {
+            {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-        }
+            }
 
-    }
+        }
     protected void LoadBrandData()
     {
         try
@@ -178,13 +207,13 @@ public partial class home : System.Web.UI.Page
                 if (dr.IsDBNull(5))
                     lblTotolViews.Text = "0";
                 else
-                    lblTotolViews.Text = (Convert.ToInt32(dr[5]) + 1).ToString();
+                    lblTotolViews.Text = (Convert.ToInt32(dr[5])).ToString();
                 lbWebURL.InnerText = dr[8].ToString();
                 lbWebURL.HRef = "http://" + dr[8].ToString().Replace("http://", "");
                 lblHistory.Text = dr[9].ToString();
             }
             dr.Close();
-            db._sqlConnection.Close();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -206,6 +235,7 @@ public partial class home : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
+            db.CloseConnection();
             return result;
         }
         catch (Exception ex)
@@ -270,8 +300,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
-
+        db.CloseConnection();
     }
 
     protected void rptNotifications_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -297,6 +326,7 @@ public partial class home : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
+        db.CloseConnection();
 
     }
     private static List<Items> sortListBySortOrder(List<Items> itemsList)
@@ -334,7 +364,7 @@ public partial class home : System.Web.UI.Page
                 db._sqlConnection.Open();
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PageIndex", 1);
+                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                 cmd.Parameters.AddWithValue("@UserKey", v);
                 cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
@@ -342,9 +372,9 @@ public partial class home : System.Web.UI.Page
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
                 var desc = "";
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
                 if (dr.HasRows)
                 {
                     while (dr.Read())
@@ -379,22 +409,25 @@ public partial class home : System.Web.UI.Page
                             dbDate = Convert.ToDateTime(dr1[0]);
                             objitem.Dated = Common.GetRelativeTime(dbDate);
                         }
+                        dr1.Close();
+                        db1.CloseConnection();
                         var pageDoc = new HtmlDocument();
                         pageDoc.LoadHtml(objitem.Description);
                         desc = pageDoc.DocumentNode.InnerText;
                         objitem.Description = desc;
-                        if (tempCount >= startItems && tempCount <= endItems)
-                        {
+                        //if (tempCount >= startItems && tempCount <= endItems)
+                        //{
 
                             itemList.Add(objitem);
-                        }
-                        tempCount++;
+                        //}
+                        //tempCount++;
                         //itemList.Add(objitem);
 
                     }
                 }
-
+                dr.Close();
             }
+            db.CloseConnection();
             sortListBySortOrder(itemList);
             return itemList;
 

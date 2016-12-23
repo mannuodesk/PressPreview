@@ -22,7 +22,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             if ((bool)Session["IsItemSaved"] == true)
             {
                 Session["IsItemSaved"] = false;
-                Response.Redirect("profile-page-lookbooks.aspx", false);
+                Response.Redirect("profile-page-items.aspx", false);
             }
         }
         var al = new ArrayList { lblUsername, imgUserIcon };
@@ -130,6 +130,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             else
             {
                 (Session["EditItemDetails"] as EditItemDetails).Description = "";
+                Session["EditDescription"]="";
                 (Session["EditItemDetails"] as EditItemDetails).Color = "";
             }
             string selectRec =
@@ -142,8 +143,10 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 dr.Read();
                 txtItemTitle.Value = dr[2].ToString();
                 txtDescription.Text = dr[3].ToString();
+                txtDescription.Text = txtDescription.Text.Replace("<br />",Environment.NewLine);
                 //Session["Description"] = dr[3].ToString();
                 (Session["EditItemDetails"] as EditItemDetails).Description = dr[3].ToString();
+                Session["EditDescription"]=dr[3].ToString();
                 txtRetail.Value = dr[4].ToString();
                 txtWholesale.Value = dr[5].ToString();
                 imgFeatured.ImageUrl = "../photobank/" + dr[6];
@@ -218,11 +221,55 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(int.Parse(itm.Value)))
                     {
                         itm.Selected = true;
+                        CategorySelected.Value = "true";
                     }
                 }
             }
         }
     }
+    
+     private void LoadMoreCategoriesFromSession()		
+    {		
+        chkCategories.DataSourceID = "";		
+        chkCategories.DataSource = sdsMoreCats;		
+        chkCategories.DataBind();		
+        if (Session["EditItemDetails"] as EditItemDetails != null)		
+        {		
+            if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)		
+            {		
+                foreach (ListItem itm in chkCategories.Items)		
+                {		
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(int.Parse(itm.Value)))		
+                    {		
+                        itm.Selected = true;		
+                    }		
+                }		
+            }		
+        }		
+        btn_ViewMore.Visible = false;		
+        btn_ViewLess.Visible = true;		
+    }		
+    private void LoadDefaultCategoriesFromSession()		
+    {		
+        chkCategories.DataSourceID = "";		
+        chkCategories.DataSource = sdsDefaultCats;		
+        chkCategories.DataBind();		
+        if (Session["EditItemDetails"] as EditItemDetails != null)		
+        {		
+            if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories != null)		
+            {		
+                foreach (ListItem itm in chkCategories.Items)		
+                {		
+                    if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(int.Parse(itm.Value)))		
+                    {		
+                        itm.Selected = true;		
+                    }		
+                }		
+            }		
+        }		
+        btn_ViewMore.Visible = true;		
+        btn_ViewLess.Visible = false;		
+    }		
 
     private void LoadSeason(DatabaseManagement db)
     {
@@ -263,6 +310,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     if ((Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Contains(int.Parse(itm.Value)))
                     {
                         itm.Selected = true;
+                        SeasonSelected.Value = "true";
                     }
                 }
             }
@@ -462,7 +510,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     // string itemKey = Encryption64.Encrypt(httpCookie.Value).Replace('+', '=');
                     /*if (Colorcookie != null)
                     {*/
-                    string description = (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Description;
+                    
+                    string description =  (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Description;
                     string color = (HttpContext.Current.Session["EditItemDetails"] as EditItemDetails).Color;
                     string updateQuery = string.Format("UPDATE Tbl_Items Set  " +
                                                        "Title={0},Description={1},RetailPrice={2}," +
@@ -804,7 +853,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     {
         try
         {
-            DisplayMoreCats();
+            //DisplayMoreCats();
+            LoadMoreCategoriesFromSession();
         }
         catch (Exception ex)
         {
@@ -817,7 +867,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
     {
         try
         {
-            DisplayDefaultCats();
+            //DisplayDefaultCats();
+            LoadDefaultCategoriesFromSession();
         }
         catch (Exception ex)
         {
@@ -1191,17 +1242,37 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             Session["EditItemDetails"] = editItemDetails;
         }
         //selectedCategories = new List<int>();
-        (Session["EditItemDetails"] as EditItemDetails).SelectedCategories = new List<int>();
+        //(Session["EditItemDetails"] as EditItemDetails).SelectedCategories = new List<int>();
+        if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories == null)
+        {
+            (Session["EditItemDetails"] as EditItemDetails).SelectedCategories = new List<int>();
+        }
         for (int i = 0; i < chkCategories.Items.Count; i++)
         {
             if (chkCategories.Items[i].Selected)
             {
                 //selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
-                (Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                if (!(Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(Convert.ToInt32(chkCategories.Items[i].Value)))
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                }
             }
-
+            else if (!chkCategories.Items[i].Selected)
+            {
+                if ((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Contains(Convert.ToInt32(chkCategories.Items[i].Value)))
+                {
+                    (Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Remove(Convert.ToInt32(chkCategories.Items[i].Value));
+                }
+            }
         }
-
+        if((Session["EditItemDetails"] as EditItemDetails).SelectedCategories.Count>0)
+        {
+            CategorySelected.Value = "true";
+        }
+        else
+        {
+            CategorySelected.Value = "false";
+        }
     }
     string itemDescription;
     protected void txtDescription_TextChanged(object sender, EventArgs e)
@@ -1212,6 +1283,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             (Session["EditItemDetails"]) = editItemDetails;
         }
         (Session["EditItemDetails"] as EditItemDetails).Description = txtDescription.Text;
+        Session["EditDescription"]=txtDescription.Text;
+        
         itemDescription = txtDescription.Text;
     }
 
@@ -1234,6 +1307,14 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 (Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
             }
 
+        }
+        if((Session["EditItemDetails"] as EditItemDetails).SelectedSeasons.Count>0)
+        {
+            SeasonSelected.Value = "true";
+        }
+        else
+        {
+            SeasonSelected.Value = "false";
         }
     }
 

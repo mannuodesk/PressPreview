@@ -131,7 +131,17 @@
                  $("#errorTitle").remove();
              }
 
-
+ var DescriptionTextDetails = $("#txtDescription").val();
+              if ($("#txtDescription").val() == "") {
+                 $("#errorDescription").remove();
+                 errorMessage = "Please enter DESCRIPTION";
+                 var errorDiv = "<p class='errorMessage' id='errorDescription'>" + errorMessage + "</p>"
+                 $("#title_Description").append(errorDiv);
+                 errorFlag = true;
+             }
+             else {
+                 $("#errorDescription").remove();
+             }
              var RetailText = $("#txtRetail").val();
              if ($("#txtRetail").val() == "") {
                  $("#errorRetail").remove();
@@ -179,7 +189,8 @@
              else {
                  $("#errorStyleName").remove();
              }
-             if (CategoriesSelectedlength < 1) {
+     var categorySelected= $("#CategorySelected").val();
+             if (categorySelected == 'false') {
                  $("#errorCategory").remove();
                  errorMessage = "Please Select Category";
                  var errorDiv = "<p class='errorMessage' id='errorCategory'>" + errorMessage + "</p>"
@@ -202,7 +213,8 @@
              else {
                  $("#errorItemColor").remove();
              }
-             if (SeasonsSelectedlength < 1) {
+             var seasonSelected= $("#SeasonSelected").val();
+             if (seasonSelected == 'false') {
                  $("#errorSeason").remove();
                  errorMessage = "Please Select Season";
                  var errorDiv = "<p class='errorMessage' id='errorSeason'>" + errorMessage + "</p>"
@@ -562,11 +574,11 @@ var crossTop = 0;
             },
             accept: function (file, done) {
                 file.acceptDimensions = done;
-                file.rejectDimensions = function () {
-                    done('The image must be at least 800 x 800px');
-                    //                    $("#divAlerts").show();
-                    //                    $('#divAlerts').html('The image must be at least 800 x 800px');
-                };
+                // file.rejectDimensions = function () {
+                //     done('The image must be at least 800 x 800px');
+                //     //                    $("#divAlerts").show();
+                //     //                    $('#divAlerts').html('The image must be at least 800 x 800px');
+                // };
             }
         };
     </script>
@@ -680,11 +692,13 @@ var crossTop = 0;
        CKEDITOR.replace('editor1');
        CKEDITOR.add();            
    </script>--%>
-         <div class="textadd" id="title_add">DESCRIPTION<span class="text-danger">*</span></div>
-   <FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
+         <div class="textadd" id="title_Description">DESCRIPTION<span class="text-danger">*</span></div>
+ <asp:TextBox id="txtDescription" class="addin"  style="resize: none !important;  width: 100% !important;" OnTextChanged="txtDescription_TextChanged" TextMode="multiline" Columns="50" Rows="10" runat="server" />
+   
+   <%--<FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
           Height="200px" 
           ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
-          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>--%>
       <asp:RequiredFieldValidator ID="RfvDescription" runat="server" 
           EnableClientScript="True"  ErrorMessage="Item Description" 
           ValidationGroup="gpMain" ControlToValidate="txtDescription" Display="none" 
@@ -809,8 +823,8 @@ var crossTop = 0;
                              </div>
                          </div><!--search-->
                   </div><!--colmd12-->
-                  <div class="dissp"></div>  
-                  
+                  <div class="dissp"></div>      
+                              
             <!--style name-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
@@ -887,6 +901,7 @@ var crossTop = 0;
                                  <ContentTemplate>                                 
                              <div id="seedefaultCats" tabindex="10">
                                  <div class="dblock">
+                                     <asp:HiddenField ID="CategorySelected" runat="server"  Value="false" />
                                      <asp:CheckBoxList runat="server" ID="chkCategories" OnSelectedIndexChanged="chkCategories_SelectedIndexChanged"
                                          DataSourceID="sdsDefaultCats" DataTextField="Title"
                                          DataValueField="CategoryID" CellPadding="4" CellSpacing="4" 
@@ -928,6 +943,7 @@ var crossTop = 0;
                                  <ContentTemplate>
                                     <div id="seeDefaultSessions" tabindex="12">
                                  <div class="dblock">
+                                     <asp:HiddenField ID="SeasonSelected" runat="server"  Value="false" />
                                      <asp:CheckBoxList runat="server" ID="chkDefaultSeasons" OnSelectedIndexChanged="chkDefaultSeasons_SelectedIndexChanged"
                                          DataSourceID="sdsDefaultSeasons" DataTextField="Season" 
                                          DataValueField="SeasonID" AutoPostBack="True" >
@@ -967,7 +983,7 @@ var crossTop = 0;
             <!--Holidays-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday </div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holidays </div> 
                 
                           <asp:updatepanel runat="server" ID="up_Holidays" >
                                  <ContentTemplate>

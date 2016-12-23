@@ -345,6 +345,7 @@
          // By Title
          var titlee;
          function GetRecordsByTitle(title) {
+             console.log(title);
              titlee = title;
              selectedSorting = "title";
              // Page variables for search by Category
@@ -380,15 +381,16 @@
 
 
          var hasItem = false;
-         function OnSuccess(data, cb) {
+         function OnSuccess(data) {
              $('#LoaderItem').show();
              $('#norecord').hide();
              console.log(data);
              var items = data.d;
-             var fragment ='';
+             var fragment;
              if (items.length != 0) {
                  hasItem = true;
                  var $grid = $('.grid');
+                 console.log($grid);
                  $grid.masonry({
                      itemSelector: '.boxn1',
                      transitionDuration: '0.4s',
@@ -778,8 +780,9 @@
              });
 
              $("#txtsearch").keydown(function (e) {
+                 console.log("Hehehehehe");
                  if (e.keyCode == 13) { // enter
-                     GetRecordsByTitle($("#txtsearch").val());
+                     GetTitle($("#txtsearch").val());
                      return false; //you can also say e.preventDefault();
                  }
              });

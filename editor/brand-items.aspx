@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" CodeFile="brand-items.aspx.cs" Inherits="home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableViewState="true" CodeFile="brand-items.aspx.cs" Inherits="home" %>
 
 <!DOCTYPE html>
 
@@ -991,7 +991,7 @@
           </div><!--col-md-12-->
           <div class="col-md-7 col-xs-12 phtext">
                <img src="../images/location.png" alt="location" style="margin-right:6px;"  /> <asp:Label runat="server" ID="lblCity"></asp:Label>, <asp:Label runat="server" ID="lblCountry"></asp:Label><br />
-               <a runat="server" id="lbWebURL" href="#"></a>               
+               <a runat="server" id="lbWebURL" target="_blank" style="word-wrap: break-word;" href="#"></a>               
           </div><!--col-md-12-->
           <div class="lines"><hr /></div>
            <%--<div class="mesblockinf" >--%>

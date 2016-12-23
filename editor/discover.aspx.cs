@@ -598,11 +598,11 @@ public partial class home : System.Web.UI.Page
             string fullQuery2 = string.Empty;
             string @select =
                "SELECT distinct dbo.Tbl_Brands.Name, U_ProfilePic, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, " +
-               " dbo.Tbl_Brands.Logo, a.ItemID,a.RetailPrice, a.Title, a.row, a.DatePosted as [dated],a.UserID,IsDeleted,IsPublished," +
+               " dbo.Tbl_Brands.Logo, a.ItemID,a.RetailPrice, a.Title, a.row, a.DatePosted as [dated],a.UserID,Tbl_Users.UserKey,IsDeleted,IsPublished," +
                " ItemKey, SUBSTRING(a.Description,0,50) + '...' as Description , a.FeatureImg, " +
                " a.Views, Likes,  CAST(a.DatePosted AS VARCHAR(12)) as DatePosted," +
                " a.DatePosted as [dated] " +
-               "FROM ( SELECT ROW_NUMBER() OVER (ORDER BY ItemID ASC) AS row, ItemID, dbo.Tbl_Items.Title, dbo.Tbl_Items.Color," +
+               "FROM ( SELECT ROW_NUMBER() OVER (ORDER BY ItemID DESC) AS row, ItemID, dbo.Tbl_Items.Title, dbo.Tbl_Items.Color," +
                " ItemKey, SUBSTRING(dbo.Tbl_Items.Description,0,50) + '...' as Description, dbo.Tbl_Items.FeatureImg," +
                " dbo.Tbl_Items.Views, CAST(dbo.Tbl_Items.DatePosted AS VARCHAR(12)) as DatePosted, " +
                " dbo.Tbl_Items.DatePosted as [dated],UserID,IsDeleted,IsPublished, Likes, RetailPrice FROM Tbl_Items ) AS a " +
@@ -615,10 +615,20 @@ public partial class home : System.Web.UI.Page
             int tempCount = 1;
             var itemList = new List<Items>();
             //string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1  AND row BETWEEN  " + start + "  AND " + end;
+            //string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1";
+            //string wherecluse2 = " Where   a.IsDeleted IS NULL AND a.IsPublished=1";
+             int start = (pageIndex -1) * pagesize;
+            int end = start + 15;
+            //string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1  AND row BETWEEN  " + start + "  AND " + end;
+            //string wherecluse2 = " Where   a.IsDeleted IS NULL AND a.IsPublished=1  AND row BETWEEN  " + start + "  AND " + end;
             string wherecluse = " Where   a.IsDeleted IS NULL AND a.IsPublished=1";
             string wherecluse2 = " Where   a.IsDeleted IS NULL AND a.IsPublished=1";
             //const string orderBy = " ORDER BY a.DatePosted DESC";
-            const string orderBy = " ORDER BY a.ItemID DESC";
+            //const string orderBy = " ORDER BY a.ItemID DESC";
+            int pageSize=15;
+            int offSet = pageSize * (pageIndex - 1);
+            int fetchNext = offSet + pageSize;
+            string orderBy = " ORDER BY a.ItemID DESC OFFSET " + offSet + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
             //NameValueCollection nvc = Request.QueryString;
             //if(nvc.HasKeys())  // check for the query string parameter. if the URL has query string keys, get those values 
             //{
@@ -878,7 +888,8 @@ var desc="";
                         DatePosted = dr["DatePosted"].ToString(),
                         Dated = Common.GetRelativeTime(dbDate),
                         Description = dr["Description"].ToString(),
-                        FeatureImg = dr["FeatureImg"].ToString()
+                        FeatureImg = dr["FeatureImg"].ToString(),
+                        brandUserKey=dr["UserKey"].ToString()
                     };
                     string selectDBTime = string.Format("Select DatePosted from Tbl_Items Where ItemID={0}", objitem.ItemId);
                     DatabaseManagement db1 = new DatabaseManagement();
@@ -889,15 +900,18 @@ var desc="";
                         dbDate = Convert.ToDateTime(dr1[0]);
                         objitem.Dated = Common.GetRelativeTime(dbDate);
                     }
+                    dr1 = null;
+                    db1.CloseConnection();
+                    db1 = null;
                     var pageDoc = new HtmlDocument();
                         pageDoc.LoadHtml(objitem.Description);
                         desc = pageDoc.DocumentNode.InnerText;
                         objitem.Description = desc;
-                    if (tempCount >= startItems && tempCount <= endItems)
-                    {
+                   // if (tempCount >= startItems && tempCount <= endItems)
+                    //{
                           
                         itemList.Add(objitem);
-                    }
+                    //}
                     tempCount++;
 
 
@@ -914,8 +928,9 @@ var desc="";
             //rptLookbook.DataSourceID = "";
             //rptLookbook.DataSource = sdsLookbooks;
             //rptLookbook.DataBind();
-                    db._sqlConnection.Close();
-                                db._sqlConnection.Dispose();
+            dr.Close();
+            db.CloseConnection();
+            db = null;
             return itemList;
         }
         catch (Exception ex)
@@ -1662,6 +1677,7 @@ var desc="";
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
+            db.CloseConnection();
             return result;
         }
         catch (Exception ex)

@@ -253,6 +253,7 @@ select option {
       
       <div class="reblockadd">
         <div class="textforget">Brand Information</div> 
+        <div style="display:none">
         <div id="divAlerts" runat="server" class="alert" visible="False">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <asp:Label runat="server" ID="lblStatus" for="PageMessage"

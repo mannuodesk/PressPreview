@@ -347,7 +347,7 @@ public partial class home : System.Web.UI.Page
                            " Tbl_Items.Title, Tbl_Items.ItemKey, Tbl_Items.Description, Tbl_Items.FeatureImg, Tbl_Items.Views," +
                            " CAST(Tbl_Items.DatePosted AS VARCHAR(12)) as DatePosted, Tbl_Items.DatePosted as [dated] FROM dbo.Tbl_Brands " +
                            " INNER JOIN Tbl_Items ON dbo.Tbl_Brands.UserID = Tbl_Items.UserID " +
-                           " Where dbo.Tbl_Brands.UserID =" + Convert.ToInt32(Request.QueryString["v"]) + " AND Tbl_Items.Title LIKE '" + txtsearch.Text + "%'  AND Tbl_Items.IsDeleted IS NULL AND Tbl_Items.IsPublished = 1 " +
+                           " Where dbo.Tbl_Brands.UserID ='" + Convert.ToInt32(Request.QueryString["v"]) + "' AND Tbl_Items.Title LIKE '%" + txtsearch.Text + "%'  AND Tbl_Items.IsDeleted IS NULL AND Tbl_Items.IsPublished = 1 " +
                            " ORDER BY Tbl_Items.DatePosted DESC";
                 cmd.CommandText = qrySearch;
                 cmd.Connection = con;

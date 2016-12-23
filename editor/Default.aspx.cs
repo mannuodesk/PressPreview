@@ -14,7 +14,7 @@ namespace editor
     {
     public partial class Default : System.Web.UI.Page
         {
-        public static string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        public static string[] monthNames = { "","Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
         protected void Page_Load(object sender, EventArgs e)
             {
             var al = new ArrayList { lblUsername, imgUserIcon };
@@ -141,16 +141,16 @@ namespace editor
                 cmd.Connection = db._sqlConnection;
                 cmd.CommandType = CommandType.StoredProcedure;
                 //cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-                cmd.Parameters.AddWithValue("@PageIndex", 1);
+                cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                 //cmd.Parameters.AddWithValue("@PageSize", 10);
                 cmd.Parameters.AddWithValue("@PageSize", 10000);
                 cmd.Parameters.Add("@PageCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
 
                 int pageCount = Convert.ToInt32(cmd.Parameters["@PageCount"].Value);
                 SqlDataReader dr = cmd.ExecuteReader();
-                int startItems = ((pageIndex - 1) * pagesize) + 1;
-                int endItems = (startItems + pagesize) - 1;
-                int tempCount = 1;
+                //int startItems = ((pageIndex - 1) * pagesize) + 1;
+                //int endItems = (startItems + pagesize) - 1;
+                //int tempCount = 1;
 
                 if (dr.HasRows)
                     {
@@ -177,11 +177,11 @@ namespace editor
                             FeatureImg = dr["FeatureImg"].ToString()
                         };
 
-                        if (tempCount >= startItems && tempCount <= endItems)
-                            {
+                        //if (tempCount >= startItems && tempCount <= endItems)
+                          //  {
                             itemList.Add(objitem);
-                            }
-                        tempCount++;
+                            //}
+                        //tempCount++;
                         }
                     }
                 itemList = sortListBySortOrder(itemList);

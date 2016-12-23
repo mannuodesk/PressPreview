@@ -378,6 +378,7 @@
              if (items.length != 0) {
                  hasItem = true;
                  var $grid = $('.grid');
+                 
                  $grid.masonry({
                      itemSelector: '.boxn1',
                      transitionDuration: '0.4s',

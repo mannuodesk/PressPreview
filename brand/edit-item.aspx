@@ -100,7 +100,7 @@
 
 
              var itemDetail = $("txtDescription_designEditor").val();
-             var desc = $('#txtDescription').html();
+             var desc = $('#txtDescription').val();
              console.log(desc);
              //alert(itemDetail);
              itemcolor = $('#colbtn').css("background-color");
@@ -125,6 +125,18 @@
              }
 
              var DescriptionTextDetails = $("#txtDescription").val();
+              if ($("#txtDescription").val() == "") {
+                 $("#errorDescription").remove();
+                 errorMessage = "Please enter DESCRIPTION";
+                 var errorDiv = "<p class='errorMessage' id='errorDescription'>" + errorMessage + "</p>"
+                 $("#title_Description").append(errorDiv);
+                 errorFlag = true;
+             }
+             else {
+                 $("#errorDescription").remove();
+             }
+             
+             
              var RetailText = $("#txtRetail").val();
              if ($("#txtRetail").val() == "") {
                  $("#errorRetail").remove();
@@ -172,7 +184,8 @@
              else {
                  $("#errorStyleName").remove();
              }
-             if (CategoriesSelectedlength < 1) {
+             var categorySelected= $("#CategorySelected").val();
+             if (categorySelected == 'false') {
                  $("#errorCategory").remove();
                  errorMessage = "Please Select Category";
                  var errorDiv = "<p class='errorMessage' id='errorCategory'>" + errorMessage + "</p>"
@@ -195,7 +208,8 @@
              else {
                  $("#errorItemColor").remove();
              }
-             if (SeasonsSelectedlength < 1) {
+             var seasonSelected= $("#SeasonSelected").val();
+             if (seasonSelected == 'false') {
                  $("#errorSeason").remove();
                  errorMessage = "Please Select Season";
                  var errorDiv = "<p class='errorMessage' id='errorSeason'>" + errorMessage + "</p>"
@@ -246,7 +260,7 @@
                      type: "POST",
                      contentType: "application/json; charset=utf-8",
                      url: '<%= ResolveUrl("edit-item.aspx/SaveItem") %>',
-                     data: '{DescriptionText: "' + DescriptionTextDetails + '",TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
+                     data: '{DescriptionText: "' + DescriptionTextDetails.replace(/"/g, '\\"') + '",TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
                      //data: '{TitleText: "' + TitleText + '",RetailText: "' + RetailText + '",WholesaleText: "' + WholesaleText + '",StyleNumberText: "' + StyleNumberText + '",StyleNameText: "' + StyleNameText + '",v:' + v + '}',
                      //data: { "TitleText": TitleText, "RetailText": RetailText, "WholesaleText": WholesaleText, "StyleNumberText": StyleNumberText, "StyleNameText": StyleNameText },
                      dataType: "json",
@@ -414,20 +428,20 @@
                     console.log(resp);
 
                 });
-                // Validate the dimensions of the image....
-                this.on('thumbnail', function (file) {
-                    if (file.width < 800 || file.height < 800) {
-                        file.rejectDimensions();
-                    } else {
-                        file.acceptDimensions();
-                    }
-                });
+                // // Validate the dimensions of the image....
+                // this.on('thumbnail', function (file) {
+                //     if (file.width < 800 || file.height < 800) {
+                //         file.rejectDimensions();
+                //     } else {
+                //         file.acceptDimensions();
+                //     }
+                // });
 
                 this.on("addedfile", function (file) {
 
                     // this.options.thumbnail.call(this, file, file_image);
                     // Create the remove button
-                    var removeButton = Dropzone.createElement("<button style='position:absolute; margin-top: -75%; margin-left: 93%; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
+                    var removeButton = Dropzone.createElement("<button style='position:absolute; top: 0; margin-left: 0; z-index: 100; background:#ccc; border:0; color:#fff;'>X</button>");
                     // Capture the Dropzone instance as closure.
 
                     var _this = this;
@@ -466,12 +480,12 @@
                 });
 
             },
-            accept: function (file, done) {
-                file.acceptDimensions = done;
-                file.rejectDimensions = function () {
-                    done('The image must be at least 800 x 800px');
-                };
-            }
+            // accept: function (file, done) {
+            //     file.acceptDimensions = done;
+            //     file.rejectDimensions = function () {
+            //         done('The image must be at least 800 x 800px');
+            //     };
+            // }
         };
 
     </script>
@@ -716,11 +730,15 @@
        CKEDITOR.add();            
    </script>--%>
    
-            <div class="textadd" id="title_add">DESCRIPTION<span class="text-danger">*</span></div>
-   <FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
+            <div class="textadd" id="title_Description">DESCRIPTION<span class="text-danger">*</span></div>
+ 
+  <asp:TextBox id="txtDescription" class="addin"  style="resize: none !important;  width: 100% !important;" OnTextChanged="txtDescription_TextChanged" TextMode="multiline" Columns="50" Rows="10" runat="server" />
+
+   <%--<FTB:FreeTextbox runat="server" ID="txtDescription" ButtonSet="OfficeMac"  OnTextChanged="txtDescription_TextChanged"
           Height="200px" 
           ToolbarLayout="JustifyLeft,JustifyRight,JustifyCenter,JustifyFull;BulletedList,NumberedList,Indent,Outdent; InsertRule|Cut,Copy,Paste;Print" 
-          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>
+          ToolbarStyleConfiguration="Office2000" Width="100%"></FTB:FreeTextbox>--%>
+          
       <asp:RequiredFieldValidator ID="RfvDescription" runat="server" 
           EnableClientScript="True"  ErrorMessage="Item Description" 
           ValidationGroup="gpMain" ControlToValidate="txtDescription" Display="none" 
@@ -1057,7 +1075,7 @@
             <!--Holidays-->
                   <div class="col-md-12 discrigblock">
                          <div class="searchb">
-                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holiday <span class="text-danger">*</span></div> 
+                             <div class="serheading" style="margin-bottom:10px;" id="holiday_add">Holidays </div> 
                 
                           <asp:updatepanel runat="server" ID="up_Holidays" >
                                  <ContentTemplate>
@@ -1182,6 +1200,8 @@
                                      ValidationGroup="gpTags"></asp:RequiredFieldValidator>
                              </div>
                                 <asp:HiddenField ID="hidField" runat="server" />
+                                <asp:HiddenField ID="CategorySelected" runat="server"  Value="false" />
+                                 <asp:HiddenField ID="SeasonSelected" runat="server"  Value="false" />    
                              </asp:Panel>
                              <div class="smalltext">Separate tags with commas</div>
                              <asp:Repeater runat="server" ID="rptTags" DataSourceID="sdsMoreTags" 
@@ -1634,7 +1654,7 @@
 
        });
    </script></div>  
-    
+  
 </form>
 </body>
 </html>

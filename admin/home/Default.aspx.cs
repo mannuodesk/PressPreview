@@ -78,7 +78,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                 int lookID = Convert.ToInt32(((Label) e.Row.FindControl("lblLookID")).Text);
                 Label lblTotal = (Label) e.Row.FindControl("lblTotal");
                 var db=new DatabaseManagement();
-                lblTotal.Text = db.GetExecuteScalar("Select COUNT(Tbl_LbItems.ItemID) From Tbl_LbItems INNER JOIN Tbl_Items ON Tbl_LbItems.ItemID=Tbl_Items.ItemID Where Tbl_Items.IsPublished=1 AND Tbl_Items.IsDeleted IS NULL AND LookID=" + lookID);
+                lblTotal.Text = db.GetExecuteScalar("Select COUNT(Tbl_LbItems.ItemID) From Tbl_LbItems INNER JOIN Tbl_Items ON Tbl_LbItems.ItemID=Tbl_Items.ItemID Where Tbl_Items.IsPublished=1 AND Tbl_Items.IsDeleted!=1 AND LookID=" + lookID);
                 db._sqlConnection.Close();
                 db._sqlConnection.Dispose();
             }

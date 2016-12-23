@@ -454,7 +454,8 @@
 
 <!--text-->
 
-<div class="wrapperwhite">
+<div class="wrapperwhite" style="
+    background: white;">
           
       <div class="colrow"> 
       

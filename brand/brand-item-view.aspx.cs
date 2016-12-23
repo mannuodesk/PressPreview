@@ -41,6 +41,8 @@ public partial class lightbox_item_view : Page
                 imgProfile.ImageUrl = "../brandslogoThumb/" + dr[0];
                 imgProfile2.ImageUrl = "../brandslogoThumb/" + dr[0];
             }
+            dr.Close();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -69,8 +71,8 @@ public partial class lightbox_item_view : Page
                 lblTotolViews.Text = dr.IsDBNull(8) ? "0" : (Convert.ToInt32(dr[8]) + 1).ToString();
             }
 
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            dr.Close();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -85,8 +87,7 @@ public partial class lightbox_item_view : Page
             int totalViews = Convert.ToInt32(lblTotolViews.Text);
             string qryViews = string.Format("UPDATE Tbl_Items Set Views={0}  Where ItemID={1}", totalViews, IEUtils.ToInt(Request.QueryString["v"]));
             db.ExecuteSQL(qryViews);
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -109,7 +110,6 @@ public partial class lightbox_item_view : Page
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
-            
             string isAlreadyLiked = string.Format("SELECT ID From Tbl_Item_Likes Where UserID={0} AND ItemID={1}",
                                                   IEUtils.ToInt(Session["UserID"]),
                                                   IEUtils.ToInt(Request.QueryString["v"]));
@@ -117,8 +117,8 @@ public partial class lightbox_item_view : Page
             lbtnLike.Enabled = !dr.HasRows;
             
             lblTotalLikes.Text = result.ToString(CultureInfo.InvariantCulture);
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            db.CloseConnection();
+            
         }
         catch (Exception ex)
         {
@@ -138,8 +138,7 @@ public partial class lightbox_item_view : Page
                 lblTotalLikes.Text = "0";
             lblTotalLikes.Text = (Convert.ToInt32(lblTotalLikes.Text) + 1).ToString();
             ItemLikes();
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -171,8 +170,7 @@ public partial class lightbox_item_view : Page
         lblPostCount.Text =
                db.GetExecuteScalar(string.Format("Select COUNT(PostId) From Tbl_Posts Where ItemID={0}",
                                                IEUtils.ToInt(Request.QueryString["v"])));
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
+        db.CloseConnection();
     }
     protected void btnAddPost_OnServerClick(object sender, EventArgs e)
     {
@@ -193,8 +191,7 @@ public partial class lightbox_item_view : Page
             GetCommentsCount();
             txtComment.Value = "";
             rptPosts.DataBind();
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -257,6 +254,7 @@ public partial class lightbox_item_view : Page
                 db.ExecuteSQL(deleteComment);
                 rptPosts.DataBind();
             }
+            db.CloseConnection();
         }
         catch (Exception ex)
         {

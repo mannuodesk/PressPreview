@@ -136,9 +136,11 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                                 CategoryText = dr["Title"].ToString();
                             }
                             con.Close();
+                            dr.Close();
 
                         }
                     }
+                    db.CloseConnection();
                     lbCategory.Text = CategoryText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
                 }
                 else
@@ -168,12 +170,13 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                             {
                                 SeasonText = dr["Season"].ToString();
                             }
+                            dr.Close();
                             con.Close();
 
                         }
                     }
                     btnSeason.Text = SeasonText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
-
+                    db.CloseConnection();
 
                 }
                 else
@@ -209,7 +212,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                         }
                     }
                     btnHoiday.Text = HolidayText + " <i class='fa fa-caret-down' aria-hidden='true' style='font-size:14px; margin-left:6px; margin-top:-5px;'></i>";
-
+                    db.CloseConnection();
                 }
                 else
                 {
@@ -327,6 +330,8 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                     empResult.Add(dr["Name"].ToString());
                 }
                 con.Close();
+                dr.Close();
+                db.CloseConnection();
                 return empResult;
             }
         }
@@ -632,9 +637,9 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
 
                     }
                 }
-
+                dr.Close();
             }
-
+            db.CloseConnection();
             return lookbookList;
 
 
@@ -660,6 +665,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
+            db.CloseConnection();
             return result;
         }
         catch (Exception)
@@ -1012,8 +1018,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
-
+        db.CloseConnection();
     }
 
     protected void btn_MoreTags_Click(object sender, EventArgs e)
@@ -1056,7 +1061,7 @@ public partial class editor_discover_lookbook : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
     }
 
     protected void GetSelectedTags()

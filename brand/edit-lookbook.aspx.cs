@@ -14,9 +14,17 @@ using DLS.DatabaseServices;
 public partial class pr_brand_add_item : System.Web.UI.Page
 {
     List<int> itemslst = new List<int>();
-    
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["IsLookbookSaved"] != null)
+        {
+            if ((bool)Session["IsLookbookSaved"] == true)
+            {
+                Session["IsLookbookSaved"] = false;
+                Response.Redirect("profile-page-lookbooks.aspx", false);
+            }
+        }
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         if (!IsPostBack)
@@ -26,15 +34,15 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             chkDefaultSeasons.DataBind();
             chkDefaultHoliday.DataBind();
             #region To check for View More and less Buttons
-            if (Session["EditLookbookDetailsData"]==null)
-            {
+            //if (Session["EditLookbookDetailsData"] == null)
+            //{
                 EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
                 Session["EditLookbookDetailsData"] = editLookbookDetailsData;
-            }
+            //}
             DisplayMoreCats();
             DisplayMoreHolidays();
             DisplayMoreSeasons();
-            if(chkCategories.Items.Count < 10)
+            if (chkCategories.Items.Count < 10)
             {
                 btn_ViewLess.Visible = btn_ViewMore.Visible = false;
                 (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Category_MoreThanTenCounter = false;
@@ -78,7 +86,23 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
             }
         }
-
+        if (Session["EditLookbookDetailsData"] != null)
+        {
+            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories != null)
+            {
+                if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories.Count > 0)
+                {
+                    CategorySelected.Value = "true";
+                }
+            }
+            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons != null)
+            {
+                if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Count > 0)
+                {
+                    SeasonSelected.Value = "true";
+                }
+            }
+        }
         //dvTagToggles.Visible = rptTags.Items.Count > 0;
         dvSeasonToggle.Visible = chkDefaultSeasons.Items.Count >= 4;
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
@@ -120,6 +144,23 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 }
             }
 
+            if (Session["EditLookbookDetailsData"] == null)
+            {
+                EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
+                Session["EditLookbookDetailsData"] = editLookbookDetailsData;
+            }
+            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems == null)
+            {
+                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems = new List<int>();
+            }
+            foreach (int itemID in itemslst)
+            {
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems.Contains(itemID))
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems.Add(itemID);
+                }
+            }
+
             dr2.Close();
             //foreach (RepeaterItem repItem in rptLookbook.Items)
             //{
@@ -135,8 +176,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
             dr.Close();
             dr.Dispose();
-            db._sqlConnection.Close();
-            db._sqlConnection.Dispose();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -160,7 +200,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         dr2.Close();
         dr2.Dispose();
 
-         foreach (ListItem itm in chkCategories.Items)
+        foreach (ListItem itm in chkCategories.Items)
         {
             if (catlst.Contains(IEUtils.ToInt(itm.Value)))
             {
@@ -169,7 +209,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
                     Session["EditLookbookDetailsData"] = editLookbookDetailsData;
                 }
-                if((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories==null)
+                if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories == null)
                 {
                     (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories = new List<int>();
                 }
@@ -198,24 +238,27 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         dr2.Close();
         dr2.Dispose();
 
-         foreach (ListItem itm in chkDefaultSeasons.Items)
+        foreach (ListItem itm in chkDefaultSeasons.Items)
         {
-            if (Session["EditLookbookDetailsData"] == null)
-            {
-                EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
-                Session["EditLookbookDetailsData"] = editLookbookDetailsData;
-            }
-            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons == null)
-            {
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons = new List<int>();
-            }
-            if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Contains(int.Parse(itm.Value)))
-            {
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Add(int.Parse(itm.Value));
-            }
             if (lst.Contains(IEUtils.ToInt(itm.Value)))
             {
-                itm.Selected = true;
+                if (Session["EditLookbookDetailsData"] == null)
+                {
+                    EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
+                    Session["EditLookbookDetailsData"] = editLookbookDetailsData;
+                }
+                if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons == null)
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons = new List<int>();
+                }
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Contains(int.Parse(itm.Value)))
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Add(int.Parse(itm.Value));
+                }
+                if (lst.Contains(IEUtils.ToInt(itm.Value)))
+                {
+                    itm.Selected = true;
+                }
             }
         }
     }
@@ -236,24 +279,27 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         dr2.Close();
         dr2.Dispose();
 
-         foreach (ListItem itm in chkDefaultHoliday.Items)
+        foreach (ListItem itm in chkDefaultHoliday.Items)
         {
-            if (Session["EditLookbookDetailsData"] == null)
-            {
-                EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
-                Session["EditLookbookDetailsData"] = editLookbookDetailsData;
-            }
-            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons == null)
-            {
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons = new List<int>();
-            }
-            if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Contains(int.Parse(itm.Value)))
-            {
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Add(int.Parse(itm.Value));
-            }
             if (lst.Contains(IEUtils.ToInt(itm.Value)))
             {
-                itm.Selected = true;
+                if (Session["EditLookbookDetailsData"] == null)
+                {
+                    EditLookbookDetailsData editLookbookDetailsData = new EditLookbookDetailsData();
+                    Session["EditLookbookDetailsData"] = editLookbookDetailsData;
+                }
+                if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays == null)
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays = new List<int>();
+                }
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays.Contains(int.Parse(itm.Value)))
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays.Add(int.Parse(itm.Value));
+                }
+                if (lst.Contains(IEUtils.ToInt(itm.Value)))
+                {
+                    itm.Selected = true;
+                }
             }
         }
     }
@@ -409,23 +455,20 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 
                         string updateQuery = string.Format("UPDATE Tbl_Lookbooks Set  " +
                                                                 "Title={0},Description={1}," +
-                                                                "IsPublished={2}, UserID={3},DatePosted={4},Category={5},Season={6},Holiday={7} WHERE LookID={8} ",
+                                                                "IsPublished={2}, UserID={3},DatePosted={4} WHERE LookID={5} ",
 
                                                                 IEUtils.SafeSQLString(txtItemTitle.Value),
                                                                 IEUtils.SafeSQLString(Server.HtmlEncode(txtDescription.Text)),
                                                                 1,
                                                                 IEUtils.ToInt(userCookie.Value),
                                                                 "'" + DateTime.UtcNow + "'",
-                                                                IEUtils.SafeSQLString(chkCategories.SelectedItem.Text),
-                                                                IEUtils.SafeSQLString(chkDefaultSeasons.SelectedItem.Text),
-                                                                IEUtils.SafeSQLString(chkDefaultHoliday.SelectedItem.Text),
                                                                 IEUtils.ToInt(Request.QueryString["v"]));
 
                         db.ExecuteSQL(updateQuery);
 
-                        if(Session["EditLookbookDetailsData"]!=null)
+                        if (Session["EditLookbookDetailsData"] != null)
                         {
-                            if((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage!=null
+                            if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage != null
                                 && (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage != "")
                             {
                                 string dbQuery = string.Format("UPDATE Tbl_Lookbooks Set MainImg={0} WHERE LookID={1} ",
@@ -453,12 +496,12 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                         }
                     }
 
-// Add Caregory
+                    // Add Caregory
                     if (Session["EditLookbookDetailsData"] != null)
                     {
                         if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories != null)
                         {
-                            DeleteCSH(db,int.Parse(Request.QueryString["v"]), 0);
+                            DeleteCSH(db, int.Parse(Request.QueryString["v"]), 0);
                             foreach (ListItem lstCategory in chkCategories.Items)
                             {
                                 if (lstCategory.Selected)
@@ -485,7 +528,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     }
 
                     // Add Holidays
-                    if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons != null)
+                    if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays != null)
                     {
                         DeleteCSH(db, int.Parse(Request.QueryString["v"]), 1);
                         foreach (ListItem lstHoliday in chkDefaultHoliday.Items)
@@ -534,7 +577,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                     //ClearHolidays();
                     //ClearSeasons();
                     ErrorMessage.ShowSuccessAlert(lblStatus, "Changes to lookbook saved", divAlerts);
-                    Response.Redirect("profile-page-lookbooks.aspx",false);
+                    Response.Redirect("profile-page-lookbooks.aspx", false);
                     //Common.EmptyTextBoxes(this);
                     //const string cookieName = "CurrentLookId";
                     //if (Request.Cookies[cookieName] != null)
@@ -656,7 +699,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         chkCategories.DataSource = sdsDefaultCats;
         chkCategories.DataBind();
         LoadSelectedCategories();
-        if((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Category_MoreThanTenCounter)
+        if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Category_MoreThanTenCounter)
         {
             btn_ViewMore.Visible = true;
             btn_ViewLess.Visible = false;
@@ -707,7 +750,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         chkDefaultSeasons.DataSource = sdsDefaultSeasons;
         chkDefaultSeasons.DataBind();
         LoadSelectedSeasons();
-        if((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Season_MoreThanTenCounter)
+        if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Season_MoreThanTenCounter)
         {
             btn_MoreSeasons.Visible = true;
             btn_LessSeasons.Visible = false;
@@ -746,7 +789,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         chkDefaultHoliday.DataSource = sdsDefaultHoliday;
         chkDefaultHoliday.DataBind();
         LoadSelectedHolidays();
-        if((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Holiday_MoreThanTenCounter)
+        if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).Holiday_MoreThanTenCounter)
         {
             btn_MoreHolidays.Visible = true;
             btn_LessHolidays.Visible = false;
@@ -882,7 +925,7 @@ public partial class pr_brand_add_item : System.Web.UI.Page
         db.ExecuteSQL(insertQuery);
 
     }
-    
+
     private void LoadSelectedCategories()
     {
         foreach (ListItem itm in chkCategories.Items)
@@ -953,9 +996,16 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             if (chkCategories.Items[i].Selected)
             {
                 //selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories.Contains(Convert.ToInt32(chkCategories.Items[i].Value)))
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
+                }
             }
 
+        }
+        if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories.Count > 0)
+        {
+            CategorySelected.Value = "true";
         }
     }
     protected void chkDefaultSeasons_SelectedIndexChanged(object sender, EventArgs e)
@@ -973,10 +1023,16 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             if (chkDefaultSeasons.Items[i].Selected)
             {
                 //selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Contains(int.Parse(chkDefaultSeasons.Items[i].Value)))
+                {
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
+                }
             }
         }
-
+        if ((Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons.Count > 0)
+        {
+            SeasonSelected.Value = "true";
+        }
     }
     protected void chkDefaultHoliday_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -993,11 +1049,12 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             if (chkDefaultHoliday.Items[i].Selected)
             {
                 //selectedCategories.Add(Convert.ToInt32(chkCategories.Items[i].Value));
-                (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays.Add(Convert.ToInt32(chkDefaultHoliday.Items[i].Value));
+                if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays.Contains(int.Parse(chkDefaultHoliday.Items[i].Value)))
+                    (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays.Add(Convert.ToInt32(chkDefaultHoliday.Items[i].Value));
             }
         }
     }
-    
+
     protected static void DeleteCSH(DatabaseManagement db, int v, int temp)
     {
         if (temp == 0)
@@ -1016,5 +1073,183 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             db.ExecuteSQL(deleteSeasons);
         }
     }
-    
+
+    [WebMethod, ScriptMethod]
+    public static void SaveItem(string TitleText, string DescriptionTextDetails, string v)
+    {
+        try
+        {
+            var db = new DatabaseManagement();
+            int x = Convert.ToInt32(v);
+            string mainimg = db.GetExecuteScalar("SELECT MainImg From Tbl_Lookbooks Where LookID=" + IEUtils.ToInt(x));
+            if (string.IsNullOrEmpty(mainimg))
+            {
+                //ErrorMessage.ShowErrorAlert(lblStatus, "Please upload Lookbook's feature image.", divAlerts);
+            }
+            else
+            {
+                var userCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+                if (userCookie != null)
+                {
+
+                    string updateQuery = string.Format("UPDATE Tbl_Lookbooks Set  " +
+                                                            "Title={0},Description={1}," +
+                                                            "IsPublished={2}, UserID={3},DatePosted={4} WHERE LookID={5} ",
+
+                                                            IEUtils.SafeSQLString(TitleText),
+                                                            IEUtils.SafeSQLString(DescriptionTextDetails),
+                                                            1,
+                                                            IEUtils.ToInt(userCookie.Value),
+                                                            "'" + DateTime.UtcNow + "'",
+                                                            IEUtils.ToInt(x));
+
+                    db.ExecuteSQL(updateQuery);
+
+                    if (HttpContext.Current.Session["EditLookbookDetailsData"] != null)
+                    {
+                        if ((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage != null
+                            && (HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage != "")
+                        {
+                            string dbQuery = string.Format("UPDATE Tbl_Lookbooks Set MainImg={0} WHERE LookID={1} ",
+                                                IEUtils.SafeSQLString((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).LookBookFeaturedImage),
+                                                IEUtils.ToInt(x));
+                            db.ExecuteSQL(dbQuery);
+                        }
+                    }
+
+                    // Clear the previously selected items for this lookbook from database
+                    //string removeLookbookItemsFromDB = string.Format("Delete From Tbl_LbItems Where LookID={0}",
+                      //                                               IEUtils.ToInt(x));
+                   // db.ExecuteSQL(removeLookbookItemsFromDB);
+                    // Add the newly selected items to the database
+                    if (HttpContext.Current.Session["EditLookbookDetailsData"] != null)
+                    {
+                        if ((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems != null)
+                        {
+                            string removeLookbookItemsFromDB = string.Format("Delete From Tbl_LbItems Where LookID={0}",
+                                                                     IEUtils.ToInt(x));
+                            db.ExecuteSQL(removeLookbookItemsFromDB);
+                            //foreach (RepeaterItem repItem in rptLookbook.Items)
+                            foreach (int itemId in (HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems)
+                            {
+                                string addLookbookItems = string.Format("INSERT INTO Tbl_LbItems(ItemID,LookID) VALUES({0},{1})", IEUtils.ToInt(itemId), IEUtils.ToInt(x));
+                                db.ExecuteSQL(addLookbookItems);
+                            }
+                        }
+                    }
+
+                    // Add Caregory
+                    if (HttpContext.Current.Session["EditLookbookDetailsData"] != null)
+                    {
+                        if ((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories != null)
+                        {
+                            DeleteCSH(db, x, 0);
+                            foreach (int categoryID in (HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedCategories)
+                            {
+                                string addItemCategory = string.Format("INSERT INTO Tbl_LbCategory(CategoryID,LookID) VALUES({0},{1})", IEUtils.ToInt(categoryID), IEUtils.ToInt(x));
+                                db.ExecuteSQL(addItemCategory);
+                            }
+                        }
+                    }
+
+                    // Add Seasons
+                    if ((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons != null)
+                    {
+                        DeleteCSH(db, x, 2);
+                        foreach (int seasonId in (HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedSeasons)
+                        {
+                            string addItemSeason = string.Format("INSERT INTO Tbl_LbSeasons(SeasonID,LookID) VALUES({0},{1})", IEUtils.ToInt(seasonId), IEUtils.ToInt(x));
+                            db.ExecuteSQL(addItemSeason);
+                        }
+                    }
+
+                    // Add Holidays
+                    if ((HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays != null)
+                    {
+                        DeleteCSH(db, x, 1);
+                        foreach (int holidayId in (HttpContext.Current.Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedHolidays)
+                        {
+                            string addItemoreHolidays = string.Format("INSERT INTO Tbl_LbHolidays(HolidayID,LookID) VALUES({0},{1})", IEUtils.ToInt(holidayId), IEUtils.ToInt(x));
+                            db.ExecuteSQL(addItemoreHolidays);
+                        }
+                    }
+
+
+                    //foreach (ListItem lstCategory in chkCategories.Items)
+                    //{
+                    //    if (!lstCategory.Selected) continue;
+                    //    {
+                    //        string addItemCategory = string.Format("INSERT INTO Tbl_LbCategory(CategoryID,LookID) VALUES({0},{1})", IEUtils.ToInt(lstCategory.Value), IEUtils.ToInt(httpCookie.Value));
+                    //        db.ExecuteSQL(addItemCategory);
+                    //    }
+                    //}
+
+                    // Add Seasons
+
+                    //foreach (ListItem lstSeason in chkDefaultSeasons.Items)
+                    //{
+                    //    if (!lstSeason.Selected) continue;
+                    //    string addItemSeason = string.Format("INSERT INTO Tbl_LbSeasons(SeasonID,LookID) VALUES({0},{1})", IEUtils.ToInt(lstSeason.Value), IEUtils.ToInt(httpCookie.Value));
+                    //    db.ExecuteSQL(addItemSeason);
+                    //}
+
+                    // Add Holidays
+
+                    //foreach (ListItem lstHoliday in chkDefaultHoliday.Items)
+                    //{
+                    //    if (lstHoliday.Selected)
+                    //    {
+                    //        {
+                    //            string addItemoreHolidays = string.Format("INSERT INTO Tbl_LbHolidays(HolidayID,LookID) VALUES({0},{1})", IEUtils.ToInt(lstHoliday.Value), IEUtils.ToInt(httpCookie.Value));
+                    //            db.ExecuteSQL(addItemoreHolidays);
+                    //        }
+                    //    }
+                    //}
+                    //txtDescription.Text = "";
+                    //ClearCategories();
+                    //ClearHolidays();
+                    //ClearSeasons();
+                    //ErrorMessage.ShowSuccessAlert(lblStatus, "Changes to lookbook saved", divAlerts);
+                    //Common.EmptyTextBoxes(this);
+                    //const string cookieName = "CurrentLookId";
+                    //if (Request.Cookies[cookieName] != null)
+                    //{
+                    //    var myCookie = new HttpCookie(cookieName) {Expires = DateTime.Now.AddDays(-1d)};
+                    //    Response.Cookies.Add(myCookie);
+                    //}
+                    // rptTags.DataBind();
+                    //rptLookbook.DataBind();
+                    db.CloseConnection();
+                    HttpContext.Current.Session["EditLookbookDetailsData"] = null;
+                    HttpContext.Current.Session["IsLookbookSaved"] = true;
+                    HttpContext.Current.Response.Redirect("profile-page-lookbooks.aspx", false);
+                }
+            }
+
+        }
+
+        catch (Exception ex)
+        {
+            //ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
+    protected void chkItemID_CheckedChanged(object sender, EventArgs e)
+    {
+        if (Session["EditLookbookDetailsData"] != null)
+        {
+            (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems = new List<int>();
+            foreach (RepeaterItem repItem in rptLookbook.Items)
+            {
+                var chkItemID = (CheckBox)repItem.FindControl("chkItemID");
+                var lblSelectedItem = (Label)repItem.FindControl("SelectedItem");
+                if (chkItemID.Checked)
+                {
+                    if (!(Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems.Contains(int.Parse(lblSelectedItem.Text)))
+                    {
+                        (Session["EditLookbookDetailsData"] as EditLookbookDetailsData).SelectedItems.Add(int.Parse(lblSelectedItem.Text));
+                    }
+                }
+            }
+        }
+    }
 }

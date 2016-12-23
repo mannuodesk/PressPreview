@@ -163,7 +163,7 @@ ORDER BY BrandID DESC"></asp:SqlDataSource>
             </asp:UpdatePanel>
         <div class="footer">
              <div>
-                <strong>Copyrightt</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
+                <strong>Copyright</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
             </div>
         </div>
         </div>        

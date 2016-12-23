@@ -40,6 +40,8 @@ public class ImageCompressionWithDimensionsFormula
     public Size CalculateDimensions(Size oldSize, int targetSize)
     {
         Size newSize = new Size();
+        if(oldSize.Width<900 || oldSize.Height<900)
+            return oldSize;
         if (oldSize.Height > oldSize.Width)
         {
             newSize.Width = (int)(oldSize.Width * ((float)targetSize / (float)oldSize.Height));

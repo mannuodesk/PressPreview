@@ -244,7 +244,7 @@
 
                     </style>
 
-                    <div id="dlBrands" class="col-md-12" style="margin-bottom: 50px;text-align: center;">
+                    <div id="dlBrands" class="col-md-12" style="margin-bottom: 250px;text-align: center;">
                     </div>
 
                     <%--<table id="dlBrands" class="brandlist" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">

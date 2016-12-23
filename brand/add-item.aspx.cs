@@ -13,6 +13,14 @@ public partial class pr_brand_add_item : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["IsItemAdded"] != null)
+        {
+            if ((bool)Session["IsItemAdded"] == true)
+            {
+                Session["IsItemAdded"] = false;
+                Response.Redirect("profile-page-items.aspx", false);
+            }
+        }
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
         //txtItemTitle.Focus();
@@ -76,7 +84,23 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             }
 
         }
-
+        if(Session["AddNewItem"]!=null)
+        {
+            if((Session["AddNewItem"] as AddNewItem).SelectedCategories!=null)
+            {
+                if((Session["AddNewItem"] as AddNewItem).SelectedCategories.Count>0)
+                {
+                    CategorySelected.Value = "true";
+                }
+            }
+            if ((Session["AddNewItem"] as AddNewItem).SelectedSeasons != null)
+            {
+                if ((Session["AddNewItem"] as AddNewItem).SelectedSeasons.Count > 0)
+                {
+                    SeasonSelected.Value = "true";
+                }
+            }
+        }
         dvTagToggles.Visible = rptTags.Items.Count > 0;
         dvSeasonToggle.Visible = chkDefaultSeasons.Items.Count >= 4;
         ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
@@ -459,10 +483,9 @@ string.Format(
                     var myCookie = new HttpCookie(cookieName) { Expires = DateTime.Now.AddDays(-1d) };
                     HttpContext.Current.Response.Cookies.Add(myCookie);
                 }
-                db._sqlConnection.Close();
-                db._sqlConnection.Dispose();
+                db.CloseConnection();
                 HttpContext.Current.Session["AddNewItem"] = null;
-
+                HttpContext.Current.Session["IsItemAdded"] = true;
             }
         }
         catch (Exception ex)
@@ -555,6 +578,7 @@ string.Format(
             rptModTags.DataSource = (List<itemTags>)HttpContext.Current.Session["itemTags"];
             rptTags.DataBind();
             rptModTags.DataBind();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -735,6 +759,7 @@ string.Format(
                 string deleteItem = String.Format("Delete FROM Tbl_Items Where ItemID={0}",
                                                   IEUtils.ToInt(httpCookie.Value));
                 db.ExecuteSQL(deleteItem);
+                db.CloseConnection();
                 ErrorMessage.ShowSuccessAlert(lblStatus, "Item record deleted.", divAlerts);
             }
             else
@@ -831,6 +856,7 @@ string.Format(
                 // update the status of the message to read
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
+                db.CloseConnection();
                 Response.Redirect("massenger.aspx");
             }
         }
@@ -846,7 +872,7 @@ string.Format(
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
 
     }
 
@@ -873,6 +899,7 @@ string.Format(
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
+        db.CloseConnection();
 
     }
 
@@ -899,7 +926,14 @@ string.Format(
             }
 
         }
-
+        if((Session["AddNewItem"] as AddNewItem).SelectedCategories.Count>0)
+        {
+            CategorySelected.Value="true";
+        }
+        else
+        {
+            CategorySelected.Value="false";
+        }
     }
     static string itemDescription;
     protected void txtDescription_TextChanged(object sender, EventArgs e)
@@ -927,6 +961,15 @@ string.Format(
                 (Session["AddNewItem"] as AddNewItem).SelectedSeasons.Add(Convert.ToInt32(chkDefaultSeasons.Items[i].Value));
             }
 
+        }
+        
+        if((Session["AddNewItem"] as AddNewItem).SelectedSeasons.Count>0)
+        {
+            SeasonSelected.Value="true";
+        }
+        else
+        {
+            SeasonSelected.Value="false";
         }
     }
 

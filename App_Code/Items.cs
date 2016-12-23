@@ -24,6 +24,7 @@ public class Items
     public string DatePosted;
     public string Dated;
     public int sortOrder;
+     public string brandUserKey;
 
 
 }

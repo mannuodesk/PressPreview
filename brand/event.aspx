@@ -99,10 +99,12 @@
      
     </div>   
     <div style="margin-top:60px;">
+        <div style="display:none">
          <div id="divAlerts" runat="server" class="alert" visible="False">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <asp:Label runat="server" ID="lblStatus" for="PageMessage"
                 Text="" Visible="True"></asp:Label> 
+        </div>
         </div> 
     </div>
 </div><!--searcheventblock-->
@@ -179,7 +181,7 @@
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {
@@ -203,7 +205,7 @@
                 dataType: "json",
                 async: true,
                 error: function (jqXhr, textStatus, errorThrown) {
-                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                    // alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
                 },
                 success: function (msg) {
                     //                    if (msg.d == true) {

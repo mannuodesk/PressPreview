@@ -12,6 +12,7 @@ public class EditLookbookDetailsData
 	public List<int> SelectedCategories { get; set; }
     public List<int> SelectedSeasons { get; set; }
     public List<int> SelectedHolidays { get; set; }
+	public List<int> SelectedItems { get; set; }
 	public bool Category_MoreThanTenCounter { get; set; }
     public bool Season_MoreThanTenCounter { get; set; }
     public bool Holiday_MoreThanTenCounter { get; set; }

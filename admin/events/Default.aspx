@@ -128,7 +128,7 @@
             </asp:UpdatePanel>
         <div class="footer">
              <div>
-                <strong>Copyrightt</strong> Press Preview &copy; <%# Eval("EventDate", "{0:d}") %>-<%# Eval("EventDate", "{0:d}") %>
+               <strong>Copyright</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
             </div>
         </div>
         </div>        

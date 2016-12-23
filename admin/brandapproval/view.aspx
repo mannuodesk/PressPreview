@@ -190,7 +190,7 @@
             </asp:UpdatePanel>--%>
         <div class="footer">
              <div>
-                <strong>Copyright</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
+            <strong>Copyright</strong> Press Preview &copy; <%: DateTime.Now.Year %>-<%: DateTime.Now.Year+1 %>
             </div>
         </div>
         </div>        

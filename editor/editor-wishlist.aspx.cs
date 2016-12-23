@@ -59,6 +59,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                 string qryViews = string.Format("UPDATE Tbl_Editors Set TotalViews={0}  Where UserID={1}", totalViews, IEUtils.ToInt(httpCookie.Value));
                 db.ExecuteSQL(qryViews);
             }
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -92,7 +93,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                 }
                 dr.Close();
             }
-            db._sqlConnection.Close();
+            db.CloseConnection();
         }
         catch (Exception ex)
         {
@@ -169,6 +170,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                                                               selectedItemID, Convert.ToInt32(httpCookie.Value));
                     db.ExecuteSQL(removeFromWishlist);
                 }
+                db.CloseConnection();
                 //   rptLookbook.DataBind();
                 //   ErrorMessage.ShowSuccessAlert(lblStatus, "Item removed from your wish list.", divAlerts);
             }
@@ -189,9 +191,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                                                                   Convert.ToInt32(id), Convert.ToInt32(httpCookie2.Value));
             db.ExecuteSQL(deleteQuery);
         }
-        db._sqlConnection.Close();
-        db._sqlConnection.Dispose();
-
+        db.CloseConnection();
     }
     [WebMethod, ScriptMethod]
     public static List<string> GetItemTitle(string lbName)
@@ -212,7 +212,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                     empResult.Add(dr["Title"].ToString());
                 }
                 con.Close();
-                db._sqlConnection.Close();
+                db.CloseConnection();
                 return empResult;
             }
 
@@ -248,7 +248,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                 // rptLookbook.DataSource = cmd.ExecuteReader();
                 //  rptLookbook.DataBind();
                 con.Close();
-
+                db.CloseConnection();
             }
         }
     }
@@ -297,6 +297,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
                 Response.Redirect("massenger.aspx");
+                db.CloseConnection();
             }
         }
         catch (Exception ex)
@@ -311,8 +312,7 @@ public partial class editor_wishlist : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
-
+        db.CloseConnection();
     }
 
     protected void rptNotifications_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -338,7 +338,7 @@ public partial class editor_wishlist : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_NotifyFor Set ReadStatus={0} Where RecipID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-
+        db.CloseConnection();
     }
 
 
@@ -347,7 +347,9 @@ public partial class editor_wishlist : System.Web.UI.Page
     {
         try
         {
-            int pagesize = 10;
+            int pageSize=15;
+            int offSet = pageSize * (pageIndex - 1);
+            int fetchNext = offSet + pageSize;
             DatabaseManagement db = new DatabaseManagement();
             string fullQuery = string.Empty;
             string fullQuery2 = string.Empty;
@@ -360,10 +362,10 @@ public partial class editor_wishlist : System.Web.UI.Page
   " INNER JOIN dbo.Tbl_Users ON dbo.Tbl_Brands.UserID = dbo.Tbl_Users.UserID" +
   " INNER JOIN dbo.Tbl_WishList ON Tbl_WishList.ItemID = Tbl_Items.ItemID" +
   " Where dbo.Tbl_WishList.UserID = '" + v + "' AND  dbo.Tbl_Items.IsDeleted IS NULL AND dbo.Tbl_Items.IsPublished = 1" +
-  " ORDER BY dbo.Tbl_Items.DatePosted DESC";
-            int startItems = ((pageIndex - 1) * pagesize) + 1;
-            int endItems = (startItems + pagesize) - 1;
-            int tempCount = 1;
+  " ORDER BY dbo.Tbl_Items.DatePosted DESC OFFSET " + offSet + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+            //int startItems = ((pageIndex - 1) * pagesize) + 1;
+            //int endItems = (startItems + pagesize) - 1;
+            //int tempCount = 1;
             var itemList = new List<Items>();
             fullQuery = fullQuery + select;
             fullQuery2 = fullQuery2 + select;
@@ -376,7 +378,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                     recordCount += 1;
                 }
             }
-            int pageCount = (int)Math.Ceiling(Convert.ToDecimal(recordCount / pagesize));
+            int pageCount = (int)Math.Ceiling(Convert.ToDecimal(recordCount / pageSize));
             dr2.Close();
 
             SqlDataReader dr = db.ExecuteReader(fullQuery);
@@ -415,17 +417,18 @@ public partial class editor_wishlist : System.Web.UI.Page
                         objitem.Description = objitem.Description.Substring(0, 50);
                         objitem.Description = objitem.Description + "...";
                     }
-                    if (tempCount >= startItems && tempCount <= endItems)
-                    {
+                    //if (tempCount >= startItems && tempCount <= endItems)
+                    //{
                         itemList.Add(objitem);
-                    }
+                    //}
 
-                    tempCount++;
+                    //tempCount++;
 
 
                 }
+                dr.Close();
             }
-
+            db.CloseConnection();
             return itemList;
         }
         catch (Exception ex)
@@ -525,8 +528,9 @@ public partial class editor_wishlist : System.Web.UI.Page
 
 
                 }
+                dr.Close();
             }
-
+            db.CloseConnection();
             return itemList;
         }
         catch (Exception ex)
@@ -549,6 +553,7 @@ public partial class editor_wishlist : System.Web.UI.Page
                     result = Convert.ToInt32(dr[0]);
             }
             dr.Close();
+            db.CloseConnection();
             return result;
         }
         catch (Exception ex)

@@ -53,6 +53,15 @@
              height: auto !important;
 
      }
+     
+     
+     
+     @media (min-width: 1074px){
+
+}
+     
+     
+ 
     </style>
 
 <script type="text/javascript">
@@ -128,7 +137,7 @@
                 fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                     " <div class='hover ehover13'> " +
                         "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-                                                   "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; ' alt=''> " +
+                                                   "     <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' style='width:100%;' alt=''> " +
                             // "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                                 "     <div class='overlay'> " +
                                     "         <h2>" + val.Name + " </h2> " +
@@ -228,7 +237,7 @@
             fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                 " <div class='hover ehover13'> " +
                     "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-                        "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
+                        "     <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                             "     <div class='overlay'> " +
                                 "         <h2>" + val + " </h2> " +
                                     "         <h3><a href='itemview2?v=" + val.ItemId + "' class='fancybox'>" + val.Title + "</a></h3> " +
@@ -323,7 +332,7 @@
             <asp:repeater runat="server" ID="rptSlider"  DataSourceID="sdsSlider">
                 <ItemTemplate>
                     <div data-p="225.00" style="display: none;">
-                        <a href='<%# Eval("BannerLink","{0}") %>' target="_blank"><img data-u="image" src='<%# Eval("BannerImg","../photobank/{0}") %>' /></a>
+                        <a href='http://<%# Eval("BannerLink","{0}") %>' target="_blank"><img data-u="image" src='<%# Eval("BannerImg","../photobank/{0}") %>' /></a>
                     </div>
                 </ItemTemplate>
             </asp:repeater>
@@ -376,7 +385,8 @@
                  <div class="hover ehover13">
                      <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                     <!--<img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">-->
-                                        <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%;" alt="">
+                                   <%-- <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="width:100%;height: 510px;" alt="">--%> 
+                                        <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="width: 100%;" alt="">
                      </a>
                          <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                         <div class=" overlay">
@@ -422,7 +432,7 @@
                            <div class="hover ehover13">
                                <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                                <!--<img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:333px;" alt="">-->
-                                                             <img class="img-responsive" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%;" alt="">
+                                                             <img class="img-responsive" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="width:100%;" alt="">
                                <div class="overlay">
                                    <h2><%# Eval("Name","{0}") %> </h2>
                                    <h3><a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></h3>
