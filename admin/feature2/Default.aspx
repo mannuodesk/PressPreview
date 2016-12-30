@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PP::Feature 2 Items</title>
+    <title>PP::Feature2</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                     });
                 }
             });
-        }  
+        }
     </script>
 </head>
 
@@ -237,6 +237,246 @@
                                         <sorteddescendingcellstyle backcolor="#E5E5E5" />
                                         <sorteddescendingheaderstyle backcolor="#242121" />
                                     </asp:GridView>
+                                                              <asp:GridView ID="GridView2" runat="server" AllowPaging="True" 
+                                        AutoGenerateColumns="False" BackColor="White" BorderColor="#CCCCCC" 
+                                        BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
+                                        CssClass="table table-striped table-bordered table-hover" 
+                                        DataSourceID="sdsSearchByBoth" ForeColor="Black" GridLines="Horizontal" Width="100%" 
+                                        OnRowCommand="GridView2_RowCommand" 
+                                        onrowdatabound="GridView2_RowDataBound" AllowSorting="True" 
+                                        EmptyDataText="No record found !" ShowHeaderWhenEmpty="True" >
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Item Main Image">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("FeatureImg") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <div class="ibox" style="margin-bottom:0px;">
+                                                          <div class="ibox-content product-box" style="width:100px;">
+                                                                <div class="product-imitation">
+                                                                    <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("FeatureImg", "../../photobank/{0}") %>' style="width:100px;"/>
+                                                                </div>
+                                                                <%--<div class="product-desc" style="padding:0px;">
+                                                                    <span class="product-price" style="float:none; width: 100%;text-align: center;">
+                                                                        <%# Eval("Title", "{0:d}") %> 
+                                                                    </span>
+                                                                </div>--%>
+                                                           </div>
+                                                      </div>
+                                                  
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" />
+                                            <asp:BoundField DataField="Name" HeaderText="Brand Name" 
+                                                SortExpression="Name" >
+                                            </asp:BoundField>
+                                            <asp:TemplateField HeaderText="IsFeatured2" SortExpression="IsFeatured2">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox2" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblFeature1" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Display Order" SortExpression="SortOrder">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox3" runat="server" Text='<%# Bind("SortOrder") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSortOrder" runat="server" Text='<%# Bind("SortOrder") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                             <asp:TemplateField>
+                                                <ItemTemplate>
+                                                 <asp:Button runat="server" ID="btnMF" CommandName="1" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="Mark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;" />
+                                              <asp:Button runat="server" ID="btnUMF" CommandName="2" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="UnMark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;"/>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                        <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
+                                        <PagerSettings FirstPageText="First" LastPageText="Last" 
+                                            Mode="NumericFirstLast" />
+                                        <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" 
+                                            CssClass="GridPager" />
+                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                    </asp:GridView>
+                                                              <asp:GridView ID="GridView3" runat="server" AllowPaging="True" 
+                                        AutoGenerateColumns="False" BackColor="White" BorderColor="#CCCCCC" 
+                                        BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
+                                        CssClass="table table-striped table-bordered table-hover" 
+                                        DataSourceID="sdsSearchBrandOnly" ForeColor="Black" GridLines="Horizontal" Width="100%" 
+                                        OnRowCommand="GridView3_RowCommand" 
+                                        onrowdatabound="GridView3_RowDataBound" AllowSorting="True" 
+                                        EmptyDataText="No record found !" ShowHeaderWhenEmpty="True" >
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Item Main Image">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("FeatureImg") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <div class="ibox" style="margin-bottom:0px;">
+                                                          <div class="ibox-content product-box" style="width:100px;">
+                                                                <div class="product-imitation">
+                                                                    <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("FeatureImg", "../../photobank/{0}") %>' style="width:100px;"/>
+                                                                </div>
+                                                                <%--<div class="product-desc" style="padding:0px;">
+                                                                    <span class="product-price" style="float:none; width: 100%;text-align: center;">
+                                                                        <%# Eval("Title", "{0:d}") %> 
+                                                                    </span>
+                                                                </div>--%>
+                                                           </div>
+                                                      </div>
+                                                  
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" />
+                                            <asp:BoundField DataField="Name" HeaderText="Brand Name" 
+                                                SortExpression="Name" >
+                                            </asp:BoundField>
+                                            <asp:TemplateField HeaderText="IsFeatured2" SortExpression="IsFeatured2">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox2" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblFeature1" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Display Order" SortExpression="SortOrder">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox3" runat="server" Text='<%# Bind("SortOrder") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSortOrder" runat="server" Text='<%# Bind("SortOrder") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                             <asp:TemplateField>
+                                                <ItemTemplate>
+                                                 <asp:Button runat="server" ID="btnMF" CommandName="1" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="Mark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;" />
+                                              <asp:Button runat="server" ID="btnUMF" CommandName="2" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="UnMark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;"/>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                        <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
+                                        <PagerSettings FirstPageText="First" LastPageText="Last" 
+                                            Mode="NumericFirstLast" />
+                                        <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" 
+                                            CssClass="GridPager" />
+                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                    </asp:GridView>
+                                                              <asp:GridView ID="GridView4" runat="server" AllowPaging="True" 
+                                        AutoGenerateColumns="False" BackColor="White" BorderColor="#CCCCCC" 
+                                        BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" 
+                                        CssClass="table table-striped table-bordered table-hover" 
+                                        DataSourceID="sdsSearchItemOnly" ForeColor="Black" GridLines="Horizontal" Width="100%" 
+                                        OnRowCommand="GridView4_RowCommand" 
+                                        onrowdatabound="GridView4_RowDataBound" AllowSorting="True" 
+                                        EmptyDataText="No record found !" ShowHeaderWhenEmpty="True" >
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Item Main Image">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("FeatureImg") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <div class="ibox" style="margin-bottom:0px;">
+                                                          <div class="ibox-content product-box" style="width:100px;">
+                                                                <div class="product-imitation">
+                                                                    <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("FeatureImg", "../../photobank/{0}") %>' style="width:100px;"/>
+                                                                </div>
+                                                                <%--<div class="product-desc" style="padding:0px;">
+                                                                    <span class="product-price" style="float:none; width: 100%;text-align: center;">
+                                                                        <%# Eval("Title", "{0:d}") %> 
+                                                                    </span>
+                                                                </div>--%>
+                                                           </div>
+                                                      </div>
+                                                  
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title" />
+                                            <asp:BoundField DataField="Name" HeaderText="Brand Name" 
+                                                SortExpression="Name" >
+                                            </asp:BoundField>
+                                            <asp:TemplateField HeaderText="IsFeatured2" SortExpression="IsFeatured2">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox2" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblFeature1" runat="server" Text='<%# Bind("IsFeatured2") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Display Order" SortExpression="SortOrder">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox3" runat="server" Text='<%# Bind("SortOrder") %>'></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblSortOrder" runat="server" Text='<%# Bind("SortOrder") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                             <asp:TemplateField>
+                                                <ItemTemplate>
+                                                 <asp:Button runat="server" ID="btnMF" CommandName="1" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="Mark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;" />
+                                              <asp:Button runat="server" ID="btnUMF" CommandName="2" CommandArgument='<%# Eval("ItemID", "{0}") %>'  Text="UnMark as Feature 2" CssClass="form-control btn btn-md btn-primary" style="width:160px;"/>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                        <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
+                                        <PagerSettings FirstPageText="First" LastPageText="Last" 
+                                            Mode="NumericFirstLast" />
+                                        <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" 
+                                            CssClass="GridPager" />
+                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                        <sortedascendingcellstyle backcolor="#F7F7F7" />
+                                        <sortedascendingheaderstyle backcolor="#4B4B4B" />
+                                        <sorteddescendingcellstyle backcolor="#E5E5E5" />
+                                        <sorteddescendingheaderstyle backcolor="#242121" />
+                                    </asp:GridView>
                                     </ContentTemplate>
                                     </asp:updatepanel>
                                     
@@ -245,7 +485,7 @@
                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
                                         SelectCommand="SELECT Tbl_Items.ItemID, Tbl_Items.Title, Tbl_Items.Description, CASE(IsFeatured2) WHEN 1 THEN 'Yes' ELSE 'No' END as IsFeatured2 , Tbl_Items.SortOrder, Tbl_Brands.Name, Tbl_Items.FeatureImg FROM Tbl_Items 
 INNER JOIN Tbl_Brands ON Tbl_Items.UserID = Tbl_Brands.UserID 
-WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL"></asp:SqlDataSource>
+WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL  order by IsFeatured2 DESC"></asp:SqlDataSource>
                                         
                                      <asp:SqlDataSource ID="sdsSearchByBoth" runat="server" 
                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
@@ -253,7 +493,7 @@ WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatur
                                         
                                         
                                         
-                                        SelectCommand="SELECT Tbl_Items.ItemID, Tbl_Items.Title, Tbl_Items.Description, CASE(IsFeatured2) WHEN 1 THEN 'Yes' ELSE 'No' END as IsFeatured2 , Tbl_Items.SortOrder, Tbl_Brands.Name, Tbl_Items.FeatureImg FROM Tbl_Items INNER JOIN Tbl_Brands ON Tbl_Items.UserID = Tbl_Brands.UserID WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL AND (Tbl_Items.UserID=? AND Tbl_Items.Title LIKE ? +'%')">
+                                        SelectCommand="SELECT Tbl_Items.ItemID, Tbl_Items.Title, Tbl_Items.Description, CASE(IsFeatured2) WHEN 1 THEN 'Yes' ELSE 'No' END as IsFeatured2 , Tbl_Items.SortOrder, Tbl_Brands.Name, Tbl_Items.FeatureImg FROM Tbl_Items INNER JOIN Tbl_Brands ON Tbl_Items.UserID = Tbl_Brands.UserID WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL AND (Tbl_Items.UserID=? AND Tbl_Items.Title LIKE '%'+ ? +'%')">
                                          <SelectParameters>
                                              <asp:ControlParameter ControlID="ddbrandName" Name="?" 
                                                  PropertyName="SelectedValue" />
@@ -272,7 +512,7 @@ WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatur
                                     <asp:SqlDataSource ID="sdsSearchItemOnly" runat="server" 
                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                        SelectCommand="SELECT Tbl_Items.ItemID, Tbl_Items.Title, Tbl_Items.Description, CASE(IsFeatured2) WHEN 1 THEN 'Yes' ELSE 'No' END as IsFeatured2 , Tbl_Items.SortOrder, Tbl_Brands.Name, Tbl_Items.FeatureImg FROM Tbl_Items INNER JOIN Tbl_Brands ON Tbl_Items.UserID = Tbl_Brands.UserID WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL AND  Tbl_Items.Title LIKE ? +'%'">
+                                        SelectCommand="SELECT Tbl_Items.ItemID, Tbl_Items.Title, Tbl_Items.Description, CASE(IsFeatured2) WHEN 1 THEN 'Yes' ELSE 'No' END as IsFeatured2 , Tbl_Items.SortOrder, Tbl_Brands.Name, Tbl_Items.FeatureImg FROM Tbl_Items INNER JOIN Tbl_Brands ON Tbl_Items.UserID = Tbl_Brands.UserID WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatured1 IS NULL AND  Tbl_Items.Title LIKE '%'+ ? +'%'">
                                         <SelectParameters>
                                             <asp:ControlParameter ControlID="txtName" Name="?" PropertyName="Text" />
                                         </SelectParameters>
@@ -338,12 +578,12 @@ WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatur
     <script src="../js/demo/sparkline-demo.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(function () {
-        $("#lbViewAlerts").click(function () {
-            var userId = '<%= Session["UserID"] %>';
+        $(document).ready(function () {
+            $("#lbViewAlerts").click(function () {
+                var userId = '<%= Session["UserID"] %>';
             $.ajax({
                 type: "POST",
-                url: $(location).attr('pathname')+"\\Default.aspx\\UpdateNotifications",
+                url: $(location).attr('pathname') + "\\Default.aspx\\UpdateNotifications",
                 contentType: "application/json; charset=utf-8",
                 data: "{'userID':'" + userId + "'}",
                 dataType: "json",
@@ -355,10 +595,10 @@ WHERE (Tbl_Items.IsPublished = 1) AND (Tbl_Items.IsDeleted IS NULL) AND IsFeatur
                     //                    if (msg.d == true) {
 
                     $('#<%=lblTotalNotifications.ClientID%>').hide("slow");;
-                    return false;  
+                    return false;
                 }
             });
-           
+
         });
     });
     </script>

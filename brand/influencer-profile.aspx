@@ -8,11 +8,59 @@
 
 <link rel="stylesheet" type="text/css" href="../css/custom.css"/>
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
+<link rel="stylesheet" href="../css/bootstrap-select.css">
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../source/jquery.fancybox.css" media="screen" />
 
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="application/javascript" src="../js/custom.js"></script>
+ <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+      <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+   <script src="../js/bootstrap.js"></script>
+     <script type="text/javascript">
+          $(document).ready(function () {
+
+              $(".fancybox").fancybox({
+                  href: $(this).attr('href'),
+                  fitToView: true,
+                  frameWidth: '90%',
+                  frameHeight: '100%',
+                  width: '87%',
+                  height: '100%',
+                  autoSize: false,
+                  closeBtn: true,
+                  closeClick: false,
+                  openEffect: 'fade',
+                  closeEffect: 'fade',
+                  type: "iframe",
+                  opacity: 0.7,
+                  onStart: function () {
+                      $("#fancybox-overlay").css({ "position": "fixed" });
+                  },
+                  beforeShow: function () {
+
+                      var url = $(this).attr('href');
+                      url = (url == null) ? '' : url.split('?');
+                      if (url.length > 1) {
+                          url = url[1].split('=');
+
+                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                          var id = url[1];
+                          var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                          //window.location = pageUrl;
+                          window.history.pushState('d', 't', pageUrl);
+                      }
+                  },
+                  beforeClose: function () {
+                      window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
+
+                  }
+
+              });
+
+          });
+      </script>
 	<script type="text/javascript">
         function HideLabel() {
             setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
@@ -250,9 +298,7 @@
 <script src="../js/backtotop.js" type="text/javascript"></script>
 </div><!--wrapper-->
 
-    <script src="../js/bootstrap.js"></script>
-    <script type="application/javascript" src="../js/custom.js"></script>
-    <script type="text/javascript">
+     <script type="text/javascript">
         $(document).ready(function () {
             var userId = '<%= Request.Cookies["FRUserId"].Value %>';
             $("#lbViewMessageCount").click(function () {
@@ -304,31 +350,7 @@
 
         });
     </script>   
-    <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
-   <script type="text/javascript">
-       $(document).ready(function () {
-           $(".mesblockinf").fancybox({
 
-               fitToView: true,
-               frameWidth: '600px',
-               frameHeight: '300px',
-               width: '600px',
-               height: '300px',
-               autoSize: false,
-               closeBtn: true,
-               closeClick: false,
-               openEffect: 'fade',
-               closeEffect: 'fade',
-               type: "iframe",
-               opacity: 0.7,
-               onStart: function () {
-                   $("#fancybox-overlay").css({ "position": "fixed" });
-               }
-              
-           });
-
-       });
-</script>
      
 </form>
 </body>

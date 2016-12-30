@@ -98,6 +98,7 @@ public partial class lightbox_item_view : Page
                 Session["ItemdID"] = dr[0].ToString();
                 lblItemTitle.Text = dr[1].ToString();
                 lblDescription.Text = dr[2].ToString();
+                lblDescription.Text = lblDescription.Text.Replace("\n", "<br />");
                 lblRetailPrice.Text = dr[3].ToString();
                 lblWholesalePrice.Text = dr[4].ToString();
                 lblStyleNumber.Text = dr[5].ToString();
@@ -108,7 +109,13 @@ public partial class lightbox_item_view : Page
                 rptHoliday.DataBind();
                 lblTotalLikes.Text = dr.IsDBNull(12) ? "0" : rptHoliday.Items.Count.ToString();
                 //  lblBrandName.Text = dr[11].ToString();
-
+                itemDiv.Visible = true;
+                noitemDiv.Visible = false;
+            }
+            else
+            {
+                itemDiv.Visible = false;
+                noitemDiv.Visible = true;   
             }
 
             db._sqlConnection.Close();
@@ -541,6 +548,44 @@ public partial class lightbox_item_view : Page
                     "'" + DateTime.UtcNow + "'",
                     IEUtils.ToInt(lblUserID.Text));
                     db.ExecuteSQL(addComment);
+                    
+                    #region notification of comment reply
+
+                    int notifyID = db.GetMaxID("NotifyID", "Tbl_Notifications");
+                    string username = Session["Username"].ToString();
+                    string itemid = Request.QueryString["v"];
+                    string notificationTitle = "<a href='influencer-profile.aspx?v=" + _loggedInUser[0] + "' >" + _loggedInUser[1] + "</a> replied to a comment on your item <a href='itemview1.aspx?v=" + IEUtils.ToInt(lblItemID.Text) + "' class='fancybox'>" + lblItemTitle.Text + "</a>";
+                    string addNotification =
+                             string.Format("INSERT INTO Tbl_Notifications(UserID,Title,DatePosted,ItemID) VALUES({0},{1},{2},{3})",
+
+                                           IEUtils.ToInt(Session["UserID"]),
+                                           IEUtils.SafeSQLString(notificationTitle),
+                                           IEUtils.SafeSQLDate(DateTime.UtcNow),
+                                           IEUtils.ToInt(lblItemID.Text)
+
+                                 );
+
+                    db.ExecuteSQL(addNotification);
+
+                    string
+                        updateQuery =
+                         string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                      IEUtils.ToInt(notifyID),
+                                       IEUtils.ToInt(lblUserID.Text)
+
+                             );
+
+                    db.ExecuteSQL(updateQuery);
+                    string
+                         updateQuery1 =
+                          string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                       IEUtils.ToInt(notifyID),
+                                       1
+
+                              );
+
+                    db.ExecuteSQL(updateQuery1);
+                    #endregion
                 }
                 rptPosts.DataBind();
                 txtReply.Text = "";

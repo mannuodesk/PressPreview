@@ -35,6 +35,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             chkDefaultSeasons.DataBind();
             chkDefaultHoliday.DataBind();
             #region To check for View More and less Buttons
+            Session["EditItemDetails"] = null;
+            Session["IsItemSaved"] = false;
             if (Session["EditItemDetails"] == null)
             {
                 EditItemDetails editItemDetails = new EditItemDetails();
@@ -542,6 +544,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                                             IEUtils.SafeSQLString(fname),
                                             x);
                             db.ExecuteSQL(updateFeaturedImageQuery);
+                            string updateFeatureImageInItemImages = string.Format("Update Tbl_ItemImages set ItemImg=(select Tbl_Items.FeatureImg from Tbl_Items where ItemID={0}), TempName='' WHERE ImgID=(Select min(ImgID) from Tbl_ItemImages where ItemID = {0})",x);
+                            db.ExecuteSQL(updateFeatureImageInItemImages);
                         }
                     }
 

@@ -18,20 +18,20 @@ public partial class brand_massenger : System.Web.UI.Page
     {
         var al = new ArrayList { lblUsername, imgUserIcon };
         Common.UserSettings(al);
-      
+
         if (!Page.IsPostBack)
         {
             PageLoad();
         }
         txtUsername.Focus();
-     //   ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
-     }
+        //   ClientScript.RegisterStartupScript(this.GetType(), "alert", "HideLabel();", true);
+    }
 
     private void PageLoad()
     {
         //txtMessage.Attributes.Add("onKeyPress",
         //                          "doClick('" + btnSend.ClientID + "',event)");
-       
+
         imgrply.Src = imgUserIcon.ImageUrl;
         if (Common.Getunread_Messages() > 0)
         {
@@ -45,9 +45,9 @@ public partial class brand_massenger : System.Web.UI.Page
             lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
         }
 
-      //  LoadDefualtThread();
+        //  LoadDefualtThread();
         ToggleLayout();
-        if (Session["selectedFolder"] as string !="")
+        if (Session["selectedFolder"] as string != "")
         {
             //ToggleActionBars(Session["selectedFolder"].ToString());
             //SetMpActionList(Session["selectedFolder"].ToString());
@@ -60,7 +60,7 @@ public partial class brand_massenger : System.Web.UI.Page
             ToggleActionBars("1");
             SetMpActionList("1");
         }
-        
+
     }
 
     [WebMethod, ScriptMethod]
@@ -75,13 +75,13 @@ public partial class brand_massenger : System.Web.UI.Page
     [WebMethod, ScriptMethod]
     public static void SetReceiverName(string value)
     {
-       HttpContext.Current.Session["RUsername"] = value;
+        HttpContext.Current.Session["RUsername"] = value;
 
     }
     private void ToggleLayout()
     {
         // dvActionBar.Visible = grdMessageList.Rows.Count > 0;
-        if(rptMessageDetail.Items.Count>0)
+        if (rptMessageDetail.Items.Count > 0)
         {
             dvMessageDetailBox.Visible = true;
             dvMessageDetailBoxEmpty.Visible = false;
@@ -91,7 +91,7 @@ public partial class brand_massenger : System.Web.UI.Page
             dvMessageDetailBox.Visible = false;
             dvMessageDetailBoxEmpty.Visible = true;
         }
-        
+
     }
 
 
@@ -145,7 +145,7 @@ public partial class brand_massenger : System.Web.UI.Page
         {
             var userCookie = Request.Cookies["FrUserID"];
             var parentCookie = Request.Cookies["ParentId"];
-            
+
             var db = new DatabaseManagement();
             string[] userinfo = GetRecipientID(db);
             if (userCookie != null)
@@ -169,7 +169,7 @@ public partial class brand_massenger : System.Web.UI.Page
                     string updateMessageKey = string.Format("Update Tbl_Mailbox Set MKey={0} WHERE MessageID={1}",
                                                                 IEUtils.SafeSQLString(messageKey), messageID);
                     db.ExecuteSQL(updateMessageKey);
-                /**************************************************  Send Message Email Code ***********************************************************/
+                    /**************************************************  Send Message Email Code ***********************************************************/
                     string receiveremail = userinfo[2];
                     string subject = lblUsername.Text + " Sent You a Message";
                     string message = txtMessage.Value;
@@ -181,7 +181,7 @@ public partial class brand_massenger : System.Web.UI.Page
                     messageDetails[3] = replylink;
                     messageDetails[4] = userinfo[3];                 // Sender profile image
                     Auto_Mail.SendMessageEmail(messageDetails);
-                /**************************************************  End Message Email Code ***********************************************************/
+                    /**************************************************  End Message Email Code ***********************************************************/
                     string addQuery =
                         string.Format("INSERT INTO Tbl_MailboxFor(MessageID,ReceiverID) VALUES({0},{1})",
                                       IEUtils.ToInt(messageID),
@@ -253,7 +253,7 @@ public partial class brand_massenger : System.Web.UI.Page
     //                    var chkSelect = (row.Cells[0].FindControl("chkCtrl") as CheckBox);
     //                    if (chkSelect != null) chkSelect.Checked = false;
     //                }
-                    
+
     //            }
     //        }
     //    }
@@ -270,7 +270,7 @@ public partial class brand_massenger : System.Web.UI.Page
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 var lblDatePosted = (Label)e.Item.FindControl("lblDate");
-               // Label lblDate2 = (Label)e.Item.FindControl("lblDate2");
+                // Label lblDate2 = (Label)e.Item.FindControl("lblDate2");
                 DateTime dbDate = Convert.ToDateTime(lblDatePosted.Text);
                 lblDatePosted.Text = Common.GetRelativeTime(dbDate);
             }
@@ -299,11 +299,11 @@ public partial class brand_massenger : System.Web.UI.Page
                 ToggleLayout();
                 rptMessageDetail.DataBind();
             }
-            
+
         }
         catch (Exception ex)
         {
-            
+
             throw;
         }
     }
@@ -311,7 +311,7 @@ public partial class brand_massenger : System.Web.UI.Page
     {
         try
         {
-           if(e.CommandName=="2")
+            if (e.CommandName == "2")
             {
                 string[] messageIDs = e.CommandArgument.ToString().Split(',');
                 var httpCookie = Request.Cookies["ParentId"];
@@ -331,19 +331,19 @@ public partial class brand_massenger : System.Web.UI.Page
 
                 // Set cookies for the panel view
                 var viewpnlCookie = Request.Cookies["viewpnl"];
-               if(viewpnlCookie !=null)
-               {
-                   if(viewpnlCookie.Value !="1")
-                   {
-                       var viewpnl = new HttpCookie("viewpnl") { Value = "1" };
-                       HttpContext.Current.Response.Cookies.Add(viewpnl);
-                   }
-               }
-               else
-               {
-                   var viewpnl = new HttpCookie("viewpnl") { Value = "1" };
-                   HttpContext.Current.Response.Cookies.Add(viewpnl);
-               }
+                if (viewpnlCookie != null)
+                {
+                    if (viewpnlCookie.Value != "1")
+                    {
+                        var viewpnl = new HttpCookie("viewpnl") { Value = "1" };
+                        HttpContext.Current.Response.Cookies.Add(viewpnl);
+                    }
+                }
+                else
+                {
+                    var viewpnl = new HttpCookie("viewpnl") { Value = "1" };
+                    HttpContext.Current.Response.Cookies.Add(viewpnl);
+                }
                 rptMessageDetail.DataSourceID = "";
                 rptMessageDetail.DataSource = sdsMessageDetails;
                 rptMessageDetail.DataBind();
@@ -358,8 +358,8 @@ public partial class brand_massenger : System.Web.UI.Page
                 // update the status of the message to read
                 db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                             IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[1])));
-                
-               grdMessageList.DataBind();
+                grdMessageList.DataSource = sdsMessageList;
+                grdMessageList.DataBind();
             }
         }
         catch (Exception ex)
@@ -367,12 +367,12 @@ public partial class brand_massenger : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
-    
+
     protected void grdMessageList_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
         {
-            if(e.Row.RowType==DataControlRowType.DataRow)
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 if (e.Row.RowIndex == 0)
                 {
@@ -389,13 +389,13 @@ public partial class brand_massenger : System.Web.UI.Page
         }
     }
 
-   
+
     protected void grdMessageList_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         try
         {
             string[] messageIDs = e.CommandArgument.ToString().Split(',');
-           
+
             var httpCookie = Request.Cookies["ParentId"];
             if (httpCookie != null)
             {
@@ -429,27 +429,27 @@ public partial class brand_massenger : System.Web.UI.Page
             rptMessageDetail.DataSourceID = "";
             rptMessageDetail.DataSource = sdsMessageDetails;
             rptMessageDetail.DataBind();
-           // rptMessageDetail.DataBind();
+            // rptMessageDetail.DataBind();
             var db = new DatabaseManagement();
             lblBrandName.Text = GetRecipientID(db)[1];
             txtMessage.Focus();
             txtMessage.Attributes.Add("placeholder", "Reply to " + lblBrandName.Text);
-           // txtComposeMessage.Attributes.Add("placeholder", "Reply to " + lblBrandName.Text);
+            // txtComposeMessage.Attributes.Add("placeholder", "Reply to " + lblBrandName.Text);
             ToggleLayout();
 
-           // HideCompseScreen();
+            // HideCompseScreen();
             // update the status of the message to read
             db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                         IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[0])));
             //grdMessageList.DataSourceID = "";
             //grdMessageList.DataSource = sdsMessageList;
-           // grdMessageList.DataBind();
-            if(e.CommandName=="1")
+            // grdMessageList.DataBind();
+            if (e.CommandName == "1")
             {
                 txtMessage.Focus();
             }
-     ScriptManager.RegisterStartupScript(this, Page.GetType(), "key", "MyFunc()", true);
-          //  if (httpCookie != null) Response.Redirect("massenger.aspx?v=" + httpCookie.Value);
+            ScriptManager.RegisterStartupScript(this, Page.GetType(), "key", "MyFunc()", true);
+            //  if (httpCookie != null) Response.Redirect("massenger.aspx?v=" + httpCookie.Value);
         }
         catch (Exception ex)
         {
@@ -469,7 +469,7 @@ public partial class brand_massenger : System.Web.UI.Page
 
                 var itemID = (Label)e.Item.FindControl("lblItemID");
                 // if item id exist
-                if(!string.IsNullOrEmpty(itemID.Text))
+                if (!string.IsNullOrEmpty(itemID.Text))
                 {
                     var rptChild = (Repeater)e.Item.FindControl("rptChild");
                     string query = "SELECT dbo.Tbl_Brands.Name, " +
@@ -498,16 +498,16 @@ public partial class brand_massenger : System.Web.UI.Page
         string insertQuery = string.Format("UPDATE Tbl_MailboxFor Set ReadStatus={0} Where ReceiverID={1}",
                                            1, IEUtils.ToInt(userID));
         db.ExecuteSQL(insertQuery);
-        
+
 
     }
-    protected void DoAction(StringCollection idsCollection,string commandName)
+    protected void DoAction(StringCollection idsCollection, string commandName)
     {
         try
         {
             string ids = idsCollection.Cast<string>().Aggregate(string.Empty, (current, id) => current + (id + ","));
             ids = ids.Substring(0, ids.LastIndexOf(","));
-            var db=new DatabaseManagement();
+            var db = new DatabaseManagement();
             string query = string.Empty;
             string blockUserQry = string.Empty;
             switch (commandName)
@@ -517,9 +517,9 @@ public partial class brand_massenger : System.Web.UI.Page
                     query = string.Format("Update Tbl_Mailbox Set MessageType='A' WHERE ParentID IN (" + ids + ")");
                     break;
                 case "S":
-                    blockUserQry =string.Format("Update Tbl_MailboxMaster Set BlockStatus='Yes' WHERE ParentID IN (" + ids + ")");
+                    blockUserQry = string.Format("Update Tbl_MailboxMaster Set BlockStatus='Yes' WHERE ParentID IN (" + ids + ")");
                     query = string.Format("Update Tbl_Mailbox Set MessageType='S' WHERE ParentID IN (" + ids + ")");
-                    
+
                     break;
                 case "D":
                     query = string.Format("UPDATE Tbl_Mailbox Set RDeleted=1  WHERE ParentID IN (" + ids + ")");
@@ -527,22 +527,22 @@ public partial class brand_massenger : System.Web.UI.Page
                 case "I":
                     blockUserQry = string.Format("Update Tbl_MailboxMaster Set BlockStatus=NULL WHERE ParentID IN (" + ids + ")");
                     query = string.Format("Update Tbl_Mailbox Set MessageType=NULL WHERE ParentID IN (" + ids + ")");
-                    
+
                     break;
                 case "R":
                     blockUserQry = string.Format("Update Tbl_MailboxMaster Set BlockStatus=NULL WHERE ParentID IN (" + ids + ")");
                     query = string.Format("Update Tbl_Mailbox Set MessageStatus='read' WHERE ParentID IN (" + ids + ")");
-                   break;
+                    break;
             }
 
             db.ExecuteSQL(query);
-            if(!string.IsNullOrEmpty(blockUserQry))
-             db.ExecuteSQL(blockUserQry);
+            if (!string.IsNullOrEmpty(blockUserQry))
+                db.ExecuteSQL(blockUserQry);
             grdMessageList.DataSourceID = "";
             if (!string.IsNullOrEmpty(Session["query1"] as string))
             {
                 sdsMessageList.SelectCommand = Session["query1"].ToString();
-            } 
+            }
             grdMessageList.DataSource = sdsMessageList;
             grdMessageList.DataBind();
             //grdMessageList.DataBind();
@@ -554,7 +554,7 @@ public partial class brand_massenger : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ErrorMessage.ShowErrorAlert(lblStatus,ex.Message,divAlerts);
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
             //ErrorMessage.ShowErrorAlert(lblStatus, "No record is selected. You must select atleast one record. ", divAlerts);
         }
     }
@@ -565,8 +565,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-                DoAction(idCollection,"A");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "A");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -582,8 +582,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-            DoAction(idCollection, "S");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "S");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -599,8 +599,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-            DoAction(idCollection, "D");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "D");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -617,7 +617,7 @@ public partial class brand_massenger : System.Web.UI.Page
         var idCollection = new StringCollection();
         foreach (GridViewRow row in grdMessageList.Rows)
         {
-            if(row.RowType==DataControlRowType.DataRow)
+            if (row.RowType == DataControlRowType.DataRow)
             {
                 var chkSelect = (row.Cells[0].FindControl("chkCtrl") as CheckBox);
                 if (chkSelect != null && chkSelect.Checked)
@@ -627,40 +627,40 @@ public partial class brand_massenger : System.Web.UI.Page
                     idCollection.Add(messageIDs[0]);
                 }
             }
-           // var chkSelect = (HtmlInputCheckBox)row.FindControl("test1");
-            
+            // var chkSelect = (HtmlInputCheckBox)row.FindControl("test1");
+
         }
         return idCollection;
     }
     protected void ToggleActionBars(string commandName)
     {
-        
+
         dvActionbar.Visible = grdMessageList.Rows.Count > 0;
         switch (commandName)
         {
             case "1":
-                    dvInboxActions.Visible = true;
-                    dvArchiveActions.Visible = false;
-                    dvSpamActions.Visible = false;
+                dvInboxActions.Visible = true;
+                dvArchiveActions.Visible = false;
+                dvSpamActions.Visible = false;
                 break;
             case "2":
-                
-                    dvInboxActions.Visible = false;
-                    dvArchiveActions.Visible = true;
-                    dvSpamActions.Visible = false;
-               
+
+                dvInboxActions.Visible = false;
+                dvArchiveActions.Visible = true;
+                dvSpamActions.Visible = false;
+
                 break;
             case "3":
-                
-                    dvInboxActions.Visible = false;
-                    dvArchiveActions.Visible = false;
-                    dvSpamActions.Visible = true;
-                
+
+                dvInboxActions.Visible = false;
+                dvArchiveActions.Visible = false;
+                dvSpamActions.Visible = true;
+
                 break;
         }
     }
 
-   
+
 
     /* *******************************   Archive Action bar Events **************************** */
     protected void lbtnInbox_OnClick(object sender, EventArgs e)
@@ -668,8 +668,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-            DoAction(idCollection, "I");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "I");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -685,8 +685,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-            DoAction(idCollection, "S");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "S");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -702,8 +702,8 @@ public partial class brand_massenger : System.Web.UI.Page
         try
         {
             var idCollection = GetSelectedIDs();
-            if(idCollection.Count>0)
-            DoAction(idCollection, "D");
+            if (idCollection.Count > 0)
+                DoAction(idCollection, "D");
             else
             {
                 ErrorMessage.ShowErrorAlert(lblStatus, "No record selected. You must select atleast one record", divAlerts);
@@ -717,7 +717,7 @@ public partial class brand_massenger : System.Web.UI.Page
 
     /* *******************************   Spam Action bar Events **************************** */
 
-   protected void lbtnSpam2Inbox_OnClick(object sender, EventArgs e)
+    protected void lbtnSpam2Inbox_OnClick(object sender, EventArgs e)
     {
         try
         {
@@ -729,18 +729,18 @@ public partial class brand_massenger : System.Web.UI.Page
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
     }
-   protected void lbtnSpam2Archive_OnClick(object sender, EventArgs e)
-   {
-       try
-       {
-           var idCollection = GetSelectedIDs();
-           DoAction(idCollection, "A");
-       }
-       catch (Exception ex)
-       {
-           ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-       }
-   }
+    protected void lbtnSpam2Archive_OnClick(object sender, EventArgs e)
+    {
+        try
+        {
+            var idCollection = GetSelectedIDs();
+            DoAction(idCollection, "A");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+    }
     protected void lbtnDeleteSpam_OnClick(object sender, EventArgs e)
     {
         try
@@ -776,39 +776,39 @@ public partial class brand_massenger : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-        
-        
+
+
     }
 
-    private void SetFolder(string query,string foldername,string foldervalue,string folderimg)
+    private void SetFolder(string query, string foldername, string foldervalue, string folderimg)
     {
 
         checkAll.Checked = false;
         lblFoldername.Text = foldername;
-        
+
         imgFolders.ImageUrl = folderimg;
 
-            sdsMessageList.SelectCommand = query;
-            grdMessageList.DataSourceID = "";
-            grdMessageList.DataSource = sdsMessageList;
-            grdMessageList.DataBind();
-           
-            var parentIDCookie = Request.Cookies["ParentId"];
-            if (parentIDCookie != null)
-            {
-                parentIDCookie.Value = "0";
-                HttpContext.Current.Response.Cookies.Add(parentIDCookie);
-            }
-            var messageIDCookie = new HttpCookie("MessageId") {Expires = DateTime.Now.AddDays(-1)};
-            HttpContext.Current.Response.Cookies.Add(messageIDCookie);
-            rptMessageDetail.DataSourceID = "";
-            rptMessageDetail.DataSource = sdsMessageDetails;
-            rptMessageDetail.DataBind();
-            ToggleActionBars(foldervalue);
-            //grdMessageList.DataBind();
-            ToggleLayout();
-            
-        
+        sdsMessageList.SelectCommand = query;
+        grdMessageList.DataSourceID = "";
+        grdMessageList.DataSource = sdsMessageList;
+        grdMessageList.DataBind();
+
+        var parentIDCookie = Request.Cookies["ParentId"];
+        if (parentIDCookie != null)
+        {
+            parentIDCookie.Value = "0";
+            HttpContext.Current.Response.Cookies.Add(parentIDCookie);
+        }
+        var messageIDCookie = new HttpCookie("MessageId") { Expires = DateTime.Now.AddDays(-1) };
+        HttpContext.Current.Response.Cookies.Add(messageIDCookie);
+        rptMessageDetail.DataSourceID = "";
+        rptMessageDetail.DataSource = sdsMessageDetails;
+        rptMessageDetail.DataBind();
+        ToggleActionBars(foldervalue);
+        //grdMessageList.DataBind();
+        ToggleLayout();
+
+
     }
 
 
@@ -834,7 +834,7 @@ public partial class brand_massenger : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-       
+
     }
 
     protected void menuItemSpam_OnClick(object sender, EventArgs e)
@@ -859,21 +859,21 @@ public partial class brand_massenger : System.Web.UI.Page
         {
             ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
         }
-       
+
     }
-    
+
     protected void lbtnReadArchive_OnClick(object sender, EventArgs e)
     {
         var idCollection = GetSelectedIDs();
         DoAction(idCollection, "R");
     }
-    
+
     protected void lbtnRead_OnClick(object sender, EventArgs e)
     {
         var idCollection = GetSelectedIDs();
         DoAction(idCollection, "R");
     }
-    
+
     protected void lbtnReadSpam_OnClick(object sender, EventArgs e)
     {
         var idCollection = GetSelectedIDs();
@@ -930,7 +930,7 @@ public partial class brand_massenger : System.Web.UI.Page
                     IEUtils.ToInt(userCookie.Value),
                     IEUtils.ToInt(userCookie.Value),
                     IEUtils.ToInt(userCookie.Value));
-                if(db.RecordExist(checkinfluencer))  // if influencer record exist, then brand can send message to that influencer. other wise not
+                if (db.RecordExist(checkinfluencer))  // if influencer record exist, then brand can send message to that influencer. other wise not
                 {
                     int parentId = 0;
                     int senderId = Convert.ToInt32(db.GetExecuteScalar(checkinfluencer));
@@ -938,18 +938,18 @@ public partial class brand_massenger : System.Web.UI.Page
                         string.Format("SELECT ParentID FROM Tbl_MailboxMaster Where ReceiverID={0} AND SenderID={1} AND BlockStatus IS NULL ",
                             IEUtils.ToInt(userCookie.Value), senderId);
                     SqlDataReader dr = db.ExecuteReader(getParentId);
-                    if(dr.HasRows)
+                    if (dr.HasRows)
                     {
                         dr.Read();
                         parentId = IEUtils.ToInt(dr[0]);
                     }
-                    
+
                     dr.Close();
                     dr.Dispose();
                     // if no message thread exist, create new message thread
                     if (parentId <= 0)
                     {
-                       
+
                         string addMessageThread =
                             string.Format(
                                 "INSERT INTO Tbl_MailboxMaster(SenderID,ReceiverID,SenderName,ReceiverName,DeletedID) VALUES({0},{1},{2},{3},{4})",
@@ -974,7 +974,7 @@ public partial class brand_massenger : System.Web.UI.Page
                             IEUtils.ToInt(userCookie.Value));
                     db.ExecuteSQL(postMessage);
                     int messageID = Convert.ToInt32(db.GetExecuteScalar("SELECT MAX(MessageID) From Tbl_Mailbox"));
-                     messageKey = Encryption64.Encrypt(messageID.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
+                    messageKey = Encryption64.Encrypt(messageID.ToString(CultureInfo.InvariantCulture)).Replace('+', '=');
                     string updateMessageKey = string.Format("Update Tbl_Mailbox Set MKey={0} WHERE MessageID={1}",
                                                             IEUtils.SafeSQLString(messageKey), messageID);
                     db.ExecuteSQL(updateMessageKey);
@@ -1044,14 +1044,14 @@ public partial class brand_massenger : System.Web.UI.Page
                     txtMessage.Value = string.Empty;
                     txtComposeMessage.Value = string.Empty;
                     txtMessage.Focus();
-                   //
-                     ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
+                    //
+                    ErrorMessage.ShowSuccessAlert(lblStatus, "Message sent successfuly!", divAlerts);
                 }
                 else
                 {
                     ErrorMessage.ShowErrorAlert(lblStatus, "You can not sent message to this influencer.", divAlerts);
                 }
-                
+
             }
         }
         catch (Exception ex)
@@ -1091,7 +1091,7 @@ public partial class brand_massenger : System.Web.UI.Page
         rptMessageDetail.DataSourceID = "";
         rptMessageDetail.DataSource = sdsMessageDetails;
         rptMessageDetail.DataBind();
-        
+
         var db = new DatabaseManagement();
         lblBrandName.Text = GetRecipientID(db)[1];
         txtMessage.Attributes.Add("placeholder", "Reply to " + lblBrandName.Text);
@@ -1099,7 +1099,7 @@ public partial class brand_massenger : System.Web.UI.Page
         // update the status of the message to read
         db.ExecuteSQL(string.Format("Update Tbl_Mailbox Set MessageStatus={0} Where ParentID={1}",
                                     IEUtils.SafeSQLString("read"), IEUtils.ToInt(messageIDs[0])));
-      //  grdMessageList.DataSource = sdsMessageList;
+        //  grdMessageList.DataSource = sdsMessageList;
 
         if (e.CommandName == "1")
         {
@@ -1111,7 +1111,7 @@ public partial class brand_massenger : System.Web.UI.Page
             // messageid[1]= Message ID
         }
     }
-    
+
     protected void chkCtrl_OnCheckedChanged(object sender, EventArgs e)
     {
 
@@ -1124,35 +1124,35 @@ public partial class brand_massenger : System.Web.UI.Page
         switch (foldervalue)
         {
             case "1":
-                    lbtnmpInbox.Visible = false;
-                    lbtnmpArchive.Visible = true;
-                    
+                lbtnmpInbox.Visible = false;
+                lbtnmpArchive.Visible = true;
+
                 break;
             case "2":
-                
-                    lbtnmpInbox.Visible = true;
-                    lbtnmpArchive.Visible = false;
-               
+
+                lbtnmpInbox.Visible = true;
+                lbtnmpArchive.Visible = false;
+
                 break;
             case "3":
-                
-                    lbtnmpInbox.Visible = true;
-                    lbtnmpArchive.Visible = true;
+
+                lbtnmpInbox.Visible = true;
+                lbtnmpArchive.Visible = true;
                 lbtnmpSpam.Visible = false;
-                
+
                 break;
         }
     }
-   protected void lbtnmpInbox_OnClick(object sender, EventArgs e)
+    protected void lbtnmpInbox_OnClick(object sender, EventArgs e)
     {
-       try
-       {
-           ChangeMpStatus("I");
-       }
-       catch (Exception ex)
-       {
-           ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
-       }
+        try
+        {
+            ChangeMpStatus("I");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
     }
 
     private void ChangeMpStatus(string commandName)
@@ -1166,7 +1166,7 @@ public partial class brand_massenger : System.Web.UI.Page
             switch (commandName)
             {
                 case "A":
-                    query = string.Format("Update Tbl_Mailbox Set MessageType='A' WHERE ParentID={0}",httpCookie.Value);
+                    query = string.Format("Update Tbl_Mailbox Set MessageType='A' WHERE ParentID={0}", httpCookie.Value);
                     db.ExecuteSQL(query);
                     break;
                 case "S":
@@ -1188,8 +1188,8 @@ public partial class brand_massenger : System.Web.UI.Page
                     db.ExecuteSQL(query);
                     break;
             }
-            
-            
+
+
             grdMessageList.DataBind();
             //grdMessageList.DataBind();
             rptMessageDetail.DataBind();
@@ -1249,5 +1249,5 @@ public partial class brand_massenger : System.Web.UI.Page
     }
 
     /* ************************************* Message Panel Actions End *************************** */
-    
+
 }

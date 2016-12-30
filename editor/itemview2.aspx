@@ -12,11 +12,10 @@
 <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
  <link href="../css/jquery-ui.css" rel="stylesheet" type="text/css" />
- <link href="../source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
-<script src="../ckeditor/ckeditor.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+ <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <style type="text/css">
+<script src="../ckeditor/ckeditor.js"></script>
+<script src="../js/sample.js"></script><style type="text/css">
         .liked{
             color:#4c92c6;
             display:block !important;
@@ -51,6 +50,11 @@
             
       
            }
+           @media only screen and (max-width: 1027px) {
+               .lightboxblockmain1m {
+           padding-left:130px !important
+               }
+               }
     </style>
 <script type="text/javascript">
     function ChangeColor(val)
@@ -261,6 +265,7 @@
 
 </head>
 <body>
+     <div id="itemDiv" runat="server">
     <form id="form1" runat="server">
    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="True"  EnablePartialRendering="True">
                         </asp:ScriptManager>
@@ -280,12 +285,13 @@
                     setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
                 }
             </script>
+                 
       <div class="lightboxheaderblock" >
-        <div class="lightboxblockmain" style="width:65%;">
-          <div class="lightboxheaderimg"><asp:Image CssClass="img-responsive img-circle" runat="server" ID="imgProfile" ImageUrl="../images/follo.png" /></div><!--lightboxheaderimg-->
-          <div class="lightboxheadertext" ><asp:Label runat="server" ID="lblItemTitle" Text="Item Name Goes Here"></asp:Label><asp:Label runat="server" ID="lblUserID" Visible="False"></asp:Label> 
+        <div class="lightboxblockmain" style="width:100%;">
+          <div class="lightboxheaderimg" style="position: absolute;"><asp:Image CssClass="img-responsive img-circle" runat="server" ID="imgProfile" ImageUrl="../images/follo.png" /></div><!--lightboxheaderimg-->
+          <div class="lightboxheadertext"style="MARGIN-LEFT: 130px;" ><asp:Label runat="server" ID="lblItemTitle" Text="Item Name Goes Here"></asp:Label><asp:Label runat="server" ID="lblUserID" Visible="False"></asp:Label> 
               <asp:Label runat="server" ID="lblItemID" Visible="False"></asp:Label></div><!--lightboxtext-->
-          <div class="lightboxheadertext1">
+          <div class="lightboxheadertext1" style="  MARGIN-LEFT: 130px;  width: 60%;">
                   <div class="lightb"><i class="fa fa-eye" aria-hidden="true"></i> &nbsp; <asp:Label runat="server" ID="lblTotolViews" ></asp:Label> Views</div>
                   
                   <div class="lightb1">
@@ -304,10 +310,8 @@
                         </asp:Label>
                   </div>
           </div><!--lightboxtext1-->
-        </div><!--lightboxblockmain--> 
-         
-
-<div class="lightboxblockmain1m lightboxblockmain2m"  style="width:30%; margin: 60px 20px 0 0; display:block;">
+          
+<div class="lightboxblockmain1m lightboxblockmain2m"  style="margin: 0px 0 0;display:block;float: left;padding-left:0px">
     <ul class="navreq">
   <li class="button-dropdownreq">
     <a href="javascript:void(0)" class="dropdownreq-toggle" data-toggle="dropdownreq" role="button" aria-haspopup="true" aria-expanded="false">
@@ -348,6 +352,9 @@
 </ul>
      
 </div><!--lightboxblockmain--> 
+        </div><!--lightboxblockmain--> 
+         
+
 
         
         
@@ -677,7 +684,8 @@ Where ItemID=?
              
          </div><!--col-md-5-->
     </div><!--lightboxmaintext--> 
-    
+                   
+           
      </ContentTemplate>
         <%--<Triggers>
             <asp:AsyncPostBackTrigger ControlID="lbtnWishList" EventName="click" />
@@ -746,7 +754,6 @@ Where ItemID=?
                 height: '300px',
                 autoSize: false,
                 closeBtn: true,
-                closeClick: false,
                 openEffect: 'fade',
                 closeEffect: 'fade',
                 type: "iframe",
@@ -851,5 +858,7 @@ Where ItemID=?
 
         }
     </script>
+     </div>
+               <div id="noitemDiv" runat="server"><center><h1>This item has already deleted</h1></center></div>
 </body>
 </html>

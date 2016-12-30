@@ -1022,10 +1022,60 @@
           <div class="col-md-1 col-xs-1 ptext">
               <asp:Label runat="server" ID="lblTotolViews" ></asp:Label>           
           </div><!--col-md-12-->
-          <div class="col-md-10 col-xs-8 ptext">
-               <img src="../images/likes.png" alt="image" style="margin-right:6px;"/><a href="#">Likes</a>
-          </div><!--col-md-12-->
-          <div class="col-md-1 col-xs-1 ptext">
+        <style>
+                    /*#up_Like{
+                        position: relative;
+    float: left;
+                    }*/
+                    
+                        @media screen and (max-width: 320px), (max-device-width: 480px) and (min-device-width: 320px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 10px!important;
+    width: 98%!important;
+}
+}
+@media screen and (max-width: 360px), (max-device-width: 640px) and (min-device-width: 360px) and (orientation: portrait){
+#contentbox .box, #contentbox .boxn1 {
+    margin-bottom: 20px!important;
+    width: 98%!important;
+}}
+                </style>
+<%--               <asp:updatepanel runat="server" ID="up_Like">
+                   <ContentTemplate>        
+
+
+                   </ContentTemplate> 
+                   
+                   
+                   <Triggers>
+
+          <asp:AsyncPostBackTrigger runat="server" ControlID="LikeItem" EventName="Click" />
+
+                   </Triggers>
+
+               </asp:updatepanel>--%>
+
+                    <style>
+                .customLink{
+                    color: #6f6f6f;
+    font-family: Raleway-Medium;
+        text-decoration: initial;
+            padding: 0px;
+                }
+                .customLink:hover{
+                        text-decoration: none;
+    color: #4c92c7;
+
+                }
+            </style>
+
+
+                          <div class="col-md-10 col-xs-8 ptext">
+                              <i class="fa fa-heart" runat="server" ID="LikeIcon" aria-hidden="true" style="    margin-right: 6px;margin-left: 2px;"></i>
+         <!--<img src="../images/likes.png" alt="image" style="margin-right: 6px "/> -->
+          <asp:Button runat="server" ID="LikeItem" OnClick="LikeItem_Click"  CssClass="btn btn-link customLink" Text="Likes" />          
+ </div><!--col-md-12-->
+          <div class="col-md-1 col-xs-1 ptext" ">
               <asp:Label runat="server" ID="lblTotolLikes" ></asp:Label>        
           </div><!--col-md-12-->
           

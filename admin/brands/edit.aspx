@@ -8,7 +8,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PP :: Dashboard</title>
+    <title>PP :: Edit Brand</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -84,7 +84,8 @@
                                         <asp:Label runat="server" ID="lblStatus" for="PageMessage" Text="" Visible="True"></asp:Label>
                                     </div>
                                     <div class="col-lg-6">              
-                                        
+                                        <div class="form-group"><label>First Name</label><span class="text-danger">*</span> <input type="text" runat="server" id="txtBrandfName" placeholder="First Name" class="form-control" required="required"></div>
+                                         <div class="form-group"><label>Last Name</label><span class="text-danger">*</span> <input type="text" runat="server" id="txtBrandLName" placeholder="Lastname" class="form-control" required="required"></div> 
                                         <div class="form-group"><label>Brand Name</label><span class="text-danger">*</span> <input type="text" runat="server" id="txtBrandName" placeholder="Brand Name" class="form-control" required="required"></div>
                                         <div class="form-group"><label>Brand DP</label>
                                             <div class="row">

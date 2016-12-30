@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PP::Slider Management</title>
+    <title>PP::Add Activity Page Slider</title>
 <style>
     #fup1{
         display: none
@@ -52,6 +52,7 @@
     <form id="form1" runat="server" role="form">
     <div id="wrapper">
              <asp:Image ID="CropedImage"  ImageUrl="" runat="server"/>
+              <asp:HiddenField ID="hiddenUrl"   runat="server"/>
     <!--#INCLUDE FILE="../includes/leftmenu.txt" -->
 
         <div id="page-wrapper" class="gray-bg">
@@ -248,30 +249,31 @@
             imageData = $('#image-cropper').cropit('export', { type: 'image/jpeg', });
             // var Tempimg = $("#image-cropper").attr("src");
             $("#CropedImage").attr("src", imageData);
-
+  $("#hiddenUrl").val(imageData);
             var ImageSrc = imageData;
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "addnew.aspx\\GetItemTitle",
-                data: "{ImageSrc:'" + ImageSrc + "'}",
-                dataType: "json",
-                success: function (data) {
-                    $("#btnSaveOrginal").click();
-                    // response(data.d);
-                },
-                error: function (result) {
-                    //alert("No Match");
-                    // response("No Match Found");
-                }
-            });
+            $("#btnSaveOrginal").click();
+            // $.ajax({
+            //     type: "POST",
+            //     contentType: "application/json; charset=utf-8",
+            //     url: "addnew.aspx\\GetItemTitle",
+            //     data: "{ImageSrc:'" + ImageSrc + "'}",
+            //     dataType: "json",
+            //     success: function (data) {
+            //         $("#btnSaveOrginal").click();
+            //         // response(data.d);
+            //     },
+            //     error: function (result) {
+            //         //alert("No Match");
+            //         // response("No Match Found");
+            //     }
+            // });
         }
         $("#topwraper,#topwraper2").hover(function () {
             imageData = $('#image-cropper').cropit('export', { type: 'image/jpeg', });
             // var Tempimg = $("#image-cropper").attr("src");
             $("#CropedImage").attr("src", imageData);
 
-
+ $("#hiddenUrl").val(imageData);
             var ImageSrc = $("#CropedImage").attr("src");
            
 

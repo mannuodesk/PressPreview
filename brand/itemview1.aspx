@@ -24,6 +24,9 @@
                    display: none
                }
    }
+   .fancybox-inner{
+         height: auto !important;
+   }
   </style>
   <script language="JavaScript" type="text/javascript">
       function ToggleDisplay(id) {
@@ -214,6 +217,7 @@
                     setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
                 }
             </script>
+         <div id="itemDiv" runat="server">
       <div class="lightboxheaderblock" >
         <div class="lightboxblockmain">
           <div class="lightboxheaderimg"><asp:Image CssClass="img-circle img-responsive" runat="server" ID="imgProfile" ImageUrl="../images/follo.png"  /></div><!--lightboxheaderimg-->
@@ -579,7 +583,8 @@
              
          </div><!--col-md-5-->
     </div><!--lightboxmaintext--> 
-    
+    </div>
+            <div id="noitemDiv" runat="server"><center><h1>This item has already deleted</h1></center></div>
     </ContentTemplate>
         <%--<Triggers>
             <asp:AsyncPostBackTrigger ControlID="lbtnWishList" EventName="click" />

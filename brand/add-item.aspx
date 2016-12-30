@@ -52,6 +52,7 @@
     <script src="../js/JSession.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="../source/jquery.fancybox.js"></script> 
+
     <style>
         .errorMessage{
             display:none;
@@ -59,31 +60,32 @@
             color: #f92617;
         }
     </style>
+     
      <script>
          $(document).ready(function () {
 
-             var xxx = localStorage.getItem("Result");
-             if (xxx == "Done") {
-                 $("#lbl_SuccessMessage").text("Record Save Successfully");
-                 $("#lbl_SuccessMessage").css("color", "green");
-                 $("#lbl_SuccessMessage").css("visibility", "visible");
-                 localStorage.removeItem("Result");
-                 setTimeout(function () {
-                     $("#lbl_SuccessMessage").text("");
-
-                 }, 3000);
-             }
-             if (xxx == "ErrorMessageAlert") {
-                 $("#lbl_SuccessMessage").text("Error Data Saving Please Try Again");
-                 //$("#lbl_SuccessMessage").text(xxx);
-                 $("#lbl_SuccessMessage").css("color", "red");
-                 $("#lbl_SuccessMessage").css("visibility", "visible");
-                 localStorage.removeItem("Result");
-                 setTimeout(function () {
-                     $("#lbl_SuccessMessage").text("");
-
-                 }, 3000);
-             }
+//              var xxx = localStorage.getItem("Result");
+//              if (xxx == "Done") {
+//                  $("#lbl_SuccessMessage").text("Record Save Successfully");
+//                  $("#lbl_SuccessMessage").css("color", "green");
+//                  $("#lbl_SuccessMessage").css("visibility", "visible");
+//                  localStorage.removeItem("Result");
+//                  setTimeout(function () {
+//                      $("#lbl_SuccessMessage").text("");
+// 
+//                  }, 3000);
+//              }
+//              if (xxx == "ErrorMessageAlert") {
+//                  $("#lbl_SuccessMessage").text("Error Data Saving Please Try Again");
+//                  //$("#lbl_SuccessMessage").text(xxx);
+//                  $("#lbl_SuccessMessage").css("color", "red");
+//                  $("#lbl_SuccessMessage").css("visibility", "visible");
+//                  localStorage.removeItem("Result");
+//                  setTimeout(function () {
+//                      $("#lbl_SuccessMessage").text("");
+// 
+//                  }, 3000);
+//              }
          });
          function submitValidation() {
              var errorMessage;
@@ -111,7 +113,7 @@
 
              var itemDetail = $("txtDescription_designEditor").val();
              itemcolor = $('#colbtn').css("background-color");
-
+// alert(itemcolor);
              $("#dzItemFeatured .dz-image img").each(function () {
                  featureImage.push($(this).attr('src'));
              });
@@ -203,7 +205,7 @@
 
 
 
-             if (itemcolor == "#F4F4F4") {
+             if (itemcolor == "rgb(244, 244, 244)") {
                  $("#errorItemColor").remove();
                  errorMessage = "Please Select Color";
                  var errorDiv = "<p class='errorMessage' id='errorItemColor'>" + errorMessage + "</p>"
@@ -268,11 +270,11 @@
                      dataType: "json",
                      success: function (data) {
 
-                         localStorage.setItem("Result", "Done");
+                        //  localStorage.setItem("Result", "Done");
                          window.location.reload();
                      },
                      error: function (result) {
-                         localStorage.setItem("Result", "ErrorMessageAlert");
+                        //  localStorage.setItem("Result", "ErrorMessageAlert");
                          //alert("No Match"); 
                          //  response("No Match Found");
                      }
@@ -376,9 +378,10 @@
             thumbnailHeight: null,
             init: function () {
 
-                this.on("maxfilesexceeded", function (data) {
-                    var res = eval('(' + data.xhr.responseText + ')');
-                });
+                 this.on("maxfilesexceeded", function (data) {
+                this.removeAllFiles();
+                this.addFile(data);
+            });
 
                 this.on('success', function (file, resp) {
 
@@ -464,9 +467,14 @@ var crossTop = 0;
             thumbnailHeight: null,
             init: function () {
 
-                this.on("maxfilesexceeded", function (data) {
-                    var res = eval('(' + data.xhr.responseText + ')');
-                });
+//  this.on("maxfilesexceeded", function (data) {
+//                     var res = eval('(' + data.xhr.responseText + ')');
+//                 });
+
+                  this.on("maxfilesexceeded", function (data) {
+                this.removeAllFiles();
+                this.addFile(data);
+            });
 
 
  
@@ -1355,7 +1363,51 @@ var crossTop = 0;
            });
 
        });
-   </script></div>  
+   </script>
+   <script type="text/javascript">
+          $(document).ready(function () {
+
+              $(".fancybox").fancybox({
+                  href: $(this).attr('href'),
+                  fitToView: true,
+                  frameWidth: '90%',
+                  frameHeight: '100%',
+                  width: '87%',
+                  height: '100%',
+                  autoSize: false,
+                  closeBtn: true,
+                  closeClick: false,
+                  openEffect: 'fade',
+                  closeEffect: 'fade',
+                  type: "iframe",
+                  opacity: 0.7,
+                  onStart: function () {
+                      $("#fancybox-overlay").css({ "position": "fixed" });
+                  },
+                  beforeShow: function () {
+
+                      var url = $(this).attr('href');
+                      url = (url == null) ? '' : url.split('?');
+                      if (url.length > 1) {
+                          url = url[1].split('=');
+
+                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                          var id = url[1];
+                          var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                          //window.location = pageUrl;
+                          window.history.pushState('d', 't', pageUrl);
+                      }
+                  },
+                  beforeClose: function () {
+                      window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
+
+                  }
+
+              });
+
+          });
+      </script>
+   </div>  
     
 </form>
 </body>

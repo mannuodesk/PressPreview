@@ -12,9 +12,10 @@
 <link rel="stylesheet" type="text/css" href="../css/checkbox.css"/>
 <link rel="stylesheet" href="../css/bootstrap-select.css">
 <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"/>
-<script type="application/javascript" src="../js/custom.js"></script>
+
 
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="application/javascript" src="../js/custom.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
 </head>

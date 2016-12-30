@@ -169,7 +169,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/sminsta.jpg" /></div>
-              <div class="reinput"><input runat="server" ID="txtInstagram" class="seinre" placeholder="Enter Instagram Link" /></div>
+              <div class="reinput"><input runat="server" ID="txtInstagram" class="seinre" placeholder="Enter User Name" /></div>
              </div>   
              
               <div class="relinw"></div>
@@ -179,7 +179,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smtwitter.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtTwitter" placeholder="Enter Twitter Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtTwitter" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>
@@ -189,7 +189,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smfacebook.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtFacebook" placeholder="Enter Facebook Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtFacebook" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>
@@ -199,7 +199,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smyoutube.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtYoutube" placeholder="Enter Youtube Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtYoutube" placeholder="Enter User Name" /></div>
             </div>   
              
               <div class="relinw"></div>
@@ -209,7 +209,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smpinterest.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtPinterest" placeholder="Enter Pinterest Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtPinterest" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>

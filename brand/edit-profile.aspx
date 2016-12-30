@@ -186,7 +186,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/sminsta.jpg" /></div>
-              <div class="reinput"><input runat="server" ID="txtInstagram" class="seinre" placeholder="Enter Instagram Link" /></div>
+              <div class="reinput"><input runat="server" ID="txtInstagram" class="seinre" placeholder="Enter User Name" /></div>
              </div>   
              
               <div class="relinw"></div>
@@ -196,7 +196,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smtwitter.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtTwitter" placeholder="Enter Twitter Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtTwitter" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>
@@ -206,7 +206,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smfacebook.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtFacebook" placeholder="Enter Facebook Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtFacebook" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>
@@ -216,7 +216,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smyoutube.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtYoutube" placeholder="Enter Youtube Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtYoutube" placeholder="Enter User Name" /></div>
             </div>   
              
               <div class="relinw"></div>
@@ -226,7 +226,7 @@ select option {
             <div class="blockshare">
               <div class="lineimage"><img src="../images/additemline.jpg" /></div>
               <div class="lineimage1" style="margin-left:-10px;"><img src="../images/smpinterest.jpg" /></div>
-              <div class="reinput"><input class="seinre" runat="server" ID="txtPinterest" placeholder="Enter Pinterest Link" /></div>
+              <div class="reinput"><input class="seinre" runat="server" ID="txtPinterest" placeholder="Enter User Name" /></div>
             </div>  
              
               <div class="relinw"></div>
@@ -280,12 +280,12 @@ select option {
           <input type="text" runat="server" name="lname" ID="txtlname" placeholder="Last Name" class="logineb" />
                     
       </div> 
-      <div class="col-md-6 col-xs-12 " style="" >
+      <div class="col-md-6 col-xs-12 " style="display:none" >
           <input type="text" runat="server" name="org" ID="txtorg" placeholder="Organization" class="logineb" />
          <%-- <asp:RequiredFieldValidator ID="rfvtxtorg" EnableViewState="false" runat="server" ErrorMessage="Organization is required" Display="Dynamic"
                        ControlToValidate="txtorg"  ValidationGroup="gpProfile"  CssClass="col-md-6 col-xs-12"></asp:RequiredFieldValidator>--%>
       </div> 
-      <div class="col-md-6 col-xs-12 " style="" >
+      <div class="col-md-6 col-xs-12 " style="display:none" >
           <input type="text" runat="server" name="desig" ID="txtdesig" placeholder="Designation" class="logineb" />
          <%-- <asp:RequiredFieldValidator ID="rfvdesignation" EnableViewState="false" runat="server" ErrorMessage="Designation is required" Display="Dynamic"
                        ControlToValidate="txtdesig"  ValidationGroup="gpProfile"  CssClass="col-md-6 col-xs-12"></asp:RequiredFieldValidator>--%>
@@ -627,32 +627,49 @@ select option {
           });
     </script>   
     <script src="../source/jquery.fancybox.pack.js" type="text/javascript"></script>
-      <script type="text/javascript">
+            <script type="text/javascript">
           $(document).ready(function () {
+
               $(".fancybox").fancybox({
+                  href: $(this).attr('href'),
                   fitToView: true,
-                  frameWidth: '100%',
+                  frameWidth: '90%',
                   frameHeight: '100%',
-                  width: '100%',
+                  width: '87%',
                   height: '100%',
                   autoSize: false,
-                  modal: true,
-                  helpers: {
-                      overlay: { closeClick: false } // prevents closing when clicking OUTSIDE fancybox 
-                  },
-                  closeClick: true,
+                  closeBtn: true,
+                  closeClick: false,
                   openEffect: 'fade',
                   closeEffect: 'fade',
                   type: "iframe",
                   opacity: 0.7,
-                  afterClose: function () {
-                      location.reload();
-                      return;
+                  onStart: function () {
+                      $("#fancybox-overlay").css({ "position": "fixed" });
+                  },
+                  beforeShow: function () {
+
+                      var url = $(this).attr('href');
+                      url = (url == null) ? '' : url.split('?');
+                      if (url.length > 1) {
+                          url = url[1].split('=');
+
+                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                          var id = url[1];
+                          var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                          //window.location = pageUrl;
+                          window.history.pushState('d', 't', pageUrl);
+                      }
+                  },
+                  beforeClose: function () {
+                      window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
+
                   }
 
               });
+
           });
-</script>
+      </script>
 	
 </form>
 </body>

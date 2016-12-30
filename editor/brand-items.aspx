@@ -1069,7 +1069,7 @@
           </div><!--col-md-12-->
 
 
-          <div class="col-md-1 col-xs-1 ptext">
+          <div class="col-md-1 col-xs-1 ptext" style="margin-top: -2px;">
               <asp:Label runat="server" ID="lblTotolLikes" ></asp:Label>        
           </div><!--col-md-12-->
          

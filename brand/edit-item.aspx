@@ -52,28 +52,28 @@
      <script>
          $(document).ready(function () {
 
-             var xxx = localStorage.getItem("Result");
-             if (xxx == "Done") {
-                 $("#lbl_SuccessMessage").text("Record Save Successfully");
-                 $("#lbl_SuccessMessage").css("color", "green");
-                 $("#lbl_SuccessMessage").css("visibility", "visible");
-                 localStorage.removeItem("Result");
-                 setTimeout(function () {
-                     $("#lbl_SuccessMessage").text("");
-
-                 }, 3000);
-             }
-             if (xxx == "ErrorMessageAlert") {
-                 $("#lbl_SuccessMessage").text("Error Data Saving Please Try Again");
-                 //$("#lbl_SuccessMessage").text(xxx);
-                 $("#lbl_SuccessMessage").css("color", "red");
-                 $("#lbl_SuccessMessage").css("visibility", "visible");
-                 localStorage.removeItem("Result");
-                 setTimeout(function () {
-                     $("#lbl_SuccessMessage").text("");
-
-                 }, 3000);
-             }
+//              var xxx = localStorage.getItem("Result");
+//              if (xxx == "Done") {
+//                  $("#lbl_SuccessMessage").text("Record Save Successfully");
+//                  $("#lbl_SuccessMessage").css("color", "green");
+//                  $("#lbl_SuccessMessage").css("visibility", "visible");
+//                  localStorage.removeItem("Result");
+//                  setTimeout(function () {
+//                      $("#lbl_SuccessMessage").text("");
+// 
+//                  }, 3000);
+//              }
+//              if (xxx == "ErrorMessageAlert") {
+//                  $("#lbl_SuccessMessage").text("Error Data Saving Please Try Again");
+//                  //$("#lbl_SuccessMessage").text(xxx);
+//                  $("#lbl_SuccessMessage").css("color", "red");
+//                  $("#lbl_SuccessMessage").css("visibility", "visible");
+//                  localStorage.removeItem("Result");
+//                  setTimeout(function () {
+//                      $("#lbl_SuccessMessage").text("");
+// 
+//                  }, 3000);
+//              }
          });
          function submitValidation() {
              var errorMessage;
@@ -805,7 +805,7 @@
                                                                         ConnectionString="<%$ ConnectionStrings:GvConnection %>" 
                                                                          ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>"
                                                                         
-                                                            SelectCommand="SELECT [ImgID], [ItemImg] FROM [Tbl_ItemImages] WHERE  [ItemID] =?">
+                                                            SelectCommand="SELECT [ImgID], [ItemImg] FROM [Tbl_ItemImages] WHERE  [ItemID] =? ORDER BY [ImgID] ASC OFFSET  1 ROWS FETCH NEXT 15 ROWS ONLY">
                                                                         <SelectParameters>
                                                                             <asp:QueryStringParameter Name="EventID" QueryStringField="v" 
                                                                                 Type="String" />
@@ -880,15 +880,17 @@
                               <asp:updatepanel ID="Updatepanel2" runat="server" UpdateMode="Conditional">
                                  <ContentTemplate>
                               <div ID="Div1">
-                                  <div style=" padding:2px; border:2px solid #fff;">
-                                      <asp:Image ID="imgFeatured" runat="server" Width="310px"  Height="232px"/>
-                                  </div>
-                                  <div style="position: relative; top: -230px; float:right;">
+                                     <div style="    position: relative;top: 33px;float: right;right: 10px;">
                                       <asp:Button ID="btnRemove" runat="server" CssClass="btn btn-default btn-xs" 
                                                                             
                                           onclientclick="return confirm('Are you sure,you want to delete ?')" Text="X" 
                                           onclick="btnRemove_Click" />
                                   </div>
+                                  <div style=" padding:2px; border:2px solid #fff;">
+                                     <%--<asp:Image ID="imgFeatured" runat="server" Width="310px"  Height="232px"/>--%>
+                                      <asp:Image ID="imgFeatured" runat="server" />
+                                  </div>
+                               
                              </div>
                              </ContentTemplate>
                                 <Triggers>
@@ -1653,7 +1655,51 @@
            });
 
        });
-   </script></div>  
+   </script>
+     <script type="text/javascript">
+          $(document).ready(function () {
+
+              $(".fancybox").fancybox({
+                  href: $(this).attr('href'),
+                  fitToView: true,
+                  frameWidth: '90%',
+                  frameHeight: '100%',
+                  width: '87%',
+                  height: '100%',
+                  autoSize: false,
+                  closeBtn: true,
+                  closeClick: false,
+                  openEffect: 'fade',
+                  closeEffect: 'fade',
+                  type: "iframe",
+                  opacity: 0.7,
+                  onStart: function () {
+                      $("#fancybox-overlay").css({ "position": "fixed" });
+                  },
+                  beforeShow: function () {
+
+                      var url = $(this).attr('href');
+                      url = (url == null) ? '' : url.split('?');
+                      if (url.length > 1) {
+                          url = url[1].split('=');
+
+                          // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                          var id = url[1];
+                          var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                          //window.location = pageUrl;
+                          window.history.pushState('d', 't', pageUrl);
+                      }
+                  },
+                  beforeClose: function () {
+                      window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
+
+                  }
+
+              });
+
+          });
+      </script>
+      </div>  
   
 </form>
 </body>

@@ -136,7 +136,7 @@
               
               <div class="col-md-2 col-sm-4 col-xs-6">
                    <div class="folblock">
-                     <a href="brand/profile-page-items.aspx?v=<%# Eval("UserKey") %>"><img class="img-responsive img-circle" src='../brandslogoThumb/<%# Eval("U_ProfilePic") %>' style="width:93px; height:93px; padding-bottom: 0px;" alt="image"/></a>
+                     <a href="influencer-profile.aspx?v=<%# Eval("UserKey") %>"><img class="img-responsive img-circle" src='../brandslogoThumb/<%# Eval("U_ProfilePic") %>' style="width:93px; height:93px; padding-bottom: 0px;" alt="image"/></a>
                      <div class="folname"><a href="influencer-profile.aspx?v=<%# Eval("UserKey") %>"><%# Eval("Name") %></a></div>
                    </div>
                 </div>

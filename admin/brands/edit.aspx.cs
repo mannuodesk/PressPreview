@@ -184,6 +184,8 @@ public partial class admin_home_Default : System.Web.UI.Page
             if(dr.HasRows)
             {
                 dr.Read();
+                //  txtBrandfName.Value = dr[0].ToString();
+                //  txtBrandLName.Value = dr[1].ToString();
                 txtBrandName.Value = dr[2].ToString();
                 Session["CurrentBrand"] = dr[2].ToString();
                 //lblImageName.Text = dr[4].ToString();
@@ -211,7 +213,7 @@ public partial class admin_home_Default : System.Web.UI.Page
                 txtPinterest.Value = dr[28].ToString();
             }
             dr.Close();
-            string usersettings = string.Format("SELECT U_Status, U_EmailStatus,U_ProfilePic From Tbl_Users Where UserID=(SELECT UserID From Tbl_Brands Where BrandID={0})", IEUtils.ToInt(Request.QueryString["v"]));
+            string usersettings = string.Format("SELECT U_Status, U_EmailStatus,U_ProfilePic,U_Firstname,U_Lastname From Tbl_Users Where UserID=(SELECT UserID From Tbl_Brands Where BrandID={0})", IEUtils.ToInt(Request.QueryString["v"]));
             dr = db.ExecuteReader(usersettings);
             if (dr.HasRows)
             {
@@ -224,6 +226,8 @@ public partial class admin_home_Default : System.Web.UI.Page
                 {
                     imgLogo.ImageUrl = "../../brandslogoThumb/" + dr[2].ToString();
                 }
+                txtBrandfName.Value = dr[3].ToString();
+                txtBrandLName.Value = dr[4].ToString();
                 //ddEmailStatus.SelectedValue = dr[1].ToString();
             }
             dr.Close();
@@ -303,11 +307,13 @@ public partial class admin_home_Default : System.Web.UI.Page
                        );
         }
         db.ExecuteSQL(updateQuery);
-        string AddUser = string.Format("UPDATE Tbl_Users Set U_Email={0},U_ProfilePic={1},U_Status={2} WHERE UserID=(SELECT UserID From Tbl_Brands Where BrandID={3})",
+        string AddUser = string.Format("UPDATE Tbl_Users Set U_Email={0},U_ProfilePic={1},U_Status={2},U_Firstname={3},U_Lastname={4} WHERE UserID=(SELECT UserID From Tbl_Brands Where BrandID={5})",
           IEUtils.SafeSQLString(txtEmail.Value),
           IEUtils.SafeSQLString(pic),
           IEUtils.ToInt(ddAccountStatus.SelectedValue),
           //IEUtils.ToInt(ddEmailStatus.SelectedValue),
+          IEUtils.SafeSQLString(txtBrandfName.Value),
+          IEUtils.SafeSQLString(txtBrandLName.Value),
           IEUtils.SafeSQLString(Request.QueryString["v"].Trim()));
         db.ExecuteSQL(AddUser);
         Common.EmptyTextBoxes(this);

@@ -21,6 +21,7 @@ public partial class home : System.Web.UI.Page
             try
                 {
                 LoadBrandData();
+                LikesColor();
                 BrandLikes();
                 if (Common.Getunread_Messages() > 0)
                     {
@@ -66,6 +67,33 @@ public partial class home : System.Web.UI.Page
             }
 
         }
+        
+        
+        
+            protected void LikesColor()
+    {
+        try
+        {
+            DatabaseManagement db = new DatabaseManagement();
+             var httpCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+            string followers = string.Format("SELECT * From Tbl_BrandsLikes Where UserID=(SELECT UserID From Tbl_Users Where UserKey={0}) AND LikeID={1}", IEUtils.SafeSQLString(Request.QueryString["v"]),IEUtils.ToInt(httpCookie.Value));
+            SqlDataReader dr = db.ExecuteReader(followers);
+            int result = 0;
+            if (dr.HasRows)
+            {
+                LikeItem.ForeColor = System.Drawing.ColorTranslator.FromHtml("#4c92c6");
+                LikeIcon.Style.Add("color", "#4c92c6");
+            }
+            dr.Close();
+            db.CloseConnection();
+            lblTotolLikes.Text = result.ToString();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage.ShowErrorAlert(lblStatus, ex.Message, divAlerts);
+        }
+
+    }
 
     [System.Web.Script.Services.ScriptMethod()]
     [System.Web.Services.WebMethod]
@@ -690,6 +718,49 @@ public partial class home : System.Web.UI.Page
 
 
     /******************************************************** Web Methods End ***************************************/
+    protected void LikeItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var db = new DatabaseManagement();
+            var httpCookie = HttpContext.Current.Request.Cookies["FrUserID"];
+            string selectQuery = string.Format("Select * from Tbl_BrandsLikes where LikeID={0} AND UserId=(SELECT UserID From Tbl_Users Where UserKey={1})",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+            SqlDataReader dr = db.ExecuteReader(selectQuery);
+            if (dr != null && dr.HasRows)
+            {
+                string deleteQuery = string.Format("DELETE FROM  Tbl_BrandsLikes WHERE LikeID={0} AND UserID=(SELECT UserID From Tbl_Users Where UserKey={1})",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(deleteQuery);
+            }
+            else
+            {
 
+                string insertQuery = string.Format("INSERT INTO  Tbl_BrandsLikes(LikeID,UserID) Values({0},(SELECT UserID From Tbl_Users Where UserKey={1}))",
+                                                   IEUtils.ToInt(httpCookie.Value),
+                                                   IEUtils.SafeSQLString(Request.QueryString["v"])
+                                                   );
+                db._sqlConnection.Close();
+                db._sqlConnection.Dispose();
+                db = new DatabaseManagement();
+                db.ExecuteSQL(insertQuery);
+            }
+            db._sqlConnection.Close();
+            db._sqlConnection.Dispose();
+            Response.Redirect("brand-lookbooks.aspx?v=" + Request.QueryString["v"]);
+        }
+        catch (Exception exc)
+        {
+            string str = exc.ToString();
+        }
+        //After receiving Theme counter Form dm please set it on that label
+    }
 
     }

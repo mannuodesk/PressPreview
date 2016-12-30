@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PP :: Dashboard</title>
+    <title>PP :: Edit Event</title>
 <style>
         #txtPara1_toolbarArea,#txtPara2_toolbarArea{
         display: none

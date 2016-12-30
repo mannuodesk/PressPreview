@@ -63,7 +63,7 @@ public partial class admin_home_Default : System.Web.UI.Page
     private void UpdateQuery(DatabaseManagement db)
     {
         string updateQuery = string.Empty;
-
+ HttpContext.Current.Session["ImageSrc"] = hiddenUrl.Value;
         //if (fup1.HasFile)
         if (HttpContext.Current.Session["ImageSrc"] != null && HttpContext.Current.Session["ImageSrc"] != "")
         {

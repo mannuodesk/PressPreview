@@ -9,54 +9,59 @@
         border-radius: 10px;
 }
   </style>
-  <script>
-       $("#lbViewMessageCount").hover(function () {
+ <script type="text/javascript">
+    $(document).ready(function () {
+        $("#mygrid").css('height', 'auto');
+        var userId = '<%= Request.Cookies["FRUserId"].Value %>';
+        $("#lbViewMessageCount").hover(function () {
 
-               $.ajax({
-                   type: "POST",
-                   url: $(location).attr('pathname') + "\\UpdateMessageStatus",
-                   contentType: "application/json; charset=utf-8",
-                   data: "{'userID':'" + userId + "'}",
-                   dataType: "json",
-                   async: true,
-                   error: function (jqXhr, textStatus, errorThrown) {
-                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
-                   },
-                   success: function (msg) {
-                       //                    if (msg.d == true) {
+            $.ajax({
+                type: "POST",
+                url: $(location).attr('pathname') + "\\UpdateMessageStatus",
+                contentType: "application/json; charset=utf-8",
+                data: "{'userID':'" + userId + "'}",
+                dataType: "json",
+                async: true,
+                error: function (jqXhr, textStatus, errorThrown) {
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                },
+                success: function (msg) {
+                    //                    if (msg.d == true) {
 
-                       $('#<%=lblTotalMessages.ClientID%>').hide("slow");
-                       $('#<%=lblTotalMessages.ClientID%>').val = "";
-                       return false;
-                   }
-               });
+                    $('#<%=lblTotalMessages.ClientID%>').hide("slow");
+                    $('#<%=lblTotalMessages.ClientID%>').val = "";
+                    return false;
+                }
+            });
 
-           });
+        });
 
 
-           $("#lbViewAlerts").hover(function () {
+        $("#lbViewAlerts").hover(function () {
 
-               $.ajax({
-                   type: "POST",
-                   url: $(location).attr('pathname') + "\\UpdateNotifications",
-                   contentType: "application/json; charset=utf-8",
-                   data: "{'userID':'" + userId + "'}",
-                   dataType: "json",
-                   async: true,
-                   error: function (jqXhr, textStatus, errorThrown) {
-                       //                       alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
-                   },
-                   success: function (msg) {
-                       //                    if (msg.d == true) {
+            $.ajax({
+                type: "POST",
+                url: $(location).attr('pathname') + "\\UpdateNotifications",
+                contentType: "application/json; charset=utf-8",
+                data: "{'userID':'" + userId + "'}",
+                dataType: "json",
+                async: true,
+                error: function (jqXhr, textStatus, errorThrown) {
+                    //                    alert("Error- Status: " + textStatus + " jqXHR Status: " + jqXhr.status + " jqXHR Response Text:" + jqXhr.responseText);
+                },
+                success: function (msg) {
+                    //                    if (msg.d == true) {
 
-                       $('#<%=lblTotalNotifications.ClientID%>').hide("slow");
-                       $('#<%=lblTotalNotifications.ClientID%>').val = "";
-                       return false;
-                   }
-               });
+                    $('#<%=lblTotalNotifications.ClientID%>').hide("slow");
+                    $('#<%=lblTotalNotifications.ClientID%>').val = "";
+                    return false;
+                }
+            });
 
-           });
-  </script>
+        });
+
+    });
+</script>
   <style>
          @media only screen and (max-width:767px){
                #navbar   {

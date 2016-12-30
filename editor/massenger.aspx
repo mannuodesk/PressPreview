@@ -189,7 +189,7 @@ $(document).ready(function () {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-left: -15px; padding-top: 0px; padding-bottom: 0px; margin-top: 10px;" role="button" aria-haspopup="true" aria-expanded="false">
                  <span> <img src="../images/triangle.png" /></span></a>
-                <ul class="dropdown-menu" style="margin-top: -2px; min-width: 130px;">
+                <ul class="dropdown-menu" style="margin-left:-5px;margin-top: -2px; min-width: 130px;">
                   <li> <asp:LinkButton runat="server" ID="menuItemInbox" OnClick="menuItemInbox_OnClick"><img src="../images/msg.png"/><span class="sp"> Inbox</span></asp:LinkButton></li>
                   <li><asp:LinkButton runat="server" ID="menuItemArchive" OnClick="menuItemArchive_OnClick"><img src="../images/archm.png"/><span class="sp"> Archive</span></asp:LinkButton></li>
                   <li><asp:LinkButton runat="server" ID="menuItemSpam" OnClick="menuItemSpam_OnClick"><img src="../images/markm.png"/><span class="sp"> Spam</span></asp:LinkButton></li>
@@ -758,9 +758,9 @@ $("#demodmenu1").hide();
                    autoSize: false,
                    closeBtn: true,
                    closeClick: false,
-                     helpers   : { 
-   overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
-  },
+  //                    helpers   : { 
+  //  overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox 
+  // },
                    openEffect: 'fade',
                    closeEffect: 'fade',
                    type: "iframe",

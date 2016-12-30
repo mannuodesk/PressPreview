@@ -96,6 +96,7 @@ public partial class lightbox_item_view : Page
                 dr.Read();
                 lblItemTitle.Text = dr[1].ToString();
                 lblDescription.Text = dr[2].ToString();
+                lblDescription.Text = lblDescription.Text.Replace("\n", "<br />");
                 lblRetailPrice.Text = dr[3].ToString();
                 lblWholesalePrice.Text = dr[4].ToString();
                 lblStyleNumber.Text = dr[5].ToString();
@@ -104,8 +105,16 @@ public partial class lightbox_item_view : Page
                 lblUserID.Text = dr[10].ToString();
                 rptHoliday.DataBind();
                 lblTotalLikes.Text = dr.IsDBNull(11) ? "0" : rptHoliday.Items.Count.ToString();
+                itemDiv.Visible = true;
+                noitemDiv.Visible = false;
             }
-
+            else
+            {
+                itemDiv.Visible = false;
+                noitemDiv.Visible = true
+                    ;
+            }
+            dr.Close();
             db._sqlConnection.Close();
             db._sqlConnection.Dispose();
         }
@@ -378,6 +387,68 @@ public partial class lightbox_item_view : Page
                     "'" + DateTime.UtcNow + "'",
                     IEUtils.ToInt(lblUserID.Text));
                     db.ExecuteSQL(addComment);
+                    #region Notifications on Comment Reply
+                    _loggedInUser = new string[2];
+                    String selectQuery =
+                        string.Format(
+                            "SELECT UserKey, U_Firstname + ' ' + U_Lastname as Name from Tbl_Users Where UserID={0}",
+                            IEUtils.ToInt(Session["UserID"]));
+                    SqlDataReader dr = db.ExecuteReader(selectQuery);
+                    if (dr.HasRows)
+                    {
+                        dr.Read();
+                        _loggedInUser[0] = dr[0].ToString();
+                        _loggedInUser[1] = dr[1].ToString();
+                    }
+                    dr.Close();
+                    int receivedUserId = 0;
+                    string notifyPersonId = string.Format(
+                            "SELECT UserID from Tbl_Posts where PostId={0}",
+                            postId);
+                    SqlDataReader drReceivedUserId = db.ExecuteReader(notifyPersonId);
+                    if (drReceivedUserId.HasRows)
+                    {
+                        drReceivedUserId.Read();
+                        receivedUserId = int.Parse(drReceivedUserId[0].ToString());
+                    }
+                    drReceivedUserId.Close();
+                    int notifyID = db.GetMaxID("NotifyID", "Tbl_Notifications");
+                    string username = Session["Username"].ToString();
+                    string itemid = Request.QueryString["v"];
+                    string notificationTitle = "<a href='profile-page-items.aspx'>" + _loggedInUser[1] + "</a> replied to a comment on item <a href='itemview2.aspx?v=" + IEUtils.ToInt(Request.QueryString["v"]) + "' class='fancybox'>" + lblItemTitle.Text + "</a>";
+                    string addNotification =
+                             string.Format("INSERT INTO Tbl_Notifications(UserID,Title,DatePosted,ItemID) VALUES({0},{1},{2},{3})",
+
+                                           IEUtils.ToInt(Session["UserID"]),
+                                           IEUtils.SafeSQLString(notificationTitle),
+                                           IEUtils.SafeSQLDate(DateTime.UtcNow),
+                                           itemID
+
+                                 );
+
+                    db.ExecuteSQL(addNotification);
+
+                    string
+                        updateQuery =
+                         string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                      IEUtils.ToInt(notifyID),
+                                      IEUtils.ToInt(receivedUserId));
+                    //IEUtils.ToInt(lblUserID.Text)
+
+                    //     );
+
+                    db.ExecuteSQL(updateQuery);
+                    string
+                         updateQuery1 =
+                          string.Format("INSERT INTO Tbl_NotifyFor(NotifyID,RecipID) VALUES({0},{1})",
+                                       IEUtils.ToInt(notifyID),
+                                       1
+
+                              );
+
+                    db.ExecuteSQL(updateQuery1);
+
+                    #endregion
                 }
                 rptPosts.DataSource = sdsPosts;
                 rptPosts.DataBind();

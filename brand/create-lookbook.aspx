@@ -64,84 +64,7 @@
     <link href="../css/colorPicker.css" rel="stylesheet" type="text/css" />
     
    
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        $(document).ready(function () {
 
-            $(".fancybox").fancybox({
-                href: $(this).attr('href'),
-                fitToView: true,
-                frameWidth: '90%',
-                frameHeight: '100%',
-                width: '87%',
-                height: '100%',
-                autoSize: false,
-                closeBtn: true,
-                closeClick: false,
-                openEffect: 'fade',
-                closeEffect: 'fade',
-                type: "iframe",
-                opacity: 0.7,
-                onStart: function () {
-                    $("#fancybox-overlay").css({ "position": "fixed" });
-                },
-                beforeShow: function () {
-
-                    var url = $(this).attr('href');
-                    url = (url == null) ? '' : url.split('?');
-                    if (url.length > 1) {
-                        url = url[1].split('=');
-
-                        // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
-                        var id = url[1];
-                        var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
-                        //window.location = pageUrl;
-                        window.history.pushState('d', 't', pageUrl);
-                    }
-                },
-                beforeClose: function () {
-                    window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
-
-                }
-
-            });
-
-        });
-
-
-    });
-</script>
-   <script language="javascript" type="text/javascript">       $(document).ready(function () {
-
-
-
-           $("#hidden_link").fancybox({
-
-               'title': 'Test Document',
-
-               'titleShow': true,
-
-               'titlePosition': 'over',
-
-               'titleFormat': 'formatTitle',
-
-               'type': 'iframe',
-
-               'width': '98%',
-
-               'height': '98%',
-
-               'hideOnOverlayClick': false,
-
-               'hideOnContentClick': false,
-
-               'overlayOpacity': 0.7,
-
-               'enableEscapeButton': false
-
-           });
-
-       });</script>
 
     
       <style>
@@ -905,11 +828,11 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
                 dataType: "json",
                 success: function (data) {
 
-                    localStorage.setItem("Result", "Done");
+                    // localStorage.setItem("Result", "Done");
                     window.location.reload();
                 },
                 error: function (result) {
-                    localStorage.setItem("Result", "ErrorMessageAlert");
+                    // localStorage.setItem("Result", "ErrorMessageAlert");
                     //alert("No Match"); 
                     //  response("No Match Found");
                 }
@@ -921,7 +844,87 @@ ORDER BY dbo.Tbl_Items.DatePosted DESC">
 
 
 
-    </script>   
+    </script>  
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+
+            $(".fancybox").fancybox({
+                href: $(this).attr('href'),
+                fitToView: true,
+                frameWidth: '90%',
+                frameHeight: '100%',
+                width: '87%',
+                height: '100%',
+                autoSize: false,
+                closeBtn: true,
+                closeClick: false,
+                openEffect: 'fade',
+                closeEffect: 'fade',
+                type: "iframe",
+                opacity: 0.7,
+                onStart: function () {
+                    $("#fancybox-overlay").css({ "position": "fixed" });
+                },
+                beforeShow: function () {
+
+                    var url = $(this).attr('href');
+                    url = (url == null) ? '' : url.split('?');
+                    if (url.length > 1) {
+                        url = url[1].split('=');
+
+                        // var id = url.substring(url.lastIndexOf("/") + 1, url.length);
+                        var id = url[1];
+                        var pageUrl = 'http://presspreview.azurewebsites.net/brand/itemview1?v=' + id;
+                        //window.location = pageUrl;
+                        window.history.pushState('d', 't', pageUrl);
+                    }
+                },
+                beforeClose: function () {
+                    window.history.pushState('d', 't', 'http://presspreview.azurewebsites.net/brand/profile-page-items.aspx');
+
+                }
+
+            });
+
+        });
+
+
+
+</script>
+   <script language="javascript" type="text/javascript">      
+    $(document).ready(function () {
+
+
+
+           $("#hidden_link").fancybox({
+
+               'title': 'Test Document',
+
+               'titleShow': true,
+
+               'titlePosition': 'over',
+
+               'titleFormat': 'formatTitle',
+
+               'type': 'iframe',
+
+               'width': '98%',
+
+               'height': '98%',
+
+               'hideOnOverlayClick': false,
+
+               'hideOnContentClick': false,
+
+               'overlayOpacity': 0.7,
+
+               'enableEscapeButton': false
+
+           });
+
+       });
+       </script> 
 </form>
 </body>
 </html>

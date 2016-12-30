@@ -113,7 +113,7 @@
                                         InsertCommand="INSERT INTO [Tbl_Items] ([ItemID], [Title], [FeatureImg], [IsFeatured1], [SortOrder]) VALUES (?, ?, ?, ?, ?)" 
                                         OldValuesParameterFormatString="original_{0}" 
                                         ProviderName="<%$ ConnectionStrings:GvConnection.ProviderName %>" 
-                                        SelectCommand="SELECT [ItemID], [Title], [FeatureImg], [IsFeatured1], [SortOrder] FROM [Tbl_Items] WHERE (([IsFeatured1] = ?) AND ([IsFeatured2] IS NULL)) ORDER BY [SortOrder]" 
+                                        SelectCommand="SELECT [ItemID], [Title], [FeatureImg], [IsFeatured1], [SortOrder] FROM [Tbl_Items] WHERE (([IsFeatured1] = ?) AND ([IsFeatured2] IS NULL)AND ([IsDeleted] IS NULL)) ORDER BY [SortOrder]" 
                                         
                                         
                                         

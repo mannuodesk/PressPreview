@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
 <title>Editor Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -27,8 +32,80 @@
              setTimeout(function () { $('#divAlerts').fadeOut(); }, 4000);
 
          };
+$(window).load(function() {
+    
+                console.log( $( document ).width());
+    console.log( $( document ).height());
+    if($( document ).width()>767){
+         var imagecontainerHeight=$( document ).width()*0.35807;
+          var itemImagecontainerHeight=$( document ).width()*0.23568;
+    console.log( imagecontainerHeight);
+    console.log( itemImagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);   
+     $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(itemImagecontainerHeight); 
+         $(".itemImageHover").css('background-color',"white");
+    }
+    else{
+          var imagecontainerHeight=$( document ).width()*0.716353;
+    console.log( imagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);  
+        $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(imagecontainerHeight); 
+            $(".itemImageHover").css('background-color',"white"); 
+    }
+});
+$(document).ready(function() {
+                   console.log( $( document ).width());
+    console.log( $( document ).height());
+    if($( document ).width()>767){
+         var imagecontainerHeight=$( document ).width()*0.35807;
+          var itemImagecontainerHeight=$( document ).width()*0.23568;
+    console.log( imagecontainerHeight);
+    console.log( itemImagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);   
+     $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(itemImagecontainerHeight); 
+         $(".itemImageHover").css('background-color',"white");
+    }
+    else{
+          var imagecontainerHeight=$( document ).width()*0.716353;
+    console.log( imagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);  
+        $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(imagecontainerHeight); 
+            $(".itemImageHover").css('background-color',"white"); 
+    }
+    
+});
+$(document).ready(function() {
 
 
+
+$(window).resize(function(){
+          console.log( $( document ).width());
+    console.log( $( document ).height());
+    if($( document ).width()>767){
+         var imagecontainerHeight=$( document ).width()*0.35807;
+          var itemImagecontainerHeight=$( document ).width()*0.23568;
+    console.log( imagecontainerHeight);
+    console.log( itemImagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);   
+     $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(itemImagecontainerHeight); 
+         $(".itemImageHover").css('background-color',"white");
+    }
+    else{
+          var imagecontainerHeight=$( document ).width()*0.716353;
+    console.log( imagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);  
+        $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(imagecontainerHeight); 
+            $(".itemImageHover").css('background-color',"white"); 
+    }
+    });
+
+});
 </script>
     <style>
         #featured2{
@@ -56,11 +133,43 @@
      
      
      
-     @media (min-width: 1074px){
+     @media (min-width: 767px){
+.ehover13:hover .featureImageHover{
+    filter:brightness(.6);
+    -webkit-filter:brightness(.4)
+    }
+    .ehover13:hover .itemImageHover{
+    filter:brightness(.6);
+    -webkit-filter:brightness(.4)
+    }
+    .ehover13:hover img{
+  filter:brightness(1);
+    -webkit-filter:brightness(1)
+        }
+}
 
+     
+     @media (max-width: 766px){
+.ehover13:hover .featureImageHover{
+    filter:brightness(.6);
+    -webkit-filter:brightness(.4)
+    }
+    .ehover13:hover .itemImageHover{
+    filter:brightness(.6);
+    -webkit-filter:brightness(.4)
+    }
+    .ehover13:hover img{
+  filter:brightness(1);
+    -webkit-filter:brightness(1)
+        }
 }
      
-     
+     /*@media (min-width: 992px){
+         .col-md-6 {
+       float: right;
+    }
+    }*/
+
  
     </style>
 
@@ -137,7 +246,9 @@
                 fragment += " <div class='col-md-4 col-sm-6 col-xs-12' style='padding-bottom:0px;    margin-top: 21px;' > " +
                     " <div class='hover ehover13'> " +
                         "     <a href='itemview2?v=" + val.ItemId + "' class='fancybox'> " +
-                                                   "     <img class='img-responsive' src='../photobank/" + val.FeatureImg + "' style='width:100%;' alt=''> " +
+                        "<div class='itemImageHover'>"+
+                                                   "     <img class='itemsimages img-responsive center-block' src='../photobank/" + val.FeatureImg + "' style='object-fit:contain;'  alt=''> " +
+                                                   "</div>"+
                             // "     <img class='img-responsive' src='../imgLarge/" + val.FeatureImg + "' style='width:100%; height:333px;' alt=''> " +
                                 "     <div class='overlay'> " +
                                     "         <h2>" + val.Name + " </h2> " +
@@ -152,6 +263,26 @@
 
             });
             $('#featured2').append(fragment);
+                  console.log( $( document ).width());
+    console.log( $( document ).height());
+    if($( document ).width()>767){
+         var imagecontainerHeight=$( document ).width()*0.35807;
+          var itemImagecontainerHeight=$( document ).width()*0.23568;
+    console.log( imagecontainerHeight);
+    console.log( itemImagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);   
+     $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(itemImagecontainerHeight); 
+         $(".itemImageHover").css('background-color',"white");
+    }
+    else{
+          var imagecontainerHeight=$( document ).width()*0.716353;
+    console.log( imagecontainerHeight);
+    $(".featurette-image").height(imagecontainerHeight);  
+        $(".featureImageHover").css('background-color',"white");
+        $(".itemsimages").height(imagecontainerHeight); 
+            $(".itemImageHover").css('background-color',"white"); 
+    }
             $('#LoaderItem').hide();
         } else if (hasItem == false) {
             $('#LoaderItem').hide();
@@ -304,7 +435,7 @@
            <!--#INCLUDE FILE="../includes/messgTopInfluencer.txt" --> 
          </div>   
             <ul class="nav navbar-nav" id="firstbb">
-              <li class="active"><a href="Default.aspx">Activity</a></li>
+              <li class="active"><a  href="Default.aspx">Activity</a></li>
               <li><a href="discover.aspx">Discover</a></li>
               <li><a href="brands.aspx">Brands</a></li>
               <li><a href="events.aspx">Events</a></li>
@@ -332,7 +463,7 @@
             <asp:repeater runat="server" ID="rptSlider"  DataSourceID="sdsSlider">
                 <ItemTemplate>
                     <div data-p="225.00" style="display: none;">
-                        <a href='http://<%# Eval("BannerLink","{0}") %>' target="_blank"><img data-u="image" src='<%# Eval("BannerImg","../photobank/{0}") %>' /></a>
+                        <a href='<%# Eval("BannerLink","{0}") %>' target="_blank"><img data-u="image" src='<%# Eval("BannerImg","../photobank/{0}") %>' /></a>
                     </div>
                 </ItemTemplate>
             </asp:repeater>
@@ -383,11 +514,15 @@
                    <ItemTemplate>
                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:0px;    margin-top: 0px;">
                  <div class="hover ehover13">
-                     <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
+                       <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
+                      <div class=" featureImageHover">
+                   
                     <!--<img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../imgLarge/{0}") %>' style="width:100%; height:480px;" alt="">-->
                                    <%-- <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="width:100%;height: 510px;" alt="">--%> 
-                                        <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="width: 100%;" alt="">
-                     </a>
+                                        <img class="featurette-image img-responsive center-block" src='<%# Eval("FeatureImg","../photobank/{0}") %>' style="object-fit:contain" alt="">
+                     
+                      </div>
+                      </a>
                          <a href="itemview2?v=<%# Eval("ItemID") %>" class="fancybox">
                         <div class=" overlay">
 							<h2><%# Eval("Name","{0}") %> </h2>

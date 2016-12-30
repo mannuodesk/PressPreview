@@ -86,6 +86,7 @@ public partial class admin_home_Default : System.Web.UI.Page
     private void UpdateQuery(DatabaseManagement db)
     {
         //if (fup1.HasFile)
+         HttpContext.Current.Session["ImageSrc"] = hiddenUrl.Value;
         if (HttpContext.Current.Session["ImageSrc"] != null && HttpContext.Current.Session["ImageSrc"] != "")
         {
             //string ext = Path.GetExtension(fup1.PostedFile.FileName);

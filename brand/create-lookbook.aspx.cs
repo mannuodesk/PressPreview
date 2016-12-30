@@ -85,6 +85,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
                 lblTotalNotifications.Text = Common.Getunread_Alerts().ToString();
             }
         }
+                Session["AddNewLookbook"] = null;
+                Session["IsLookbookAdded"] = false;
         if (Session["AddNewLookbook"] != null)
         
         {

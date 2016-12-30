@@ -33,6 +33,8 @@ public partial class pr_brand_add_item : System.Web.UI.Page
             chkDefaultSeasons.DataBind();
             chkDefaultHoliday.DataBind();
             #region To check for View More and less Buttons
+            Session["AddNewItem"] = null;
+            Session["IsItemAdded"] = false;
             if (Session["AddNewItem"]==null)
             {
                 AddNewItem addNewItem = new AddNewItem();

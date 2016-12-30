@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PP :: Dashboard</title>
+    <title>PP :: Brand Items View</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -117,7 +117,7 @@
                             <div class="product-desc">
                                 <span class="product-price">
                                     <a href="">
-                                    <img src='../../brandslogoThumb/<%# Eval("logo") %>' class="img-circle img-responsive" style="width:36px; height:36px;"/></a>
+                                    <img src='../../brandslogoThumb/<%# Eval("U_ProfilePic") %>' class="img-circle img-responsive" style="width:36px; height:36px;"/></a>
                                 </span>
                                 <small class="text-muted"><%# Eval("Category")%></small>
                                 <a href="#" class="product-name">  <a href="../../lightbox/brand-item-view?v=<%# Eval("ItemID") %>" class="fancybox"><%# Eval("Title","{0}") %></a></a>
@@ -146,11 +146,12 @@
                 </asp:Repeater>
                 <asp:SqlDataSource runat="server" ID="sdsLookbooks" ConnectionString='<%$ ConnectionStrings:GvConnection %>' ProviderName='<%$ ConnectionStrings:GvConnection.ProviderName %>' 
                 SelectCommand="SELECT dbo.Tbl_Brands.Name, dbo.Tbl_Brands.BrandID, dbo.Tbl_Brands.BrandKey, 
-                dbo.Tbl_Brands.Logo, dbo.Tbl_Items.ItemID, dbo.Tbl_Items.Title, 
-                ItemKey, dbo.Tbl_Items.Description, dbo.Tbl_Items.FeatureImg, dbo.Tbl_Items.Category,
+                dbo.Tbl_Users.U_ProfilePic, dbo.Tbl_Items.ItemID, dbo.Tbl_Items.Title, 
+                ItemKey,SUBSTRING(dbo.Tbl_Items.Description,0,50)+' ...' as Description , dbo.Tbl_Items.FeatureImg, dbo.Tbl_Items.Category,
                 dbo.Tbl_Items.Views, CAST(dbo.Tbl_Items.DatePosted AS VARCHAR(12)) as DatePosted, 
                 dbo.Tbl_Items.DatePosted as [dated] FROM dbo.Tbl_Brands 
                 INNER JOIN dbo.Tbl_Items ON dbo.Tbl_Brands.UserID = dbo.Tbl_Items.UserID
+				Inner join dbo.Tbl_Users on dbo.Tbl_Brands.UserID = dbo.Tbl_Users.UserID
 Where dbo.Tbl_Brands.UserID=? AND dbo.Tbl_Items.IsDeleted IS NULL AND dbo.Tbl_Items.IsPublished=1
 ORDER BY dbo.Tbl_Items.DatePosted DESC">
                     <SelectParameters>
